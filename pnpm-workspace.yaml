@@ -1,7 +1,11 @@
+minimumReleaseAgeExcludePrune: true
+trustPolicy: no-downgrade
+shellEmulator: true
+
+packages:
+  - 'packages/*'
+
 allowBuilds:
   esbuild: true
   nx: true
   puppeteer: true
-
-packages:
-  - "packages/*"
