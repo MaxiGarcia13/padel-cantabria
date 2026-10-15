@@ -74,7 +74,19 @@ export async function upsertLeagues(
 ): Promise<void> {
   await connection.pragma('foreign_keys = ON');
 
+  const [existingResult] = await connection.batch(
+    ['SELECT id FROM leagues'],
+    'read',
+  );
+  const existingIds = new Set(
+    (existingResult.rows as Array<{ id: number }>).map((row) => row.id),
+  );
+
   for (const league of leagues) {
+    if (existingIds.has(league.league_id)) {
+      continue;
+    }
+
     await connection.batch(buildUpsertStatements(league), 'immediate');
   }
 }
