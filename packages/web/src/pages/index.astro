@@ -1,18 +1,10 @@
 ---
-import LeaguePicker from '../components/league-picker.vue';
+import Header from '@/components/header.astro';
 import AppLayout from '../layouts/app-layout.astro';
 ---
 
 <AppLayout title="Calendario · Pádel Cantabria">
   <div class="flex min-h-dvh items-center justify-center p-4">
-    <div
-      class="w-full max-w-6xl"
-      transition:name="league-searcher"
-    >
-      <LeaguePicker
-        client:load
-        transition:persist="league-searcher"
-      />
-    </div>
+    <Header />
   </div>
 </AppLayout>

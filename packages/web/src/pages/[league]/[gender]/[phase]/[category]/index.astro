@@ -1,38 +1,25 @@
 ---
-import LeaguePicker from '../../../../../components/league-picker.vue';
-import AppLayout from '../../../../../layouts/app-layout.astro';
+import Header from '@/components/header.astro';
+import AppLayout from '@/layouts/app-layout.astro';
 
 const { league, gender, phase, category } = Astro.params;
 ---
 
 <AppLayout title="Resultados · Pádel Cantabria">
   <div class="mx-auto flex w-full max-w-6xl flex-col gap-8 p-4">
-    <header transition:name="league-searcher">
-      <LeaguePicker
-        client:load
-        transition:persist="league-searcher"
-      />
-    </header>
+    <Header />
 
     <main class="flex flex-col gap-6">
       <p class="text-sm text-muted">
-        Liga {league} · {gender} · {phase} · {category}
+        Liga{league}·{gender}·{phase}·{category}
       </p>
       <div class="flex flex-col gap-4">
-        <h2 class="text-lg font-medium text-foreground">
-          Clasificación
-        </h2>
-        <p class="text-sm text-muted">
-          Próximamente.
-        </p>
+        <h2 class="text-lg font-medium text-foreground">Clasificación</h2>
+        <p class="text-sm text-muted">Próximamente.</p>
       </div>
       <div class="flex flex-col gap-4">
-        <h2 class="text-lg font-medium text-foreground">
-          Calendario
-        </h2>
-        <p class="text-sm text-muted">
-          Próximamente.
-        </p>
+        <h2 class="text-lg font-medium text-foreground">Calendario</h2>
+        <p class="text-sm text-muted">Próximamente.</p>
       </div>
     </main>
   </div>
