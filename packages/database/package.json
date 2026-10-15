@@ -3,13 +3,19 @@
   "type": "module",
   "version": "0.0.0",
   "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "types": "./src/index.ts",
   "scripts": {
-    "clean": "rm -rf node_modules dist"
+    "clean": "rm -rf node_modules dist",
+    "migrate": "tsx --env-file=../../.env src/migrate.ts"
   },
   "dependencies": {
     "@tursodatabase/serverless": "^1.4.1"
   },
   "devDependencies": {
+    "@types/node": "^24.10.1",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }

@@ -1,0 +1,1 @@
+-- League calendar schema will be added in the next step.
