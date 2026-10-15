@@ -1,1 +1,4 @@
-export const LIGAS_URL = 'https://federacioncantabradepadel.com/Ligas';
+export const FEDERACION_CANTABRA_DE_PADEL_URL = 'https://federacioncantabradepadel.com';
+
+export const LEAGUES_URL = `${FEDERACION_CANTABRA_DE_PADEL_URL}/Ligas`;
+export const LEAGUE_CALENDAR_URL = `${FEDERACION_CANTABRA_DE_PADEL_URL}/Liga_Calendario`;
