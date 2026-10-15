@@ -2,5 +2,11 @@
   "name": "@padel-cantabria/scrapper",
   "type": "module",
   "version": "0.0.0",
-  "private": true
+  "private": true,
+  "scripts": {
+    "clean": "rm -rf node_modules dist"
+  },
+  "dependencies": {
+    "puppeteer": "^25.13.0"
+  }
 }
