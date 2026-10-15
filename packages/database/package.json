@@ -7,7 +7,7 @@
     "clean": "rm -rf node_modules dist"
   },
   "dependencies": {
-    "puppeteer": "^25.13.0"
+    "@tursodatabase/serverless": "^1.4.1"
   },
   "devDependencies": {
     "tsx": "^4.23.15",
