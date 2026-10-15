@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
+    "eslint-plugin-astro": "^3.2.1",
     "tailwindcss": "^4.3.3"
   }
 }

@@ -26,6 +26,8 @@
     "@maxigarcia/eslint-config": "^1.14.1",
     "@nx/js": "^23.3.0",
     "eslint": "^10.12.0",
-    "nx": "^23.3.0"
+    "nx": "^23.3.0",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.1"
   }
 }
