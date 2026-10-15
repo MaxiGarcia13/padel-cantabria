@@ -9,8 +9,8 @@
   "keywords": [],
   "main": "index.js",
   "scripts": {
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
+    "lint": "eslint . --ignore-pattern 'packages/web/**' && pnpm -r --if-present run lint",
+    "lint:fix": "eslint --fix . --ignore-pattern 'packages/web/**' && pnpm -r --if-present run lint:fix",
     "clean": "rm -rf node_modules dist && pnpm -r run clean",
     "phoenix": "pnpm clean && pnpm install",
     "dev": "pnpm --filter=@padel-cantabria/web dev"
@@ -26,9 +26,6 @@
     "@maxigarcia/eslint-config": "^1.14.1",
     "@nx/js": "^23.3.0",
     "eslint": "^10.12.0",
-    "nx": "^23.3.0",
-    "prettier": "^3.9.10",
-    "prettier-plugin-astro": "^1.1.1",
-    "tailwindcss": "^4.3.3"
+    "nx": "^23.3.0"
   }
 }
