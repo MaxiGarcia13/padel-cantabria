@@ -12,6 +12,7 @@
     "lint:fix": "eslint --fix ."
   },
   "dependencies": {
+    "@astrojs/node": "^11.1.7",
     "@astrojs/vue": "^7.0.3",
     "@padel-cantabria/database": "workspace:*",
     "astro": "^7.3.8",
