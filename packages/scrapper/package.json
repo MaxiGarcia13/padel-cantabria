@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "clean": "rm -rf node_modules dist"
+    "clean": "rm -rf node_modules dist",
+    "test": "tsx src/test.ts"
   },
   "dependencies": {
     "puppeteer": "^25.13.0"
