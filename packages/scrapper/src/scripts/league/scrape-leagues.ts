@@ -12,6 +12,7 @@ import { scrapeBaseLeagues } from './scrape-league.js';
 
 const PHASE_PLACEHOLDERS = ['0'];
 const CATEGORY_PLACEHOLDERS = ['-'];
+const SELECT_OPTIONS_TIMEOUT_MS = 10_000;
 
 export async function scrapeLeagues(): Promise<League[]> {
   const baseLeagues = await scrapeBaseLeagues();
@@ -44,7 +45,14 @@ async function scrapeLeague(
   const genders: Gender[] = [];
 
   for (const gender of genderOptions) {
-    await triggerSelectReload(page, 'genero', gender.value, 'cargargenero');
+    await triggerSelectReload(
+      page,
+      'genero',
+      gender.value,
+      'cargargenero',
+      '#fase',
+      PHASE_PLACEHOLDERS,
+    );
 
     const phaseOptions = await readSelectOptions(
       page,
@@ -54,7 +62,14 @@ async function scrapeLeague(
     const phases: Phase[] = [];
 
     for (const phase of phaseOptions) {
-      await triggerSelectReload(page, 'fase', phase.value, 'cargarfase');
+      await triggerSelectReload(
+        page,
+        'fase',
+        phase.value,
+        'cargarfase',
+        '#grupo',
+        CATEGORY_PLACEHOLDERS,
+      );
 
       const categories = await readSelectOptions(
         page,
@@ -110,11 +125,46 @@ async function readSelectOptions(
   );
 }
 
+async function waitForSelectOptions(
+  page: Page,
+  selector: string,
+  placeholders: string[],
+): Promise<void> {
+  try {
+    await page.waitForFunction(
+      (selectSelector, placeholderValues) => {
+        const select = document.querySelector<HTMLSelectElement>(selectSelector);
+
+        if (!select) {
+          return false;
+        }
+
+        return Array.from(select.options).some((option) => {
+          const label = option.textContent?.trim() ?? '';
+
+          return (
+            option.value.length > 0
+            && label.length > 0
+            && !placeholderValues.includes(option.value)
+          );
+        });
+      },
+      { timeout: SELECT_OPTIONS_TIMEOUT_MS },
+      selector,
+      placeholders,
+    );
+  } catch {
+    // Select may legitimately have no options after reload.
+  }
+}
+
 async function triggerSelectReload(
   page: Page,
   selectId: string,
   value: string,
   reloadFnName: 'cargargenero' | 'cargarfase',
+  dependentSelector: string,
+  dependentPlaceholders: string[],
 ): Promise<void> {
   const responsePromise = page.waitForResponse(
     (response) =>
@@ -151,4 +201,6 @@ async function triggerSelectReload(
     const mandando = document.getElementById('mandando');
     return !mandando || mandando.style.display === 'none';
   });
+
+  await waitForSelectOptions(page, dependentSelector, dependentPlaceholders);
 }
