@@ -11,7 +11,7 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.
 export default defineConfig({
   output: 'server',
   adapter: node({ mode: 'standalone' }),
-  integrations: [vue()],
+  integrations: [vue({ appEntrypoint: '/src/vue-app' })],
   vite: {
     envDir: rootDir,
     plugins: [tailwindcss()],
