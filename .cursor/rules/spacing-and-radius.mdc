@@ -1,0 +1,46 @@
+---
+description: Even spacing scale and unified border radius for UI
+globs: **/*.{vue,css}
+alwaysApply: false
+---
+
+# Spacing and radius
+
+## Spacing
+
+Use even Tailwind spacing steps only: `2`, `4`, `6`, `8`, `10`, `12`, …
+
+- Prefer for `gap`, `p`/`px`/`py`, `m`/`mx`/`my`/`mt`/`mb`, and positioning offsets
+- Do **not** use odd or half steps (`1`, `1.5`, `2.5`, `3`, `5`, …)
+
+```html
+<!-- ❌ BAD -->
+<div class="flex flex-col gap-3 p-5">
+  <p class="mt-1.5">…</p>
+</div>
+
+<!-- ✅ GOOD -->
+<div class="flex flex-col gap-4 p-4">
+  <p class="mt-2">…</p>
+</div>
+```
+
+## Radius
+
+Default to `rounded-xl` everywhere.
+
+Exceptions only when geometry requires it:
+
+- `rounded-full` — circles / pills (avatars, badges, status dots)
+- `rounded-l-none` / `rounded-r-none` — joined control groups
+
+```html
+<!-- ❌ BAD -->
+<section class="rounded-lg p-4">…</section>
+<button class="rounded-md px-4 py-2">…</button>
+
+<!-- ✅ GOOD -->
+<section class="rounded-xl p-4">…</section>
+<button class="rounded-xl px-4 py-2">…</button>
+<span class="size-2 rounded-full">…</span>
+```
