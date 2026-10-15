@@ -22,7 +22,7 @@ defineEmits<{
   >
     <select
       :id="id"
-      class="rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-2 text-zinc-100 disabled:cursor-not-allowed disabled:opacity-40"
+      class="rounded-xl border border-border bg-surface px-4 py-2 text-foreground disabled:cursor-not-allowed disabled:opacity-40"
       :value="modelValue"
       :disabled="disabled || options.length === 0"
       @change="

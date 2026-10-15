@@ -7,7 +7,7 @@ defineProps<{
 
 <template>
   <label
-    class="flex flex-col gap-2 text-sm text-zinc-400"
+    class="flex flex-col gap-2 text-sm text-muted"
     :for="id"
   >
     {{ label }}

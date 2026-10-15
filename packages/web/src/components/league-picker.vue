@@ -4,6 +4,7 @@ import type {
   Phase,
   SelectOption,
 } from '@padel-cantabria/database';
+import { navigate } from 'astro:transitions/client';
 import { computed, ref, watch } from 'vue';
 import { useLeagues } from '../composables/use-leagues';
 import Select from './select.vue';
@@ -62,6 +63,30 @@ const errorMessage = computed(() => {
     : 'Error inesperado';
 });
 
+const canSearch = computed(
+  () =>
+    Boolean(
+      selectedLeagueId.value
+      && selectedGenderValue.value
+      && selectedPhaseValue.value
+      && selectedCategoryValue.value,
+    ),
+);
+
+watch(
+  leagues,
+  (nextLeagues) => {
+    const firstLeague = nextLeagues?.[0];
+
+    if (!firstLeague || selectedLeagueId.value) {
+      return;
+    }
+
+    selectedLeagueId.value = String(firstLeague.league_id);
+  },
+  { immediate: true },
+);
+
 watch(selectedLeagueId, () => {
   selectedGenderValue.value = '';
   selectedPhaseValue.value = '';
@@ -76,20 +101,45 @@ watch(selectedGenderValue, () => {
 watch(selectedPhaseValue, () => {
   selectedCategoryValue.value = '';
 });
+
+function search(): void {
+  if (!canSearch.value) {
+    return;
+  }
+
+  const path = [
+    selectedLeagueId.value,
+    selectedGenderValue.value,
+    selectedPhaseValue.value,
+    selectedCategoryValue.value,
+  ]
+    .map((segment) => encodeURIComponent(segment))
+    .join('/');
+
+  void navigate(`/${path}`);
+}
 </script>
 
 <template>
-  <div class="flex w-full max-w-md flex-col gap-6">
+  <section
+    class="rounded-xl border border-border bg-surface p-4"
+  >
+    <div class="flex items-center gap-4 border-b border-border pb-4">
+      <p class="text-lg font-semibold text-foreground">
+        Pádel Cantabria
+      </p>
+    </div>
+
     <p
       v-if="isPending"
-      class="text-sm text-zinc-400"
+      class="mt-4 text-sm text-muted"
     >
       Cargando ligas…
     </p>
 
     <p
       v-else-if="errorMessage"
-      class="text-sm text-red-400"
+      class="mt-4 text-sm text-danger"
       role="alert"
     >
       {{ errorMessage }}
@@ -97,46 +147,56 @@ watch(selectedPhaseValue, () => {
 
     <p
       v-else-if="!leagues?.length"
-      class="text-sm text-zinc-400"
+      class="mt-4 text-sm text-muted"
     >
       No hay ligas disponibles.
     </p>
 
     <form
       v-else
-      class="flex flex-col gap-4"
-      @submit.prevent
+      class="mt-4 flex flex-col gap-4 lg:flex-row lg:items-end"
+      @submit.prevent="search"
     >
-      <Select
-        id="league"
-        v-model="selectedLeagueId"
-        label="Liga"
-        :options="leagueOptions"
-      />
+      <div class="grid flex-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Select
+          id="league"
+          v-model="selectedLeagueId"
+          label="Liga"
+          :options="leagueOptions"
+        />
 
-      <Select
-        id="gender"
-        v-model="selectedGenderValue"
-        label="Género"
-        :options="genderOptions"
-        :disabled="!selectedLeagueId"
-      />
+        <Select
+          id="gender"
+          v-model="selectedGenderValue"
+          label="Género"
+          :options="genderOptions"
+          :disabled="!selectedLeagueId"
+        />
 
-      <Select
-        id="phase"
-        v-model="selectedPhaseValue"
-        label="Fase"
-        :options="phaseOptions"
-        :disabled="!selectedGenderValue"
-      />
+        <Select
+          id="phase"
+          v-model="selectedPhaseValue"
+          label="Fase"
+          :options="phaseOptions"
+          :disabled="!selectedGenderValue"
+        />
 
-      <Select
-        id="category"
-        v-model="selectedCategoryValue"
-        label="Categoría"
-        :options="categoryOptions"
-        :disabled="!selectedPhaseValue"
-      />
+        <Select
+          id="category"
+          v-model="selectedCategoryValue"
+          label="Categoría"
+          :options="categoryOptions"
+          :disabled="!selectedPhaseValue"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="rounded-xl bg-primary px-6 py-2 font-medium text-primary-foreground disabled:cursor-not-allowed disabled:opacity-40"
+        :disabled="!canSearch"
+      >
+        Buscar
+      </button>
     </form>
-  </div>
+  </section>
 </template>
