@@ -1,5 +1,5 @@
-import { scrapeLeagues } from './scrape.js';
+import { scrapeCalendar } from './scrape-calendar.js';
 
-const leagues = await scrapeLeagues();
+const calendarLeagues = await scrapeCalendar();
 
-console.log(JSON.stringify(leagues, null, 2));
+console.log(JSON.stringify(calendarLeagues, null, 2));

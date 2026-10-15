@@ -1,9 +1,14 @@
 import type { Page } from 'puppeteer';
-import type { CalendarLeague, League, SelectOption } from './types.js';
+import type {
+  CalendarGender,
+  CalendarLeague,
+  CalendarPhase,
+  League,
+  SelectOption,
+} from './types.js';
 import puppeteer from 'puppeteer';
 import { LEAGUE_CALENDAR_URL } from '@/constants/urls.js';
 import { scrapeLeagues } from './scrape.js';
-import { mergeSelectOptions } from './utils.js';
 
 const PHASE_PLACEHOLDERS = ['0'];
 const CATEGORY_PLACEHOLDERS = ['-'];
@@ -35,37 +40,43 @@ async function scrapeCalendarForLeague(
   });
   await page.waitForSelector('#genero');
 
-  const genders = await readSelectOptions(page, '#genero', []);
-  const phases: SelectOption[] = [];
-  const categories: SelectOption[] = [];
+  const genderOptions = await readSelectOptions(page, '#genero', []);
+  const genders: CalendarGender[] = [];
 
-  for (const gender of genders) {
+  for (const gender of genderOptions) {
     await triggerSelectReload(page, 'genero', gender.value, 'cargargenero');
 
-    const genderPhases = await readSelectOptions(
+    const phaseOptions = await readSelectOptions(
       page,
       '#fase',
       PHASE_PLACEHOLDERS,
     );
-    phases.push(...genderPhases);
+    const phases: CalendarPhase[] = [];
 
-    for (const phase of genderPhases) {
+    for (const phase of phaseOptions) {
       await triggerSelectReload(page, 'fase', phase.value, 'cargarfase');
 
-      const phaseCategories = await readSelectOptions(
+      const categories = await readSelectOptions(
         page,
         '#grupo',
         CATEGORY_PLACEHOLDERS,
       );
-      categories.push(...phaseCategories);
+
+      phases.push({
+        ...phase,
+        categories,
+      });
     }
+
+    genders.push({
+      ...gender,
+      phases,
+    });
   }
 
   return {
     ...league,
     genders,
-    phases: mergeSelectOptions(phases),
-    categories: mergeSelectOptions(categories),
   };
 }
 

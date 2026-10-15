@@ -18,8 +18,14 @@ export interface SelectOption {
   label: string;
 }
 
-export interface CalendarLeague extends League {
-  genders: SelectOption[];
-  phases: SelectOption[];
+export interface CalendarPhase extends SelectOption {
   categories: SelectOption[];
+}
+
+export interface CalendarGender extends SelectOption {
+  phases: CalendarPhase[];
+}
+
+export interface CalendarLeague extends League {
+  genders: CalendarGender[];
 }
