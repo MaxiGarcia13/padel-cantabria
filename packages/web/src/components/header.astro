@@ -1,5 +1,14 @@
 ---
 import { Searcher } from './search';
+
+interface Props {
+  league?: string;
+  gender?: string;
+  phase?: string;
+  category?: string;
+}
+
+const { league, gender, phase, category } = Astro.props;
 ---
 
 <header
@@ -16,6 +25,10 @@ import { Searcher } from './search';
     <Searcher
       client:load
       transition:persist="searcher"
+      initialLeagueId={league}
+      initialGenderValue={gender}
+      initialPhaseValue={phase}
+      initialCategoryValue={category}
     />
   </div>
 </header>

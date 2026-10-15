@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { League } from '@padel-cantabria/database';
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 import Select from '@/components/select.vue';
 
 const model = defineModel<string>({ required: true });
@@ -14,18 +14,6 @@ const options = computed(() =>
     value: String(league.league_id),
     label: league.name,
   })),
-);
-
-watch(
-  () => props.leagues,
-  (leagues) => {
-    if (model.value || !leagues[0]) {
-      return;
-    }
-
-    model.value = String(leagues[0].league_id);
-  },
-  { immediate: true },
 );
 </script>
 

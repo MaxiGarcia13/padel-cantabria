@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { Gender, Phase, SelectOption } from '@padel-cantabria/database';
 import { navigate } from 'astro:transitions/client';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useLeagues } from '@/composables/use-leagues';
 import CategorySelect from './category-select.vue';
 import GenderSelect from './gender-select.vue';
+import { getDefaultGenderValue } from './get-default-gender-value';
 import LeagueSelect from './league-select.vue';
 import PhaseSelect from './phase-select.vue';
 
@@ -12,28 +13,23 @@ const EMPTY_GENDERS: Gender[] = [];
 const EMPTY_PHASES: Phase[] = [];
 const EMPTY_CATEGORIES: SelectOption[] = [];
 
+const props = defineProps<{
+  initialLeagueId?: string;
+  initialGenderValue?: string;
+  initialPhaseValue?: string;
+  initialCategoryValue?: string;
+}>();
+
 const { data: leagues, isPending, isError, error } = useLeagues();
 
-const selectedLeagueId = ref('');
-const selectedGenderValue = ref('');
-const selectedPhaseValue = ref('');
-const selectedCategoryValue = ref('');
+const leagueId = ref(props.initialLeagueId ?? '');
+const genderValue = ref(props.initialGenderValue ?? '');
+const phaseValue = ref(props.initialPhaseValue ?? '');
+const categoryValue = ref(props.initialCategoryValue ?? '');
 
 const selectedLeague = computed(() =>
   leagues.value?.find(
-    (league) => String(league.league_id) === selectedLeagueId.value,
-  ),
-);
-
-const selectedGender = computed(() =>
-  selectedLeague.value?.genders.find(
-    (gender) => gender.value === selectedGenderValue.value,
-  ),
-);
-
-const selectedPhase = computed(() =>
-  selectedGender.value?.phases.find(
-    (phase) => phase.value === selectedPhaseValue.value,
+    (league) => String(league.league_id) === leagueId.value,
   ),
 );
 
@@ -41,7 +37,15 @@ const genders = computed(
   () => selectedLeague.value?.genders ?? EMPTY_GENDERS,
 );
 
+const selectedGender = computed(() =>
+  genders.value.find((gender) => gender.value === genderValue.value),
+);
+
 const phases = computed(() => selectedGender.value?.phases ?? EMPTY_PHASES);
+
+const selectedPhase = computed(() =>
+  phases.value.find((phase) => phase.value === phaseValue.value),
+);
 
 const categories = computed(
   () => selectedPhase.value?.categories ?? EMPTY_CATEGORIES,
@@ -60,12 +64,46 @@ const errorMessage = computed(() => {
 const canSearch = computed(
   () =>
     Boolean(
-      selectedLeagueId.value
-      && selectedGenderValue.value
-      && selectedPhaseValue.value
-      && selectedCategoryValue.value,
+      leagueId.value
+      && genderValue.value
+      && phaseValue.value
+      && categoryValue.value,
     ),
 );
+
+watch(
+  leagues,
+  (leagueList) => {
+    if (!leagueList?.length || leagueId.value) {
+      return;
+    }
+
+    leagueId.value = String(leagueList[0].league_id);
+    genderValue.value = getDefaultGenderValue(leagueList[0].genders);
+  },
+  { immediate: true },
+);
+
+function onLeagueChange(value: string): void {
+  leagueId.value = value;
+  genderValue.value = getDefaultGenderValue(
+    leagues.value?.find((league) => String(league.league_id) === value)
+      ?.genders ?? EMPTY_GENDERS,
+  );
+  phaseValue.value = '';
+  categoryValue.value = '';
+}
+
+function onGenderChange(value: string): void {
+  genderValue.value = value;
+  phaseValue.value = '';
+  categoryValue.value = '';
+}
+
+function onPhaseChange(value: string): void {
+  phaseValue.value = value;
+  categoryValue.value = '';
+}
 
 function search(): void {
   if (!canSearch.value) {
@@ -73,10 +111,10 @@ function search(): void {
   }
 
   const path = [
-    selectedLeagueId.value,
-    selectedGenderValue.value,
-    selectedPhaseValue.value,
-    selectedCategoryValue.value,
+    leagueId.value,
+    genderValue.value,
+    phaseValue.value,
+    categoryValue.value,
   ]
     .map((segment) => encodeURIComponent(segment))
     .join('/');
@@ -115,26 +153,29 @@ function search(): void {
   >
     <div class="grid flex-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <LeagueSelect
-        v-model="selectedLeagueId"
+        :model-value="leagueId"
         :leagues="leagues"
+        @update:model-value="onLeagueChange"
       />
 
       <GenderSelect
-        v-model="selectedGenderValue"
+        :model-value="genderValue"
         :genders="genders"
-        :disabled="!selectedLeagueId"
+        :disabled="!leagueId"
+        @update:model-value="onGenderChange"
       />
 
       <PhaseSelect
-        v-model="selectedPhaseValue"
+        :model-value="phaseValue"
         :phases="phases"
-        :disabled="!selectedGenderValue"
+        :disabled="!genderValue"
+        @update:model-value="onPhaseChange"
       />
 
       <CategorySelect
-        v-model="selectedCategoryValue"
+        v-model="categoryValue"
         :categories="categories"
-        :disabled="!selectedPhaseValue"
+        :disabled="!phaseValue"
       />
     </div>
 

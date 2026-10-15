@@ -7,7 +7,12 @@ const { league, gender, phase, category } = Astro.params;
 
 <AppLayout title="Resultados · Pádel Cantabria">
   <div class="mx-auto flex w-full max-w-6xl flex-col gap-8 p-4">
-    <Header />
+    <Header
+      league={league}
+      gender={gender}
+      phase={phase}
+      category={category}
+    />
 
     <main class="flex flex-col gap-6">
       <p class="text-sm text-muted">
