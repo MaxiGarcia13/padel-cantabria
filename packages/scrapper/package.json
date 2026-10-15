@@ -5,8 +5,7 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf node_modules dist",
-    "scrap:league": "tsx --env-file=../../.env src/scripts/league/index.ts",
-    "test": "tsx src/test.ts"
+    "scrap:league": "tsx --env-file=../../.env src/scripts/league/index.ts"
   },
   "dependencies": {
     "@padel-cantabria/database": "workspace:*",
