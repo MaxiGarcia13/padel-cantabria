@@ -1,17 +1,12 @@
 <script setup lang="ts">
-import type { Gender, Phase, SelectOption } from '@padel-cantabria/database';
-import { navigate } from 'astro:transitions/client';
-import { computed, ref, watch } from 'vue';
+import { computed } from 'vue';
 import { useLeagues } from '@/composables/use-leagues';
+import { useSearchFilters } from '@/composables/use-search-filters';
+import { useSearchNavigation } from '@/composables/use-search-navigation';
 import CategorySelect from './category-select.vue';
 import GenderSelect from './gender-select.vue';
-import { getDefaultGenderValue } from './get-default-gender-value';
 import LeagueSelect from './league-select.vue';
 import PhaseSelect from './phase-select.vue';
-
-const EMPTY_GENDERS: Gender[] = [];
-const EMPTY_PHASES: Phase[] = [];
-const EMPTY_CATEGORIES: SelectOption[] = [];
 
 const props = defineProps<{
   initialLeagueId?: string;
@@ -21,35 +16,26 @@ const props = defineProps<{
 }>();
 
 const { data: leagues, isPending, isError, error } = useLeagues();
+const { search } = useSearchNavigation();
 
-const leagueId = ref(props.initialLeagueId ?? '');
-const genderValue = ref(props.initialGenderValue ?? '');
-const phaseValue = ref(props.initialPhaseValue ?? '');
-const categoryValue = ref(props.initialCategoryValue ?? '');
-
-const selectedLeague = computed(() =>
-  leagues.value?.find(
-    (league) => String(league.league_id) === leagueId.value,
-  ),
-);
-
-const genders = computed(
-  () => selectedLeague.value?.genders ?? EMPTY_GENDERS,
-);
-
-const selectedGender = computed(() =>
-  genders.value.find((gender) => gender.value === genderValue.value),
-);
-
-const phases = computed(() => selectedGender.value?.phases ?? EMPTY_PHASES);
-
-const selectedPhase = computed(() =>
-  phases.value.find((phase) => phase.value === phaseValue.value),
-);
-
-const categories = computed(
-  () => selectedPhase.value?.categories ?? EMPTY_CATEGORIES,
-);
+const {
+  leagueId,
+  genderValue,
+  phaseValue,
+  categoryValue,
+  genders,
+  phases,
+  categories,
+  canSearch,
+  onLeagueChange,
+  onGenderChange,
+  onPhaseChange,
+} = useSearchFilters(leagues, {
+  leagueId: props.initialLeagueId,
+  genderValue: props.initialGenderValue,
+  phaseValue: props.initialPhaseValue,
+  categoryValue: props.initialCategoryValue,
+});
 
 const errorMessage = computed(() => {
   if (!isError.value) {
@@ -61,65 +47,17 @@ const errorMessage = computed(() => {
     : 'Error inesperado';
 });
 
-const canSearch = computed(
-  () =>
-    Boolean(
-      leagueId.value
-      && genderValue.value
-      && phaseValue.value
-      && categoryValue.value,
-    ),
-);
-
-watch(
-  leagues,
-  (leagueList) => {
-    if (!leagueList?.length || leagueId.value) {
-      return;
-    }
-
-    leagueId.value = String(leagueList[0].league_id);
-    genderValue.value = getDefaultGenderValue(leagueList[0].genders);
-  },
-  { immediate: true },
-);
-
-function onLeagueChange(value: string): void {
-  leagueId.value = value;
-  genderValue.value = getDefaultGenderValue(
-    leagues.value?.find((league) => String(league.league_id) === value)
-      ?.genders ?? EMPTY_GENDERS,
-  );
-  phaseValue.value = '';
-  categoryValue.value = '';
-}
-
-function onGenderChange(value: string): void {
-  genderValue.value = value;
-  phaseValue.value = '';
-  categoryValue.value = '';
-}
-
-function onPhaseChange(value: string): void {
-  phaseValue.value = value;
-  categoryValue.value = '';
-}
-
-function search(): void {
+function onSearch(): void {
   if (!canSearch.value) {
     return;
   }
 
-  const path = [
-    leagueId.value,
-    genderValue.value,
-    phaseValue.value,
-    categoryValue.value,
-  ]
-    .map((segment) => encodeURIComponent(segment))
-    .join('/');
-
-  void navigate(`/${path}`);
+  search({
+    leagueId: leagueId.value,
+    genderValue: genderValue.value,
+    phaseValue: phaseValue.value,
+    categoryValue: categoryValue.value,
+  });
 }
 </script>
 
@@ -149,7 +87,7 @@ function search(): void {
   <form
     v-else
     class="flex flex-col gap-4 lg:flex-row lg:items-end"
-    @submit.prevent="search"
+    @submit.prevent="onSearch"
   >
     <div class="grid flex-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <LeagueSelect
