@@ -6,12 +6,12 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+    "types": ["node"],
     "strict": true,
     "declaration": true,
     "noEmit": true,
     "isolatedModules": true,
-    "skipLibCheck": true,
-    "types": ["node"]
+    "skipLibCheck": true
   },
   "include": ["src"]
 }
