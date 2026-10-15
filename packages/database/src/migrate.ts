@@ -33,7 +33,10 @@ async function migrate(): Promise<void> {
     return;
   }
 
-  const connection = createConnection();
+  const connection = createConnection({
+    url: process.env.TURSO_URL!,
+    authToken: process.env.TURSO_AUTH_TOKEN!,
+  });
 
   await connection.batch(statements);
 

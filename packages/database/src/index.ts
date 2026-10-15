@@ -1,6 +1,5 @@
-export { createConnection } from './client.js';
-export { upsertLeagues } from './repositories/upsert-leagues.js';
-export { getLeagues } from './repositories/get-leagues.js';
+export { createClient, createConnection } from './client.js';
+export type { TursoConfig } from './client.js';
 export type {
   BaseLeague,
   Gender,

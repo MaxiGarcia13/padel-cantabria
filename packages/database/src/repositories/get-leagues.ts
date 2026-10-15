@@ -1,6 +1,27 @@
 import type { Connection } from '@tursodatabase/serverless';
 import type { Gender, League, Phase, SelectOption } from '../types/league.js';
-import { createConnection } from '../client.js';
+
+interface LeagueRecord {
+  id: number;
+  name: string;
+  start_date: string;
+  end_date: string;
+}
+
+type GenderRecord = SelectOption & {
+  league_id: number;
+};
+
+type PhaseRecord = SelectOption & {
+  league_id: number;
+  gender_value: string;
+};
+
+type CategoryRecord = SelectOption & {
+  league_id: number;
+  gender_value: string;
+  phase_value: string;
+};
 
 function categoryKey(
   leagueId: number,
@@ -14,11 +35,9 @@ function phaseKey(leagueId: number, genderValue: string): string {
   return `${leagueId}:${genderValue}`;
 }
 
-export async function getLeagues(
-  connection: Connection = createConnection(),
-): Promise<League[]> {
-  const [leagueResult, genderResult, phaseResult, categoryResult] =
-    await connection.batch(
+export async function getLeagues(connection: Connection): Promise<League[]> {
+  const [leagueResult, genderResult, phaseResult, categoryResult]
+    = await connection.batch(
       [
         'SELECT id, name, start_date, end_date FROM leagues ORDER BY start_date DESC',
         'SELECT league_id, value, label FROM genders',
@@ -28,8 +47,13 @@ export async function getLeagues(
       'read',
     );
 
+  const leagueRows = leagueResult.rows as LeagueRecord[];
+  const genderRows = genderResult.rows as GenderRecord[];
+  const phaseRows = phaseResult.rows as PhaseRecord[];
+  const categoryRows = categoryResult.rows as CategoryRecord[];
+
   const categoriesByPhase = new Map<string, SelectOption[]>();
-  for (const row of categoryResult.rows) {
+  for (const row of categoryRows) {
     const key = categoryKey(row.league_id, row.gender_value, row.phase_value);
     const categories = categoriesByPhase.get(key) ?? [];
     categories.push({ value: row.value, label: row.label });
@@ -37,7 +61,7 @@ export async function getLeagues(
   }
 
   const phasesByGender = new Map<string, Phase[]>();
-  for (const row of phaseResult.rows) {
+  for (const row of phaseRows) {
     const key = phaseKey(row.league_id, row.gender_value);
     const phases = phasesByGender.get(key) ?? [];
     phases.push({
@@ -52,7 +76,7 @@ export async function getLeagues(
   }
 
   const gendersByLeague = new Map<number, Gender[]>();
-  for (const row of genderResult.rows) {
+  for (const row of genderRows) {
     const genders = gendersByLeague.get(row.league_id) ?? [];
     genders.push({
       value: row.value,
@@ -62,7 +86,7 @@ export async function getLeagues(
     gendersByLeague.set(row.league_id, genders);
   }
 
-  return leagueResult.rows.map(
+  return leagueRows.map(
     (row): League => ({
       league_id: row.id,
       name: row.name,
