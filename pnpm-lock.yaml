@@ -192,6 +192,19 @@ importers:
         specifier: ^7.0.2
         version: 7.0.2
 
+  packages/turso:
+    dependencies:
+      puppeteer:
+        specifier: ^25.13.0
+        version: 25.13.0
+    devDependencies:
+      tsx:
+        specifier: ^4.23.15
+        version: 4.23.15
+      typescript:
+        specifier: ^7.0.2
+        version: 7.0.2
+
 packages:
 
   '@antfu/eslint-config@9.5.1':

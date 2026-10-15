@@ -1,0 +1,16 @@
+{
+  "name": "@padel-cantabria/database",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "clean": "rm -rf node_modules dist"
+  },
+  "dependencies": {
+    "puppeteer": "^25.13.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
