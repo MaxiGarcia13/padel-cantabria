@@ -1,10 +1,10 @@
-import type { League } from '@padel-cantabria/database';
+import type { BaseLeague } from '@padel-cantabria/database';
 import type { RawLeague } from './types.js';
 import puppeteer from 'puppeteer';
 import { LEAGUES_URL } from '@/constants/urls.js';
 import { parseSchedule } from './utils.js';
 
-function toLeague(card: RawLeague): League | null {
+function toBaseLeague(card: RawLeague): BaseLeague | null {
   if (card.league_id === null || !card.name || !card.schedule) {
     return null;
   }
@@ -16,7 +16,7 @@ function toLeague(card: RawLeague): League | null {
   };
 }
 
-export async function scrapeLeagues(): Promise<League[]> {
+export async function scrapeBaseLeagues(): Promise<BaseLeague[]> {
   const browser = await puppeteer.launch({ headless: true });
 
   try {
@@ -42,8 +42,8 @@ export async function scrapeLeagues(): Promise<League[]> {
     });
 
     return rawCards
-      .map(toLeague)
-      .filter((league): league is League => league !== null)
+      .map(toBaseLeague)
+      .filter((league): league is BaseLeague => league !== null)
       .sort((left, right) => {
         const byStartDate = right.schedule.start_date.localeCompare(
           left.schedule.start_date,

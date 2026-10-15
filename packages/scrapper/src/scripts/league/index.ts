@@ -1,11 +1,11 @@
 import process from 'node:process';
-import { upsertCalendarLeagues } from '@padel-cantabria/database';
-import { scrapeCalendar } from './scrape-calendar.js';
+import { upsertLeagues } from '@padel-cantabria/database';
+import { scrapeLeagues } from './scrape-leagues.js';
 
 async function main(): Promise<void> {
-  const calendarLeagues = await scrapeCalendar();
-  await upsertCalendarLeagues(calendarLeagues);
-  console.warn(`Saved ${calendarLeagues.length} league(s).`);
+  const leagues = await scrapeLeagues();
+  await upsertLeagues(leagues);
+  console.warn(`Saved ${leagues.length} league(s).`);
 }
 
 main().catch((error: unknown) => {

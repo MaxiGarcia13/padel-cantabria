@@ -1,4 +1,4 @@
-import type { League } from '@padel-cantabria/database';
+import type { BaseLeague } from '@padel-cantabria/database';
 
 const SCHEDULE_PATTERN
   = /^Del\s+(\d{2})\/(\d{2})\/(\d{4})\s+al\s+(\d{2})\/(\d{2})\/(\d{4})$/i;
@@ -7,7 +7,7 @@ function toIsoDate(day: string, month: string, year: string): string {
   return `${year}-${month}-${day}`;
 }
 
-export function parseSchedule(rawSchedule: string): League['schedule'] {
+export function parseSchedule(rawSchedule: string): BaseLeague['schedule'] {
   const match = rawSchedule.trim().match(SCHEDULE_PATTERN);
 
   if (!match) {

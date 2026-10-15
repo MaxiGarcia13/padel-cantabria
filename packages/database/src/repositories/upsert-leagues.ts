@@ -1,8 +1,8 @@
 import type { BatchStatement, Connection } from '@tursodatabase/serverless';
-import type { CalendarLeague } from '../types/league.js';
+import type { League } from '../types/league.js';
 import { createConnection } from '../client.js';
 
-function buildUpsertStatements(league: CalendarLeague): BatchStatement[] {
+function buildUpsertStatements(league: League): BatchStatement[] {
   const statements: BatchStatement[] = [
     {
       sql: `
@@ -69,8 +69,8 @@ function buildUpsertStatements(league: CalendarLeague): BatchStatement[] {
   return statements;
 }
 
-export async function upsertCalendarLeagues(
-  leagues: CalendarLeague[],
+export async function upsertLeagues(
+  leagues: League[],
   connection: Connection = createConnection(),
 ): Promise<void> {
   await connection.pragma('foreign_keys = ON');

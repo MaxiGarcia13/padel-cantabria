@@ -1,9 +1,10 @@
 export { createConnection } from './client.js';
-export { upsertCalendarLeagues } from './repositories/calendar-leagues.js';
+export { upsertLeagues } from './repositories/upsert-leagues.js';
+export { getLeagues } from './repositories/get-leagues.js';
 export type {
-  CalendarGender,
-  CalendarLeague,
-  CalendarPhase,
+  BaseLeague,
+  Gender,
   League,
+  Phase,
   SelectOption,
 } from './types/league.js';

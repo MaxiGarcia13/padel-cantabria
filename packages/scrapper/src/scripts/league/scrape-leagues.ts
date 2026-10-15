@@ -1,47 +1,47 @@
 import type {
-  CalendarGender,
-  CalendarLeague,
-  CalendarPhase,
+  BaseLeague,
+  Gender,
   League,
+  Phase,
   SelectOption,
 } from '@padel-cantabria/database';
 import type { Page } from 'puppeteer';
 import puppeteer from 'puppeteer';
 import { LEAGUE_CALENDAR_URL } from '@/constants/urls.js';
-import { scrapeLeagues } from './scrape-league.js';
+import { scrapeBaseLeagues } from './scrape-league.js';
 
 const PHASE_PLACEHOLDERS = ['0'];
 const CATEGORY_PLACEHOLDERS = ['-'];
 
-export async function scrapeCalendar(): Promise<CalendarLeague[]> {
-  const leagues = await scrapeLeagues();
+export async function scrapeLeagues(): Promise<League[]> {
+  const baseLeagues = await scrapeBaseLeagues();
   const browser = await puppeteer.launch({ headless: true });
 
   try {
     const page = await browser.newPage();
-    const calendarLeagues: CalendarLeague[] = [];
+    const leagues: League[] = [];
 
-    for (const league of leagues) {
-      calendarLeagues.push(await scrapeCalendarForLeague(page, league));
+    for (const baseLeague of baseLeagues) {
+      leagues.push(await scrapeLeague(page, baseLeague));
     }
 
-    return calendarLeagues;
+    return leagues;
   } finally {
     await browser.close();
   }
 }
 
-async function scrapeCalendarForLeague(
+async function scrapeLeague(
   page: Page,
-  league: League,
-): Promise<CalendarLeague> {
-  await page.goto(`${LEAGUE_CALENDAR_URL}?id=${league.league_id}`, {
+  baseLeague: BaseLeague,
+): Promise<League> {
+  await page.goto(`${LEAGUE_CALENDAR_URL}?id=${baseLeague.league_id}`, {
     waitUntil: 'domcontentloaded',
   });
   await page.waitForSelector('#genero');
 
   const genderOptions = await readSelectOptions(page, '#genero', []);
-  const genders: CalendarGender[] = [];
+  const genders: Gender[] = [];
 
   for (const gender of genderOptions) {
     await triggerSelectReload(page, 'genero', gender.value, 'cargargenero');
@@ -51,7 +51,7 @@ async function scrapeCalendarForLeague(
       '#fase',
       PHASE_PLACEHOLDERS,
     );
-    const phases: CalendarPhase[] = [];
+    const phases: Phase[] = [];
 
     for (const phase of phaseOptions) {
       await triggerSelectReload(page, 'fase', phase.value, 'cargarfase');
@@ -75,7 +75,7 @@ async function scrapeCalendarForLeague(
   }
 
   return {
-    ...league,
+    ...baseLeague,
     genders,
   };
 }

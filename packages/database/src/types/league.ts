@@ -1,4 +1,4 @@
-export interface League {
+export interface BaseLeague {
   league_id: number;
   name: string;
   schedule: {
@@ -12,14 +12,14 @@ export interface SelectOption {
   label: string;
 }
 
-export interface CalendarPhase extends SelectOption {
+export interface Phase extends SelectOption {
   categories: SelectOption[];
 }
 
-export interface CalendarGender extends SelectOption {
-  phases: CalendarPhase[];
+export interface Gender extends SelectOption {
+  phases: Phase[];
 }
 
-export interface CalendarLeague extends League {
-  genders: CalendarGender[];
+export interface League extends BaseLeague {
+  genders: Gender[];
 }
