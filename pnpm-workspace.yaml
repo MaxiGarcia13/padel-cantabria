@@ -1,5 +1,6 @@
 allowBuilds:
   esbuild: true
+  nx: true
   puppeteer: true
 
 packages:
