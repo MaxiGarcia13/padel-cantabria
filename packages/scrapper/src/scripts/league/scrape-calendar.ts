@@ -8,7 +8,7 @@ import type {
 } from './types.js';
 import puppeteer from 'puppeteer';
 import { LEAGUE_CALENDAR_URL } from '@/constants/urls.js';
-import { scrapeLeagues } from './scrape.js';
+import { scrapeLeagues } from './scrape-league.js';
 
 const PHASE_PLACEHOLDERS = ['0'];
 const CATEGORY_PLACEHOLDERS = ['-'];

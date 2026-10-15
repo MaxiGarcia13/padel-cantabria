@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf node_modules dist",
-    "scrap:league": "tsx src/scripts/scrap-league/index.ts",
+    "scrap:league": "tsx src/scripts/league/index.ts",
     "test": "tsx src/test.ts"
   },
   "dependencies": {
