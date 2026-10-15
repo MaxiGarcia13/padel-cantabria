@@ -8,6 +8,7 @@ import type {
 import type { Page } from 'puppeteer';
 import puppeteer from 'puppeteer';
 import { LEAGUE_CALENDAR_URL } from '@/constants/urls.js';
+import { isActiveLeague } from './is-active-league.js';
 import { scrapeBaseLeagues } from './scrape-league.js';
 
 const PHASE_PLACEHOLDERS = ['0'];
@@ -15,7 +16,9 @@ const CATEGORY_PLACEHOLDERS = ['-'];
 const SELECT_OPTIONS_TIMEOUT_MS = 10_000;
 
 export async function scrapeLeagues(): Promise<League[]> {
-  const baseLeagues = await scrapeBaseLeagues();
+  const baseLeagues = (await scrapeBaseLeagues()).filter((league) =>
+    isActiveLeague(league),
+  );
   const browser = await puppeteer.launch({ headless: true });
 
   try {
