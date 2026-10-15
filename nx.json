@@ -1,0 +1,131 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "defaultBase": "main",
+  "tui": {
+    "enabled": false
+  },
+  "namedInputs": {
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
+    "sharedGlobals": []
+  },
+  "targetDefaults": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "cache": true
+    },
+    "lint": {
+      "cache": true
+    }
+  },
+  "release": {
+    "projects": [
+      "packages/scrapper"
+    ],
+    "projectsRelationship": "independent",
+    "version": {
+      "conventionalCommits": true,
+      "fallbackCurrentVersionResolver": "disk"
+    },
+    "changelog": {
+      "projectChangelogs": true,
+      "workspaceChangelog": false
+    },
+    "conventionalCommits": {
+      "types": {
+        "feat": {
+          "semverBump": "minor",
+          "changelog": {
+            "title": "🚀 Features"
+          }
+        },
+        "fix": {
+          "semverBump": "patch",
+          "changelog": {
+            "title": "🐞 Fixes"
+          }
+        },
+        "refactor": {
+          "semverBump": "patch",
+          "changelog": {
+            "title": "🔄 Refactors"
+          }
+        },
+        "perf": {
+          "semverBump": "patch",
+          "changelog": {
+            "title": "🚀 Performance"
+          }
+        },
+        "chore": {
+          "semverBump": "minor",
+          "changelog": {
+            "title": "🧹 Chores"
+          }
+        },
+        "style": {
+          "semverBump": "patch",
+          "changelog": {
+            "title": "🎨 Styles"
+          }
+        },
+        "build": {
+          "semverBump": "minor",
+          "changelog": {
+            "title": "👷 Build"
+          }
+        },
+        "deps": {
+          "semverBump": "patch",
+          "changelog": {
+            "title": "🔧 Dependencies"
+          }
+        },
+        "breaking": {
+          "semverBump": "major",
+          "changelog": {
+            "title": "💥 Breaking Changes"
+          }
+        },
+        "docs": {
+          "semverBump": "none",
+          "changelog": {
+            "title": "📚 Documentation"
+          }
+        },
+        "test": {
+          "semverBump": "none",
+          "changelog": {
+            "title": "🧪 Tests"
+          }
+        },
+        "ci": {
+          "semverBump": "none",
+          "changelog": {
+            "title": "🤖 CI/CD"
+          }
+        },
+        "config": {
+          "semverBump": "none",
+          "changelog": {
+            "title": "🔧 Configuration"
+          }
+        }
+      }
+    },
+    "releaseTag": {
+      "pattern": "{projectName}@{version}"
+    },
+    "git": {
+      "push": true,
+      "commit": true,
+      "tag": true,
+      "commitMessage": "chore(release): version packages"
+    }
+  },
+  "analytics": false
+}
