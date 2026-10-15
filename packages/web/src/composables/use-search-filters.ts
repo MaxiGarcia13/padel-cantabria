@@ -47,6 +47,21 @@ export function useSearchFilters(
     () => selectedPhase.value?.categories ?? EMPTY_CATEGORIES,
   );
 
+  const selectedCategory = computed(() =>
+    categories.value.find((category) => category.value === categoryValue.value),
+  );
+
+  const locationSummary = computed(() =>
+    [
+      selectedLeague.value?.name,
+      selectedGender.value?.label,
+      selectedPhase.value?.label,
+      selectedCategory.value?.label,
+    ]
+      .filter(Boolean)
+      .join(' / '),
+  );
+
   const canSearch = computed(
     () =>
       Boolean(
@@ -99,6 +114,7 @@ export function useSearchFilters(
     genders,
     phases,
     categories,
+    locationSummary,
     canSearch,
     onLeagueChange,
     onGenderChange,
