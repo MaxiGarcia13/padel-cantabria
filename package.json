@@ -12,7 +12,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "clean": "rm -rf node_modules dist && pnpm -r run clean",
-    "phoenix": "pnpm clean && pnpm install"
+    "phoenix": "pnpm clean && pnpm install",
+    "dev": "pnpm --filter=@padel-cantabria/web dev"
   },
   "devEngines": {
     "packageManager": {
