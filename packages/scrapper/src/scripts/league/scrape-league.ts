@@ -1,4 +1,5 @@
-import type { League, RawLeague } from './types.js';
+import type { League } from '@padel-cantabria/database';
+import type { RawLeague } from './types.js';
 import puppeteer from 'puppeteer';
 import { LEAGUES_URL } from '@/constants/urls.js';
 import { parseSchedule } from './utils.js';

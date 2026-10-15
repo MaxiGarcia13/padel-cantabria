@@ -1,11 +1,11 @@
-import type { Page } from 'puppeteer';
 import type {
   CalendarGender,
   CalendarLeague,
   CalendarPhase,
   League,
   SelectOption,
-} from './types.js';
+} from '@padel-cantabria/database';
+import type { Page } from 'puppeteer';
 import puppeteer from 'puppeteer';
 import { LEAGUE_CALENDAR_URL } from '@/constants/urls.js';
 import { scrapeLeagues } from './scrape-league.js';

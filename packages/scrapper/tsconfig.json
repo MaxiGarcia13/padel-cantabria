@@ -6,6 +6,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+    "types": ["node"],
     "strict": true,
     "declaration": true,
     "noEmit": true,

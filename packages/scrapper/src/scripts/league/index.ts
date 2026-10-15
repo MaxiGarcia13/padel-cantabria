@@ -1,5 +1,14 @@
+import process from 'node:process';
+import { upsertCalendarLeagues } from '@padel-cantabria/database';
 import { scrapeCalendar } from './scrape-calendar.js';
 
-const calendarLeagues = await scrapeCalendar();
+async function main(): Promise<void> {
+  const calendarLeagues = await scrapeCalendar();
+  await upsertCalendarLeagues(calendarLeagues);
+  console.warn(`Saved ${calendarLeagues.length} league(s).`);
+}
 
-console.log(JSON.stringify(calendarLeagues, null, 2));
+main().catch((error: unknown) => {
+  console.error(error);
+  process.exitCode = 1;
+});

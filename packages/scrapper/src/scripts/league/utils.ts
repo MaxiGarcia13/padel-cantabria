@@ -1,4 +1,4 @@
-import type { League } from './types.js';
+import type { League } from '@padel-cantabria/database';
 
 const SCHEDULE_PATTERN
   = /^Del\s+(\d{2})\/(\d{2})\/(\d{4})\s+al\s+(\d{2})\/(\d{2})\/(\d{4})$/i;
