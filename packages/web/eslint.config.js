@@ -1,17 +1,22 @@
+import { fileURLToPath } from 'node:url';
 import { eslintConfig } from '@maxigarcia/eslint-config';
+
+const cssConfig = fileURLToPath(
+  new URL('./src/styles/global.css', import.meta.url),
+);
 
 export default eslintConfig(
   {
-  typescript: true,
-  astro: true,
-  vue: true,
-  tailwindcss: true,
-}, 
-{
-  settings: {
-    tailwindcss: {
-      config: 'packages/web/src/styles/global.css',
+    typescript: true,
+    astro: true,
+    vue: true,
+    tailwindcss: true,
+  },
+  {
+    settings: {
+      tailwindcss: {
+        config: cssConfig,
+      },
     },
   },
-},
 );
