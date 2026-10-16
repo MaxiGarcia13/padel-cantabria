@@ -1,4 +1,5 @@
 import type { Connection } from '@tursodatabase/serverless';
+import type { SearchTeamsParams } from './repositories/search-teams.js';
 import type { League } from './types/league.js';
 import type { CategoryKey, MatchWrite } from './types/match.js';
 import type {
@@ -12,6 +13,10 @@ import { getLeagues } from './repositories/get-leagues.js';
 import { getMatches } from './repositories/get-matches.js';
 import { getTeamById } from './repositories/get-team-by-id.js';
 import { getTeams } from './repositories/get-teams.js';
+import {
+  searchTeams,
+
+} from './repositories/search-teams.js';
 import { upsertLeagues } from './repositories/upsert-leagues.js';
 import { upsertMatches } from './repositories/upsert-matches.js';
 import { upsertTeamStandings } from './repositories/upsert-team-standings.js';
@@ -47,6 +52,7 @@ export function createClient(params: TursoConfig) {
     getLeagues: () => getLeagues(connection),
     getCategories: () => getCategories(connection),
     getTeams: clientGetTeams,
+    searchTeams: (params?: SearchTeamsParams) => searchTeams(connection, params),
     getTeamById: (id: number) => getTeamById(connection, id),
     getMatches: (category: CategoryKey) => getMatches(connection, category),
 
