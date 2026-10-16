@@ -10,6 +10,7 @@ import {
   getTeamDisplayLabels,
 } from '@/domain/team/get-team-display-labels';
 import { buildCategoryPath } from '@/server/load-category-matches';
+import TeamCardSkeleton from './team-card-skeleton.vue';
 import TeamNextMatchCard from './team-next-match-card.vue';
 import TeamStandingCard from './team-standing-card.vue';
 
@@ -142,8 +143,8 @@ const isPending = computed(
         v-if="isPending"
         class="grid gap-4 lg:grid-cols-2"
       >
-        <div class="h-48 animate-pulse rounded-xl border border-border bg-surface" />
-        <div class="h-48 animate-pulse rounded-xl border border-border bg-surface" />
+        <TeamCardSkeleton />
+        <TeamCardSkeleton />
       </div>
 
       <div
