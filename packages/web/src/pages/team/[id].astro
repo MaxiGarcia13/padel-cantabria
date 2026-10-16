@@ -25,9 +25,9 @@ if (!team) {
 ---
 
 <AppLayout title={`${team.name} · Pádel Cantabria`}>
-  <div class="mx-auto flex w-full max-w-6xl flex-col gap-8 p-4">
-    <Header teamName={team.name} />
+  <Header teamName={team.name} />
 
+  <div class="mx-auto flex w-full max-w-6xl flex-col gap-8 p-4">
     <main class="flex flex-col gap-6">
       <h1 class="text-lg font-medium text-foreground">{team.name}</h1>
     </main>

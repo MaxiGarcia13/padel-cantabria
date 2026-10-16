@@ -16,6 +16,7 @@ const props = defineProps<{
   initialGenderValue?: string;
   initialPhaseValue?: string;
   initialCategoryValue?: string;
+  resumeLabel?: string;
   collapsible?: boolean;
 }>();
 
@@ -54,6 +55,10 @@ const errorMessage = computed(() => {
     ? error.value.message
     : 'Error inesperado';
 });
+
+const summaryLabel = computed(
+  () => props.resumeLabel || locationSummary.value,
+);
 
 const showFilters = computed(() => !isCollapsible.value || isExpanded.value);
 
@@ -94,8 +99,8 @@ function onSearch(): void {
     class="flex flex-col gap-4"
   >
     <SearchSummaryToggle
-      v-if="isCollapsible && locationSummary"
-      :summary="locationSummary"
+      v-if="isCollapsible && summaryLabel"
+      :summary="summaryLabel"
       :expanded="isExpanded"
       @toggle="toggleExpanded"
     />

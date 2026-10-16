@@ -1,4 +1,5 @@
 ---
+import BackButton from './back-button.vue';
 import { BrandIcon } from './icons';
 import { Searcher } from './search';
 
@@ -11,25 +12,44 @@ interface Props {
 }
 
 const { league, gender, phase, category, teamName } = Astro.props;
-const isCollapsible = Boolean(
+const isPage = Boolean(
   (league && gender && phase && category) || teamName,
 );
 ---
 
-<header class="w-full max-w-6xl rounded-xl border border-border bg-surface p-4" transition:persist="search-header">
-  <div class="flex flex-col gap-4">
-    <div class="flex items-center gap-2 border-b border-border pb-4">
-      <BrandIcon class="size-6 text-foreground" />
-      <p class="text-lg font-semibold text-foreground">Liga Cantabria de Pádel</p>
+<header class="border-b border-border">
+  <div
+    class:list={[
+      'mx-auto flex w-full max-w-6xl items-center gap-4 px-4 py-4',
+      isPage ? 'justify-between' : 'justify-start',
+    ]}
+  >
+    <div class="flex min-w-0 items-center gap-2">
+      {isPage && <BackButton client:load />}
+
+      <a
+        href="/"
+        class="flex min-w-0 items-center gap-2 text-foreground no-underline"
+      >
+        <BrandIcon class="size-6 shrink-0 text-foreground" />
+        <span class="truncate text-lg font-semibold">
+          Liga Cantabria de Pádel
+        </span>
+      </a>
     </div>
 
-    <Searcher
-      client:load
-      initialLeagueId={league}
-      initialGenderValue={gender}
-      initialPhaseValue={phase}
-      initialCategoryValue={category}
-      collapsible={isCollapsible}
-    />
+    {isPage && (
+      <div class="min-w-0 max-w-md flex-1">
+        <Searcher
+          client:load
+          initialLeagueId={league}
+          initialGenderValue={gender}
+          initialPhaseValue={phase}
+          initialCategoryValue={category}
+          resumeLabel={teamName}
+          collapsible
+        />
+      </div>
+    )}
   </div>
 </header>

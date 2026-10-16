@@ -1,10 +1,17 @@
 ---
 import Header from '@/components/header.astro';
+import { Searcher } from '@/components/search';
 import AppLayout from '../layouts/app-layout.astro';
 ---
 
 <AppLayout title="Calendario · Pádel Cantabria">
-  <div class="flex min-h-dvh items-center justify-center p-4">
+  <div class="flex min-h-dvh flex-col">
     <Header />
+
+    <div class="flex flex-1 items-center justify-center p-4">
+      <div class="w-full max-w-6xl">
+        <Searcher client:load />
+      </div>
+    </div>
   </div>
 </AppLayout>

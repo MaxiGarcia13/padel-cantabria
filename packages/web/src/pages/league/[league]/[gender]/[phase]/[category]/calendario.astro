@@ -2,7 +2,7 @@
 import MatchesByDate from '@/components/matches/matches-by-date.vue';
 import Header from '@/components/header.astro';
 import AppLayout from '@/layouts/app-layout.astro';
-import { buildCategoryPath, parseCategoryParams } from '@/server/load-category-matches';
+import { parseCategoryParams } from '@/server/load-category-matches';
 
 export const prerender = false;
 
@@ -13,21 +13,14 @@ if (!categoryKey) {
 }
 
 const { league, gender, phase, category } = Astro.params;
-const categoryHref = buildCategoryPath(categoryKey);
 ---
 
 <AppLayout title="Calendario · Pádel Cantabria">
+  <Header league={league} gender={gender} phase={phase} category={category} />
+
   <div class="mx-auto flex w-full max-w-6xl flex-col gap-8 p-4">
-    <Header league={league} gender={gender} phase={phase} category={category} />
-
     <main class="flex flex-col gap-6">
-      <div class="flex flex-col gap-2">
-        <a href={categoryHref} class="text-sm font-medium text-primary hover:underline">
-          Volver
-        </a>
-        <h1 class="text-lg font-medium text-foreground">Calendario</h1>
-      </div>
-
+      <h1 class="text-lg font-medium text-foreground">Calendario</h1>
       <MatchesByDate client:load category={categoryKey} />
     </main>
   </div>
