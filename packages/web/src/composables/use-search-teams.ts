@@ -17,7 +17,7 @@ async function fetchSearchTeams(query: string): Promise<Team[]> {
       error?: string;
     } | null;
 
-    throw new Error(payload?.error ?? 'No se pudieron cargar los equipos');
+    throw new Error(payload?.error ?? 'Failed to load teams');
   }
 
   return response.json() as Promise<Team[]>;

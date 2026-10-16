@@ -9,7 +9,7 @@ async function fetchLeagues(): Promise<League[]> {
       error?: string;
     } | null;
 
-    throw new Error(payload?.error ?? 'No se pudieron cargar las ligas');
+    throw new Error(payload?.error ?? 'Failed to load leagues');
   }
 
   return response.json() as Promise<League[]>;

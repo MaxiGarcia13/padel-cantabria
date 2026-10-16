@@ -1,0 +1,34 @@
+---
+description: English for code; Spanish only for UI copy
+alwaysApply: true
+---
+
+# Language conventions
+
+Write **English** for everything in the codebase except user-visible UI copy.
+
+**English** (always):
+- File and folder names
+- Functions, variables, constants, types
+- Comments and docs in code
+- Thrown errors, logs, and API error payloads
+
+**Spanish** (only):
+- Labels, placeholders, buttons, empty states, toasts, and other text rendered to the user
+
+```typescript
+// ❌ BAD — Spanish in non-UI layers
+throw new Error('No se pudieron cargar las ligas');
+return Response.json({ error: 'Parámetros inválidos' }, { status: 400 });
+
+// ✅ GOOD — English in code; Spanish at the UI boundary
+throw new Error('Failed to load leagues');
+return Response.json({ error: 'Invalid parameters' }, { status: 400 });
+
+// In a Vue template / UI computed:
+const errorMessage = computed(() =>
+  isError.value ? 'No se pudieron cargar las ligas' : null,
+);
+```
+
+Do not pipe English technical messages straight into the UI. Map failures to Spanish copy in the component (or a UI-only helper).

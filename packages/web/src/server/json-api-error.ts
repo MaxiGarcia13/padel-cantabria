@@ -1,7 +1,7 @@
 const API_ERROR_MESSAGES: Record<number, string> = {
-  400: 'Parámetros inválidos',
-  404: 'No encontrado',
-  500: 'Error interno del servidor',
+  400: 'Invalid parameters',
+  404: 'Not found',
+  500: 'Internal server error',
 };
 
 export function jsonApiError(status: number, error?: unknown): Response {
@@ -9,7 +9,7 @@ export function jsonApiError(status: number, error?: unknown): Response {
     console.error(error);
   }
 
-  const message = API_ERROR_MESSAGES[status] ?? 'Error inesperado';
+  const message = API_ERROR_MESSAGES[status] ?? 'Unexpected error';
 
   return Response.json({ error: message }, { status });
 }

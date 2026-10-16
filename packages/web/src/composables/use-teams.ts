@@ -19,7 +19,7 @@ async function fetchTeams(
       error?: string;
     } | null;
 
-    throw new Error(payload?.error ?? 'No se pudieron cargar los equipos');
+    throw new Error(payload?.error ?? 'Failed to load teams');
   }
 
   return response.json() as Promise<TeamWithStandings[]>;

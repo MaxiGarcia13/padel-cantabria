@@ -17,7 +17,7 @@ async function fetchMatches(category: CategoryKey): Promise<Match[]> {
       error?: string;
     } | null;
 
-    throw new Error(payload?.error ?? 'No se pudieron cargar los partidos');
+    throw new Error(payload?.error ?? 'Failed to load matches');
   }
 
   return response.json() as Promise<Match[]>;

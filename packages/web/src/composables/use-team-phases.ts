@@ -10,7 +10,7 @@ async function fetchTeamPhases(teamId: number): Promise<string[]> {
       error?: string;
     } | null;
 
-    throw new Error(payload?.error ?? 'No se pudieron cargar las fases');
+    throw new Error(payload?.error ?? 'Failed to load phases');
   }
 
   const body = (await response.json()) as { phases: string[] };

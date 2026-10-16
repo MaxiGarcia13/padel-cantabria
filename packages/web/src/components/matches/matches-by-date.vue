@@ -13,7 +13,7 @@ const props = defineProps<{
 
 const category = toRef(props, 'category');
 const { data: leagues } = useLeagues();
-const { data: matches, isPending, isError, error } = useMatches(category);
+const { data: matches, isPending, isError } = useMatches(category);
 
 const season = computed(
   () =>
@@ -32,15 +32,9 @@ const groups = computed(() => {
     : [{ date: 'Partidos', matches: matches.value }];
 });
 
-const errorMessage = computed(() => {
-  if (!isError.value) {
-    return null;
-  }
-
-  return error.value instanceof Error
-    ? error.value.message
-    : 'Error inesperado';
-});
+const errorMessage = computed(() =>
+  isError.value ? 'No se pudieron cargar los partidos' : null,
+);
 </script>
 
 <template>

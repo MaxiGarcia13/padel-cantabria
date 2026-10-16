@@ -27,7 +27,7 @@ const emit = defineEmits<{
   close: [];
 }>();
 
-const { data: leagues, isPending, isError, error } = useLeagues();
+const { data: leagues, isPending, isError } = useLeagues();
 const { search, searchTeam } = useSearchNavigation();
 
 const teamQuery = ref('');
@@ -59,15 +59,9 @@ const {
   categoryValue: props.initialCategoryValue,
 });
 
-const errorMessage = computed(() => {
-  if (!isError.value) {
-    return null;
-  }
-
-  return error.value instanceof Error
-    ? error.value.message
-    : 'Error inesperado';
-});
+const errorMessage = computed(() =>
+  isError.value ? 'No se pudieron cargar las ligas' : null,
+);
 
 watch(teamQuery, (value) => {
   if (selectedTeam.value && value !== selectedTeam.value.name) {

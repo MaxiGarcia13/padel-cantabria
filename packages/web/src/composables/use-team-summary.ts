@@ -15,7 +15,7 @@ async function fetchTeamSummary(
       error?: string;
     } | null;
 
-    throw new Error(payload?.error ?? 'No se pudo cargar el resumen del equipo');
+    throw new Error(payload?.error ?? 'Failed to load team summary');
   }
 
   return response.json() as Promise<TeamSummaryResponse>;

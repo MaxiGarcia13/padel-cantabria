@@ -12,17 +12,11 @@ const props = defineProps<{
 }>();
 
 const category = toRef(props, 'category');
-const { data: teams, isPending, isError, error } = useTeams(category);
+const { data: teams, isPending, isError } = useTeams(category);
 
-const errorMessage = computed(() => {
-  if (!isError.value) {
-    return null;
-  }
-
-  return error.value instanceof Error
-    ? error.value.message
-    : 'Error inesperado';
-});
+const errorMessage = computed(() =>
+  isError.value ? 'No se pudieron cargar los equipos' : null,
+);
 </script>
 
 <template>
