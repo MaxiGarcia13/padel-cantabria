@@ -7,3 +7,4 @@ export type {
   Phase,
   SelectOption,
 } from './types/league.js';
+export type { Match } from './types/match.js';
