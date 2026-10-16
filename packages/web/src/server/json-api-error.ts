@@ -1,5 +1,6 @@
 const API_ERROR_MESSAGES: Record<number, string> = {
   400: 'Parámetros inválidos',
+  404: 'No encontrado',
   500: 'Error interno del servidor',
 };
 
