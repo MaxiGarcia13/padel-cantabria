@@ -21,10 +21,10 @@ const isPlain = computed(() => props.variant === 'plain');
 
 const dialogClassName = computed(() =>
   [
-    'm-auto box-border max-h-[90dvh] w-[calc(100%-2rem)] max-w-3xl overflow-y-auto text-foreground backdrop:bg-background/80 backdrop:backdrop-blur-sm',
+    'm-auto box-border max-h-[90dvh] w-[calc(100%-2rem)] max-w-3xl text-foreground backdrop:bg-background/80 backdrop:backdrop-blur-sm',
     isPlain.value
-      ? 'border-0 bg-transparent p-0 shadow-none'
-      : 'rounded-xl border border-border bg-surface p-6 shadow-lg',
+      ? 'overflow-visible border-0 bg-transparent p-0 shadow-none'
+      : 'overflow-y-auto rounded-xl border border-border bg-surface p-6 shadow-lg',
   ].join(' '),
 );
 

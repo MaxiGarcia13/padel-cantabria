@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import AutocompleteOption from '@/components/autocomplete-option.vue';
-
-export interface AutocompleteItem {
-  value: string;
-  label: string;
-  description?: string;
-}
+import type { AutocompleteItem } from './types';
+import { computed, ref, useSlots, watch } from 'vue';
+import { useFloatingAnchor } from '@/composables/use-floating-anchor';
+import AutocompleteListbox from './autocomplete-listbox.vue';
+import AutocompleteOption from './autocomplete-option.vue';
 
 const props = defineProps<{
   id: string;
@@ -22,9 +19,28 @@ const emit = defineEmits<{
   'select': [item: AutocompleteItem];
 }>();
 
+const slots = useSlots();
 const isOpen = ref(false);
 const activeIndex = ref(-1);
+const inputRef = ref<HTMLInputElement | null>(null);
 const listboxId = `${props.id}-listbox`;
+
+const { style: floatingStyle, teleportTo, updatePosition } = useFloatingAnchor(
+  inputRef,
+  isOpen,
+);
+
+const showResults = computed(() => isOpen.value && props.items.length > 0);
+const showEmpty = computed(
+  () => isOpen.value && props.items.length === 0 && Boolean(slots.empty),
+);
+const showFloating = computed(() => showResults.value || showEmpty.value);
+
+watch(showFloating, (visible) => {
+  if (visible) {
+    updatePosition();
+  }
+});
 
 function onInput(event: Event): void {
   const value = (event.target as HTMLInputElement).value;
@@ -110,6 +126,7 @@ defineExpose({ close });
     <div class="relative">
       <input
         :id="id"
+        ref="inputRef"
         type="text"
         role="combobox"
         :aria-expanded="isOpen"
@@ -126,26 +143,35 @@ defineExpose({ close });
         @blur="onBlur"
       >
 
-      <ul
-        v-show="isOpen && items.length > 0"
-        :id="listboxId"
-        role="listbox"
-        class="absolute z-10 mt-2 max-h-60 w-full overflow-auto rounded-xl border border-border bg-surface py-2"
+      <Teleport
+        defer
+        :to="teleportTo"
       >
-        <AutocompleteOption
-          v-for="(item, index) in items"
-          :key="item.value"
-          :label="item.label"
-          :description="item.description"
-          :selected="index === activeIndex"
-          @select="selectItem(item)"
-        />
-      </ul>
+        <div
+          v-show="showFloating"
+          class="z-50"
+          :style="floatingStyle"
+        >
+          <AutocompleteListbox
+            v-if="showResults"
+            :id="listboxId"
+          >
+            <AutocompleteOption
+              v-for="(item, index) in items"
+              :key="item.value"
+              :label="item.label"
+              :description="item.description"
+              :selected="index === activeIndex"
+              @select="selectItem(item)"
+            />
+          </AutocompleteListbox>
 
-      <slot
-        v-if="isOpen && items.length === 0"
-        name="empty"
-      />
+          <slot
+            v-else
+            name="empty"
+          />
+        </div>
+      </Teleport>
     </div>
   </div>
 </template>
