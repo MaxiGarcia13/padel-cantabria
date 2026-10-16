@@ -20,7 +20,7 @@ const { league, gender, phase, category } = Astro.params;
   <Header league={league} gender={gender} phase={phase} category={category} />
 
   <div class="mx-auto flex w-full max-w-6xl flex-col gap-4 p-4" transition:animate="fade">
-    <BackButton client:load class="max-w-[100px]" />
+    <BackButton client:load />
     <main class="flex flex-col gap-6">
       <h1 class="text-lg font-medium text-foreground">Calendario</h1>
       <MatchesByDate client:load category={categoryKey} />
