@@ -17,38 +17,53 @@ CREATE TABLE IF NOT EXISTS genders (
 
 CREATE TABLE IF NOT EXISTS phases (
   league_id INTEGER NOT NULL,
-  gender_value TEXT NOT NULL,
+  gender TEXT NOT NULL,
   value TEXT NOT NULL,
   label TEXT NOT NULL,
-  PRIMARY KEY (league_id, gender_value, value),
-  FOREIGN KEY (league_id, gender_value) REFERENCES genders (league_id, value) ON DELETE CASCADE
+  PRIMARY KEY (league_id, gender, value),
+  FOREIGN KEY (league_id, gender) REFERENCES genders (league_id, value) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS categories (
   league_id INTEGER NOT NULL,
-  gender_value TEXT NOT NULL,
-  phase_value TEXT NOT NULL,
+  gender TEXT NOT NULL,
+  phase TEXT NOT NULL,
   value TEXT NOT NULL,
   label TEXT NOT NULL,
-  PRIMARY KEY (league_id, gender_value, phase_value, value),
-  FOREIGN KEY (league_id, gender_value, phase_value) REFERENCES phases (league_id, gender_value, value) ON DELETE CASCADE
+  PRIMARY KEY (league_id, gender, phase, value),
+  FOREIGN KEY (league_id, gender, phase) REFERENCES phases (league_id, gender, value) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS teams (
+  id INTEGER PRIMARY KEY,
+  league_id INTEGER NOT NULL,
+  gender TEXT NOT NULL,
+  phase TEXT NOT NULL,
+  category TEXT NOT NULL,
+  name TEXT NOT NULL,
+  confirmed INTEGER NOT NULL DEFAULT 0,
+  updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  FOREIGN KEY (league_id, gender, phase, category)
+    REFERENCES categories (league_id, gender, phase, value)
+    ON DELETE CASCADE,
+  UNIQUE (league_id, gender, phase, category, name)
 );
 
 CREATE TABLE IF NOT EXISTS matches (
   league_id INTEGER NOT NULL,
-  gender_value TEXT NOT NULL,
-  phase_value TEXT NOT NULL,
-  category_value TEXT NOT NULL,
+  gender TEXT NOT NULL,
+  phase TEXT NOT NULL,
+  category TEXT NOT NULL,
   id INTEGER NOT NULL,
-  home_team TEXT NOT NULL,
-  away_team TEXT NOT NULL,
+  home_team_id INTEGER NOT NULL REFERENCES teams (id),
+  away_team_id INTEGER NOT NULL REFERENCES teams (id),
   date TEXT NOT NULL,
   status TEXT,
   location TEXT,
   schedule TEXT,
   updated_at TEXT NOT NULL DEFAULT (datetime('now')),
-  PRIMARY KEY (league_id, gender_value, phase_value, category_value, id),
-  FOREIGN KEY (league_id, gender_value, phase_value, category_value)
-    REFERENCES categories (league_id, gender_value, phase_value, value)
+  PRIMARY KEY (league_id, gender, phase, category, id),
+  FOREIGN KEY (league_id, gender, phase, category)
+    REFERENCES categories (league_id, gender, phase, value)
     ON DELETE CASCADE
 );
