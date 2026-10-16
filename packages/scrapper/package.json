@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf node_modules dist",
-    "scrape:leagues": "tsx --env-file=../../.env src/scripts/league/index.ts"
+    "scrape:leagues": "tsx --env-file=../../.env src/scripts/league/index.ts",
+    "scrape:calendar": "tsx --env-file=../../.env src/scripts/calendar/index.ts"
   },
   "dependencies": {
     "@padel-cantabria/database": "workspace:*",

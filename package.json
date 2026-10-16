@@ -15,7 +15,8 @@
     "phoenix": "pnpm clean && pnpm install",
     "dev": "pnpm --filter=@padel-cantabria/web dev",
 
-    "scrape:leagues": "pnpm --filter @padel-cantabria/scrapper scrape:league"
+    "scrape:leagues": "pnpm --filter @padel-cantabria/scrapper scrape:leagues",
+    "scrape:calendar": "pnpm --filter @padel-cantabria/scrapper scrape:calendar"
   },
   "devEngines": {
     "packageManager": {
