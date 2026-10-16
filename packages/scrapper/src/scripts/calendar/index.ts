@@ -1,6 +1,7 @@
 import process from 'node:process';
 import { createDbClient } from '@/create-db-client.js';
 import { parseLeagueIds } from '../league/parse-league-ids.js';
+import { loadPreviousPositions } from './load-previous-positions.js';
 import { scrapeCalendars } from './scrape-calendars.js';
 
 async function main(): Promise<void> {
@@ -24,16 +25,22 @@ async function main(): Promise<void> {
     throw new Error('No teams found. Run scrape:teams first.');
   }
 
-  const { matches, teams: teamsWithStandings } = await scrapeCalendars(
+  const previousPositions = await loadPreviousPositions(
+    (category) => db.getTeams(category),
+    categories,
+  );
+
+  const { matches, standings } = await scrapeCalendars(
     categories,
     teams,
+    previousPositions,
   );
 
   await db.upsertMatches(matches);
-  await db.upsertTeams(teamsWithStandings);
+  await db.upsertTeamStandings(standings);
 
   console.warn(
-    `Saved ${matches.length} match(es) and ${teamsWithStandings.length} team standing(s) from ${categories.length} category(ies).`,
+    `Saved ${matches.length} match(es) and ${standings.length} team standing(s) from ${categories.length} category(ies).`,
   );
 }
 

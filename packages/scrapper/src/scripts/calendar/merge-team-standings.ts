@@ -1,12 +1,14 @@
-import type { CategoryKey, Team } from '@padel-cantabria/database';
+import type { CategoryKey, Team, TeamStanding } from '@padel-cantabria/database';
 import type { ScrapedTeamStanding } from './types.js';
 import { EMPTY_TEAM_STANDINGS } from '@padel-cantabria/database';
+import { teamStandingKey } from './team-standing-key.js';
 
 export function mergeTeamStandings(
   teams: Team[],
   category: CategoryKey,
   scrapedStandings: ScrapedTeamStanding[],
-): Team[] {
+  previousPositions: Map<string, number | null>,
+): TeamStanding[] {
   const standingsById = new Map(
     scrapedStandings.map((standing) => [standing.id, standing]),
   );
@@ -20,18 +22,27 @@ export function mergeTeamStandings(
     )
     .map((team) => {
       const scraped = standingsById.get(team.id);
-      const previous_position = team.position;
+      const previous_position
+        = previousPositions.get(teamStandingKey(category, team.id)) ?? null;
 
       if (!scraped) {
         return {
-          ...team,
+          league_id: category.league_id,
+          gender: category.gender,
+          phase: category.phase,
+          category: category.category,
+          team_id: team.id,
           ...EMPTY_TEAM_STANDINGS,
           previous_position,
         };
       }
 
       return {
-        ...team,
+        league_id: category.league_id,
+        gender: category.gender,
+        phase: category.phase,
+        category: category.category,
+        team_id: team.id,
         previous_position,
         position: scraped.position,
         confrontations_played: scraped.confrontations_played,

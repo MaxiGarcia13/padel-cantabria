@@ -1,7 +1,6 @@
 import type { CategoryKey, Team } from '@padel-cantabria/database';
 import type { Page } from 'puppeteer';
 import type { RawTeam } from './types.js';
-import { EMPTY_TEAM_STANDINGS } from '@padel-cantabria/database';
 
 export async function parseTeamsTable(
   page: Page,
@@ -53,7 +52,6 @@ export async function parseTeamsTable(
         gender: category.gender,
         category: category.category,
         name: raw.name,
-        ...EMPTY_TEAM_STANDINGS,
       },
     ];
   });

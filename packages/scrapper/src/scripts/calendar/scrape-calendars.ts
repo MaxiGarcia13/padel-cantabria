@@ -1,4 +1,9 @@
-import type { CategoryKey, MatchWrite, Team } from '@padel-cantabria/database';
+import type {
+  CategoryKey,
+  MatchWrite,
+  Team,
+  TeamStanding,
+} from '@padel-cantabria/database';
 import type { Page } from 'puppeteer';
 import type { ScrapedCalendarMatch, ScrapedTeamStanding } from './types.js';
 import puppeteer from 'puppeteer';
@@ -12,12 +17,13 @@ const CALENDAR_READY_TIMEOUT_MS = 30_000;
 
 export interface ScrapeCalendarsResult {
   matches: MatchWrite[];
-  teams: Team[];
+  standings: TeamStanding[];
 }
 
 export async function scrapeCalendars(
   categories: CategoryKey[],
   teams: Team[],
+  previousPositions: Map<string, number | null>,
 ): Promise<ScrapeCalendarsResult> {
   if (categories.length === 0) {
     throw new Error('No categories found');
@@ -32,7 +38,7 @@ export async function scrapeCalendars(
   try {
     const page = await browser.newPage();
     const scrapedMatches: ScrapedCalendarMatch[] = [];
-    const updatedTeams: Team[] = [];
+    const mergedStandings: TeamStanding[] = [];
 
     for (const category of categories) {
       const { matches, standings } = await scrapeCategoryCalendar(
@@ -41,12 +47,19 @@ export async function scrapeCalendars(
       );
 
       scrapedMatches.push(...matches);
-      updatedTeams.push(...mergeTeamStandings(teams, category, standings));
+      mergedStandings.push(
+        ...mergeTeamStandings(
+          teams,
+          category,
+          standings,
+          previousPositions,
+        ),
+      );
     }
 
     return {
       matches: resolveMatchTeams(scrapedMatches, teams),
-      teams: updatedTeams,
+      standings: mergedStandings,
     };
   } finally {
     await browser.close();
