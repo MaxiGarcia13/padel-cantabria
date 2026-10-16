@@ -1,9 +1,11 @@
-import type { CategoryKey, Team } from '@padel-cantabria/database';
+import type { CategoryKey, TeamWithStandings } from '@padel-cantabria/database';
 import type { MaybeRefOrGetter } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { computed, toValue } from 'vue';
 
-async function fetchTeams(category: CategoryKey): Promise<Team[]> {
+async function fetchTeams(
+  category: CategoryKey,
+): Promise<TeamWithStandings[]> {
   const params = new URLSearchParams({
     league: String(category.league_id),
     gender: category.gender,
@@ -20,7 +22,7 @@ async function fetchTeams(category: CategoryKey): Promise<Team[]> {
     throw new Error(payload?.error ?? 'No se pudieron cargar los equipos');
   }
 
-  return response.json() as Promise<Team[]>;
+  return response.json() as Promise<TeamWithStandings[]>;
 }
 
 export function useTeams(category: MaybeRefOrGetter<CategoryKey>) {

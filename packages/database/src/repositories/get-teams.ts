@@ -1,6 +1,7 @@
 import type { Connection } from '@tursodatabase/serverless';
 import type { CategoryKey } from '../types/match.js';
-import type { Team, TeamWithStandings } from '../types/team.js';
+import type { TeamWithStandings } from '../types/team-standings.js';
+import type { Team } from '../types/team.js';
 
 const TEAM_COLUMNS = `
   id,

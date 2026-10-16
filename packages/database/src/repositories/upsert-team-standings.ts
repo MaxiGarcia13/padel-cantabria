@@ -1,5 +1,5 @@
 import type { BatchStatement, Connection } from '@tursodatabase/serverless';
-import type { TeamStanding } from '../types/team.js';
+import type { TeamStanding } from '../types/team-standings.js';
 
 function buildUpsertStatement(standing: TeamStanding): BatchStatement {
   return {
