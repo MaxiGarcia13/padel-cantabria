@@ -9,6 +9,7 @@ import GenderSelect from './gender-select.vue';
 import LeagueSelect from './league-select.vue';
 import PhaseSelect from './phase-select.vue';
 import SearchSummaryToggle from './search-summary-toggle.vue';
+import SearcherSkeleton from './searcher-skeleton.vue';
 
 const props = defineProps<{
   initialLeagueId?: string;
@@ -71,12 +72,7 @@ function onSearch(): void {
 </script>
 
 <template>
-  <p
-    v-if="isPending"
-    class="text-sm text-muted"
-  >
-    Cargando ligas…
-  </p>
+  <SearcherSkeleton v-if="isPending" />
 
   <p
     v-else-if="errorMessage"

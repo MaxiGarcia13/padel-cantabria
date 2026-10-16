@@ -1,11 +1,9 @@
 ---
-import MatchesByDate from '@/components/matches/matches-by-date.astro';
+import MatchesByDate from '@/components/matches/matches-by-date.vue';
 import Header from '@/components/header.astro';
-import { groupMatchesByDate } from '@/domain/matches';
 import AppLayout from '@/layouts/app-layout.astro';
 import {
   buildCategoryPath,
-  loadCategoryMatches,
   parseCategoryParams,
 } from '@/server/load-category-matches';
 
@@ -18,10 +16,6 @@ if (!categoryKey) {
 }
 
 const { league, gender, phase, category } = Astro.params;
-const { matches, season } = await loadCategoryMatches(categoryKey);
-const groups = season
-  ? groupMatchesByDate(matches, season)
-  : [{ date: 'Partidos', matches }];
 const categoryHref = buildCategoryPath(categoryKey);
 ---
 
@@ -40,7 +34,7 @@ const categoryHref = buildCategoryPath(categoryKey);
         <h1 class="text-lg font-medium text-foreground">Calendario</h1>
       </div>
 
-      <MatchesByDate groups={groups} />
+      <MatchesByDate client:load category={categoryKey} />
     </main>
   </div>
 </AppLayout>

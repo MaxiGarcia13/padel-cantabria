@@ -1,11 +1,9 @@
 ---
-import ClosestMatches from '@/components/matches/closest-matches.astro';
+import ClosestMatches from '@/components/matches/closest-matches.vue';
 import Header from '@/components/header.astro';
-import { getClosestMatches } from '@/domain/matches';
 import AppLayout from '@/layouts/app-layout.astro';
 import {
   buildCategoryPath,
-  loadCategoryMatches,
   parseCategoryParams,
 } from '@/server/load-category-matches';
 
@@ -18,10 +16,6 @@ if (!categoryKey) {
 }
 
 const { league, gender, phase, category } = Astro.params;
-const { matches, season } = await loadCategoryMatches(categoryKey);
-const closestMatches = season
-  ? getClosestMatches(matches, season)
-  : matches.slice(0, 5);
 const calendarHref = `${buildCategoryPath(categoryKey)}/calendario`;
 ---
 
@@ -36,7 +30,11 @@ const calendarHref = `${buildCategoryPath(categoryKey)}/calendario`;
       </div>
       <div class="flex flex-col gap-4">
         <h2 class="text-lg font-medium text-foreground">Próximos partidos</h2>
-        <ClosestMatches matches={closestMatches} calendarHref={calendarHref} />
+        <ClosestMatches
+          client:load
+          category={categoryKey}
+          calendarHref={calendarHref}
+        />
       </div>
     </main>
   </div>

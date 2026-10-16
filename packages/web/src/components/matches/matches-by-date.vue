@@ -1,0 +1,90 @@
+<script setup lang="ts">
+import type { CategoryKey } from '@padel-cantabria/database';
+import { computed, toRef } from 'vue';
+import TableSkeleton from '@/components/table-skeleton.vue';
+import { useLeagues } from '@/composables/use-leagues';
+import { useMatches } from '@/composables/use-matches';
+import { groupMatchesByDate } from '@/domain/matches';
+import MatchRow from './match-row.vue';
+
+const props = defineProps<{
+  category: CategoryKey;
+}>();
+
+const category = toRef(props, 'category');
+const { data: leagues } = useLeagues();
+const { data: matches, isPending, isError, error } = useMatches(category);
+
+const season = computed(
+  () =>
+    leagues.value?.find(
+      (league) => league.league_id === props.category.league_id,
+    )?.schedule ?? null,
+);
+
+const groups = computed(() => {
+  if (!matches.value) {
+    return [];
+  }
+
+  return season.value
+    ? groupMatchesByDate(matches.value, season.value)
+    : [{ date: 'Partidos', matches: matches.value }];
+});
+
+const errorMessage = computed(() => {
+  if (!isError.value) {
+    return null;
+  }
+
+  return error.value instanceof Error
+    ? error.value.message
+    : 'Error inesperado';
+});
+</script>
+
+<template>
+  <TableSkeleton
+    v-if="isPending"
+    :rows="8"
+    :columns="3"
+  />
+
+  <p
+    v-else-if="errorMessage"
+    class="text-sm text-danger"
+    role="alert"
+  >
+    {{ errorMessage }}
+  </p>
+
+  <p
+    v-else-if="groups.length === 0"
+    class="text-sm text-muted"
+  >
+    No hay partidos disponibles.
+  </p>
+
+  <div
+    v-else
+    class="flex flex-col gap-8"
+  >
+    <section
+      v-for="group in groups"
+      :key="group.date"
+      class="flex flex-col gap-4"
+    >
+      <h2 class="text-lg font-medium text-foreground">
+        {{ group.date }}
+      </h2>
+      <ul class="flex flex-col gap-4">
+        <li
+          v-for="match in group.matches"
+          :key="match.id"
+        >
+          <MatchRow :match="match" />
+        </li>
+      </ul>
+    </section>
+  </div>
+</template>

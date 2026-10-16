@@ -1,7 +1,4 @@
-import type { CategoryKey, Match } from '@padel-cantabria/database';
-import type { SeasonRange } from '@/domain/matches';
-import { createClient } from '@padel-cantabria/database';
-import { TURSO_AUTH_TOKEN, TURSO_URL } from 'astro:env/server';
+import type { CategoryKey } from '@padel-cantabria/database';
 
 export function parseCategoryParams(params: {
   league?: string;
@@ -38,28 +35,4 @@ export function buildCategoryPath(category: CategoryKey): string {
   ]
     .map((segment) => encodeURIComponent(String(segment)))
     .join('/');
-}
-
-export async function loadCategoryMatches(category: CategoryKey): Promise<{
-  matches: Match[];
-  season: SeasonRange | null;
-}> {
-  const db = createClient({
-    url: TURSO_URL,
-    authToken: TURSO_AUTH_TOKEN,
-  });
-
-  const [matches, leagues] = await Promise.all([
-    db.getMatches(category),
-    db.getLeagues(),
-  ]);
-
-  const league = leagues.find(
-    (entry) => entry.league_id === category.league_id,
-  );
-
-  return {
-    matches,
-    season: league?.schedule ?? null,
-  };
 }
