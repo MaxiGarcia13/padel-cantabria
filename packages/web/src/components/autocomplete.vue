@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import AutocompleteOption from '@/components/autocomplete-option.vue';
 
 export interface AutocompleteItem {
   value: string;
@@ -131,25 +132,14 @@ defineExpose({ close });
         role="listbox"
         class="absolute z-10 mt-2 max-h-60 w-full overflow-auto rounded-xl border border-border bg-surface py-2"
       >
-        <li
+        <AutocompleteOption
           v-for="(item, index) in items"
           :key="item.value"
-          role="option"
-          class="cursor-pointer px-4 py-2 text-sm text-foreground"
-          :class="{ 'bg-border/60': index === activeIndex }"
-          :aria-selected="index === activeIndex"
-          @mousedown.prevent="selectItem(item)"
-        >
-          <span class="flex flex-col gap-2">
-            <span class="truncate text-foreground">{{ item.label }}</span>
-            <span
-              v-if="item.description"
-              class="truncate text-xs text-muted"
-            >
-              {{ item.description }}
-            </span>
-          </span>
-        </li>
+          :label="item.label"
+          :description="item.description"
+          :selected="index === activeIndex"
+          @select="selectItem(item)"
+        />
       </ul>
 
       <slot
