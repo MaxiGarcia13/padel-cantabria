@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { navigate } from 'astro:transitions/client';
 import Button from '@/components/button.vue';
 import ChevronLeftIcon from '@/components/icons/chevron-left-icon.vue';
 
@@ -8,7 +9,7 @@ function goBack(): void {
     return;
   }
 
-  window.location.assign('/');
+  void navigate('/');
 }
 </script>
 

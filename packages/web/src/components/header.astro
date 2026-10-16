@@ -22,12 +22,20 @@ const isPage = Boolean((league && gender && phase && category) || teamName);
       isPage ? 'justify-between' : 'justify-start',
     ]}
   >
-    <div class="flex min-w-0 items-center gap-2">
+    <div
+      class="flex min-w-0 items-center gap-2"
+      transition:persist="site-brand"
+    >
       {isPage && <BackButton client:load />}
 
-      <a href="/" class="flex min-w-0 items-center gap-2 text-foreground no-underline">
+      <a
+        href="/"
+        class="flex min-w-0 items-center gap-2 text-foreground no-underline"
+      >
         <BrandIcon class="size-6 shrink-0 text-foreground" />
-        <span class="truncate text-lg font-semibold">Liga Cantabria de Pádel</span>
+        <span class="truncate text-lg font-semibold">
+          Liga Cantabria de Pádel
+        </span>
       </a>
     </div>
 
@@ -40,7 +48,6 @@ const isPage = Boolean((league && gender && phase && category) || teamName);
           initialGenderValue={gender}
           initialPhaseValue={phase}
           initialCategoryValue={category}
-          resumeLabel={teamName}
         />
       </div>
     )}

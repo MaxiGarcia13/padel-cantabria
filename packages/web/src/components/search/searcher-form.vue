@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Team } from '@padel-cantabria/database';
-import { computed, ref, watch } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import Button from '@/components/button.vue';
 import ChevronDownIcon from '@/components/icons/chevron-down-icon.vue';
 import { useLeagues } from '@/composables/use-leagues';
@@ -18,7 +18,6 @@ const props = defineProps<{
   initialGenderValue?: string;
   initialPhaseValue?: string;
   initialCategoryValue?: string;
-  initialFiltersExpanded?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -30,7 +29,13 @@ const { search, searchTeam } = useSearchNavigation();
 
 const teamQuery = ref('');
 const selectedTeam = ref<Team | null>(null);
-const filtersExpanded = ref(props.initialFiltersExpanded ?? false);
+const hasInitialFilters = Boolean(
+  props.initialLeagueId
+  && props.initialGenderValue
+  && props.initialPhaseValue
+  && props.initialCategoryValue,
+);
+const filtersExpanded = ref(hasInitialFilters);
 
 const {
   leagueId,
@@ -77,27 +82,39 @@ function toggleFilters(): void {
   filtersExpanded.value = !filtersExpanded.value;
 }
 
-function onSearchTeam(): void {
+function resetTeamSearch(): void {
+  teamQuery.value = '';
+  selectedTeam.value = null;
+}
+
+async function onSearchTeam(): Promise<void> {
   if (!selectedTeam.value) {
     return;
   }
 
-  searchTeam(selectedTeam.value.id);
+  const teamId = selectedTeam.value.id;
+
+  resetTeamSearch();
   emit('navigated');
+  await nextTick();
+  searchTeam(teamId);
 }
 
-function onSearchFilters(): void {
+async function onSearchFilters(): Promise<void> {
   if (!canSearch.value) {
     return;
   }
 
-  search({
+  const filters = {
     leagueId: leagueId.value,
     genderValue: genderValue.value,
     phaseValue: phaseValue.value,
     categoryValue: categoryValue.value,
-  });
+  };
+
   emit('navigated');
+  await nextTick();
+  search(filters);
 }
 </script>
 

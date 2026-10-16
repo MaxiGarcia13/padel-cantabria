@@ -3,8 +3,6 @@ import { computed, useTemplateRef } from 'vue';
 import Button from '@/components/button.vue';
 import Dialog from '@/components/dialog.vue';
 import ZoomIcon from '@/components/icons/zoom-icon.vue';
-import { useLeagues } from '@/composables/use-leagues';
-import { useSearchFilters } from '@/composables/use-search-filters';
 import SearcherForm from './searcher-form.vue';
 
 const props = withDefaults(
@@ -14,7 +12,6 @@ const props = withDefaults(
     initialGenderValue?: string;
     initialPhaseValue?: string;
     initialCategoryValue?: string;
-    resumeLabel?: string;
   }>(),
   {
     variant: 'hero',
@@ -25,18 +22,6 @@ const dialogRef = useTemplateRef<{
   showModal: () => void;
   close: () => void;
 }>('dialog');
-
-const { data: leagues } = useLeagues();
-const { locationSummary } = useSearchFilters(leagues, {
-  leagueId: props.initialLeagueId,
-  genderValue: props.initialGenderValue,
-  phaseValue: props.initialPhaseValue,
-  categoryValue: props.initialCategoryValue,
-});
-
-const summaryLabel = computed(
-  () => props.resumeLabel || locationSummary.value || 'Buscar',
-);
 
 const isHeader = computed(() => props.variant === 'header');
 
@@ -66,8 +51,8 @@ function closeDialog(): void {
       class="w-full min-w-0 justify-between gap-2 text-left"
       @click="openDialog"
     >
-      <span class="min-w-0 flex-1 truncate text-foreground">
-        {{ summaryLabel }}
+      <span class="min-w-0 flex-1 truncate text-muted">
+        Buscar
       </span>
       <ZoomIcon class="size-5 shrink-0 text-muted" />
     </Button>

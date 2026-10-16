@@ -8,7 +8,10 @@ import AppLayout from '../layouts/app-layout.astro';
   <div class="flex min-h-dvh flex-col">
     <Header />
 
-    <div class="flex flex-1 items-center justify-center p-4">
+    <div
+      class="flex flex-1 items-center justify-center p-4"
+      transition:animate="fade"
+    >
       <div class="w-full max-w-6xl">
         <Searcher client:load variant="hero" />
       </div>
