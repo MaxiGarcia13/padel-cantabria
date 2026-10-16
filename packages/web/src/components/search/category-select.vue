@@ -3,12 +3,12 @@ import type { SelectOption } from '@padel-cantabria/database';
 import { computed } from 'vue';
 import Select from '@/components/select.vue';
 
-const model = defineModel<string>({ required: true });
-
 const props = defineProps<{
   categories: SelectOption[];
   disabled?: boolean;
 }>();
+
+const model = defineModel<string>({ required: true });
 
 const options = computed(() => props.categories);
 </script>

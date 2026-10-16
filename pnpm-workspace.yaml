@@ -8,7 +8,7 @@ trustPolicyExclude:
 shellEmulator: true
 
 packages:
-  - "packages/*"
+  - 'packages/*'
 
 allowBuilds:
   esbuild: true
