@@ -19,6 +19,6 @@ export function useLeagues() {
   return useQuery({
     queryKey: ['leagues'],
     queryFn: fetchLeagues,
-    staleTime: 1000 * 60 * 60 * 24,
+    staleTime: 24 * 60 * 60 * 1000,
   });
 }

@@ -24,6 +24,6 @@ export function useTeamPhases(teamId: MaybeRefOrGetter<number>) {
   return useQuery({
     queryKey,
     queryFn: () => fetchTeamPhases(toValue(teamId)),
-    staleTime: 1000 * 60 * 60,
+    staleTime: 24 * 60 * 60 * 1000,
   });
 }

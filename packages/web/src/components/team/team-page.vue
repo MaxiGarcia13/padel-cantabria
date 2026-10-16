@@ -113,15 +113,16 @@ const isPending = computed(
       </dl>
     </header>
 
-    <Select
-      id="team-phase"
-      class="max-w-xs"
-      :model-value="selectedPhase"
-      label="Fase"
-      :options="phaseOptions"
-      :disabled="phaseOptions.length === 0"
-      @update:model-value="selectedPhase = $event"
-    />
+    <div class="w-full max-w-xs">
+      <Select
+        id="team-phase"
+        :model-value="selectedPhase"
+        label="Fase"
+        :options="phaseOptions"
+        :disabled="phaseOptions.length === 0"
+        @update:model-value="selectedPhase = $event"
+      />
+    </div>
 
     <p
       v-if="errorMessage"
@@ -141,7 +142,7 @@ const isPending = computed(
     <template v-else-if="selectedPhase">
       <div
         v-if="isPending"
-        class="grid gap-4 lg:grid-cols-2"
+        class="grid grid-cols-1 gap-4 sm:grid-cols-2"
       >
         <TeamCardSkeleton />
         <TeamCardSkeleton />
@@ -149,7 +150,7 @@ const isPending = computed(
 
       <div
         v-else
-        class="grid gap-4 lg:grid-cols-2"
+        class="grid grid-cols-1 gap-4 sm:grid-cols-2"
       >
         <TeamStandingCard
           :standing="summary?.standing ?? null"
