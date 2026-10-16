@@ -1,17 +1,17 @@
 import type { BatchStatement, Connection } from '@tursodatabase/serverless';
-import type { Match } from '../types/match.js';
+import type { MatchWrite } from '../types/match.js';
 
-function buildUpsertStatement(match: Match): BatchStatement {
+function buildUpsertStatement(match: MatchWrite): BatchStatement {
   return {
     sql: `
       INSERT INTO matches (
         league_id,
-        gender_value,
-        phase_value,
-        category_value,
+        gender,
+        phase,
+        category,
         id,
-        home_team,
-        away_team,
+        home_team_id,
+        away_team_id,
         date,
         status,
         location,
@@ -19,10 +19,10 @@ function buildUpsertStatement(match: Match): BatchStatement {
         updated_at
       )
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
-      ON CONFLICT(league_id, gender_value, phase_value, category_value, id)
+      ON CONFLICT(league_id, gender, phase, category, id)
       DO UPDATE SET
-        home_team = excluded.home_team,
-        away_team = excluded.away_team,
+        home_team_id = excluded.home_team_id,
+        away_team_id = excluded.away_team_id,
         date = excluded.date,
         status = excluded.status,
         location = excluded.location,
@@ -31,12 +31,12 @@ function buildUpsertStatement(match: Match): BatchStatement {
     `,
     args: [
       match.league_id,
-      match.gender_value,
-      match.phase_value,
-      match.category_value,
+      match.gender,
+      match.phase,
+      match.category,
       match.id,
-      match.home_team,
-      match.away_team,
+      match.home_team_id,
+      match.away_team_id,
       match.date,
       match.status,
       match.location,
@@ -46,7 +46,7 @@ function buildUpsertStatement(match: Match): BatchStatement {
 }
 
 export async function upsertMatches(
-  matches: Match[],
+  matches: MatchWrite[],
   connection: Connection,
 ): Promise<void> {
   if (matches.length === 0) {

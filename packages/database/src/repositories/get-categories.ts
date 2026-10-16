@@ -9,11 +9,11 @@ export async function getCategories(
       `
         SELECT
           league_id,
-          gender_value,
-          phase_value,
-          value AS category_value
+          gender,
+          phase,
+          value AS category
         FROM categories
-        ORDER BY league_id, gender_value, phase_value, value
+        ORDER BY league_id, gender, phase, value
       `,
     ],
     'read',

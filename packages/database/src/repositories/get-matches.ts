@@ -10,29 +10,33 @@ export async function getMatches(
       {
         sql: `
           SELECT
-            league_id,
-            gender_value,
-            phase_value,
-            category_value,
-            id,
-            home_team,
-            away_team,
-            date,
-            status,
-            location,
-            schedule
+            matches.league_id,
+            matches.gender,
+            matches.phase,
+            matches.category,
+            matches.id,
+            matches.home_team_id,
+            matches.away_team_id,
+            home_team.name AS home_team,
+            away_team.name AS away_team,
+            matches.date,
+            matches.status,
+            matches.location,
+            matches.schedule
           FROM matches
-          WHERE league_id = ?
-            AND gender_value = ?
-            AND phase_value = ?
-            AND category_value = ?
-          ORDER BY id
+          INNER JOIN teams AS home_team ON home_team.id = matches.home_team_id
+          INNER JOIN teams AS away_team ON away_team.id = matches.away_team_id
+          WHERE matches.league_id = ?
+            AND matches.gender = ?
+            AND matches.phase = ?
+            AND matches.category = ?
+          ORDER BY matches.id
         `,
         args: [
           category.league_id,
-          category.gender_value,
-          category.phase_value,
-          category.category_value,
+          category.gender,
+          category.phase,
+          category.category,
         ],
       },
     ],

@@ -35,7 +35,7 @@ function buildUpsertStatements(league: League): BatchStatement[] {
     for (const phase of gender.phases) {
       statements.push({
         sql: `
-          INSERT INTO phases (league_id, gender_value, value, label)
+          INSERT INTO phases (league_id, gender, value, label)
           VALUES (?, ?, ?, ?)
         `,
         args: [league.league_id, gender.value, phase.value, phase.label],
@@ -46,8 +46,8 @@ function buildUpsertStatements(league: League): BatchStatement[] {
           sql: `
             INSERT INTO categories (
               league_id,
-              gender_value,
-              phase_value,
+              gender,
+              phase,
               value,
               label
             )

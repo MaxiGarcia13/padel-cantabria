@@ -14,8 +14,8 @@ export async function getLeagues(connection: Connection): Promise<League[]> {
       [
         'SELECT id, name, start_date, end_date FROM leagues ORDER BY start_date DESC',
         'SELECT league_id, value, label FROM genders',
-        'SELECT league_id, gender_value, value, label FROM phases',
-        'SELECT league_id, gender_value, phase_value, value, label FROM categories',
+        'SELECT league_id, gender, value, label FROM phases',
+        'SELECT league_id, gender, phase, value, label FROM categories',
       ],
       'read',
     );

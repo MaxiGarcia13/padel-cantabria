@@ -13,16 +13,16 @@ export interface LeagueRecords {
   categories: CategoryRecord[];
 }
 
-function categoryKey(
+function categoriesByPhaseKey(
   leagueId: number,
-  genderValue: string,
-  phaseValue: string,
+  gender: string,
+  phase: string,
 ): string {
-  return `${leagueId}:${genderValue}:${phaseValue}`;
+  return `${leagueId}:${gender}:${phase}`;
 }
 
-function phaseKey(leagueId: number, genderValue: string): string {
-  return `${leagueId}:${genderValue}`;
+function phasesByGenderKey(leagueId: number, gender: string): string {
+  return `${leagueId}:${gender}`;
 }
 
 function groupCategoriesByPhase(
@@ -31,7 +31,7 @@ function groupCategoriesByPhase(
   const categoriesByPhase = new Map<string, SelectOption[]>();
 
   for (const row of categories) {
-    const key = categoryKey(row.league_id, row.gender_value, row.phase_value);
+    const key = categoriesByPhaseKey(row.league_id, row.gender, row.phase);
     const categoryOptions = categoriesByPhase.get(key) ?? [];
     categoryOptions.push({ value: row.value, label: row.label });
     categoriesByPhase.set(key, categoryOptions);
@@ -47,14 +47,14 @@ function groupPhasesByGender(
   const phasesByGender = new Map<string, Phase[]>();
 
   for (const row of phases) {
-    const key = phaseKey(row.league_id, row.gender_value);
+    const key = phasesByGenderKey(row.league_id, row.gender);
     const phaseOptions = phasesByGender.get(key) ?? [];
     phaseOptions.push({
       value: row.value,
       label: row.label,
       categories:
         categoriesByPhase.get(
-          categoryKey(row.league_id, row.gender_value, row.value),
+          categoriesByPhaseKey(row.league_id, row.gender, row.value),
         ) ?? [],
     });
     phasesByGender.set(key, phaseOptions);
@@ -74,7 +74,7 @@ function groupGendersByLeague(
     genderOptions.push({
       value: row.value,
       label: row.label,
-      phases: phasesByGender.get(phaseKey(row.league_id, row.value)) ?? [],
+      phases: phasesByGender.get(phasesByGenderKey(row.league_id, row.value)) ?? [],
     });
     gendersByLeague.set(row.league_id, genderOptions);
   }
