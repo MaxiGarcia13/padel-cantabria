@@ -77,7 +77,7 @@ const errorMessage = computed(() =>
       :href="calendarHref"
       class="text-sm font-medium text-primary hover:underline"
     >
-      Ver calendario
+      Ver todos los partidos
     </a>
   </div>
 </template>
