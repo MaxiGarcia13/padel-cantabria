@@ -1,0 +1,25 @@
+---
+import type { Match } from '@padel-cantabria/database';
+
+interface Props {
+  match: Match;
+}
+
+const { match } = Astro.props;
+const metaParts = [match.date, match.location, match.schedule].filter(
+  (value): value is string => Boolean(value),
+);
+---
+
+<article class="rounded-xl border border-border bg-surface px-4 py-4">
+  <p class="text-sm font-medium text-foreground">
+    {match.home_team}
+    <span class="text-muted"> vs </span>
+    {match.away_team}
+  </p>
+  {
+    metaParts.length > 0 && (
+      <p class="mt-2 text-sm text-muted">{metaParts.join(' · ')}</p>
+    )
+  }
+</article>

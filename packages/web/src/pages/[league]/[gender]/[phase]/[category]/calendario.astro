@@ -1,0 +1,46 @@
+---
+import MatchesByDate from '@/components/matches/matches-by-date.astro';
+import Header from '@/components/header.astro';
+import { groupMatchesByDate } from '@/domain/matches';
+import AppLayout from '@/layouts/app-layout.astro';
+import {
+  buildCategoryPath,
+  loadCategoryMatches,
+  parseCategoryParams,
+} from '@/server/load-category-matches';
+
+export const prerender = false;
+
+const categoryKey = parseCategoryParams(Astro.params);
+
+if (!categoryKey) {
+  return Astro.redirect('/');
+}
+
+const { league, gender, phase, category } = Astro.params;
+const { matches, season } = await loadCategoryMatches(categoryKey);
+const groups = season
+  ? groupMatchesByDate(matches, season)
+  : [{ date: 'Partidos', matches }];
+const categoryHref = buildCategoryPath(categoryKey);
+---
+
+<AppLayout title="Calendario · Pádel Cantabria">
+  <div class="mx-auto flex w-full max-w-6xl flex-col gap-8 p-4">
+    <Header league={league} gender={gender} phase={phase} category={category} />
+
+    <main class="flex flex-col gap-6">
+      <div class="flex flex-col gap-2">
+        <a
+          href={categoryHref}
+          class="text-sm font-medium text-primary hover:underline"
+        >
+          Volver
+        </a>
+        <h1 class="text-lg font-medium text-foreground">Calendario</h1>
+      </div>
+
+      <MatchesByDate groups={groups} />
+    </main>
+  </div>
+</AppLayout>
