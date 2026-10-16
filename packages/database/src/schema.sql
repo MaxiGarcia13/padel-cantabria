@@ -39,13 +39,15 @@ CREATE TABLE IF NOT EXISTS matches (
   gender_value TEXT NOT NULL,
   phase_value TEXT NOT NULL,
   category_value TEXT NOT NULL,
-  partido_id INTEGER NOT NULL,
+  id INTEGER NOT NULL,
   home_team TEXT NOT NULL,
   away_team TEXT NOT NULL,
-  date_label TEXT NOT NULL,
+  date TEXT NOT NULL,
   status TEXT,
+  location TEXT,
+  schedule TEXT,
   updated_at TEXT NOT NULL DEFAULT (datetime('now')),
-  PRIMARY KEY (league_id, gender_value, phase_value, category_value, partido_id),
+  PRIMARY KEY (league_id, gender_value, phase_value, category_value, id),
   FOREIGN KEY (league_id, gender_value, phase_value, category_value)
     REFERENCES categories (league_id, gender_value, phase_value, value)
     ON DELETE CASCADE
