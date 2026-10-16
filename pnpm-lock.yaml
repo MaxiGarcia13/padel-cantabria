@@ -222,6 +222,9 @@ importers:
       '@astrojs/vue':
         specifier: ^7.0.3
         version: 7.0.3(@types/node@24.19.2)(astro@7.3.8(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))(esbuild@0.28.2)(jiti@2.7.0)(supports-color@7.2.0)(tsx@4.23.15)(vue@3.5.44(typescript@6.0.3))(yaml@2.9.1)
+      '@maxigarcia/js-utils':
+        specifier: ^1.22.1
+        version: 1.22.1
       '@padel-cantabria/database':
         specifier: workspace:*
         version: link:../database
@@ -1608,6 +1611,9 @@ packages:
 
   '@maxigarcia/eslint-config@1.14.1':
     resolution: {integrity: sha512-P1w/J50KuK0KXLrLEQ457aYtaJXYQPpsdA/C6tbYMe4+Ti4DA5eyDMOtr5Sq/cFfHiqg01Zgfyg3ugPsD4tGNg==}
+
+  '@maxigarcia/js-utils@1.22.1':
+    resolution: {integrity: sha512-EqCL0qLAEuhj7FVtwYOB//X1NFiBi3N0cBDtPbkpWkyUPjeh/hOAk92iOE2VDxGtW1mDM6C2Orqevmp7Pk1y8Q==}
 
   '@napi-rs/wasm-runtime@0.2.4':
     resolution: {integrity: sha512-9zESzOO5aDByvhIAsOy9TbpZ0Ur2AJbUI7UT73kcUTS2mxAMHOBaa1st/jAymNoCtvrit99kkzT1FZuXVcgfIQ==}
@@ -6338,6 +6344,8 @@ snapshots:
       - ts-declaration-location
       - typescript
       - vitest
+
+  '@maxigarcia/js-utils@1.22.1': {}
 
   '@napi-rs/wasm-runtime@0.2.4':
     dependencies:
