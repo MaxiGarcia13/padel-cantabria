@@ -9,7 +9,8 @@
   "types": "./src/index.ts",
   "scripts": {
     "clean": "rm -rf node_modules dist",
-    "migrate": "tsx --env-file=../../.env src/migrate.ts"
+    "migrate": "tsx --env-file=../../.env src/migrate.ts",
+    "reset": "tsx --env-file=../../.env src/reset.ts"
   },
   "dependencies": {
     "@tursodatabase/serverless": "^1.4.1"

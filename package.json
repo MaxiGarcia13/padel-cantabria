@@ -15,6 +15,9 @@
     "phoenix": "pnpm clean && pnpm install",
     "dev": "pnpm --filter=@padel-cantabria/web dev",
 
+    "db:migrate": "pnpm --filter @padel-cantabria/database migrate",
+    "db:reset": "pnpm --filter @padel-cantabria/database reset",
+
     "scrape:leagues": "pnpm --filter @padel-cantabria/scrapper scrape:leagues",
     "scrape:teams": "pnpm --filter @padel-cantabria/scrapper scrape:teams",
     "scrape:calendar": "pnpm --filter @padel-cantabria/scrapper scrape:calendar"
