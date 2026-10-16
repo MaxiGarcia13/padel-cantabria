@@ -22,3 +22,16 @@ body {
   color: var(--color-foreground);
   font-family: 'Segoe UI', system-ui, sans-serif;
 }
+
+a,
+button:not(:disabled),
+[role='button'],
+[role='option'],
+[role='combobox'],
+summary {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}

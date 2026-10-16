@@ -35,7 +35,7 @@ const sizeClassName: Record<NonNullable<typeof props.size>, string> = {
 
 const className = computed(() =>
   [
-    'inline-flex shrink-0 items-center justify-center rounded-xl transition-colors',
+    'inline-flex shrink-0 cursor-pointer items-center justify-center rounded-xl transition-colors',
     variantClassName[props.variant],
     sizeClassName[props.size],
     props.class,
