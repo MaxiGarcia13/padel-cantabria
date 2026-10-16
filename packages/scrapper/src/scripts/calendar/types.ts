@@ -1,4 +1,4 @@
-import type { CategoryKey } from '@padel-cantabria/database';
+import type { CategoryKey, TeamStandings } from '@padel-cantabria/database';
 
 export interface RawCalendarMatch {
   id: number | null;
@@ -19,3 +19,15 @@ export interface ScrapedCalendarMatch extends CategoryKey {
   location: string | null;
   schedule: string | null;
 }
+
+export type RawStandingRow = {
+  id: number | null;
+  name: string | null;
+} & {
+  [K in keyof Omit<TeamStandings, 'previous_position'>]: number | null;
+};
+
+export type ScrapedTeamStanding = {
+  id: number;
+  name: string;
+} & Omit<TeamStandings, 'previous_position'>;

@@ -24,10 +24,16 @@ async function main(): Promise<void> {
     throw new Error('No teams found. Run scrape:teams first.');
   }
 
-  const matches = await scrapeCalendars(categories, teams);
+  const { matches, teams: teamsWithStandings } = await scrapeCalendars(
+    categories,
+    teams,
+  );
+
   await db.upsertMatches(matches);
+  await db.upsertTeams(teamsWithStandings);
+
   console.warn(
-    `Saved ${matches.length} match(es) from ${categories.length} category(ies).`,
+    `Saved ${matches.length} match(es) and ${teamsWithStandings.length} team standing(s) from ${categories.length} category(ies).`,
   );
 }
 

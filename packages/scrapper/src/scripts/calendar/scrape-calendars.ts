@@ -1,17 +1,24 @@
 import type { CategoryKey, MatchWrite, Team } from '@padel-cantabria/database';
 import type { Page } from 'puppeteer';
-import type { ScrapedCalendarMatch } from './types.js';
+import type { ScrapedCalendarMatch, ScrapedTeamStanding } from './types.js';
 import puppeteer from 'puppeteer';
 import { LEAGUE_CALENDAR_URL } from '@/constants/urls.js';
+import { mergeTeamStandings } from './merge-team-standings.js';
 import { parseCalendarTable } from './parse-calendar-table.js';
+import { parseStandingsTable } from './parse-standings-table.js';
 import { resolveMatchTeams } from './resolve-match-teams.js';
 
 const CALENDAR_READY_TIMEOUT_MS = 30_000;
 
+export interface ScrapeCalendarsResult {
+  matches: MatchWrite[];
+  teams: Team[];
+}
+
 export async function scrapeCalendars(
   categories: CategoryKey[],
   teams: Team[],
-): Promise<MatchWrite[]> {
+): Promise<ScrapeCalendarsResult> {
   if (categories.length === 0) {
     throw new Error('No categories found');
   }
@@ -25,12 +32,22 @@ export async function scrapeCalendars(
   try {
     const page = await browser.newPage();
     const scrapedMatches: ScrapedCalendarMatch[] = [];
+    const updatedTeams: Team[] = [];
 
     for (const category of categories) {
-      scrapedMatches.push(...(await scrapeCategoryCalendar(page, category)));
+      const { matches, standings } = await scrapeCategoryCalendar(
+        page,
+        category,
+      );
+
+      scrapedMatches.push(...matches);
+      updatedTeams.push(...mergeTeamStandings(teams, category, standings));
     }
 
-    return resolveMatchTeams(scrapedMatches, teams);
+    return {
+      matches: resolveMatchTeams(scrapedMatches, teams),
+      teams: updatedTeams,
+    };
   } finally {
     await browser.close();
   }
@@ -39,13 +56,21 @@ export async function scrapeCalendars(
 async function scrapeCategoryCalendar(
   page: Page,
   category: CategoryKey,
-): Promise<ScrapedCalendarMatch[]> {
+): Promise<{
+  matches: ScrapedCalendarMatch[];
+  standings: ScrapedTeamStanding[];
+}> {
   const url = buildCalendarUrl(category);
 
   await page.goto(url, { waitUntil: 'domcontentloaded' });
   await waitForCalendarReady(page);
 
-  return parseCalendarTable(page, category);
+  const [matches, standings] = await Promise.all([
+    parseCalendarTable(page, category),
+    parseStandingsTable(page),
+  ]);
+
+  return { matches, standings };
 }
 
 function buildCalendarUrl(category: CategoryKey): string {
@@ -54,6 +79,7 @@ function buildCalendarUrl(category: CategoryKey): string {
     genero: category.gender,
     fase: category.phase,
     grupo: category.category,
+    jornada: '--',
   });
 
   return `${LEAGUE_CALENDAR_URL}?${params.toString()}`;
