@@ -1,20 +1,21 @@
 ---
-import Header from '@/components/header.astro';
+import { BrandIcon } from '@/components/icons';
 import { Searcher } from '@/components/search';
 import AppLayout from '../layouts/app-layout.astro';
 ---
 
-<AppLayout title="Calendario · Pádel Cantabria">
-  <div class="flex min-h-dvh flex-col">
-    <Header />
-
-    <div
-      class="flex flex-1 items-center justify-center p-4"
-      transition:animate="fade"
-    >
-      <div class="w-full max-w-6xl">
-        <Searcher client:load variant="hero" />
-      </div>
+<AppLayout title="Liga Cantabria de Pádel">
+  <main class="flex min-h-dvh flex-col items-center justify-center gap-8 px-4 py-12" transition:animate="fade">
+    <div class="flex max-w-3xl flex-col items-center gap-4 text-center">
+      <BrandIcon class="size-10 text-foreground" />
+      <h1 class="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">Liga Cantabria de Pádel</h1>
+      <p class="max-w-md text-base text-muted sm:text-md">
+        Consulta clasificaciones, calendarios y equipos de la liga.
+      </p>
     </div>
-  </div>
+
+    <div class="w-full max-w-3xl">
+      <Searcher client:load variant="hero" />
+    </div>
+  </main>
 </AppLayout>
