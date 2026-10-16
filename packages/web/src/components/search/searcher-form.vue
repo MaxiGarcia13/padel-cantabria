@@ -88,11 +88,6 @@ function toggleFilters(): void {
   filtersExpanded.value = !filtersExpanded.value;
 }
 
-function resetTeamSearch(): void {
-  teamQuery.value = '';
-  selectedTeam.value = null;
-}
-
 async function onSearchTeam(): Promise<void> {
   if (!selectedTeam.value) {
     return;
@@ -100,7 +95,6 @@ async function onSearchTeam(): Promise<void> {
 
   const teamId = selectedTeam.value.id;
 
-  resetTeamSearch();
   emit('navigated');
   await nextTick();
   searchTeam(teamId);
