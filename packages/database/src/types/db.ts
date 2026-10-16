@@ -13,23 +13,33 @@ export type GenderRecord = SelectOption & {
 
 export type PhaseRecord = SelectOption & {
   league_id: number;
-  gender_value: string;
+  gender: string;
 };
 
 export type CategoryRecord = SelectOption & {
   league_id: number;
-  gender_value: string;
-  phase_value: string;
+  gender: string;
+  phase: string;
 };
+
+export interface TeamRecord {
+  id: number;
+  league_id: number;
+  gender: string;
+  phase: string;
+  category: string;
+  name: string;
+  confirmed: number;
+}
 
 export interface MatchRecord {
   league_id: number;
-  gender_value: string;
-  phase_value: string;
-  category_value: string;
+  gender: string;
+  phase: string;
+  category: string;
   id: number;
-  home_team: string;
-  away_team: string;
+  home_team_id: number;
+  away_team_id: number;
   date: string;
   status: string | null;
   location: string | null;

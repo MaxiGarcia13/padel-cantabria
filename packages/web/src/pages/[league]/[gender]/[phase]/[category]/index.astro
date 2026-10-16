@@ -2,10 +2,7 @@
 import ClosestMatches from '@/components/matches/closest-matches.vue';
 import Header from '@/components/header.astro';
 import AppLayout from '@/layouts/app-layout.astro';
-import {
-  buildCategoryPath,
-  parseCategoryParams,
-} from '@/server/load-category-matches';
+import { buildCategoryPath, parseCategoryParams } from '@/server/load-category-matches';
 
 export const prerender = false;
 
@@ -30,11 +27,7 @@ const calendarHref = `${buildCategoryPath(categoryKey)}/calendario`;
       </div>
       <div class="flex flex-col gap-4">
         <h2 class="text-lg font-medium text-foreground">Próximos partidos</h2>
-        <ClosestMatches
-          client:load
-          category={categoryKey}
-          calendarHref={calendarHref}
-        />
+        <ClosestMatches client:load category={categoryKey} calendarHref={calendarHref} />
       </div>
     </main>
   </div>

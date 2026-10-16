@@ -2,10 +2,7 @@
 import MatchesByDate from '@/components/matches/matches-by-date.vue';
 import Header from '@/components/header.astro';
 import AppLayout from '@/layouts/app-layout.astro';
-import {
-  buildCategoryPath,
-  parseCategoryParams,
-} from '@/server/load-category-matches';
+import { buildCategoryPath, parseCategoryParams } from '@/server/load-category-matches';
 
 export const prerender = false;
 
@@ -25,10 +22,7 @@ const categoryHref = buildCategoryPath(categoryKey);
 
     <main class="flex flex-col gap-6">
       <div class="flex flex-col gap-2">
-        <a
-          href={categoryHref}
-          class="text-sm font-medium text-primary hover:underline"
-        >
+        <a href={categoryHref} class="text-sm font-medium text-primary hover:underline">
           Volver
         </a>
         <h1 class="text-lg font-medium text-foreground">Calendario</h1>
