@@ -3,7 +3,9 @@ import type { League, Team } from '@padel-cantabria/database';
 import type { TeamSummaryResponse } from '@/types/team-summary';
 import { computed, ref, watch } from 'vue';
 import Select from '@/components/select.vue';
+import TotalPoints from '@/components/total-points.vue';
 import { useTeamPhases } from '@/composables/use-team-phases';
+import { useTeamPlayers } from '@/composables/use-team-players';
 import { useTeamSummary } from '@/composables/use-team-summary';
 import {
   getPhaseOptions,
@@ -12,6 +14,7 @@ import {
 import { buildCategoryPath } from '@/server/load-category-matches';
 import TeamCardSkeleton from './team-card-skeleton.vue';
 import TeamNextMatchCard from './team-next-match-card.vue';
+import TeamPlayersTableLazy from './team-players-table-lazy.vue';
 import TeamStandingCard from './team-standing-card.vue';
 
 const props = defineProps<{
@@ -52,6 +55,16 @@ const {
     ? { phase: props.initialPhases[0], data: props.initialSummary }
     : undefined,
 );
+
+const { data: players } = useTeamPlayers(props.team.id);
+
+const totalPoints = computed(() => {
+  if (!players.value) {
+    return null;
+  }
+
+  return players.value.reduce((sum, player) => sum + player.points, 0);
+});
 
 const displayLabels = computed(() =>
   getTeamDisplayLabels(props.leagues, props.team),
@@ -98,9 +111,12 @@ const isPending = computed(
 <template>
   <div class="flex flex-col gap-8">
     <header class="flex flex-col gap-4">
-      <h1 class="text-2xl font-semibold tracking-tight text-foreground">
-        {{ team.name }}
-      </h1>
+      <div class="flex items-center justify-between gap-4 sm:items-start">
+        <h1 class="text-2xl font-semibold tracking-tight text-foreground">
+          {{ team.name }}
+        </h1>
+        <TotalPoints :points="totalPoints" />
+      </div>
 
       <dl class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
         <div class="flex gap-2">
@@ -171,5 +187,7 @@ const isPending = computed(
         />
       </div>
     </template>
+
+    <TeamPlayersTableLazy :team-id="team.id" />
   </div>
 </template>
