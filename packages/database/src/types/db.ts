@@ -27,9 +27,11 @@ export interface MatchRecord {
   gender_value: string;
   phase_value: string;
   category_value: string;
-  partido_id: number;
+  id: number;
   home_team: string;
   away_team: string;
-  date_label: string;
+  date: string;
   status: string | null;
+  location: string | null;
+  schedule: string | null;
 }

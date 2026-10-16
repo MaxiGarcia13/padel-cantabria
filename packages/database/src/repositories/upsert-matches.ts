@@ -9,20 +9,24 @@ function buildUpsertStatement(match: Match): BatchStatement {
         gender_value,
         phase_value,
         category_value,
-        partido_id,
+        id,
         home_team,
         away_team,
-        date_label,
+        date,
         status,
+        location,
+        schedule,
         updated_at
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
-      ON CONFLICT(league_id, gender_value, phase_value, category_value, partido_id)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+      ON CONFLICT(league_id, gender_value, phase_value, category_value, id)
       DO UPDATE SET
         home_team = excluded.home_team,
         away_team = excluded.away_team,
-        date_label = excluded.date_label,
+        date = excluded.date,
         status = excluded.status,
+        location = excluded.location,
+        schedule = excluded.schedule,
         updated_at = datetime('now')
     `,
     args: [
@@ -30,11 +34,13 @@ function buildUpsertStatement(match: Match): BatchStatement {
       match.gender_value,
       match.phase_value,
       match.category_value,
-      match.partido_id,
+      match.id,
       match.home_team,
       match.away_team,
-      match.date_label,
+      match.date,
       match.status,
+      match.location,
+      match.schedule,
     ],
   };
 }
