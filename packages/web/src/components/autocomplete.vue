@@ -87,6 +87,13 @@ function onBlur(): void {
     activeIndex.value = -1;
   }, 150);
 }
+
+function close(): void {
+  isOpen.value = false;
+  activeIndex.value = -1;
+}
+
+defineExpose({ close });
 </script>
 
 <template>
@@ -144,6 +151,11 @@ function onBlur(): void {
           </span>
         </li>
       </ul>
+
+      <slot
+        v-if="isOpen && items.length === 0"
+        name="empty"
+      />
     </div>
   </div>
 </template>

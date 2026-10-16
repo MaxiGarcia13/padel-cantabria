@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import type { Team } from '@padel-cantabria/database';
+import type { TeamSearchHistoryItem } from './team-search-history.vue';
 import type { AutocompleteItem } from '@/components/autocomplete.vue';
 import { debounce } from '@maxigarcia/js-utils';
 import { computed, ref, watch } from 'vue';
 import Autocomplete from '@/components/autocomplete.vue';
 import { useLeagues } from '@/composables/use-leagues';
 import { useSearchTeams } from '@/composables/use-search-teams';
+import { useTeamSearchHistory } from '@/composables/use-team-search-history';
 import { getTeamDisplayLabels } from '@/domain/team/get-team-display-labels';
+import TeamSearchHistory from './team-search-history.vue';
 
 const props = defineProps<{
   selectedTeamId?: number | null;
@@ -21,6 +24,7 @@ const SEARCH_DELAY_MS = 500;
 const query = defineModel<string>({ default: '' });
 const searchQuery = ref(query.value.trim());
 const selectedTeam = ref<Team | null>(null);
+const autocompleteRef = ref<{ close: () => void } | null>(null);
 
 const applySearch = debounce((value: string) => {
   searchQuery.value = value.trim();
@@ -43,9 +47,12 @@ watch(
 
 const { data: leagues } = useLeagues();
 const { data: teams, isPending, isError } = useSearchTeams(searchQuery);
+const { entries, add, remove } = useTeamSearchHistory();
+
+const isQueryEmpty = computed(() => !query.value.trim());
 
 const items = computed<AutocompleteItem[]>(() => {
-  if (!query.value.trim()) {
+  if (isQueryEmpty.value) {
     return [];
   }
 
@@ -62,6 +69,20 @@ const items = computed<AutocompleteItem[]>(() => {
     };
   });
 });
+
+const historyItems = computed<TeamSearchHistoryItem[]>(() =>
+  entries.value.map((team) => {
+    const { categoryLabel, genderLabel } = getTeamDisplayLabels(
+      leagues.value,
+      team,
+    );
+
+    return {
+      team,
+      description: [categoryLabel, genderLabel].filter(Boolean).join(' · '),
+    };
+  }),
+);
 
 watch(
   [() => props.selectedTeamId, teams],
@@ -80,6 +101,14 @@ watch(
   { immediate: true },
 );
 
+function selectTeam(team: Team): void {
+  selectedTeam.value = team;
+  query.value = team.name;
+  add(team);
+  emit('select', team);
+  autocompleteRef.value?.close();
+}
+
 function onSelect(item: AutocompleteItem): void {
   const team = teams.value?.find((entry) => String(entry.id) === item.value);
 
@@ -87,8 +116,11 @@ function onSelect(item: AutocompleteItem): void {
     return;
   }
 
-  selectedTeam.value = team;
-  emit('select', team);
+  selectTeam(team);
+}
+
+function onHistorySelect(team: Team): void {
+  selectTeam(team);
 }
 
 defineExpose({
@@ -101,10 +133,22 @@ defineExpose({
 <template>
   <Autocomplete
     id="team-search"
+    ref="autocompleteRef"
     v-model="query"
     placeholder="Buscar equipo"
     :items="items"
     :disabled="isError"
     @select="onSelect"
-  />
+  >
+    <template
+      v-if="isQueryEmpty && historyItems.length > 0"
+      #empty
+    >
+      <TeamSearchHistory
+        :items="historyItems"
+        @select="onHistorySelect"
+        @remove="remove"
+      />
+    </template>
+  </Autocomplete>
 </template>
