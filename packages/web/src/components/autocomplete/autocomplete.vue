@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AutocompleteItem } from './types';
-import { computed, ref, useSlots, watch } from 'vue';
+import { computed, onMounted, ref, useSlots, watch } from 'vue';
 import { useFloatingAnchor } from '@/composables/use-floating-anchor';
 import AutocompleteListbox from './autocomplete-listbox.vue';
 import AutocompleteOption from './autocomplete-option.vue';
@@ -20,6 +20,7 @@ const emit = defineEmits<{
 }>();
 
 const slots = useSlots();
+const isClient = ref(false);
 const isOpen = ref(false);
 const activeIndex = ref(-1);
 const inputRef = ref<HTMLInputElement | null>(null);
@@ -29,6 +30,10 @@ const { style: floatingStyle, teleportTo, updatePosition } = useFloatingAnchor(
   inputRef,
   isOpen,
 );
+
+onMounted(() => {
+  isClient.value = true;
+});
 
 const showResults = computed(() => isOpen.value && props.items.length > 0);
 const showEmpty = computed(
@@ -144,11 +149,12 @@ defineExpose({ close });
       >
 
       <Teleport
+        v-if="isClient"
         defer
         :to="teleportTo"
       >
         <div
-          v-show="showFloating"
+          v-if="showFloating"
           class="z-50"
           :style="floatingStyle"
         >
