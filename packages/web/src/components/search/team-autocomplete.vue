@@ -4,7 +4,9 @@ import type { AutocompleteItem } from '@/components/autocomplete.vue';
 import { debounce } from '@maxigarcia/js-utils';
 import { computed, ref, watch } from 'vue';
 import Autocomplete from '@/components/autocomplete.vue';
+import { useLeagues } from '@/composables/use-leagues';
 import { useSearchTeams } from '@/composables/use-search-teams';
+import { getTeamDisplayLabels } from '@/domain/team/get-team-display-labels';
 
 const props = defineProps<{
   selectedTeamId?: number | null;
@@ -39,6 +41,7 @@ watch(
   { immediate: true },
 );
 
+const { data: leagues } = useLeagues();
 const { data: teams, isPending, isError } = useSearchTeams(searchQuery);
 
 const items = computed<AutocompleteItem[]>(() => {
@@ -46,11 +49,18 @@ const items = computed<AutocompleteItem[]>(() => {
     return [];
   }
 
-  return (teams.value ?? []).map((team) => ({
-    value: String(team.id),
-    label: team.name,
-    description: [team.category, team.gender].filter(Boolean).join(' · '),
-  }));
+  return (teams.value ?? []).map((team) => {
+    const { categoryLabel, genderLabel } = getTeamDisplayLabels(
+      leagues.value,
+      team,
+    );
+
+    return {
+      value: String(team.id),
+      label: team.name,
+      description: [categoryLabel, genderLabel].filter(Boolean).join(' · '),
+    };
+  });
 });
 
 watch(
