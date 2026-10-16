@@ -7,7 +7,6 @@ const props = withDefaults(
     size?: 'default' | 'sm' | 'icon' | 'icon-sm';
     type?: 'button' | 'submit' | 'reset';
     disabled?: boolean;
-    class?: string;
   }>(),
   {
     variant: 'primary',
@@ -38,7 +37,6 @@ const className = computed(() =>
     'inline-flex shrink-0 cursor-pointer items-center justify-center rounded-xl transition-colors',
     variantClassName[props.variant],
     sizeClassName[props.size],
-    props.class,
   ]
     .filter(Boolean)
     .join(' '),

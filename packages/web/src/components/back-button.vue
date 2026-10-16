@@ -19,7 +19,7 @@ function goBack(): void {
     variant="ghost"
     size="sm"
     aria-label="Volver"
-    class="w-fit self-start justify-start! gap-1 pl-0!"
+    class="w-fit !justify-start gap-1 self-start !pl-0"
     @click="goBack"
   >
     <ChevronLeftIcon class="size-5 shrink-0" />
