@@ -17,6 +17,7 @@
     "@padel-cantabria/database": "workspace:*",
     "@tanstack/vue-query": "^5.104.2",
     "astro": "^7.3.8",
+    "nanostores": "^1.5.5",
     "vue": "^3.5.44"
   },
   "devDependencies": {
