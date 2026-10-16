@@ -40,6 +40,18 @@ CREATE TABLE IF NOT EXISTS teams (
   gender TEXT NOT NULL,
   category TEXT NOT NULL,
   name TEXT NOT NULL,
+  position INTEGER,
+  previous_position INTEGER,
+  confrontations_played INTEGER,
+  points INTEGER,
+  matches_played INTEGER,
+  matches_won INTEGER,
+  sets_for INTEGER,
+  sets_against INTEGER,
+  sets_average INTEGER,
+  games_for INTEGER,
+  games_against INTEGER,
+  games_average INTEGER,
   updated_at TEXT NOT NULL DEFAULT (datetime('now')),
   UNIQUE (league_id, gender, category, name)
 );

@@ -30,8 +30,9 @@ export function createClient(params: TursoConfig) {
   return {
     getLeagues: () => getLeagues(connection),
     getCategories: () => getCategories(connection),
-    getTeams: () => getTeams(connection),
+    getTeams: (category?: CategoryKey) => getTeams(connection, category),
     getMatches: (category: CategoryKey) => getMatches(connection, category),
+
     upsertLeagues: (leagues: League[]) => upsertLeagues(leagues, connection),
     upsertTeams: (teams: Team[]) => upsertTeams(teams, connection),
     upsertMatches: (matches: MatchWrite[]) => upsertMatches(matches, connection),
