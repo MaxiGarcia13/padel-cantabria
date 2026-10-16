@@ -6,9 +6,10 @@ import type {
   SelectOption,
 } from '@padel-cantabria/database';
 import type { Page } from 'puppeteer';
+import process from 'node:process';
 import puppeteer from 'puppeteer';
 import { LEAGUE_CALENDAR_URL } from '@/constants/urls.js';
-import { isActiveLeague } from './is-active-league.js';
+import { parseLeagueIds } from './parse-league-ids.js';
 import { scrapeBaseLeagues } from './scrape-league.js';
 
 const PHASE_PLACEHOLDERS = ['0'];
@@ -16,16 +17,29 @@ const CATEGORY_PLACEHOLDERS = ['-'];
 const SELECT_OPTIONS_TIMEOUT_MS = 10_000;
 
 export async function scrapeLeagues(): Promise<League[]> {
-  const baseLeagues = (await scrapeBaseLeagues()).filter((league) =>
-    isActiveLeague(league),
+  const leagues = await scrapeBaseLeagues();
+
+  if (leagues.length === 0) {
+    throw new Error('No leagues found');
+  }
+
+  const allowedLeagueIds = parseLeagueIds(process.env.LEAGUE_IDS);
+  const filteredLeagues = leagues.filter(
+    (league) =>
+      allowedLeagueIds === null || allowedLeagueIds.has(league.league_id),
   );
+
+  if (filteredLeagues.length === 0) {
+    throw new Error('No leagues found');
+  }
+
   const browser = await puppeteer.launch({ headless: true });
 
   try {
     const page = await browser.newPage();
     const leagues: League[] = [];
 
-    for (const baseLeague of baseLeagues) {
+    for (const baseLeague of filteredLeagues) {
       leagues.push(await scrapeLeague(page, baseLeague));
     }
 
