@@ -1,3 +1,5 @@
+import type { CategoryKey } from './match.js';
+
 export interface TeamStandings {
   position: number | null;
   previous_position: number | null;
@@ -13,12 +15,21 @@ export interface TeamStandings {
   games_average: number | null;
 }
 
-export interface Team extends TeamStandings {
+/** Team identity (teams table). Standings live in team_standings per phase. */
+export interface Team {
   id: number;
   league_id: number;
   gender: string;
   category: string;
   name: string;
+}
+
+/** Team with standings for a specific phase (joined read shape). */
+export type TeamWithStandings = Team & TeamStandings;
+
+/** Standings row keyed by category + team (team_standings table). */
+export interface TeamStanding extends CategoryKey, TeamStandings {
+  team_id: number;
 }
 
 export const EMPTY_TEAM_STANDINGS: TeamStandings = {
