@@ -38,7 +38,8 @@ Run from the **repo root**. Order matters: each step depends on data from the pr
 | Script                 | What it does                                       | When to run                                  |
 | ---------------------- | -------------------------------------------------- | -------------------------------------------- |
 | `pnpm scrape:leagues`  | Scrapes leagues, genders, phases, and categories   | First sync, or when league structure changes |
-| `pnpm scrape:teams`    | Scrapes teams per category (`Liga_ListadoEquipos`) | After leagues exist; before calendar         |
+| `pnpm scrape:teams`    | Scrapes teams per category (`Liga_ListadoEquipos`) | After leagues exist; before calendar/players |
+| `pnpm scrape:players`  | Scrapes team rosters (`Liga_DetalleEquipo`)        | After teams exist                            |
 | `pnpm scrape:calendar` | Scrapes matches and links them to team IDs         | After teams exist                            |
 
 ## Full sync (first time or after schema recreate)
@@ -47,14 +48,16 @@ Run from the **repo root**. Order matters: each step depends on data from the pr
 pnpm db:reset   # or `pnpm migrate` on an empty DB
 pnpm scrape:leagues
 pnpm scrape:teams
+pnpm scrape:players
 pnpm scrape:calendar
 ```
 
 ## When to re-run individual scrapers
 
 1. **`scrape:leagues`** — categories/phases/genders missing or outdated. Needed before teams/calendar can see new groups. Note: existing leagues in the DB are skipped on upsert.
-2. **`scrape:teams`** — team list changed (inscriptions, names, confirmed status). Required before calendar if new teams appeared.
-3. **`scrape:calendar`** — match dates/results/schedule updates. Resolves home/away team names to IDs in memory; fails if a team was not scraped yet.
+2. **`scrape:teams`** — team list changed (inscriptions, names, confirmed status). Required before calendar/players if new teams appeared.
+3. **`scrape:players`** — roster ranking/points updates. Re-runs keep `previous_position` / `previous_points` from the last scrape.
+4. **`scrape:calendar`** — match dates/results/schedule updates. Resolves home/away team names to IDs in memory; fails if a team was not scraped yet.
 
 Typical refresh when only fixtures changed:
 

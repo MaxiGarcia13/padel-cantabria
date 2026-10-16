@@ -20,6 +20,7 @@
 
     "scrape:leagues": "pnpm --filter @padel-cantabria/scrapper scrape:leagues",
     "scrape:teams": "pnpm --filter @padel-cantabria/scrapper scrape:teams",
+    "scrape:players": "pnpm --filter @padel-cantabria/scrapper scrape:players",
     "scrape:calendar": "pnpm --filter @padel-cantabria/scrapper scrape:calendar"
   },
   "devEngines": {

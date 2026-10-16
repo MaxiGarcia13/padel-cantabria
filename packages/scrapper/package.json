@@ -7,6 +7,7 @@
     "clean": "rm -rf node_modules dist",
     "scrape:leagues": "tsx --env-file=../../.env src/scripts/league/index.ts",
     "scrape:teams": "tsx --env-file=../../.env src/scripts/teams/index.ts",
+    "scrape:players": "tsx --env-file=../../.env src/scripts/players/index.ts",
     "scrape:calendar": "tsx --env-file=../../.env src/scripts/calendar/index.ts"
   },
   "dependencies": {
