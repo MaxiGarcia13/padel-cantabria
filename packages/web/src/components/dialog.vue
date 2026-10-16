@@ -20,7 +20,7 @@ defineExpose({
 <template>
   <dialog
     ref="dialog"
-    class="box-border m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-sm overflow-y-auto rounded-xl border border-cast-mist/20 bg-cast-panel p-6 text-cast-fog shadow-lg backdrop:bg-cast-ink/80 backdrop:backdrop-blur-sm"
+    class="m-auto box-border max-h-[90dvh] w-[calc(100%-2rem)] max-w-sm overflow-y-auto rounded-xl border border-border bg-surface p-6 text-foreground shadow-lg backdrop:bg-background/80 backdrop:backdrop-blur-sm"
   >
     <header
       v-if="$slots.header"
