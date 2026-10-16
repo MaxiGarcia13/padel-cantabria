@@ -19,9 +19,9 @@ export function parseCategoryParams(params: {
 
   return {
     league_id: leagueId,
-    gender_value: params.gender,
-    phase_value: params.phase,
-    category_value: params.category,
+    gender: params.gender,
+    phase: params.phase,
+    category: params.category,
   };
 }
 
@@ -29,9 +29,9 @@ export function buildCategoryPath(category: CategoryKey): string {
   return [
     '',
     category.league_id,
-    category.gender_value,
-    category.phase_value,
-    category.category_value,
+    category.gender,
+    category.phase,
+    category.category,
   ]
     .map((segment) => encodeURIComponent(String(segment)))
     .join('/');

@@ -6,9 +6,9 @@ import { computed, toValue } from 'vue';
 async function fetchMatches(category: CategoryKey): Promise<Match[]> {
   const params = new URLSearchParams({
     league: String(category.league_id),
-    gender: category.gender_value,
-    phase: category.phase_value,
-    category: category.category_value,
+    gender: category.gender,
+    phase: category.phase,
+    category: category.category,
   });
   const response = await fetch(`/api/matches?${params}`);
 
@@ -30,9 +30,9 @@ export function useMatches(category: MaybeRefOrGetter<CategoryKey>) {
     return [
       'matches',
       value.league_id,
-      value.gender_value,
-      value.phase_value,
-      value.category_value,
+      value.gender,
+      value.phase,
+      value.category,
     ] as const;
   });
 
