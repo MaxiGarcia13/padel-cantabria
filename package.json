@@ -13,7 +13,9 @@
     "lint:fix": "eslint --fix . --ignore-pattern 'packages/web/**' && pnpm -r --if-present run lint:fix",
     "clean": "rm -rf node_modules dist && pnpm -r run clean",
     "phoenix": "pnpm clean && pnpm install",
-    "dev": "pnpm --filter=@padel-cantabria/web dev"
+    "dev": "pnpm --filter=@padel-cantabria/web dev",
+
+    "scrape:leagues": "pnpm --filter @padel-cantabria/scrapper scrape:league"
   },
   "devEngines": {
     "packageManager": {
