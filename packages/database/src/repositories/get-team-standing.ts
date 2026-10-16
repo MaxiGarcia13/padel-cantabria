@@ -30,7 +30,7 @@ export async function getTeamStanding(
             team_standings.games_against,
             team_standings.games_average
           FROM teams
-          LEFT JOIN team_standings
+          INNER JOIN team_standings
             ON team_standings.team_id = teams.id
             AND team_standings.league_id = ?
             AND team_standings.gender = ?

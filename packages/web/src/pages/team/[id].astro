@@ -2,6 +2,7 @@
 import { createClient } from '@padel-cantabria/database';
 import { TURSO_AUTH_TOKEN, TURSO_URL } from 'astro:env/server';
 import Header from '@/components/header.astro';
+import TeamPage from '@/components/team/team-page.vue';
 import AppLayout from '@/layouts/app-layout.astro';
 
 export const prerender = false;
@@ -22,14 +23,26 @@ const team = await db.getTeamById(teamId);
 if (!team) {
   return Astro.redirect('/');
 }
+
+const initialPhases = await db.getTeamPhases(teamId);
 ---
 
 <AppLayout title={`${team.name} · Pádel Cantabria`}>
-  <Header teamName={team.name} />
+  <Header
+    teamName={team.name}
+    league={String(team.league_id)}
+    gender={team.gender}
+    phase={initialPhases[0]}
+    category={team.category}
+  />
 
   <div class="mx-auto flex w-full max-w-6xl flex-col gap-8 p-4" transition:animate="fade">
-    <main class="flex flex-col gap-6">
-      <h1 class="text-lg font-medium text-foreground">{team.name}</h1>
+    <main>
+      <TeamPage
+        client:load
+        team={team}
+        initialPhases={initialPhases}
+      />
     </main>
   </div>
 </AppLayout>
