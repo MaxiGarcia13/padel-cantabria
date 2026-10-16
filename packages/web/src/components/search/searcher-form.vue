@@ -69,8 +69,6 @@ const errorMessage = computed(() => {
     : 'Error inesperado';
 });
 
-const canSearchTeam = computed(() => selectedTeam.value != null);
-
 watch(teamQuery, (value) => {
   if (selectedTeam.value && value !== selectedTeam.value.name) {
     selectedTeam.value = null;
@@ -79,6 +77,8 @@ watch(teamQuery, (value) => {
 
 function onTeamSelect(team: Team): void {
   selectedTeam.value = team;
+
+  onSearchTeam();
 }
 
 function toggleFilters(): void {
@@ -123,10 +123,7 @@ async function onSearchFilters(): Promise<void> {
 
 <template>
   <div class="flex flex-col gap-4 rounded-xl border border-border bg-surface p-4">
-    <form
-      class="flex flex-col gap-4 sm:flex-row sm:items-center"
-      @submit.prevent="onSearchTeam"
-    >
+    <div class="flex flex-row items-center gap-2">
       <div class="min-w-0 flex-1">
         <TeamAutocomplete
           v-model="teamQuery"
@@ -135,13 +132,6 @@ async function onSearchFilters(): Promise<void> {
       </div>
 
       <div class="flex shrink-0 items-center gap-2">
-        <Button
-          type="submit"
-          :disabled="!canSearchTeam"
-        >
-          Buscar
-        </Button>
-
         <Button
           type="button"
           variant="outline"
@@ -169,7 +159,7 @@ async function onSearchFilters(): Promise<void> {
           <XIcon class="size-5" />
         </Button>
       </div>
-    </form>
+    </div>
 
     <template v-if="filtersExpanded">
       <p class="text-center text-sm text-muted">

@@ -15,41 +15,31 @@ const { league, gender, phase, category, teamName } = Astro.props;
 const isPage = Boolean((league && gender && phase && category) || teamName);
 ---
 
-<header class="border-b border-border">
-  <div
-    class:list={[
-      'mx-auto flex w-full max-w-6xl items-center gap-4 px-4 py-4',
-      isPage ? 'justify-between' : 'justify-start',
-    ]}
-  >
-    <div
-      class="flex min-w-0 items-center gap-2"
-      transition:persist="site-brand"
-    >
-      {isPage && <BackButton client:load />}
+<header
+  class:list={[
+    'mx-auto flex w-full max-w-6xl gap-4 px-4 py-4 items-start',
+    isPage && 'flex-col sm:flex-row sm:justify-between',
+  ]}
+>
+  <div class="flex min-w-0 items-center gap-2">
+    {isPage && <BackButton client:load />}
 
-      <a
-        href="/"
-        class="flex min-w-0 items-center gap-2 text-foreground no-underline"
-      >
-        <BrandIcon class="size-6 shrink-0 text-foreground" />
-        <span class="truncate text-lg font-semibold">
-          Liga Cantabria de Pádel
-        </span>
-      </a>
-    </div>
-
-    {isPage && (
-      <div class="min-w-0 max-w-md flex-1">
-        <Searcher
-          client:load
-          variant="header"
-          initialLeagueId={league}
-          initialGenderValue={gender}
-          initialPhaseValue={phase}
-          initialCategoryValue={category}
-        />
-      </div>
-    )}
+    <a href="/" class="flex min-w-0 items-center gap-2 text-foreground no-underline">
+      <BrandIcon class="size-6 shrink-0 text-foreground" />
+      <span class="truncate text-lg font-semibold">Liga Cantabria de Pádel</span>
+    </a>
   </div>
+
+  {isPage && (
+    <div class="min-w-0 max-w-md flex-1 w-full">
+      <Searcher
+        client:load
+        variant="header"
+        initialLeagueId={league}
+        initialGenderValue={gender}
+        initialPhaseValue={phase}
+        initialCategoryValue={category}
+      />
+    </div>
+  )}
 </header>

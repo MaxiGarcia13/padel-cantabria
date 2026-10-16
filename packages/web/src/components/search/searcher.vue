@@ -12,6 +12,7 @@ const props = withDefaults(
     initialGenderValue?: string;
     initialPhaseValue?: string;
     initialCategoryValue?: string;
+    class?: string;
   }>(),
   {
     variant: 'hero',
