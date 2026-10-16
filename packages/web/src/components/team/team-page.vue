@@ -4,6 +4,7 @@ import type { TeamSummaryResponse } from '@/types/team-summary';
 import { computed, ref, watch } from 'vue';
 import Select from '@/components/select.vue';
 import TotalPoints from '@/components/total-points.vue';
+import { useHydrated } from '@/composables/use-hydrated';
 import { useTeamPhases } from '@/composables/use-team-phases';
 import { useTeamPlayers } from '@/composables/use-team-players';
 import { useTeamSummary } from '@/composables/use-team-summary';
@@ -56,10 +57,11 @@ const {
     : undefined,
 );
 
+const isHydrated = useHydrated();
 const { data: players } = useTeamPlayers(props.team.id);
 
 const totalPoints = computed(() => {
-  if (!players.value) {
+  if (!isHydrated.value || !players.value) {
     return null;
   }
 
