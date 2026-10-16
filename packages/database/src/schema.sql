@@ -40,6 +40,16 @@ CREATE TABLE IF NOT EXISTS teams (
   gender TEXT NOT NULL,
   category TEXT NOT NULL,
   name TEXT NOT NULL,
+  updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  UNIQUE (league_id, gender, category, name)
+);
+
+CREATE TABLE IF NOT EXISTS team_standings (
+  league_id INTEGER NOT NULL,
+  gender TEXT NOT NULL,
+  phase TEXT NOT NULL,
+  category TEXT NOT NULL,
+  team_id INTEGER NOT NULL REFERENCES teams (id) ON DELETE CASCADE,
   position INTEGER,
   previous_position INTEGER,
   confrontations_played INTEGER,
@@ -53,7 +63,10 @@ CREATE TABLE IF NOT EXISTS teams (
   games_against INTEGER,
   games_average INTEGER,
   updated_at TEXT NOT NULL DEFAULT (datetime('now')),
-  UNIQUE (league_id, gender, category, name)
+  PRIMARY KEY (league_id, gender, phase, category, team_id),
+  FOREIGN KEY (league_id, gender, phase, category)
+    REFERENCES categories (league_id, gender, phase, value)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS matches (

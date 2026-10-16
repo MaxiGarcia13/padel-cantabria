@@ -4,6 +4,7 @@ import { loadSchemaStatements } from './load-schema-statements.js';
 
 const DROP_TABLES = [
   'matches',
+  'team_standings',
   'teams',
   'categories',
   'phases',
