@@ -1,11 +1,11 @@
-import type { CategoryKey, Match } from '@padel-cantabria/database';
+import type { CategoryKey } from '@padel-cantabria/database';
 import type { Page } from 'puppeteer';
-import type { RawCalendarMatch } from './types.js';
+import type { RawCalendarMatch, ScrapedCalendarMatch } from './types.js';
 
 export async function parseCalendarTable(
   page: Page,
   category: CategoryKey,
-): Promise<Match[]> {
+): Promise<ScrapedCalendarMatch[]> {
   const rawMatches = await page.evaluate((): RawCalendarMatch[] => {
     const table = Array.from(document.querySelectorAll('table')).find((candidate) =>
       candidate

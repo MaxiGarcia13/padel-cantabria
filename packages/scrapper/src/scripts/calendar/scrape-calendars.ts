@@ -1,29 +1,36 @@
-import type { CategoryKey, Match } from '@padel-cantabria/database';
+import type { CategoryKey, MatchWrite, Team } from '@padel-cantabria/database';
 import type { Page } from 'puppeteer';
+import type { ScrapedCalendarMatch } from './types.js';
 import puppeteer from 'puppeteer';
 import { LEAGUE_CALENDAR_URL } from '@/constants/urls.js';
 import { parseCalendarTable } from './parse-calendar-table.js';
+import { resolveMatchTeams } from './resolve-match-teams.js';
 
 const CALENDAR_READY_TIMEOUT_MS = 30_000;
 
 export async function scrapeCalendars(
   categories: CategoryKey[],
-): Promise<Match[]> {
+  teams: Team[],
+): Promise<MatchWrite[]> {
   if (categories.length === 0) {
     throw new Error('No categories found');
+  }
+
+  if (teams.length === 0) {
+    throw new Error('No teams found');
   }
 
   const browser = await puppeteer.launch({ headless: true });
 
   try {
     const page = await browser.newPage();
-    const matches: Match[] = [];
+    const scrapedMatches: ScrapedCalendarMatch[] = [];
 
     for (const category of categories) {
-      matches.push(...(await scrapeCategoryCalendar(page, category)));
+      scrapedMatches.push(...(await scrapeCategoryCalendar(page, category)));
     }
 
-    return matches;
+    return resolveMatchTeams(scrapedMatches, teams);
   } finally {
     await browser.close();
   }
@@ -32,7 +39,7 @@ export async function scrapeCalendars(
 async function scrapeCategoryCalendar(
   page: Page,
   category: CategoryKey,
-): Promise<Match[]> {
+): Promise<ScrapedCalendarMatch[]> {
   const url = buildCalendarUrl(category);
 
   await page.goto(url, { waitUntil: 'domcontentloaded' });
@@ -44,9 +51,9 @@ async function scrapeCategoryCalendar(
 function buildCalendarUrl(category: CategoryKey): string {
   const params = new URLSearchParams({
     id: String(category.league_id),
-    genero: category.gender_value,
-    fase: category.phase_value,
-    grupo: category.category_value,
+    genero: category.gender,
+    fase: category.phase,
+    grupo: category.category,
   });
 
   return `${LEAGUE_CALENDAR_URL}?${params.toString()}`;

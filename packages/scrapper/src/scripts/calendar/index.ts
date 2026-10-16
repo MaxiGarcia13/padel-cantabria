@@ -15,7 +15,16 @@ async function main(): Promise<void> {
     throw new Error('No categories found');
   }
 
-  const matches = await scrapeCalendars(categories);
+  const teams = (await db.getTeams()).filter(
+    (team) =>
+      allowedLeagueIds === null || allowedLeagueIds.has(team.league_id),
+  );
+
+  if (teams.length === 0) {
+    throw new Error('No teams found. Run scrape:teams first.');
+  }
+
+  const matches = await scrapeCalendars(categories, teams);
   await db.upsertMatches(matches);
   console.warn(
     `Saved ${matches.length} match(es) from ${categories.length} category(ies).`,
