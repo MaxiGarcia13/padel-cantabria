@@ -2,6 +2,7 @@
 import type { CategoryKey } from '@padel-cantabria/database';
 import { computed, toRef } from 'vue';
 import TableSkeleton from '@/components/table-skeleton.vue';
+import { useHydrated } from '@/composables/use-hydrated';
 import { useLeagues } from '@/composables/use-leagues';
 import { useMatches } from '@/composables/use-matches';
 import { groupMatchesByDate } from '@/domain/matches';
@@ -12,8 +13,11 @@ const props = defineProps<{
 }>();
 
 const category = toRef(props, 'category');
+const isHydrated = useHydrated();
 const { data: leagues } = useLeagues();
 const { data: matches, isPending, isError } = useMatches(category);
+
+const showSkeleton = computed(() => !isHydrated.value || isPending.value);
 
 const season = computed(
   () =>
@@ -39,7 +43,7 @@ const errorMessage = computed(() =>
 
 <template>
   <TableSkeleton
-    v-if="isPending"
+    v-if="showSkeleton"
     :rows="8"
     :columns="3"
   />

@@ -3,6 +3,7 @@ import type { CategoryKey } from '@padel-cantabria/database';
 import { computed, toRef } from 'vue';
 import TableSkeleton from '@/components/table-skeleton.vue';
 import Table from '@/components/table/table.vue';
+import { useHydrated } from '@/composables/use-hydrated';
 import { useTeams } from '@/composables/use-teams';
 import StandingsTableHeader from './standings-table-header.vue';
 import StandingsTableRow from './standings-table-row.vue';
@@ -12,7 +13,10 @@ const props = defineProps<{
 }>();
 
 const category = toRef(props, 'category');
+const isHydrated = useHydrated();
 const { data: teams, isPending, isError } = useTeams(category);
+
+const showSkeleton = computed(() => !isHydrated.value || isPending.value);
 
 const errorMessage = computed(() =>
   isError.value ? 'No se pudieron cargar los equipos' : null,
@@ -22,7 +26,7 @@ const errorMessage = computed(() =>
 <template>
   <div class="flex flex-col gap-4">
     <TableSkeleton
-      v-if="isPending"
+      v-if="showSkeleton"
       :rows="8"
       :columns="6"
     />
