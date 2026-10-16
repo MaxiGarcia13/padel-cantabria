@@ -1,10 +1,10 @@
 import type { Ref } from 'vue';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 
-const RESULTS_PATH_SEGMENTS = 4;
-
 function pathHasResults(pathname: string): boolean {
-  return pathname.split('/').filter(Boolean).length >= RESULTS_PATH_SEGMENTS;
+  const segments = pathname.split('/').filter(Boolean);
+
+  return segments[0] === 'league' || segments[0] === 'team';
 }
 
 export function useSearchCollapse(collapsibleProp: Ref<boolean | undefined>) {

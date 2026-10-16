@@ -1,0 +1,35 @@
+---
+import { createClient } from '@padel-cantabria/database';
+import { TURSO_AUTH_TOKEN, TURSO_URL } from 'astro:env/server';
+import Header from '@/components/header.astro';
+import AppLayout from '@/layouts/app-layout.astro';
+
+export const prerender = false;
+
+const teamId = Number(Astro.params.id);
+
+if (!Number.isFinite(teamId)) {
+  return Astro.redirect('/');
+}
+
+const db = createClient({
+  url: TURSO_URL,
+  authToken: TURSO_AUTH_TOKEN,
+});
+
+const team = await db.getTeamById(teamId);
+
+if (!team) {
+  return Astro.redirect('/');
+}
+---
+
+<AppLayout title={`${team.name} · Pádel Cantabria`}>
+  <div class="mx-auto flex w-full max-w-6xl flex-col gap-8 p-4">
+    <Header teamName={team.name} />
+
+    <main class="flex flex-col gap-6">
+      <h1 class="text-lg font-medium text-foreground">{team.name}</h1>
+    </main>
+  </div>
+</AppLayout>

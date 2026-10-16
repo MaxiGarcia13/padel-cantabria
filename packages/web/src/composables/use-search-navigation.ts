@@ -8,6 +8,7 @@ export function useSearchNavigation() {
     categoryValue: string;
   }): void {
     const path = [
+      'league',
       filters.leagueId,
       filters.genderValue,
       filters.phaseValue,
@@ -19,5 +20,9 @@ export function useSearchNavigation() {
     void navigate(`/${path}`);
   }
 
-  return { search };
+  function searchTeam(teamId: number): void {
+    void navigate(`/team/${encodeURIComponent(String(teamId))}`);
+  }
+
+  return { search, searchTeam };
 }

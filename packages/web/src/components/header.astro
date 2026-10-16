@@ -7,10 +7,13 @@ interface Props {
   gender?: string;
   phase?: string;
   category?: string;
+  teamName?: string;
 }
 
-const { league, gender, phase, category } = Astro.props;
-const isCollapsible = Boolean(league && gender && phase && category);
+const { league, gender, phase, category, teamName } = Astro.props;
+const isCollapsible = Boolean(
+  (league && gender && phase && category) || teamName,
+);
 ---
 
 <header class="w-full max-w-6xl rounded-xl border border-border bg-surface p-4" transition:persist="search-header">
