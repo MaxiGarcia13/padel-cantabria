@@ -35,11 +35,11 @@ Then re-run the full scrape sync below.
 
 Run from the **repo root**. Order matters: each step depends on data from the previous one.
 
-| Script | What it does | When to run |
-|--------|--------------|-------------|
-| `pnpm scrape:leagues` | Scrapes leagues, genders, phases, and categories | First sync, or when league structure changes |
-| `pnpm scrape:teams` | Scrapes teams per category (`Liga_ListadoEquipos`) | After leagues exist; before calendar |
-| `pnpm scrape:calendar` | Scrapes matches and links them to team IDs | After teams exist |
+| Script                 | What it does                                       | When to run                                  |
+| ---------------------- | -------------------------------------------------- | -------------------------------------------- |
+| `pnpm scrape:leagues`  | Scrapes leagues, genders, phases, and categories   | First sync, or when league structure changes |
+| `pnpm scrape:teams`    | Scrapes teams per category (`Liga_ListadoEquipos`) | After leagues exist; before calendar         |
+| `pnpm scrape:calendar` | Scrapes matches and links them to team IDs         | After teams exist                            |
 
 ## Full sync (first time or after schema recreate)
 

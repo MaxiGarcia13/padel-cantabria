@@ -26,10 +26,8 @@ export interface TeamRecord {
   id: number;
   league_id: number;
   gender: string;
-  phase: string;
   category: string;
   name: string;
-  confirmed: number;
 }
 
 export interface MatchRecord {

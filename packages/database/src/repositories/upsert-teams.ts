@@ -8,31 +8,25 @@ function buildUpsertStatement(team: Team): BatchStatement {
         id,
         league_id,
         gender,
-        phase,
         category,
         name,
-        confirmed,
         updated_at
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'))
+      VALUES (?, ?, ?, ?, ?, datetime('now'))
       ON CONFLICT(id)
       DO UPDATE SET
         league_id = excluded.league_id,
         gender = excluded.gender,
-        phase = excluded.phase,
         category = excluded.category,
         name = excluded.name,
-        confirmed = excluded.confirmed,
         updated_at = datetime('now')
     `,
     args: [
       team.id,
       team.league_id,
       team.gender,
-      team.phase,
       team.category,
       team.name,
-      team.confirmed ? 1 : 0,
     ],
   };
 }

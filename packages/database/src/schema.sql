@@ -36,17 +36,12 @@ CREATE TABLE IF NOT EXISTS categories (
 
 CREATE TABLE IF NOT EXISTS teams (
   id INTEGER PRIMARY KEY,
-  league_id INTEGER NOT NULL,
+  league_id INTEGER NOT NULL REFERENCES leagues (id) ON DELETE CASCADE,
   gender TEXT NOT NULL,
-  phase TEXT NOT NULL,
   category TEXT NOT NULL,
   name TEXT NOT NULL,
-  confirmed INTEGER NOT NULL DEFAULT 0,
   updated_at TEXT NOT NULL DEFAULT (datetime('now')),
-  FOREIGN KEY (league_id, gender, phase, category)
-    REFERENCES categories (league_id, gender, phase, value)
-    ON DELETE CASCADE,
-  UNIQUE (league_id, gender, phase, category, name)
+  UNIQUE (league_id, gender, category, name)
 );
 
 CREATE TABLE IF NOT EXISTS matches (

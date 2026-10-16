@@ -1,7 +1,7 @@
-import type { CategoryKey } from './match.js';
-
-export interface Team extends CategoryKey {
+export interface Team {
   id: number;
+  league_id: number;
+  gender: string;
+  category: string;
   name: string;
-  confirmed: boolean;
 }

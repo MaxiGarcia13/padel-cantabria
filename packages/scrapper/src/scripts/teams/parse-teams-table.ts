@@ -30,14 +30,10 @@ export async function parseTeamsTable(
       const href = detailLink.getAttribute('href') ?? '';
       const idMatch = href.match(/IdEquipo=(\d+)/);
       const name = detailLink.textContent?.trim() ?? null;
-      const confirmed = Boolean(
-        row.querySelector('img[src*="revisado.png"]'),
-      );
 
       teams.push({
         id: idMatch ? Number(idMatch[1]) : null,
         name,
-        confirmed,
       });
     }
 
@@ -51,10 +47,11 @@ export async function parseTeamsTable(
 
     return [
       {
-        ...category,
         id: raw.id,
+        league_id: category.league_id,
+        gender: category.gender,
+        category: category.category,
         name: raw.name,
-        confirmed: raw.confirmed,
       },
     ];
   });
