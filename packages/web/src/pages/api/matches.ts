@@ -18,12 +18,26 @@ export const GET: APIRoute = async ({ url }) => {
     return jsonApiError(400);
   }
 
+  const teamParam = url.searchParams.get('team');
+  let teamId: number | undefined;
+
+  if (teamParam != null) {
+    teamId = Number(teamParam);
+
+    if (!Number.isFinite(teamId)) {
+      return jsonApiError(400);
+    }
+  }
+
   try {
     const db = createClient({
       url: TURSO_URL,
       authToken: TURSO_AUTH_TOKEN,
     });
-    const matches = await db.getMatches(category);
+    const matches
+      = teamId != null
+        ? await db.getTeamMatches(teamId, category)
+        : await db.getMatches(category);
 
     return Response.json(matches);
   } catch (error) {

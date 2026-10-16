@@ -10,12 +10,14 @@ import MatchRow from './match-row.vue';
 
 const props = defineProps<{
   category: CategoryKey;
+  teamId?: number;
 }>();
 
 const category = toRef(props, 'category');
+const teamId = toRef(props, 'teamId');
 const isHydrated = useHydrated();
 const { data: leagues } = useLeagues();
-const { data: matches, isPending, isError } = useMatches(category);
+const { data: matches, isPending, isError } = useMatches(category, teamId);
 
 const showSkeleton = computed(() => !isHydrated.value || isPending.value);
 

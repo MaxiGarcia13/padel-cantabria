@@ -45,7 +45,6 @@ const {
   data: summary,
   isPending: isSummaryPending,
   isError,
-  error,
 } = useTeamSummary(
   props.team.id,
   selectedPhase,
@@ -77,19 +76,19 @@ const standingsHref = computed(() =>
   selectedPhase.value ? buildCategoryPath(categoryKey.value) : '#',
 );
 
-const calendarHref = computed(() =>
-  selectedPhase.value ? `${buildCategoryPath(categoryKey.value)}/calendar` : '#',
-);
-
-const errorMessage = computed(() => {
-  if (!isError.value) {
-    return null;
+const calendarHref = computed(() => {
+  if (!selectedPhase.value) {
+    return '#';
   }
 
-  return error.value instanceof Error
-    ? error.value.message
-    : 'Error inesperado';
+  const params = new URLSearchParams({ team: String(props.team.id) });
+
+  return `${buildCategoryPath(categoryKey.value)}/calendar?${params}`;
 });
+
+const errorMessage = computed(() =>
+  isError.value ? 'No se pudo cargar la información del equipo' : null,
+);
 
 const isPending = computed(
   () => isPhasesPending.value || (Boolean(selectedPhase.value) && isSummaryPending.value),

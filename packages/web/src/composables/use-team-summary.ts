@@ -30,17 +30,24 @@ export function useTeamSummary(
     () => ['team-summary', toValue(teamId), toValue(phase)] as const,
   );
 
+  const matchingInitialData = computed(() => {
+    if (!initial || toValue(phase) !== initial.phase) {
+      return undefined;
+    }
+
+    return initial.data;
+  });
+
   return useQuery({
     queryKey,
     queryFn: () => fetchTeamSummary(toValue(teamId), toValue(phase)),
-    enabled: computed(() => toValue(phase).trim().length > 0),
+    // Relative /api fetches have no origin in Node; rely on initialData during SSR.
+    enabled: computed(
+      () => !import.meta.env.SSR && toValue(phase).trim().length > 0,
+    ),
     staleTime: 1000 * 60 * 5,
-    initialData: () => {
-      if (initial && toValue(phase) === initial.phase) {
-        return initial.data;
-      }
-
-      return undefined;
-    },
+    initialData: () => matchingInitialData.value,
+    initialDataUpdatedAt: () =>
+      matchingInitialData.value != null ? Date.now() : undefined,
   });
 }

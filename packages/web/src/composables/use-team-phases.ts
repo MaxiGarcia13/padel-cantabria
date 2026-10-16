@@ -27,7 +27,10 @@ export function useTeamPhases(
   return useQuery({
     queryKey,
     queryFn: () => fetchTeamPhases(toValue(teamId)),
+    // Relative /api fetches have no origin in Node; rely on initialData during SSR.
+    enabled: computed(() => !import.meta.env.SSR),
     staleTime: 24 * 60 * 60 * 1000,
     initialData,
+    initialDataUpdatedAt: initialData != null ? Date.now() : undefined,
   });
 }

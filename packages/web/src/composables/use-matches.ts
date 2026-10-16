@@ -3,13 +3,21 @@ import type { MaybeRefOrGetter } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { computed, toValue } from 'vue';
 
-async function fetchMatches(category: CategoryKey): Promise<Match[]> {
+async function fetchMatches(
+  category: CategoryKey,
+  teamId?: number,
+): Promise<Match[]> {
   const params = new URLSearchParams({
     league: String(category.league_id),
     gender: category.gender,
     phase: category.phase,
     category: category.category,
   });
+
+  if (teamId != null) {
+    params.set('team', String(teamId));
+  }
+
   const response = await fetch(`/api/matches?${params}`);
 
   if (!response.ok) {
@@ -23,7 +31,10 @@ async function fetchMatches(category: CategoryKey): Promise<Match[]> {
   return response.json() as Promise<Match[]>;
 }
 
-export function useMatches(category: MaybeRefOrGetter<CategoryKey>) {
+export function useMatches(
+  category: MaybeRefOrGetter<CategoryKey>,
+  teamId?: MaybeRefOrGetter<number | undefined>,
+) {
   const queryKey = computed(() => {
     const value = toValue(category);
 
@@ -33,12 +44,13 @@ export function useMatches(category: MaybeRefOrGetter<CategoryKey>) {
       value.gender,
       value.phase,
       value.category,
+      toValue(teamId) ?? null,
     ] as const;
   });
 
   return useQuery({
     queryKey,
-    queryFn: () => fetchMatches(toValue(category)),
+    queryFn: () => fetchMatches(toValue(category), toValue(teamId)),
     staleTime: 1000 * 60 * 5,
   });
 }

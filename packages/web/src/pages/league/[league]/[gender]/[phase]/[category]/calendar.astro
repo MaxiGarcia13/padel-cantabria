@@ -13,6 +13,10 @@ if (!categoryKey) {
   return Astro.redirect('/');
 }
 
+const teamParam = Astro.url.searchParams.get('team');
+const parsedTeamId = teamParam != null ? Number(teamParam) : undefined;
+const teamId = parsedTeamId != null && Number.isFinite(parsedTeamId) ? parsedTeamId : undefined;
+
 const { league, gender, phase, category } = Astro.params;
 ---
 
@@ -23,7 +27,7 @@ const { league, gender, phase, category } = Astro.params;
     <BackButton client:load />
     <main class="flex flex-col gap-6">
       <h1 class="text-lg font-medium text-foreground">Calendario</h1>
-      <MatchesByDate client:load category={categoryKey} />
+      <MatchesByDate client:load category={categoryKey} teamId={teamId} />
     </main>
   </div>
 </AppLayout>
