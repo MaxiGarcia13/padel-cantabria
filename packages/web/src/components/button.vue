@@ -27,9 +27,9 @@ const variantClassName: Record<NonNullable<typeof props.variant>, string> = {
 };
 
 const sizeClassName: Record<NonNullable<typeof props.size>, string> = {
-  default: 'px-6 py-2 font-medium',
-  sm: 'px-4 py-2 text-sm',
-  icon: 'size-10',
+  'default': 'px-6 py-2 font-medium',
+  'sm': 'px-4 py-2 text-sm',
+  'icon': 'size-10',
   'icon-sm': 'size-8',
 };
 
