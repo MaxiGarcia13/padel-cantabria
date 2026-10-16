@@ -14,7 +14,7 @@ const emit = defineEmits<{
   select: [team: Team];
 }>();
 
-const SEARCH_DELAY_MS = 300;
+const SEARCH_DELAY_MS = 500;
 
 const query = defineModel<string>({ default: '' });
 const searchQuery = ref(query.value.trim());
@@ -27,6 +27,13 @@ const applySearch = debounce((value: string) => {
 watch(
   query,
   (value) => {
+    const trimmed = value.trim();
+
+    if (!trimmed) {
+      searchQuery.value = '';
+      return;
+    }
+
     void applySearch(value);
   },
   { immediate: true },
@@ -34,13 +41,17 @@ watch(
 
 const { data: teams, isPending, isError } = useSearchTeams(searchQuery);
 
-const items = computed<AutocompleteItem[]>(() =>
-  (teams.value ?? []).map((team) => ({
+const items = computed<AutocompleteItem[]>(() => {
+  if (!query.value.trim()) {
+    return [];
+  }
+
+  return (teams.value ?? []).map((team) => ({
     value: String(team.id),
     label: team.name,
     description: [team.category, team.gender].filter(Boolean).join(' · '),
-  })),
-);
+  }));
+});
 
 watch(
   [() => props.selectedTeamId, teams],

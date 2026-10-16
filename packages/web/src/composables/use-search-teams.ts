@@ -24,10 +24,15 @@ async function fetchSearchTeams(query: string): Promise<Team[]> {
 }
 
 export function useSearchTeams(query: MaybeRefOrGetter<string>) {
-  const queryKey = computed(() => ['teams', 'search', toValue(query)] as const);
+  const normalizedQuery = computed(() => toValue(query).trim());
+  const queryKey = computed(
+    () => ['teams', 'search', normalizedQuery.value] as const,
+  );
 
   return useQuery({
     queryKey,
-    queryFn: () => fetchSearchTeams(toValue(query)),
+    queryFn: () => fetchSearchTeams(normalizedQuery.value),
+    enabled: computed(() => normalizedQuery.value.length > 0),
+    staleTime: 1000 * 60 * 5,
   });
 }

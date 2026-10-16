@@ -25,9 +25,14 @@ const isPage = Boolean((league && gender && phase && category) || teamName);
     <div class="flex min-w-0 items-center gap-2">
       {isPage && <BackButton client:load />}
 
-      <a href="/" class="flex min-w-0 items-center gap-2 text-foreground no-underline">
+      <a
+        href="/"
+        class="flex min-w-0 items-center gap-2 text-foreground no-underline"
+      >
         <BrandIcon class="size-6 shrink-0 text-foreground" />
-        <span class="truncate text-lg font-semibold">Liga Cantabria de Pádel</span>
+        <span class="truncate text-lg font-semibold">
+          Liga Cantabria de Pádel
+        </span>
       </a>
     </div>
 
@@ -35,12 +40,12 @@ const isPage = Boolean((league && gender && phase && category) || teamName);
       <div class="min-w-0 max-w-md flex-1">
         <Searcher
           client:load
+          variant="header"
           initialLeagueId={league}
           initialGenderValue={gender}
           initialPhaseValue={phase}
           initialCategoryValue={category}
           resumeLabel={teamName}
-          collapsible
         />
       </div>
     )}
