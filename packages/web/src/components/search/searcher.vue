@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, useTemplateRef } from 'vue';
+import Button from '@/components/button.vue';
 import Dialog from '@/components/dialog.vue';
 import ZoomIcon from '@/components/icons/zoom-icon.vue';
 import { useLeagues } from '@/composables/use-leagues';
@@ -58,16 +59,18 @@ function closeDialog(): void {
   />
 
   <template v-else>
-    <button
+    <Button
       type="button"
-      class="flex w-full min-w-0 items-center gap-2 rounded-xl border border-border px-4 py-2 text-left transition-colors hover:bg-surface"
+      variant="outline"
+      size="sm"
+      class="w-full min-w-0 justify-between gap-2 text-left"
       @click="openDialog"
     >
-      <span class="min-w-0 flex-1 truncate text-sm text-foreground">
+      <span class="min-w-0 flex-1 truncate text-foreground">
         {{ summaryLabel }}
       </span>
       <ZoomIcon class="size-5 shrink-0 text-muted" />
-    </button>
+    </Button>
 
     <Dialog ref="dialog">
       <template #header>

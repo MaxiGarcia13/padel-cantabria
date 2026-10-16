@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { Team } from '@padel-cantabria/database';
 import { computed, ref, watch } from 'vue';
+import Button from '@/components/button.vue';
+import ChevronDownIcon from '@/components/icons/chevron-down-icon.vue';
 import { useLeagues } from '@/composables/use-leagues';
 import { useSearchFilters } from '@/composables/use-search-filters';
 import { useSearchNavigation } from '@/composables/use-search-navigation';
@@ -113,43 +115,27 @@ function onSearchFilters(): void {
       </div>
 
       <div class="flex shrink-0 items-center gap-2">
-        <button
+        <Button
           type="submit"
-          class="rounded-xl bg-primary px-6 py-2 font-medium text-primary-foreground disabled:cursor-not-allowed disabled:opacity-40"
           :disabled="!canSearchTeam"
         >
           Buscar
-        </button>
+        </Button>
 
-        <button
+        <Button
           type="button"
-          class="inline-flex size-10 items-center justify-center rounded-xl border border-border text-muted transition-colors hover:text-foreground"
+          variant="outline"
+          size="icon"
+          class="text-muted hover:text-foreground"
           :aria-expanded="filtersExpanded"
           aria-label="Mostrar filtros"
           @click="toggleFilters"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+          <ChevronDownIcon
             class="size-6 transition-transform"
             :class="{ 'rotate-180': filtersExpanded }"
-            aria-hidden="true"
-          >
-            <path
-              stroke="none"
-              d="M0 0h24v24H0z"
-              fill="none"
-            />
-            <path d="M6 9l6 6l6 -6" />
-          </svg>
-        </button>
+          />
+        </Button>
       </div>
     </form>
 
@@ -208,13 +194,13 @@ function onSearchFilters(): void {
           />
         </div>
 
-        <button
+        <Button
           type="submit"
-          class="w-full shrink-0 rounded-xl bg-primary px-6 py-2 font-medium text-primary-foreground disabled:cursor-not-allowed disabled:opacity-40 lg:w-auto"
+          class="w-full lg:w-auto"
           :disabled="!canSearch"
         >
           Buscar
-        </button>
+        </Button>
       </form>
     </template>
   </div>
