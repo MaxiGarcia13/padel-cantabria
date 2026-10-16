@@ -2,6 +2,7 @@ import type { Connection } from '@tursodatabase/serverless';
 import type { SearchTeamsParams } from './repositories/search-teams.js';
 import type { League } from './types/league.js';
 import type { CategoryKey, MatchWrite } from './types/match.js';
+import type { TeamPlayer } from './types/team-player.js';
 import type {
   TeamStanding,
   TeamWithStandings,
@@ -14,11 +15,13 @@ import { getMatches } from './repositories/get-matches.js';
 import { getTeamById } from './repositories/get-team-by-id.js';
 import { getTeamMatches } from './repositories/get-team-matches.js';
 import { getTeamPhases } from './repositories/get-team-phases.js';
+import { getTeamPlayers } from './repositories/get-team-players.js';
 import { getTeamStanding } from './repositories/get-team-standing.js';
 import { getTeams } from './repositories/get-teams.js';
 import { searchTeams } from './repositories/search-teams.js';
 import { upsertLeagues } from './repositories/upsert-leagues.js';
 import { upsertMatches } from './repositories/upsert-matches.js';
+import { upsertTeamPlayers } from './repositories/upsert-team-players.js';
 import { upsertTeamStandings } from './repositories/upsert-team-standings.js';
 import { upsertTeams } from './repositories/upsert-teams.js';
 
@@ -48,6 +51,14 @@ export function createClient(params: TursoConfig) {
       : getTeams(connection, category);
   }
 
+  function clientGetTeamPlayers(): Promise<TeamPlayer[]>;
+  function clientGetTeamPlayers(teamId: number): Promise<TeamPlayer[]>;
+  function clientGetTeamPlayers(teamId?: number): Promise<TeamPlayer[]> {
+    return teamId === undefined
+      ? getTeamPlayers(connection)
+      : getTeamPlayers(connection, teamId);
+  }
+
   return {
     getLeagues: () => getLeagues(connection),
     getCategories: () => getCategories(connection),
@@ -59,12 +70,15 @@ export function createClient(params: TursoConfig) {
       getTeamStanding(connection, teamId, category),
     getTeamMatches: (teamId: number, category: CategoryKey) =>
       getTeamMatches(connection, teamId, category),
+    getTeamPlayers: clientGetTeamPlayers,
     getMatches: (category: CategoryKey) => getMatches(connection, category),
 
     upsertLeagues: (leagues: League[]) => upsertLeagues(leagues, connection),
     upsertTeams: (teams: Team[]) => upsertTeams(teams, connection),
     upsertTeamStandings: (standings: TeamStanding[]) =>
       upsertTeamStandings(standings, connection),
+    upsertTeamPlayers: (players: TeamPlayer[]) =>
+      upsertTeamPlayers(players, connection),
     upsertMatches: (matches: MatchWrite[]) => upsertMatches(matches, connection),
   };
 }

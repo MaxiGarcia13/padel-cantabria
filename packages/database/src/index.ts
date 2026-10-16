@@ -14,4 +14,5 @@ export type {
   TeamWithStandings,
 } from './types/team-standings.js';
 export { EMPTY_TEAM_STANDINGS } from './types/team-standings.js';
+export type { TeamPlayer } from './types/team-player.js';
 export type { Team } from './types/team.js';
