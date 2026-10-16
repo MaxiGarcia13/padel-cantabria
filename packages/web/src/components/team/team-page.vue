@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Team } from '@padel-cantabria/database';
+import type { League, Team } from '@padel-cantabria/database';
+import type { TeamSummaryResponse } from '@/types/team-summary';
 import { computed, ref, watch } from 'vue';
 import Select from '@/components/select.vue';
-import { useLeagues } from '@/composables/use-leagues';
 import { useTeamPhases } from '@/composables/use-team-phases';
 import { useTeamSummary } from '@/composables/use-team-summary';
 import {
@@ -16,12 +16,16 @@ import TeamStandingCard from './team-standing-card.vue';
 
 const props = defineProps<{
   team: Team;
+  leagues: League[];
   initialPhases: string[];
+  initialSummary: TeamSummaryResponse | null;
 }>();
 
 const selectedPhase = ref(props.initialPhases[0] ?? '');
-const { data: leagues } = useLeagues();
-const { data: phases, isPending: isPhasesPending } = useTeamPhases(props.team.id);
+const { data: phases, isPending: isPhasesPending } = useTeamPhases(
+  props.team.id,
+  props.initialPhases,
+);
 
 watch(
   phases,
@@ -42,15 +46,21 @@ const {
   isPending: isSummaryPending,
   isError,
   error,
-} = useTeamSummary(props.team.id, selectedPhase);
+} = useTeamSummary(
+  props.team.id,
+  selectedPhase,
+  props.initialSummary && props.initialPhases[0]
+    ? { phase: props.initialPhases[0], data: props.initialSummary }
+    : undefined,
+);
 
 const displayLabels = computed(() =>
-  getTeamDisplayLabels(leagues.value, props.team),
+  getTeamDisplayLabels(props.leagues, props.team),
 );
 
 const phaseOptions = computed(() =>
   getPhaseOptions(
-    leagues.value,
+    props.leagues,
     props.team,
     phases.value ?? props.initialPhases,
   ),

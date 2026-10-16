@@ -5,6 +5,7 @@ import BackButton from '@/components/back-button.vue';
 import Header from '@/components/header.astro';
 import TeamPage from '@/components/team/team-page.vue';
 import AppLayout from '@/layouts/app-layout.astro';
+import { loadTeamSummary } from '@/server/load-team-summary';
 
 export const prerender = false;
 
@@ -19,13 +20,15 @@ const db = createClient({
   authToken: TURSO_AUTH_TOKEN,
 });
 
-const team = await db.getTeamById(teamId);
+const [team, leagues] = await Promise.all([db.getTeamById(teamId), db.getLeagues()]);
 
 if (!team) {
   return Astro.redirect('/');
 }
 
 const initialPhases = await db.getTeamPhases(teamId);
+const initialPhase = initialPhases[0] ?? '';
+const initialSummary = initialPhase ? await loadTeamSummary(db, team, initialPhase, leagues) : null;
 ---
 
 <AppLayout title={`${team.name} · Pádel Cantabria`}>
@@ -33,14 +36,20 @@ const initialPhases = await db.getTeamPhases(teamId);
     teamName={team.name}
     league={String(team.league_id)}
     gender={team.gender}
-    phase={initialPhases[0]}
+    phase={initialPhase}
     category={team.category}
   />
 
   <div class="mx-auto flex w-full max-w-6xl flex-col gap-4 p-4" transition:animate="fade">
     <BackButton client:load />
     <main>
-      <TeamPage client:load team={team} initialPhases={initialPhases} />
+      <TeamPage
+        client:load
+        team={team}
+        leagues={leagues}
+        initialPhases={initialPhases}
+        initialSummary={initialSummary}
+      />
     </main>
   </div>
 </AppLayout>

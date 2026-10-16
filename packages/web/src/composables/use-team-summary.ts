@@ -24,6 +24,7 @@ async function fetchTeamSummary(
 export function useTeamSummary(
   teamId: MaybeRefOrGetter<number>,
   phase: MaybeRefOrGetter<string>,
+  initial?: { phase: string; data: TeamSummaryResponse },
 ) {
   const queryKey = computed(
     () => ['team-summary', toValue(teamId), toValue(phase)] as const,
@@ -34,5 +35,12 @@ export function useTeamSummary(
     queryFn: () => fetchTeamSummary(toValue(teamId), toValue(phase)),
     enabled: computed(() => toValue(phase).trim().length > 0),
     staleTime: 1000 * 60 * 5,
+    initialData: () => {
+      if (initial && toValue(phase) === initial.phase) {
+        return initial.data;
+      }
+
+      return undefined;
+    },
   });
 }

@@ -18,12 +18,16 @@ async function fetchTeamPhases(teamId: number): Promise<string[]> {
   return body.phases;
 }
 
-export function useTeamPhases(teamId: MaybeRefOrGetter<number>) {
+export function useTeamPhases(
+  teamId: MaybeRefOrGetter<number>,
+  initialData?: string[],
+) {
   const queryKey = computed(() => ['team-phases', toValue(teamId)] as const);
 
   return useQuery({
     queryKey,
     queryFn: () => fetchTeamPhases(toValue(teamId)),
     staleTime: 24 * 60 * 60 * 1000,
+    initialData,
   });
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Team } from '@padel-cantabria/database';
-import { computed, nextTick, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import Button from '@/components/button.vue';
 import ChevronDownIcon from '@/components/icons/chevron-down-icon.vue';
 import XIcon from '@/components/icons/x-icon.vue';
@@ -32,6 +32,7 @@ const { search, searchTeam } = useSearchNavigation();
 
 const teamQuery = ref('');
 const selectedTeam = ref<Team | null>(null);
+const isHydrated = ref(false);
 const hasInitialFilters = Boolean(
   props.initialLeagueId
   && props.initialGenderValue
@@ -39,6 +40,14 @@ const hasInitialFilters = Boolean(
   && props.initialCategoryValue,
 );
 const filtersExpanded = ref(hasInitialFilters);
+
+onMounted(() => {
+  isHydrated.value = true;
+});
+
+const showFiltersSkeleton = computed(
+  () => !isHydrated.value || isPending.value,
+);
 
 const {
   leagueId,
@@ -160,7 +169,7 @@ async function onSearchFilters(): Promise<void> {
         o
       </p>
 
-      <SearcherSkeleton v-if="isPending" />
+      <SearcherSkeleton v-if="showFiltersSkeleton" />
 
       <p
         v-else-if="errorMessage"
