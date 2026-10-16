@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { createClient } from '@padel-cantabria/database';
 import { TURSO_AUTH_TOKEN, TURSO_URL } from 'astro:env/server';
+import { jsonApiError } from '@/server/json-api-error';
 import { parseCategoryParams } from '@/server/load-category-matches';
 
 export const prerender = false;
@@ -14,10 +15,7 @@ export const GET: APIRoute = async ({ url }) => {
   });
 
   if (!category) {
-    return Response.json(
-      { error: 'Missing or invalid league, gender, phase, or category' },
-      { status: 400 },
-    );
+    return jsonApiError(400);
   }
 
   try {
@@ -29,9 +27,6 @@ export const GET: APIRoute = async ({ url }) => {
 
     return Response.json(matches);
   } catch (error) {
-    const message
-      = error instanceof Error ? error.message : 'Failed to load matches';
-
-    return Response.json({ error: message }, { status: 500 });
+    return jsonApiError(500, error);
   }
 };
