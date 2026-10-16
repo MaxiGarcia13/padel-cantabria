@@ -1,5 +1,4 @@
 ---
-import BackButton from './back-button.vue';
 import { BrandIcon } from './icons';
 import { Searcher } from './search';
 
@@ -21,14 +20,10 @@ const isPage = Boolean((league && gender && phase && category) || teamName);
     isPage && 'flex-col sm:flex-row sm:justify-between',
   ]}
 >
-  <div class="flex min-w-0 items-center gap-2">
-    {isPage && <BackButton client:load />}
-
-    <a href="/" class="flex min-w-0 items-center gap-2 text-foreground no-underline">
-      <BrandIcon class="size-6 shrink-0 text-foreground" />
-      <span class="truncate text-lg font-semibold">Liga Cantabria de Pádel</span>
-    </a>
-  </div>
+  <a href="/" class="flex min-w-0 items-center gap-2 text-foreground no-underline">
+    <BrandIcon class="size-6 shrink-0 text-foreground" />
+    <span class="truncate text-lg font-semibold">Liga Cantabria de Pádel</span>
+  </a>
 
   {isPage && (
     <div class="min-w-0 max-w-md flex-1 w-full">

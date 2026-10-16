@@ -17,10 +17,12 @@ function goBack(): void {
   <Button
     type="button"
     variant="ghost"
-    size="icon-sm"
+    size="sm"
     aria-label="Volver"
+    class="w-fit justify-start! gap-1 pl-0!"
     @click="goBack"
   >
-    <ChevronLeftIcon class="size-6" />
+    <ChevronLeftIcon class="size-5 shrink-0" />
+    Volver
   </Button>
 </template>

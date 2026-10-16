@@ -1,6 +1,7 @@
 ---
 import { createClient } from '@padel-cantabria/database';
 import { TURSO_AUTH_TOKEN, TURSO_URL } from 'astro:env/server';
+import BackButton from '@/components/back-button.vue';
 import Header from '@/components/header.astro';
 import TeamPage from '@/components/team/team-page.vue';
 import AppLayout from '@/layouts/app-layout.astro';
@@ -36,7 +37,8 @@ const initialPhases = await db.getTeamPhases(teamId);
     category={team.category}
   />
 
-  <div class="mx-auto flex w-full max-w-6xl flex-col gap-8 p-4" transition:animate="fade">
+  <div class="mx-auto flex w-full max-w-6xl flex-col gap-4 p-4" transition:animate="fade">
+    <BackButton client:load />
     <main>
       <TeamPage
         client:load
