@@ -1,12 +1,32 @@
 <script setup lang="ts">
-import { useTemplateRef } from 'vue';
+import { computed, useTemplateRef } from 'vue';
 import Button from '@/components/button.vue';
 import XIcon from '@/components/icons/x-icon.vue';
 import { useClickOutside } from '@/composables/use-click-outside';
 
+const props = withDefaults(
+  defineProps<{
+    variant?: 'default' | 'plain';
+  }>(),
+  {
+    variant: 'default',
+  },
+);
+
 const dialogRef = useTemplateRef<HTMLDialogElement>('dialog');
 
 useClickOutside(dialogRef, close);
+
+const isPlain = computed(() => props.variant === 'plain');
+
+const dialogClassName = computed(() =>
+  [
+    'm-auto box-border max-h-[90dvh] w-[calc(100%-2rem)] max-w-3xl overflow-y-auto text-foreground backdrop:bg-background/80 backdrop:backdrop-blur-sm',
+    isPlain.value
+      ? 'border-0 bg-transparent p-0 shadow-none'
+      : 'rounded-xl border border-border bg-surface p-6 shadow-lg',
+  ].join(' '),
+);
 
 function showModal() {
   dialogRef.value?.showModal();
@@ -25,9 +45,12 @@ defineExpose({
 <template>
   <dialog
     ref="dialog"
-    class="m-auto box-border max-h-[90dvh] w-[calc(100%-2rem)] max-w-3xl overflow-y-auto rounded-xl border border-border bg-surface p-6 text-foreground shadow-lg backdrop:bg-background/80 backdrop:backdrop-blur-sm"
+    :class="dialogClassName"
   >
-    <header class="mb-4 flex items-start justify-between gap-4">
+    <header
+      v-if="!isPlain"
+      class="mb-4 flex items-start justify-between gap-4"
+    >
       <div
         v-if="$slots.header"
         class="min-w-0 flex-1 text-lg font-medium"

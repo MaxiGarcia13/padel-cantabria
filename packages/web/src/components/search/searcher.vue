@@ -57,17 +57,18 @@ function closeDialog(): void {
       <ZoomIcon class="size-5 shrink-0 text-muted" />
     </Button>
 
-    <Dialog ref="dialog">
-      <template #header>
-        Buscar
-      </template>
-
+    <Dialog
+      ref="dialog"
+      variant="plain"
+    >
       <SearcherForm
+        closable
         :initial-league-id="initialLeagueId"
         :initial-gender-value="initialGenderValue"
         :initial-phase-value="initialPhaseValue"
         :initial-category-value="initialCategoryValue"
         @navigated="closeDialog"
+        @close="closeDialog"
       />
     </Dialog>
   </template>

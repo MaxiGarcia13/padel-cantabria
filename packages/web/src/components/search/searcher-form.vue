@@ -3,6 +3,7 @@ import type { Team } from '@padel-cantabria/database';
 import { computed, nextTick, ref, watch } from 'vue';
 import Button from '@/components/button.vue';
 import ChevronDownIcon from '@/components/icons/chevron-down-icon.vue';
+import XIcon from '@/components/icons/x-icon.vue';
 import { useLeagues } from '@/composables/use-leagues';
 import { useSearchFilters } from '@/composables/use-search-filters';
 import { useSearchNavigation } from '@/composables/use-search-navigation';
@@ -18,10 +19,12 @@ const props = defineProps<{
   initialGenderValue?: string;
   initialPhaseValue?: string;
   initialCategoryValue?: string;
+  closable?: boolean;
 }>();
 
 const emit = defineEmits<{
   navigated: [];
+  close: [];
 }>();
 
 const { data: leagues, isPending, isError, error } = useLeagues();
@@ -152,6 +155,18 @@ async function onSearchFilters(): Promise<void> {
             class="size-6 transition-transform"
             :class="{ 'rotate-180': filtersExpanded }"
           />
+        </Button>
+
+        <Button
+          v-if="closable"
+          type="button"
+          variant="outline"
+          size="icon"
+          class="text-muted hover:text-foreground"
+          aria-label="Cerrar"
+          @click="emit('close')"
+        >
+          <XIcon class="size-5" />
         </Button>
       </div>
     </form>
