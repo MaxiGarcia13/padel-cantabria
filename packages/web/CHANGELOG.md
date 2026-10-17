@@ -1,3 +1,20 @@
+## 0.0.3 (2026-10-17)
+
+### 🧹 Chores
+
+- Rename start script to preview in package.json files ([e896b52](https://github.com/MaxiGarcia13/padel-cantabria/commit/e896b52))
+- Update ESLint configuration to ignore .astro files ([fc4967f](https://github.com/MaxiGarcia13/padel-cantabria/commit/fc4967f))
+- Update dependencies and configuration for Vercel deployment ([817d8f0](https://github.com/MaxiGarcia13/padel-cantabria/commit/817d8f0))
+- Update TypeScript configuration and repository functions ([38f1a5d](https://github.com/MaxiGarcia13/padel-cantabria/commit/38f1a5d))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/database to 0.0.2
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.2 (2026-10-17)
 
 ### 🚀 Features

@@ -1,3 +1,15 @@
+## 0.0.2 (2026-10-17)
+
+### 🧹 Chores
+
+- Update AGENTS.md and pnpm-workspace.yaml for formatting consistency ([cdd853e](https://github.com/MaxiGarcia13/padel-cantabria/commit/cdd853e))
+- Update package.json scripts and remove outDir from tsconfig.json ([a8b855c](https://github.com/MaxiGarcia13/padel-cantabria/commit/a8b855c))
+- Update TypeScript configuration and repository functions ([38f1a5d](https://github.com/MaxiGarcia13/padel-cantabria/commit/38f1a5d))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.1 (2026-10-17)
 
 ### 🚀 Features
