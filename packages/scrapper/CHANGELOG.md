@@ -1,3 +1,18 @@
+## 0.0.5 (2026-10-17)
+
+### 🚀 Features
+
+- Add gender parsing functionality for player filtering ([bd09c9a](https://github.com/MaxiGarcia13/padel-cantabria/commit/bd09c9a))
+- Implement delay functionality for scraping requests ([dc9b1c0](https://github.com/MaxiGarcia13/padel-cantabria/commit/dc9b1c0))
+
+### 📚 Documentation
+
+- Update README with optional filters and GitHub Actions schedule ([04dce5e](https://github.com/MaxiGarcia13/padel-cantabria/commit/04dce5e))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.4 (2026-10-17)
 
 ### 🧱 Updated Dependencies
