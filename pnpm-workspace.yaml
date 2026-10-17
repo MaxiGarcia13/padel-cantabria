@@ -4,11 +4,16 @@ trustPolicy: no-downgrade
 trustPolicyExclude:
   - chromium-bidi@157.0.8090-0
   - semver@6.3.1
+  - "@vercel/functions@3.10.1"
+  - "@vercel/routing-utils@6.6.0"
+  - "@vercel/oidc@4.0.1"
+  - "@vercel/cli-config@0.3.1"
+  - "@vercel/cli-exec@1.0.1"
 
 shellEmulator: true
 
 packages:
-  - 'packages/*'
+  - "packages/*"
 
 allowBuilds:
   esbuild: true
