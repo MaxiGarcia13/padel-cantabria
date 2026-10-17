@@ -1,3 +1,22 @@
+## 0.0.5 (2026-10-17)
+
+### 🚀 Features
+
+- Add match components and functionality for match details page ([f7539c7](https://github.com/MaxiGarcia13/padel-cantabria/commit/f7539c7))
+- Update match-row component to use anchor tag for navigation ([859ccb9](https://github.com/MaxiGarcia13/padel-cantabria/commit/859ccb9))
+
+### 🔄 Refactors
+
+- Simplify footer layout and styling ([2f1cab6](https://github.com/MaxiGarcia13/padel-cantabria/commit/2f1cab6))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/database to 0.0.3
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.4 (2026-10-17)
 
 ### 🚀 Features

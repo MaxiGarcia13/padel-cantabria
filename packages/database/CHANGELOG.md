@@ -1,3 +1,18 @@
+## 0.0.3 (2026-10-17)
+
+### 🚀 Features
+
+- Update getMatchById function to include category parameter ([d282f3c](https://github.com/MaxiGarcia13/padel-cantabria/commit/d282f3c))
+- Add getMatchById function to retrieve match details ([a1a49d0](https://github.com/MaxiGarcia13/padel-cantabria/commit/a1a49d0))
+
+### 🔄 Refactors
+
+- Remove unnecessary blank line in createClient function ([bdac34f](https://github.com/MaxiGarcia13/padel-cantabria/commit/bdac34f))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.2 (2026-10-17)
 
 ### 🧹 Chores
