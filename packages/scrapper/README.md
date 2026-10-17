@@ -11,11 +11,20 @@ TURSO_URL=...
 TURSO_AUTH_TOKEN=...
 ```
 
-Optional: limit scrapers to specific leagues (comma-separated federation IDs):
+Optional filters and politeness settings:
 
 ```env
+# Limit scrapers to specific leagues (comma-separated federation IDs)
 LEAGUE_IDS=28942
+
+# Players only: limit to federation gender values (same strings as teams.gender)
+SCRAPE_GENDERS=M
+
+# Delay in ms between federation page requests (default 1500)
+SCRAPE_DELAY_MS=1500
 ```
+
+`SCRAPE_DELAY_MS` applies to teams, players, and calendar scrapers. `SCRAPE_GENDERS` applies only to `scrape:players` (empty = all genders).
 
 Apply the schema first (from repo root):
 
@@ -65,3 +74,21 @@ Typical refresh when only fixtures changed:
 pnpm scrape:teams
 pnpm scrape:calendar
 ```
+
+## GitHub Actions schedule
+
+Scheduled workflows stagger load on the federation site:
+
+| Workflow              | When (UTC)      | Scope                                 |
+| --------------------- | --------------- | ------------------------------------- |
+| `scrape-players.yml`  | Tuesday 04:00   | Masculine (`SCRAPE_GENDERS_TUESDAY`)  |
+| `scrape-calendar.yml` | Tuesday 05:00   | All categories                        |
+| `scrape-players.yml`  | Wednesday 04:00 | Feminine (`SCRAPE_GENDERS_WEDNESDAY`) |
+
+Set these **repository variables** in GitHub Actions (exact federation gender values from Turso / `#genero`):
+
+- `SCRAPE_GENDERS_TUESDAY` — masculine gender value(s), comma-separated if needed
+- `SCRAPE_GENDERS_WEDNESDAY` — feminine gender value(s)
+- `LEAGUE_IDS` — optional, same as local `.env`
+
+Manual `workflow_dispatch` on players accepts an optional `genders` input (empty = all). Inter-request delay uses the scraper default unless `SCRAPE_DELAY_MS` is passed via prepare-scrape.
