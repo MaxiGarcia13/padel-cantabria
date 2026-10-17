@@ -1,3 +1,13 @@
+## 0.0.7 (2026-10-17)
+
+### 🐞 Fixes
+
+- Center footer content alignment ([44c6b38](https://github.com/MaxiGarcia13/padel-cantabria/commit/44c6b38))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.6 (2026-10-17)
 
 ### 🚀 Features
