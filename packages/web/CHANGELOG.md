@@ -1,3 +1,19 @@
+## 0.0.4 (2026-10-17)
+
+### 🚀 Features
+
+- Implement prefetching in search navigation ([773189c](https://github.com/MaxiGarcia13/padel-cantabria/commit/773189c))
+- Enhance autocomplete and search components with loading states ([3c123df](https://github.com/MaxiGarcia13/padel-cantabria/commit/3c123df))
+- Add loader icon component ([de492c7](https://github.com/MaxiGarcia13/padel-cantabria/commit/de492c7))
+
+### 🔄 Refactors
+
+- Change BackButton and component loading strategies ([91a683a](https://github.com/MaxiGarcia13/padel-cantabria/commit/91a683a))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.3 (2026-10-17)
 
 ### 🧹 Chores
