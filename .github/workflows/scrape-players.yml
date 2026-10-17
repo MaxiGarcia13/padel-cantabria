@@ -2,10 +2,17 @@ name: Scrape Players
 
 on:
   schedule:
-    # Tuesday & Thursday 05:00 Europe/Madrid (CET = UTC+1).
-    # During CEST (UTC+2) this runs at 06:00 local time.
+    # Tuesday 05:00 Europe/Madrid (CET = UTC+1) — masculine.
+    # Wednesday 05:00 Europe/Madrid — feminine.
+    # During CEST (UTC+2) these run at 06:00 local.
     - cron: '0 4 * * 2'
+    - cron: '0 4 * * 3'
   workflow_dispatch:
+    inputs:
+      genders:
+        description: Comma-separated federation gender values (empty = all)
+        required: false
+        default: ''
 
 concurrency:
   group: scrape-players
@@ -26,12 +33,43 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/install
 
+      - name: Resolve gender filter
+        id: gender
+        env:
+          DISPATCH_GENDERS: ${{ inputs.genders }}
+          GENDERS_TUESDAY: ${{ vars.SCRAPE_GENDERS_TUESDAY }}
+          GENDERS_WEDNESDAY: ${{ vars.SCRAPE_GENDERS_WEDNESDAY }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "genders=${DISPATCH_GENDERS}" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          day="$(date -u +%u)"
+          if [ "$day" = "2" ]; then
+            if [ -z "$GENDERS_TUESDAY" ]; then
+              echo "SCRAPE_GENDERS_TUESDAY repo variable is not set" >&2
+              exit 1
+            fi
+            echo "genders=${GENDERS_TUESDAY}" >> "$GITHUB_OUTPUT"
+          elif [ "$day" = "3" ]; then
+            if [ -z "$GENDERS_WEDNESDAY" ]; then
+              echo "SCRAPE_GENDERS_WEDNESDAY repo variable is not set" >&2
+              exit 1
+            fi
+            echo "genders=${GENDERS_WEDNESDAY}" >> "$GITHUB_OUTPUT"
+          else
+            echo "Unexpected schedule weekday: ${day}" >&2
+            exit 1
+          fi
+
       - name: Prepare scrape
         uses: ./.github/actions/prepare-scrape
         with:
           turso_url: ${{ secrets.TURSO_URL }}
           turso_auth_token: ${{ secrets.TURSO_AUTH_TOKEN }}
           league_ids: ${{ vars.LEAGUE_IDS }}
+          scrape_genders: ${{ steps.gender.outputs.genders }}
 
       - name: Scrape players
         run: pnpm scrape:players
