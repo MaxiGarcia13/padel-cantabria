@@ -1,3 +1,17 @@
+## 0.0.2 (2026-10-17)
+
+### 🚀 Features
+
+- Add footer component with GitHub links and repository information ([5ce7774](https://github.com/MaxiGarcia13/padel-cantabria/commit/5ce7774))
+
+### 📚 Documentation
+
+- Enhance README and footer component for clarity and usability ([625b7a8](https://github.com/MaxiGarcia13/padel-cantabria/commit/625b7a8))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.1 (2026-10-17)
 
 ### 🚀 Features
