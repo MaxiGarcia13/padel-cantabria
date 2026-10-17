@@ -12,6 +12,14 @@ inputs:
     description: Optional comma-separated federation league IDs
     required: false
     default: ''
+  scrape_genders:
+    description: Optional comma-separated federation gender values to scrape
+    required: false
+    default: ''
+  scrape_delay_ms:
+    description: Optional delay in ms between federation page requests
+    required: false
+    default: ''
 
 runs:
   using: composite
@@ -22,11 +30,15 @@ runs:
         TURSO_URL: ${{ inputs.turso_url }}
         TURSO_AUTH_TOKEN: ${{ inputs.turso_auth_token }}
         LEAGUE_IDS: ${{ inputs.league_ids }}
+        SCRAPE_GENDERS: ${{ inputs.scrape_genders }}
+        SCRAPE_DELAY_MS: ${{ inputs.scrape_delay_ms }}
       run: |
         {
           echo "TURSO_URL=${TURSO_URL}"
           echo "TURSO_AUTH_TOKEN=${TURSO_AUTH_TOKEN}"
           echo "LEAGUE_IDS=${LEAGUE_IDS}"
+          echo "SCRAPE_GENDERS=${SCRAPE_GENDERS}"
+          echo "SCRAPE_DELAY_MS=${SCRAPE_DELAY_MS}"
         } > .env
 
     - name: Install Chrome for Puppeteer
