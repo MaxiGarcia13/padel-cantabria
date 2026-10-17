@@ -1,4 +1,10 @@
+import { prefetch } from 'astro:prefetch';
 import { navigate } from 'astro:transitions/client';
+
+function goTo(path: string): void {
+  prefetch(path);
+  void navigate(path);
+}
 
 export function useSearchNavigation() {
   function search(filters: {
@@ -17,11 +23,11 @@ export function useSearchNavigation() {
       .map((segment) => encodeURIComponent(segment))
       .join('/');
 
-    void navigate(`/${path}`);
+    goTo(`/${path}`);
   }
 
   function searchTeam(teamId: number): void {
-    void navigate(`/team/${encodeURIComponent(String(teamId))}`);
+    goTo(`/team/${encodeURIComponent(String(teamId))}`);
   }
 
   return { search, searchTeam };

@@ -19,6 +19,7 @@ try {
 export default defineConfig({
   output: 'server',
   adapter: vercel(),
+  prefetch: true,
   integrations: [vue({ appEntrypoint: '/src/vue-app' })],
   vite: {
     envDir: rootDir,
