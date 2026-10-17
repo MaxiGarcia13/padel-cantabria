@@ -13,6 +13,8 @@
   "keywords": [],
   "main": "index.js",
   "scripts": {
+    "build": "pnpm --filter @padel-cantabria/web build",
+    "start": "pnpm --filter @padel-cantabria/web start",
     "lint": "eslint . --ignore-pattern 'packages/web/**' && pnpm -r --if-present run lint",
     "lint:fix": "eslint --fix . --ignore-pattern 'packages/web/**' && pnpm -r --if-present run lint:fix",
     "clean": "rm -rf node_modules dist && pnpm -r run clean",
