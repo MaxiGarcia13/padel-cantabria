@@ -3,8 +3,13 @@ import { navigate } from 'astro:transitions/client';
 import Button from '@/components/button.vue';
 import ChevronLeftIcon from '@/components/icons/chevron-left-icon.vue';
 
+function canGoBack(): boolean {
+  const historyIndex = (window.history.state as { index?: number } | null)?.index;
+  return typeof historyIndex === 'number' && historyIndex > 0;
+}
+
 function goBack(): void {
-  if (window.history.length > 1) {
+  if (canGoBack()) {
     window.history.back();
     return;
   }
