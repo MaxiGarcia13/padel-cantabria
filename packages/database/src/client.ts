@@ -76,7 +76,6 @@ export function createClient(params: TursoConfig) {
     getMatchById: (category: CategoryKey, id: number) =>
       getMatchById(connection, category, id),
 
-
     upsertLeagues: (leagues: League[]) => upsertLeagues(leagues, connection),
     upsertTeams: (teams: Team[]) => upsertTeams(teams, connection),
     upsertTeamStandings: (standings: TeamStanding[]) =>
