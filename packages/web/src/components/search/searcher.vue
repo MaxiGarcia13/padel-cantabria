@@ -68,7 +68,6 @@ function closeDialog(): void {
         :initial-gender-value="initialGenderValue"
         :initial-phase-value="initialPhaseValue"
         :initial-category-value="initialCategoryValue"
-        @navigated="closeDialog"
         @close="closeDialog"
       />
     </Dialog>

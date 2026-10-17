@@ -13,6 +13,7 @@ import TeamSearchHistory from './team-search-history.vue';
 
 const props = defineProps<{
   selectedTeamId?: number | null;
+  loading?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -138,6 +139,7 @@ defineExpose({
     placeholder="Buscar equipo"
     :items="items"
     :disabled="isError"
+    :loading="loading"
     @select="onSelect"
   >
     <template

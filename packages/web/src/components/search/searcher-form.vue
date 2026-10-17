@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { Team } from '@padel-cantabria/database';
-import { computed, nextTick, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import Button from '@/components/button.vue';
 import ChevronDownIcon from '@/components/icons/chevron-down-icon.vue';
+import LoaderIcon from '@/components/icons/loader-icon.vue';
 import XIcon from '@/components/icons/x-icon.vue';
 import { useHydrated } from '@/composables/use-hydrated';
 import { useLeagues } from '@/composables/use-leagues';
@@ -24,7 +25,6 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  navigated: [];
   close: [];
 }>();
 
@@ -33,6 +33,7 @@ const { search, searchTeam } = useSearchNavigation();
 
 const teamQuery = ref('');
 const selectedTeam = ref<Team | null>(null);
+const isNavigating = ref(false);
 const isHydrated = useHydrated();
 const hasInitialFilters = Boolean(
   props.initialLeagueId
@@ -82,36 +83,34 @@ function onTeamSelect(team: Team): void {
 }
 
 function toggleFilters(): void {
+  if (isNavigating.value) {
+    return;
+  }
+
   filtersExpanded.value = !filtersExpanded.value;
 }
 
-async function onSearchTeam(): Promise<void> {
-  if (!selectedTeam.value) {
+function onSearchTeam(): void {
+  if (!selectedTeam.value || isNavigating.value) {
     return;
   }
 
-  const teamId = selectedTeam.value.id;
-
-  emit('navigated');
-  await nextTick();
-  searchTeam(teamId);
+  isNavigating.value = true;
+  searchTeam(selectedTeam.value.id);
 }
 
-async function onSearchFilters(): Promise<void> {
-  if (!canSearch.value) {
+function onSearchFilters(): void {
+  if (!canSearch.value || isNavigating.value) {
     return;
   }
 
-  const filters = {
+  isNavigating.value = true;
+  search({
     leagueId: leagueId.value,
     genderValue: genderValue.value,
     phaseValue: phaseValue.value,
     categoryValue: categoryValue.value,
-  };
-
-  emit('navigated');
-  await nextTick();
-  search(filters);
+  });
 }
 </script>
 
@@ -121,6 +120,7 @@ async function onSearchFilters(): Promise<void> {
       <div class="min-w-0 flex-1">
         <TeamAutocomplete
           v-model="teamQuery"
+          :loading="isNavigating"
           @select="onTeamSelect"
         />
       </div>
@@ -131,6 +131,7 @@ async function onSearchFilters(): Promise<void> {
           variant="outline"
           size="icon"
           class="text-muted hover:text-foreground"
+          :disabled="isNavigating"
           :aria-expanded="filtersExpanded"
           aria-label="Mostrar filtros"
           @click="toggleFilters"
@@ -147,6 +148,7 @@ async function onSearchFilters(): Promise<void> {
           variant="outline"
           size="icon"
           class="text-muted hover:text-foreground"
+          :disabled="isNavigating"
           aria-label="Cerrar"
           @click="emit('close')"
         >
@@ -186,35 +188,40 @@ async function onSearchFilters(): Promise<void> {
           <LeagueSelect
             :model-value="leagueId"
             :leagues="leagues"
+            :disabled="isNavigating"
             @update:model-value="onLeagueChange"
           />
 
           <GenderSelect
             :model-value="genderValue"
             :genders="genders"
-            :disabled="!leagueId"
+            :disabled="!leagueId || isNavigating"
             @update:model-value="onGenderChange"
           />
 
           <PhaseSelect
             :model-value="phaseValue"
             :phases="phases"
-            :disabled="!genderValue"
+            :disabled="!genderValue || isNavigating"
             @update:model-value="onPhaseChange"
           />
 
           <CategorySelect
             v-model="categoryValue"
             :categories="categories"
-            :disabled="!phaseValue"
+            :disabled="!phaseValue || isNavigating"
           />
         </div>
 
         <Button
           type="submit"
-          class="w-full lg:w-auto"
-          :disabled="!canSearch"
+          class="w-full gap-2 lg:w-auto"
+          :disabled="!canSearch || isNavigating"
         >
+          <LoaderIcon
+            v-if="isNavigating"
+            class="size-5 animate-spin"
+          />
           Buscar
         </Button>
       </form>

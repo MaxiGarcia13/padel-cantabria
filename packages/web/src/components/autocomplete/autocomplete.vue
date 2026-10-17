@@ -1,18 +1,28 @@
 <script setup lang="ts">
 import type { AutocompleteItem } from './types';
 import { computed, onMounted, ref, useSlots, watch } from 'vue';
+import LoaderIcon from '@/components/icons/loader-icon.vue';
 import { useFloatingAnchor } from '@/composables/use-floating-anchor';
 import AutocompleteListbox from './autocomplete-listbox.vue';
 import AutocompleteOption from './autocomplete-option.vue';
 
-const props = defineProps<{
-  id: string;
-  label?: string;
-  placeholder?: string;
-  items: AutocompleteItem[];
-  modelValue: string;
-  disabled?: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    id: string;
+    label?: string;
+    placeholder?: string;
+    items: AutocompleteItem[];
+    modelValue: string;
+    disabled?: boolean;
+    loading?: boolean;
+  }>(),
+  {
+    disabled: false,
+    loading: false,
+  },
+);
+
+const isDisabled = computed(() => props.disabled || props.loading);
 
 const emit = defineEmits<{
   'update:modelValue': [value: string];
@@ -137,16 +147,27 @@ defineExpose({ close });
         :aria-expanded="isOpen"
         aria-autocomplete="list"
         :aria-controls="listboxId"
+        :aria-busy="loading || undefined"
         autocomplete="off"
         class="w-full rounded-xl border border-border bg-surface px-4 py-2 text-sm text-foreground placeholder:text-muted disabled:cursor-not-allowed disabled:opacity-40"
+        :class="{ 'pr-10': loading }"
         :value="modelValue"
         :placeholder="placeholder"
-        :disabled="disabled"
+        :disabled="isDisabled"
         @input="onInput"
         @keydown="onKeydown"
         @focus="onFocus"
         @blur="onBlur"
       >
+
+      <LoaderIcon
+        v-if="loading"
+        class="pointer-events-none absolute top-1/2 right-4 size-5 -translate-y-1/2 animate-spin text-muted"
+      />
+      <span
+        v-if="loading"
+        class="sr-only"
+      >Cargando…</span>
 
       <Teleport
         v-if="isClient"

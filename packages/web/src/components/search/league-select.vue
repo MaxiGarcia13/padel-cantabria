@@ -5,6 +5,7 @@ import Select from '@/components/select.vue';
 
 const props = defineProps<{
   leagues: League[];
+  disabled?: boolean;
 }>();
 
 const model = defineModel<string>({ required: true });
@@ -23,5 +24,6 @@ const options = computed(() =>
     v-model="model"
     label="Liga"
     :options="options"
+    :disabled="disabled"
   />
 </template>
