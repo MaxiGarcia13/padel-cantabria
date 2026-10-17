@@ -12,7 +12,7 @@ const selectedValue = defineModel<T>({ required: true });
 <template>
   <div
     role="tablist"
-    class="flex rounded-full border border-border bg-surface p-1"
+    class="flex rounded-xl border border-border bg-surface p-2"
   >
     <Tab
       v-for="option in options"
