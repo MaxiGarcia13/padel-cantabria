@@ -1,3 +1,13 @@
+## 0.0.6 (2026-10-17)
+
+### 🚀 Features
+
+- Enhance tab component with secondary label support ([9d30e17](https://github.com/MaxiGarcia13/padel-cantabria/commit/9d30e17))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.5 (2026-10-17)
 
 ### 🚀 Features
