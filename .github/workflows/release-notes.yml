@@ -56,7 +56,7 @@ jobs:
               continue
             fi
 
-            if [[ ! "$tag" =~ ^@roomcast/([^@]+)@(.+)$ ]]; then
+            if [[ ! "$tag" =~ ^@padel-cantabria/([^@]+)@(.+)$ ]]; then
               echo "::warning::Skipping unrecognized tag: $tag"
               continue
             fi
