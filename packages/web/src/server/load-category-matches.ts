@@ -41,3 +41,10 @@ export function buildCategoryPath(category: CategoryKey): string {
 export function buildTeamPath(teamId: number): string {
   return `/team/${encodeURIComponent(String(teamId))}`;
 }
+
+export function buildMatchPath(
+  category: CategoryKey,
+  matchId: number,
+): string {
+  return `${buildCategoryPath(category)}/match/${encodeURIComponent(String(matchId))}`;
+}

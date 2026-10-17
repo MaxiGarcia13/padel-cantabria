@@ -1,0 +1,42 @@
+---
+import { createClient } from '@padel-cantabria/database';
+import { TURSO_AUTH_TOKEN, TURSO_URL } from 'astro:env/server';
+import BackButton from '@/components/back-button.vue';
+import Header from '@/components/header.astro';
+import MatchPage from '@/components/match/match-page.vue';
+import AppLayout from '@/layouts/app-layout.astro';
+import { parseCategoryParams } from '@/server/load-category-matches';
+
+export const prerender = false;
+
+const categoryKey = parseCategoryParams(Astro.params);
+const matchId = Number(Astro.params.id);
+
+if (!categoryKey || !Number.isFinite(matchId)) {
+  return Astro.redirect('/');
+}
+
+const db = createClient({
+  url: TURSO_URL,
+  authToken: TURSO_AUTH_TOKEN,
+});
+
+const match = await db.getMatchById(categoryKey, matchId);
+
+if (!match) {
+  return Astro.redirect('/');
+}
+
+const title = `${match.home_team} vs ${match.away_team} · Pádel Cantabria`;
+---
+
+<AppLayout title={title}>
+  <Header league={String(match.league_id)} gender={match.gender} phase={match.phase} category={match.category} />
+
+  <div class="mx-auto flex w-full max-w-6xl flex-col gap-4 p-4" transition:animate="fade">
+    <BackButton client:idle />
+    <main>
+      <MatchPage client:load match={match} />
+    </main>
+  </div>
+</AppLayout>

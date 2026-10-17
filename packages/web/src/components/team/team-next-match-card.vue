@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import type { Match } from '@padel-cantabria/database';
 import { computed } from 'vue';
+import { buildMatchPath } from '@/server/load-category-matches';
 
 const props = defineProps<{
   match: Match | null;
   calendarHref: string;
 }>();
+
+const matchHref = computed(() =>
+  props.match ? buildMatchPath(props.match, props.match.id) : '#',
+);
 
 const metaParts = computed(() => {
   if (!props.match) {
@@ -31,9 +36,10 @@ const metaParts = computed(() => {
       No hay partidos disponibles para esta fase.
     </p>
 
-    <div
+    <a
       v-else
-      class="flex flex-col gap-2"
+      :href="matchHref"
+      class="flex flex-col gap-2 text-inherit no-underline transition-colors hover:opacity-80 focus-visible:rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
     >
       <p class="text-sm font-medium text-foreground">
         {{ match.home_team }}
@@ -46,7 +52,7 @@ const metaParts = computed(() => {
       >
         {{ metaParts.join(' · ') }}
       </p>
-    </div>
+    </a>
 
     <a
       :href="calendarHref"
