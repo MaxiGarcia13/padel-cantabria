@@ -1,3 +1,13 @@
+## 0.0.9 (2026-10-17)
+
+### 🎨 Styles
+
+- Update tab component styling for improved aesthetics ([461e07e](https://github.com/MaxiGarcia13/padel-cantabria/commit/461e07e))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.8 (2026-10-17)
 
 ### 🔄 Refactors
