@@ -1,0 +1,40 @@
+---
+import packageJson from '../../../../package.json';
+import { BrandGithubIcon, BugIcon } from './icons';
+
+const repository = packageJson.repository;
+const repositoryUrl = typeof repository === 'string' ? repository : repository?.url;
+
+if (!repositoryUrl) {
+  throw new Error('Missing repository url in package.json');
+}
+
+const REPO_URL = repositoryUrl.replace(/\.git$/, '');
+const ISSUES_URL = `${REPO_URL}/issues/new`;
+---
+
+<footer
+  class="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-6 text-sm text-muted sm:flex-row sm:items-center sm:justify-between"
+>
+  <p>Proyecto de código abierto.</p>
+  <nav class="flex gap-4" aria-label="Enlaces del proyecto">
+    <a
+      href={REPO_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-2 text-muted underline-offset-4 hover:text-foreground hover:underline"
+    >
+      <BrandGithubIcon class="size-4 shrink-0" />
+      Contribuir
+    </a>
+    <a
+      href={ISSUES_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-2 text-muted underline-offset-4 hover:text-foreground hover:underline"
+    >
+      <BugIcon class="size-4 shrink-0" />
+      Reportar un problema
+    </a>
+  </nav>
+</footer>

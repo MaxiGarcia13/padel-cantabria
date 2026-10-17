@@ -6,6 +6,10 @@
   "description": "",
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MaxiGarcia13/padel-cantabria.git"
+  },
   "keywords": [],
   "main": "index.js",
   "scripts": {
