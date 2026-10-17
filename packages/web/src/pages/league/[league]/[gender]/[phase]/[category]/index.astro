@@ -22,7 +22,7 @@ const calendarHref = `${buildCategoryPath(categoryKey)}/calendar`;
   <Header league={league} gender={gender} phase={phase} category={category} />
 
   <div class="mx-auto flex w-full max-w-6xl flex-col gap-4 p-4" transition:animate="fade">
-    <BackButton client:load />
+    <BackButton client:idle />
     <main class="flex flex-col gap-6">
       <div class="flex flex-col gap-4">
         <h2 class="text-lg font-medium text-foreground">Clasificación</h2>
@@ -30,7 +30,7 @@ const calendarHref = `${buildCategoryPath(categoryKey)}/calendar`;
       </div>
       <div class="flex flex-col gap-4">
         <h2 class="text-lg font-medium text-foreground">Próximos partidos</h2>
-        <ClosestMatches client:load category={categoryKey} calendarHref={calendarHref} />
+        <ClosestMatches client:visible category={categoryKey} calendarHref={calendarHref} />
       </div>
     </main>
   </div>

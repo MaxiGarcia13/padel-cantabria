@@ -22,12 +22,12 @@ const props = withDefaults(
   },
 );
 
-const isDisabled = computed(() => props.disabled || props.loading);
-
 const emit = defineEmits<{
   'update:modelValue': [value: string];
   'select': [item: AutocompleteItem];
 }>();
+
+const isDisabled = computed(() => props.disabled || props.loading);
 
 const slots = useSlots();
 const isClient = ref(false);

@@ -28,7 +28,7 @@ const isPage = Boolean((league && gender && phase && category) || teamName);
   {isPage && (
     <div class="min-w-0 max-w-md flex-1 w-full">
       <Searcher
-        client:load
+        client:idle
         variant="header"
         initialLeagueId={league}
         initialGenderValue={gender}

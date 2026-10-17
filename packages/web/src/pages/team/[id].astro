@@ -41,7 +41,7 @@ const initialSummary = initialPhase ? await loadTeamSummary(db, team, initialPha
   />
 
   <div class="mx-auto flex w-full max-w-6xl flex-col gap-4 p-4" transition:animate="fade">
-    <BackButton client:load />
+    <BackButton client:idle />
     <main>
       <TeamPage
         client:load
