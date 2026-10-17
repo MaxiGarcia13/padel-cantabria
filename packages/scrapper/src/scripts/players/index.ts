@@ -1,14 +1,17 @@
 import process from 'node:process';
 import { createDbClient } from '@/create-db-client.js';
+import { parseGenders } from '../league/parse-genders.js';
 import { parseLeagueIds } from '../league/parse-league-ids.js';
 import { scrapePlayers } from './scrape-players.js';
 
 async function main(): Promise<void> {
   const db = createDbClient();
   const allowedLeagueIds = parseLeagueIds(process.env.LEAGUE_IDS);
+  const allowedGenders = parseGenders(process.env.SCRAPE_GENDERS);
   const teams = (await db.getTeams()).filter(
     (team) =>
-      allowedLeagueIds === null || allowedLeagueIds.has(team.league_id),
+      (allowedLeagueIds === null || allowedLeagueIds.has(team.league_id))
+      && (allowedGenders === null || allowedGenders.has(team.gender)),
   );
 
   if (teams.length === 0) {
