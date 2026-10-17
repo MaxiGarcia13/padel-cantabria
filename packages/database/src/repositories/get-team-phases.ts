@@ -27,5 +27,6 @@ export async function getTeamPhases(
     'read',
   );
 
-  return result.rows.map((row) => String((row as { phase: string }).phase));
+  return (result.rows as { phase: string }[]).map((row) => String(row.phase));
 }
+
