@@ -1,3 +1,13 @@
+## 0.0.2 (2026-10-17)
+
+### 🚀 Features
+
+- Add scraping workflows and prepare actions for calendar and players ([7880393](https://github.com/MaxiGarcia13/padel-cantabria/commit/7880393))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.1 (2026-10-17)
 
 ### 🚀 Features
