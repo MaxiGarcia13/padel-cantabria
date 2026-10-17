@@ -1,3 +1,13 @@
+## 0.0.8 (2026-10-17)
+
+### 🔄 Refactors
+
+- Improve back navigation logic ([4f38cfe](https://github.com/MaxiGarcia13/padel-cantabria/commit/4f38cfe))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.7 (2026-10-17)
 
 ### 🐞 Fixes
