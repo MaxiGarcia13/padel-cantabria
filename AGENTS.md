@@ -15,11 +15,11 @@ Human-oriented overview: [README.md](README.md)
 
 ## Monorepo layout
 
-| Package | Role |
-| --- | --- |
+| Package             | Role                        |
+| ------------------- | --------------------------- |
 | `packages/database` | Schema, types, Turso client |
-| `packages/scrapper` | Puppeteer scrapers → Turso |
-| `packages/web` | Astro + Vue frontend |
+| `packages/scrapper` | Puppeteer scrapers → Turso  |
+| `packages/web`      | Astro + Vue frontend        |
 
 Package manager: **pnpm**. Env vars live in the **repo root** `.env` (`TURSO_URL`, `TURSO_AUTH_TOKEN`; optional `LEAGUE_IDS`).
 

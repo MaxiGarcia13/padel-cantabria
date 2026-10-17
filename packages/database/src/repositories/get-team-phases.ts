@@ -29,4 +29,3 @@ export async function getTeamPhases(
 
   return (result.rows as { phase: string }[]).map((row) => String(row.phase));
 }
-
