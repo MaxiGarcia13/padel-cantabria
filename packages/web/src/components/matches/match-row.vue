@@ -14,7 +14,10 @@ const metaParts = computed(() =>
 </script>
 
 <template>
-  <article class="rounded-xl border border-border bg-surface px-4 py-4">
+  <a
+    :href="`/match/${props.match.id}`"
+    class="block rounded-xl border border-border bg-surface px-4 py-4 text-inherit no-underline transition-colors hover:border-muted focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+  >
     <p class="text-sm font-medium text-foreground">
       {{ match.home_team }}
       <span class="text-muted"> vs </span>
@@ -26,5 +29,5 @@ const metaParts = computed(() =>
     >
       {{ metaParts.join(' · ') }}
     </p>
-  </article>
+  </a>
 </template>
