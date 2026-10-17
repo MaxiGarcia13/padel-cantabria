@@ -7,8 +7,8 @@ import type {
 } from '@padel-cantabria/database';
 import type { Page } from 'puppeteer';
 import process from 'node:process';
-import puppeteer from 'puppeteer';
 import { LEAGUE_CALENDAR_URL } from '@/constants/urls.js';
+import { launchBrowser } from '@/launch-browser.js';
 import { parseLeagueIds } from './parse-league-ids.js';
 import { scrapeBaseLeagues } from './scrape-league.js';
 
@@ -33,7 +33,7 @@ export async function scrapeLeagues(): Promise<League[]> {
     throw new Error('No leagues found');
   }
 
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await launchBrowser();
 
   try {
     const page = await browser.newPage();

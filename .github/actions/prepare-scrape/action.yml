@@ -1,0 +1,36 @@
+name: Prepare scrape
+description: Write root .env for scrapers and ensure Puppeteer Chrome is available
+
+inputs:
+  turso_url:
+    description: Turso database URL
+    required: true
+  turso_auth_token:
+    description: Turso auth token
+    required: true
+  league_ids:
+    description: Optional comma-separated federation league IDs
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Create .env
+      shell: bash
+      env:
+        TURSO_URL: ${{ inputs.turso_url }}
+        TURSO_AUTH_TOKEN: ${{ inputs.turso_auth_token }}
+        LEAGUE_IDS: ${{ inputs.league_ids }}
+      run: |
+        {
+          echo "TURSO_URL=${TURSO_URL}"
+          echo "TURSO_AUTH_TOKEN=${TURSO_AUTH_TOKEN}"
+          echo "LEAGUE_IDS=${LEAGUE_IDS}"
+        } > .env
+
+    - name: Install Chrome for Puppeteer
+      shell: bash
+      run: >
+        pnpm --filter @padel-cantabria/scrapper exec
+        puppeteer browsers install chrome --install-deps

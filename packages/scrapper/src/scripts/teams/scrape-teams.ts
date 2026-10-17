@@ -1,7 +1,7 @@
 import type { CategoryKey, Team } from '@padel-cantabria/database';
 import type { Page } from 'puppeteer';
-import puppeteer from 'puppeteer';
 import { LEAGUE_TEAMS_URL } from '@/constants/urls.js';
+import { launchBrowser } from '@/launch-browser.js';
 import { parseTeamsTable } from './parse-teams-table.js';
 
 const TEAMS_READY_TIMEOUT_MS = 30_000;
@@ -11,7 +11,7 @@ export async function scrapeTeams(categories: CategoryKey[]): Promise<Team[]> {
     throw new Error('No categories found');
   }
 
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await launchBrowser();
 
   try {
     const page = await browser.newPage();

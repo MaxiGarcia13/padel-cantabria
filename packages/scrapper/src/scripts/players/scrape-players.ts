@@ -1,7 +1,7 @@
 import type { Team, TeamPlayer } from '@padel-cantabria/database';
 import type { Page } from 'puppeteer';
-import puppeteer from 'puppeteer';
 import { LEAGUE_TEAM_DETAIL_URL } from '@/constants/urls.js';
+import { launchBrowser } from '@/launch-browser.js';
 import { mergeTeamPlayers } from './merge-team-players.js';
 import { parsePlayersTable } from './parse-players-table.js';
 import { playerKey } from './player-key.js';
@@ -23,7 +23,7 @@ export async function scrapePlayers(
     ]),
   );
 
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await launchBrowser();
 
   try {
     const page = await browser.newPage();

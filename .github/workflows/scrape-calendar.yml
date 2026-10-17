@@ -1,0 +1,38 @@
+name: Scrape Calendar
+
+on:
+  schedule:
+    # Tuesday & Thursday 05:30 Europe/Madrid (CET = UTC+1).
+    # Staggered after scrape-players. During CEST this runs at 06:30 local.
+    - cron: '30 4 * * 2'
+    - cron: '30 4 * * 4'
+  workflow_dispatch:
+
+concurrency:
+  group: scrape-calendar
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  scrape:
+    name: Scrape calendar
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/install
+
+      - name: Prepare scrape
+        uses: ./.github/actions/prepare-scrape
+        with:
+          turso_url: ${{ secrets.TURSO_URL }}
+          turso_auth_token: ${{ secrets.TURSO_AUTH_TOKEN }}
+          league_ids: ${{ vars.LEAGUE_IDS }}
+
+      - name: Scrape calendar
+        run: pnpm scrape:calendar

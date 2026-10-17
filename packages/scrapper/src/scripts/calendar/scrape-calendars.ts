@@ -6,8 +6,8 @@ import type {
 } from '@padel-cantabria/database';
 import type { Page } from 'puppeteer';
 import type { ScrapedCalendarMatch, ScrapedTeamStanding } from './types.js';
-import puppeteer from 'puppeteer';
 import { LEAGUE_CALENDAR_URL } from '@/constants/urls.js';
+import { launchBrowser } from '@/launch-browser.js';
 import { mergeTeamStandings } from './merge-team-standings.js';
 import { parseCalendarTable } from './parse-calendar-table.js';
 import { parseStandingsTable } from './parse-standings-table.js';
@@ -33,7 +33,7 @@ export async function scrapeCalendars(
     throw new Error('No teams found');
   }
 
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await launchBrowser();
 
   try {
     const page = await browser.newPage();

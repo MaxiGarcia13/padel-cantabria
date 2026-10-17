@@ -1,7 +1,7 @@
 import type { BaseLeague } from '@padel-cantabria/database';
 import type { RawLeague } from './types.js';
-import puppeteer from 'puppeteer';
 import { LEAGUES_URL } from '@/constants/urls.js';
+import { launchBrowser } from '@/launch-browser.js';
 import { parseSchedule } from './utils.js';
 
 function toBaseLeague(card: RawLeague): BaseLeague | null {
@@ -17,7 +17,7 @@ function toBaseLeague(card: RawLeague): BaseLeague | null {
 }
 
 export async function scrapeBaseLeagues(): Promise<BaseLeague[]> {
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await launchBrowser();
 
   try {
     const page = await browser.newPage();
