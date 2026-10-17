@@ -11,6 +11,7 @@ export default eslintConfig(
     astro: true,
     vue: true,
     tailwindcss: true,
+    ignores: ['.astro'],
   },
   {
     settings: {
