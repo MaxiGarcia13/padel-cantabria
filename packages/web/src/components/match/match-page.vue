@@ -20,11 +20,13 @@ const { points: awayPoints } = useTeamTotalPoints(() => props.match.away_team_id
 const teamOptions = computed(() => [
   {
     value: props.match.home_team_id,
-    label: `${props.match.home_team} (${formatStandingValue(homePoints.value)} pts)`,
+    label: props.match.home_team,
+    secondary: `${formatStandingValue(homePoints.value)} pts`,
   },
   {
     value: props.match.away_team_id,
-    label: `${props.match.away_team} (${formatStandingValue(awayPoints.value)} pts)`,
+    label: props.match.away_team,
+    secondary: `${formatStandingValue(awayPoints.value)} pts`,
   },
 ]);
 </script>

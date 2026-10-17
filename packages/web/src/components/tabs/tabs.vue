@@ -19,6 +19,7 @@ const selectedValue = defineModel<T>({ required: true });
       :key="option.value"
       :value="option.value"
       :label="option.label"
+      :secondary="option.secondary"
       :active="selectedValue === option.value"
       @select="selectedValue = $event"
     />
