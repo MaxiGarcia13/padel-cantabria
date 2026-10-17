@@ -5,7 +5,6 @@ on:
     # Tuesday & Thursday 05:30 Europe/Madrid (CET = UTC+1).
     # Staggered after scrape-players. During CEST this runs at 06:30 local.
     - cron: '30 4 * * 2'
-    - cron: '30 4 * * 4'
   workflow_dispatch:
 
 concurrency:
