@@ -1,6 +1,7 @@
 import type { Team, TeamPlayer } from '@padel-cantabria/database';
 import type { Page } from 'puppeteer';
 import { LEAGUE_TEAM_DETAIL_URL } from '@/constants/urls.js';
+import { delayBetweenRequests } from '@/delay.js';
 import { launchBrowser } from '@/launch-browser.js';
 import { mergeTeamPlayers } from './merge-team-players.js';
 import { parsePlayersTable } from './parse-players-table.js';
@@ -29,7 +30,11 @@ export async function scrapePlayers(
     const page = await browser.newPage();
     const players: TeamPlayer[] = [];
 
-    for (const team of teams) {
+    for (const [index, team] of teams.entries()) {
+      if (index > 0) {
+        await delayBetweenRequests();
+      }
+
       players.push(
         ...(await scrapeTeamPlayers(page, team, previousByKey)),
       );

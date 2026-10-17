@@ -7,6 +7,7 @@ import type {
 import type { Page } from 'puppeteer';
 import type { ScrapedCalendarMatch, ScrapedTeamStanding } from './types.js';
 import { LEAGUE_CALENDAR_URL } from '@/constants/urls.js';
+import { delayBetweenRequests } from '@/delay.js';
 import { launchBrowser } from '@/launch-browser.js';
 import { mergeTeamStandings } from './merge-team-standings.js';
 import { parseCalendarTable } from './parse-calendar-table.js';
@@ -40,7 +41,11 @@ export async function scrapeCalendars(
     const scrapedMatches: ScrapedCalendarMatch[] = [];
     const mergedStandings: TeamStanding[] = [];
 
-    for (const category of categories) {
+    for (const [index, category] of categories.entries()) {
+      if (index > 0) {
+        await delayBetweenRequests();
+      }
+
       const { matches, standings } = await scrapeCategoryCalendar(
         page,
         category,

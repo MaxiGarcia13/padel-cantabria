@@ -1,6 +1,7 @@
 import type { CategoryKey, Team } from '@padel-cantabria/database';
 import type { Page } from 'puppeteer';
 import { LEAGUE_TEAMS_URL } from '@/constants/urls.js';
+import { delayBetweenRequests } from '@/delay.js';
 import { launchBrowser } from '@/launch-browser.js';
 import { parseTeamsTable } from './parse-teams-table.js';
 
@@ -17,7 +18,11 @@ export async function scrapeTeams(categories: CategoryKey[]): Promise<Team[]> {
     const page = await browser.newPage();
     const teams: Team[] = [];
 
-    for (const category of categories) {
+    for (const [index, category] of categories.entries()) {
+      if (index > 0) {
+        await delayBetweenRequests();
+      }
+
       teams.push(...(await scrapeCategoryTeams(page, category)));
     }
 
