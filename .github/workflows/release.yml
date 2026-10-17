@@ -1,0 +1,48 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  lint:
+    if: ${{ !startsWith(github.event.head_commit.message, 'chore(release):') }}
+    uses: ./.github/workflows/lint.yml
+
+  version:
+    name: Bump versions
+    needs: lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        uses: ./.github/actions/install
+
+      - name: Configure git author
+        uses: MaxiGarcia13/gh-actions/.github/actions/configure-git-author@main
+
+      - name: Bump package versions
+        run: pnpm run release
+
+      - name: Push changes
+        run: git push
+
+      - name: Push tags
+        run: git push --tags
+
+  release-notes:
+    needs: version
+    uses: ./.github/workflows/release-notes.yml
+    secrets: inherit
