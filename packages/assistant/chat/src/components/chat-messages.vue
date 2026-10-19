@@ -35,7 +35,7 @@ defineProps<{
       <MessageScrollerViewport>
         <MessageScrollerContent
           :aria-busy="busy"
-          class="gap-4 px-0 py-4"
+          class="mx-auto w-full max-w-xl gap-4 px-4 py-4"
         >
           <Empty
             v-if="messages.length === 0"

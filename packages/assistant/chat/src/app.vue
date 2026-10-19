@@ -14,8 +14,8 @@ const {
 </script>
 
 <template>
-  <div class="mx-auto grid h-dvh max-w-xl grid-rows-[auto_minmax(0,1fr)_auto] gap-4 overflow-hidden px-4 py-6">
-    <header>
+  <div class="grid h-dvh grid-rows-[auto_minmax(0,1fr)_auto] gap-4 overflow-hidden py-6">
+    <header class="mx-auto w-full max-w-xl px-4">
       <h1 class="mb-2 text-3xl tracking-tight">
         Asistente Padel Cantabria
       </h1>
@@ -37,10 +37,12 @@ const {
       :busy="busy"
     />
 
-    <ChatComposer
-      :disabled="!canSend"
-      :busy="busy"
-      @send="send"
-    />
+    <div class="mx-auto w-full max-w-xl px-4">
+      <ChatComposer
+        :disabled="!canSend"
+        :busy="busy"
+        @send="send"
+      />
+    </div>
   </div>
 </template>
