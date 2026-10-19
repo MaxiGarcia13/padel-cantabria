@@ -1,6 +1,6 @@
 import process from 'node:process';
 
-const DEFAULT_ASSISTANT_URL = 'http://127.0.0.1:3001';
+const DEFAULT_ASSISTANT_URL = 'http://localhost:3001';
 
 export function getAssistantBaseUrl(): string {
   const raw = process.env.ASSISTANT_URL ?? DEFAULT_ASSISTANT_URL;
