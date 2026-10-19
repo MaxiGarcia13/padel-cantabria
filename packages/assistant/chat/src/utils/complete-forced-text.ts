@@ -3,6 +3,7 @@ import type {
   ChatCompletionsClient,
 } from './chat-completion-types';
 import { withoutSystemMessages } from './chat-message-helpers';
+import { looksLikeToolCallLeak } from './looks-like-tool-call-leak';
 
 export async function completeForcedText(
   client: ChatCompletionsClient,
@@ -13,5 +14,10 @@ export async function completeForcedText(
     tool_choice: 'none',
   });
 
-  return completion.choices[0]?.message?.content?.trim() || null;
+  const content = completion.choices[0]?.message?.content?.trim() || null;
+  if (!content || looksLikeToolCallLeak(content)) {
+    return null;
+  }
+
+  return content;
 }

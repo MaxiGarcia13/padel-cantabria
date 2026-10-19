@@ -10,6 +10,7 @@ import {
   previousUserMessages,
   withoutSystemMessages,
 } from '../utils/chat-message-helpers';
+import { looksLikeToolCallLeak } from '../utils/looks-like-tool-call-leak';
 import { toolResultsIncludeTeams } from '../utils/parse-tool-json';
 import {
   ASK_GENDER_MESSAGE,
@@ -43,6 +44,55 @@ function askGenderResult(originalQuestion: string): ChatTurnResult {
     originalQuestion,
   };
   return chatTurnResult(ASK_GENDER_MESSAGE, pending);
+}
+
+async function finalizeModelTextAnswer(options: {
+  client: ChatCompletionsClient;
+  mcp: McpBrowserClient;
+  userMessage: string;
+  messages: ChatCompletionMessageParam[];
+  toolResults: string[];
+  content: string | null;
+}): Promise<string> {
+  const ensured = categoryTeamsTurnResult(
+    await ensureCategoryTeamsReply({
+      mcp: options.mcp,
+      userMessage: options.userMessage,
+      toolResults: options.toolResults,
+    }),
+    options.userMessage,
+  );
+  if (ensured) {
+    return ensured.text;
+  }
+
+  const clarified = clarificationFromToolResults(
+    options.toolResults,
+    options.userMessage,
+  );
+  if (clarified) {
+    return clarified.text;
+  }
+
+  // Prefer real teams[] over free-form prose (model often invents gender asks).
+  if (
+    asksForCategoryTeams(options.userMessage)
+    && toolResultsIncludeTeams(options.toolResults)
+  ) {
+    return formatToolResultFallback(options.toolResults);
+  }
+
+  if (options.content && !looksLikeToolCallLeak(options.content)) {
+    return options.content;
+  }
+
+  return resolveEmptyModelReply({
+    client: options.client,
+    mcp: options.mcp,
+    userMessage: options.userMessage,
+    messages: options.messages,
+    toolResults: options.toolResults,
+  });
 }
 
 function clarificationFromToolResults(
@@ -115,6 +165,20 @@ export async function runChatTurn(options: {
   for (let round = 0; round < MAX_TOOL_ROUNDS; round += 1) {
     const forceTextAnswer = round === MAX_TOOL_ROUNDS - 1;
 
+    // Last round with tool data: summarize/fallback — free-form often pastes fake tool XML.
+    if (forceTextAnswer && toolResults.length > 0) {
+      return chatTurnResult(
+        await finalizeModelTextAnswer({
+          client: options.client,
+          mcp: options.mcp,
+          userMessage,
+          messages,
+          toolResults,
+          content: null,
+        }),
+      );
+    }
+
     const completion = await options.client.create({
       messages: withoutSystemMessages(messages),
       ...(forceTextAnswer
@@ -151,43 +215,14 @@ export async function runChatTurn(options: {
     const toolCalls = forceTextAnswer ? [] : (message.tool_calls ?? []);
 
     if (toolCalls.length === 0) {
-      const ensured = categoryTeamsTurnResult(
-        await ensureCategoryTeamsReply({
-          mcp: options.mcp,
-          userMessage,
-          toolResults,
-        }),
-        userMessage,
-      );
-      if (ensured) {
-        return ensured;
-      }
-
-      const clarified = clarificationFromToolResults(toolResults, userMessage);
-      if (clarified) {
-        return clarified;
-      }
-
-      // Prefer real teams[] over free-form prose (model often invents gender asks).
-      if (
-        asksForCategoryTeams(userMessage)
-        && toolResultsIncludeTeams(toolResults)
-      ) {
-        return chatTurnResult(formatToolResultFallback(toolResults));
-      }
-
-      const content = message.content?.trim();
-      if (content) {
-        return chatTurnResult(content);
-      }
-
       return chatTurnResult(
-        await resolveEmptyModelReply({
+        await finalizeModelTextAnswer({
           client: options.client,
           mcp: options.mcp,
           userMessage,
           messages,
           toolResults,
+          content: message.content?.trim() || null,
         }),
       );
     }
