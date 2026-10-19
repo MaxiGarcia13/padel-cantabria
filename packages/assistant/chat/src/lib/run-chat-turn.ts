@@ -4,6 +4,7 @@ import type {
   MLCEngineInterface,
 } from '@mlc-ai/web-llm';
 import type { McpBrowserClient } from './mcp-client';
+import { sanitizeToolArgs } from './sanitize-tool-args';
 
 /** Enough for search → follow-up tool; last round forces a text answer. */
 const MAX_TOOL_ROUNDS = 3;
@@ -14,7 +15,7 @@ const MAX_TOOL_ROUNDS = 3;
  */
 const USER_GUIDANCE = `Responde en español, de forma clara y breve.
 Usa las herramientas solo cuando necesites datos reales. No inventes resultados ni parámetros.
-Para buscar un jugador, llama search_players solo con query (nombre). No envíes gender salvo que el usuario diga masculino/femenino; nunca uses omit o unknown.
+Para buscar un jugador, llama search_players solo con query (nombre). No envíes gender salvo que el usuario diga masculino/femenino (M o F).
 Si hay varias coincidencias de género, pregunta: ¿masculino (M) o femenino (F)?
 Cuando el resultado de una herramienta ya responde la pregunta (p. ej. team_name), contesta en texto y NO llames más herramientas.
 La liga la fija el servidor.`;
@@ -97,7 +98,9 @@ export async function runChatTurn(options: {
 
     for (const toolCall of toolCalls) {
       const name = toolCall.function.name;
-      const args = parseToolArguments(toolCall.function.arguments);
+      const args = sanitizeToolArgs(
+        parseToolArguments(toolCall.function.arguments),
+      );
       const toolText = await options.mcp.callTool(name, args);
 
       messages.push({

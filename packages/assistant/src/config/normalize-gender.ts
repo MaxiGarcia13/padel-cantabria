@@ -1,19 +1,6 @@
-const IGNORED_GENDER_VALUES = new Set([
-  'omit',
-  'unknown',
-  'null',
-  'undefined',
-  'none',
-  'n/a',
-  'na',
-  'any',
-  'all',
-  '',
-]);
-
 /**
  * Map Spanish / display labels to federation gender values stored in the DB.
- * Invalid or placeholder values from the model are treated as unset.
+ * Anything that is not clearly M/F is treated as unset.
  */
 export function normalizeGender(
   value: string | undefined,
@@ -23,10 +10,6 @@ export function normalizeGender(
   }
 
   const normalized = String(value).trim().toLowerCase();
-
-  if (IGNORED_GENDER_VALUES.has(normalized)) {
-    return undefined;
-  }
 
   if (normalized === 'm' || normalized.startsWith('masc')) {
     return 'M';

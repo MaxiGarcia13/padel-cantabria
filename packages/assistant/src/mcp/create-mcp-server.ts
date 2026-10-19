@@ -11,11 +11,12 @@ import { searchPlayersHandler } from '../handlers/search-players.js';
 import { searchTeamsHandler } from '../handlers/search-teams.js';
 import { toolError, toolResult } from './tool-result.js';
 
+/** String (not enum); handlers keep only M/F via normalizeGender. */
 const GENDER_OPTIONAL = z
-  .enum(['M', 'F'])
+  .string()
   .optional()
   .describe(
-    'Include only when the user explicitly said masculine or feminine. Allowed values: M or F. Do not include this field otherwise (never send omit/unknown).',
+    'Include only when the user explicitly said masculine or feminine. Allowed values: M or F. Leave unset otherwise.',
   );
 
 export function createMcpServer(db: DatabaseClient): McpServer {

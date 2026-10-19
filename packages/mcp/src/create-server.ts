@@ -4,11 +4,12 @@ import packageJson from '../package.json';
 import { assistantGet } from './assistant-client.js';
 import { toolError, toolResult } from './tool-result.js';
 
+/** String (not enum); API keeps only M/F via normalizeGender. */
 const GENDER_OPTIONAL = z
-  .enum(['M', 'F'])
+  .string()
   .optional()
   .describe(
-    'Include only when the user explicitly said masculine or feminine. Allowed values: M or F. Do not include this field otherwise (never send omit/unknown).',
+    'Include only when the user explicitly said masculine or feminine. Allowed values: M or F. Leave unset otherwise.',
   );
 
 export function createStdioMcpServer(): McpServer {
