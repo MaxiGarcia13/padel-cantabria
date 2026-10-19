@@ -58,6 +58,7 @@ defineProps<{
             v-for="(message, index) in messages"
             :key="message.id"
             :message-id="message.id"
+            scroll-anchor
           >
             <p
               v-if="message.role === 'system'"
