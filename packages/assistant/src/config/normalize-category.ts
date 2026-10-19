@@ -1,8 +1,3 @@
-/**
- * Single place for category free-text → search tokens.
- * Chat may pass a raw phrase; ordinal aliases and stopwords live here.
- */
-
 const CATEGORY_ALIASES: Record<string, string> = {
   '1': '1ª',
   '1a': '1ª',
@@ -53,10 +48,6 @@ export function categoryAliasKey(raw: string): string {
     .replace(/\./g, '');
 }
 
-/**
- * Words that never help disambiguate a category once gender is a separate filter.
- * Includes question filler so raw user turns can be passed through.
- */
 const CATEGORY_STOP_KEYS = new Set([
   // structural / gender
   'categoria',
@@ -122,10 +113,6 @@ function isCategoryStopToken(token: string): boolean {
   return CATEGORY_STOP_KEYS.has(categoryAliasKey(token));
 }
 
-/**
- * Expand aliases and drop noise so search tokens match DB labels.
- * "que equipos hay en 3ª CATEGORIA MASCULINA - GRUPO D?" → "3ª D"
- */
 export function normalizeCategoryQuery(query: string): string {
   return query
     .trim()

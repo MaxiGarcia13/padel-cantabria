@@ -1,0 +1,34 @@
+---
+description: Prefer minimal comments; only explain non-obvious intent
+alwaysApply: true
+---
+
+# Minimal comments
+
+Comment only when the code cannot say it clearly. Prefer better names over narration.
+
+**Do not** write:
+- JSDoc / blocks that restate the function or file name
+- Input → output examples the reader can infer from the body
+- "What this does" prose when the signature and implementation are obvious
+
+**Do** comment:
+- Non-obvious constraints, invariants, or trade-offs
+- Why a surprising approach was chosen (not what the next line does)
+- Cross-cutting intent that would otherwise be missed
+
+```typescript
+// ❌ BAD — restates the name + walks an example
+/**
+ * Expand aliases and drop noise so search tokens match DB labels.
+ * "que equipos hay en 3ª CATEGORIA MASCULINA - GRUPO D?" → "3ª D"
+ */
+export function normalizeCategoryQuery(query: string): string { … }
+
+// ✅ GOOD — no comment when the name and body are enough
+export function normalizeCategoryQuery(query: string): string { … }
+
+// ✅ GOOD — non-obvious constraint
+// Spaced / unicode dashes separate words; keep hyphen-minus inside ids.
+.replace(/\s*[-–—]\s+/g, ' ')
+```
