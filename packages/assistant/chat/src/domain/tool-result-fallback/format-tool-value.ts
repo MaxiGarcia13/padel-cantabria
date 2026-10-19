@@ -4,6 +4,7 @@ import { formatCategoryTeams } from './format-category-teams';
 import { formatPlayerLike } from './format-player-like';
 import { formatStandingTeam } from './format-standing-team';
 import { formatTeamRoster } from './format-team-roster';
+import { asMarkdownList, joinMarkdownBlocks } from './markdown-blocks';
 
 function formatRecord(record: Record<string, unknown>): string {
   return (
@@ -23,14 +24,18 @@ export function formatToolValue(value: unknown): string {
       return 'Sin resultados.';
     }
 
-    return value
-      .map((entry) => {
-        if (isRecord(entry)) {
-          return formatRecord(entry);
-        }
-        return String(entry);
-      })
-      .join('\n');
+    const lines = value.map((entry) => {
+      if (isRecord(entry)) {
+        return formatRecord(entry);
+      }
+      return String(entry);
+    });
+
+    if (lines.every((line) => !line.includes('\n'))) {
+      return asMarkdownList(lines);
+    }
+
+    return joinMarkdownBlocks(lines);
   }
 
   if (isRecord(value)) {

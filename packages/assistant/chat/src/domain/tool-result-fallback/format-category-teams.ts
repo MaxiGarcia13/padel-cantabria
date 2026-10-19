@@ -1,6 +1,7 @@
 import { isRecord } from '@/utils/parse-tool-json';
 import { formatStandingTeam } from './format-standing-team';
 import { joinDisplayParts, stringField } from './join-display-parts';
+import { asMarkdownList, joinMarkdownBlocks } from './markdown-blocks';
 
 export function formatCategoryTeams(
   record: Record<string, unknown>,
@@ -25,8 +26,8 @@ export function formatCategoryTeams(
     .filter(Boolean);
 
   if (teams.length === 0) {
-    return header ? `${header}\nSin equipos.` : 'Sin equipos.';
+    return joinMarkdownBlocks([header, 'Sin equipos.']);
   }
 
-  return [header, ...teams].filter(Boolean).join('\n');
+  return joinMarkdownBlocks([header, asMarkdownList(teams)]);
 }

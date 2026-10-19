@@ -47,7 +47,8 @@ export function formatLeagueCategories(toolText: string): string {
           : [];
 
         if (phaseLabel && categories.length > 0) {
-          leagueLines.push(`  ${phaseLabel}`);
+          leagueLines.push('');
+          leagueLines.push(phaseLabel);
         }
 
         for (const categoryEntry of categories) {
@@ -56,7 +57,7 @@ export function formatLeagueCategories(toolText: string): string {
           }
           const categoryLabel = asString(categoryEntry.category);
           if (categoryLabel) {
-            leagueLines.push(`  - ${categoryLabel}`);
+            leagueLines.push(`- ${categoryLabel}`);
           }
         }
       }

@@ -1,6 +1,7 @@
 import { isRecord } from '@/utils/parse-tool-json';
 import { formatPlayerLike } from './format-player-like';
 import { joinDisplayParts, stringField } from './join-display-parts';
+import { asMarkdownList, joinMarkdownBlocks } from './markdown-blocks';
 
 function formatRosterTotals(totals: Record<string, unknown>): string | null {
   const playerCount = totals.player_count;
@@ -46,9 +47,8 @@ export function formatTeamRoster(
     .filter(Boolean);
 
   if (players.length === 0) {
-    const empty = header ? `${header}\nSin jugadores.` : 'Sin jugadores.';
-    return totals ? `${empty}\n${totals}` : empty;
+    return joinMarkdownBlocks([header, 'Sin jugadores.', totals]);
   }
 
-  return [header, totals, ...players].filter(Boolean).join('\n');
+  return joinMarkdownBlocks([header, totals, asMarkdownList(players)]);
 }

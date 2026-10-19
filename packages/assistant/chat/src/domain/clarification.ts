@@ -110,7 +110,7 @@ export function formatCategoryClarification(
     return `${index + 1}. ${label || candidate.category_value}`;
   });
 
-  return ['¿Cuál categoría?', ...lines].join('\n');
+  return ['¿Cuál categoría?', '', ...lines].join('\n');
 }
 
 /**
