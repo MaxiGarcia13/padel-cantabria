@@ -17,6 +17,8 @@ const SAME_MONTH_PATTERN
   = /^(\d{1,2})\s*-\s*(\d{1,2})\s+([A-Za-zÁÉÍÓÚáéíóúü]+)$/u;
 const CROSS_MONTH_PATTERN
   = /^(\d{1,2})\s+([A-Za-zÁÉÍÓÚáéíóúü]+)\s*-\s*(\d{1,2})\s+([A-Za-zÁÉÍÓÚáéíóúü]+)$/u;
+const CONFIRMED_PATTERN
+  = /^(\d{1,2})\s+([A-Za-zÁÉÍÓÚáéíóúü]+)\s+(\d{1,2}):(\d{2})/u;
 
 export interface SeasonRange {
   start_date: string;
@@ -84,8 +86,44 @@ function resolveYear(
   return startYear;
 }
 
-function toUtcDate(year: number, month: number, day: number): Date {
-  return new Date(Date.UTC(year, month - 1, day));
+function toUtcDate(
+  year: number,
+  month: number,
+  day: number,
+  hours = 0,
+  minutes = 0,
+): Date {
+  return new Date(Date.UTC(year, month - 1, day, hours, minutes));
+}
+
+function parseConfirmedDate(
+  value: string,
+  season: SeasonRange,
+): MatchDateRange | null {
+  const confirmed = value.match(CONFIRMED_PATTERN);
+
+  if (!confirmed) {
+    return null;
+  }
+
+  const day = Number(confirmed[1]);
+  const month = parseMonth(confirmed[2]!);
+  const hours = Number(confirmed[3]);
+  const minutes = Number(confirmed[4]);
+
+  if (!month) {
+    return null;
+  }
+
+  const year = resolveYear(month, season);
+
+  if (year === null) {
+    return null;
+  }
+
+  const at = toUtcDate(year, month, day, hours, minutes);
+
+  return { start: at, end: at };
 }
 
 export function parseMatchDateRange(
@@ -93,6 +131,12 @@ export function parseMatchDateRange(
   season: SeasonRange,
 ): MatchDateRange | null {
   const value = rawDate.trim();
+  const confirmed = parseConfirmedDate(value, season);
+
+  if (confirmed) {
+    return confirmed;
+  }
+
   const sameMonth = value.match(SAME_MONTH_PATTERN);
 
   if (sameMonth) {

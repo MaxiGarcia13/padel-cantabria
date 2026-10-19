@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Match } from '@padel-cantabria/database';
 import { computed } from 'vue';
+import { formatMatchMeta } from '@/domain/matches';
 import { buildMatchPath } from '@/server/load-category-matches';
 
 const props = defineProps<{
@@ -12,15 +13,9 @@ const matchHref = computed(() =>
   props.match ? buildMatchPath(props.match, props.match.id) : '#',
 );
 
-const metaParts = computed(() => {
-  if (!props.match) {
-    return [];
-  }
-
-  return [props.match.date, props.match.location, props.match.rounds].filter(
-    (value): value is string => Boolean(value),
-  );
-});
+const meta = computed(() =>
+  props.match ? formatMatchMeta(props.match) : '',
+);
 </script>
 
 <template>
@@ -47,10 +42,10 @@ const metaParts = computed(() => {
         {{ match.away_team }}
       </p>
       <p
-        v-if="metaParts.length > 0"
+        v-if="meta"
         class="text-sm text-muted"
       >
-        {{ metaParts.join(' · ') }}
+        {{ meta }}
       </p>
     </a>
 

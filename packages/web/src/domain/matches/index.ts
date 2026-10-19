@@ -1,4 +1,8 @@
 export {
+  formatMatchMeta,
+  formatMatchMetaParts,
+} from './format-match-meta.js';
+export {
   getClosestMatches,
   sortMatchesByDate,
 } from './get-closest-matches.js';

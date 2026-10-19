@@ -1,23 +1,20 @@
 <script setup lang="ts">
 import type { Match } from '@padel-cantabria/database';
 import { computed } from 'vue';
+import { formatMatchMeta } from '@/domain/matches';
 
 const props = defineProps<{
   match: Match;
 }>();
 
-const metaParts = computed(() =>
-  [props.match.date, props.match.location, props.match.rounds].filter(
-    (value): value is string => Boolean(value),
-  ),
-);
+const meta = computed(() => formatMatchMeta(props.match));
 </script>
 
 <template>
   <p
-    v-if="metaParts.length > 0"
+    v-if="meta"
     class="text-sm text-muted"
   >
-    {{ metaParts.join(' · ') }}
+    {{ meta }}
   </p>
 </template>
