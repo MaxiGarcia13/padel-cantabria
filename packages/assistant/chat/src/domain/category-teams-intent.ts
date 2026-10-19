@@ -40,22 +40,6 @@ export function needsGenderClarification(text: string): boolean {
 }
 
 /**
- * Strip filler / structural words so the remainder can be passed as a category
- * query. Gender words are removed here (gender is sent separately as M/F).
- * "que equipos hay en 3ª CATEGORIA MASCULINA - GRUPO D?" → "3ª D"
- */
-export function categoryQueryFromUserMessage(text: string): string {
-  return text
-    .replace(
-      /\b(que|qué|cuales|cuáles|hay|en|la|el|los|las|de|del|un|una|me|dime|lista|listar|mostrar|equipos?|teams?|categoria|categoría|category|grupo|group|masculin[oa]|femenin[oa]|masc|fem|which|what|are|there|in|the|a|an|show|list)\b/gi,
-      ' ',
-    )
-    .replace(/[-–—_/|,.;:¿?¡!()[\]{}]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-/**
  * If the latest message is only a gender reply, merge it with the previous
  * category-teams question from history so follow-ups still resolve.
  */

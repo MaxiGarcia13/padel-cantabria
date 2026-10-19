@@ -1,8 +1,10 @@
 import type { DatabaseClient } from './db.js';
 import cors from '@fastify/cors';
 import Fastify from 'fastify';
+import { createAiRouter } from './create-ai-router.js';
 import { HttpError, httpErrorPayload } from './errors.js';
 import { createCategoriesRoutes } from './routes/categories.js';
+import { createChatRoutes } from './routes/chat.js';
 import { createMcpRoutes } from './routes/mcp.js';
 import { createPhasesRoutes } from './routes/phases.js';
 import { createPlayersRoutes } from './routes/players.js';
@@ -11,6 +13,7 @@ import { registerChatStatic } from './static-chat.js';
 
 export async function createApp(db: DatabaseClient) {
   const app = Fastify({ logger: true });
+  const aiRouter = createAiRouter();
 
   await app.register(cors, { origin: true });
 
@@ -29,6 +32,7 @@ export async function createApp(db: DatabaseClient) {
   await app.register(createPhasesRoutes(db));
   await app.register(createTeamsRoutes(db));
   await app.register(createPlayersRoutes(db));
+  await app.register(createChatRoutes(aiRouter));
   await app.register(createMcpRoutes(db));
   await registerChatStatic(app);
 

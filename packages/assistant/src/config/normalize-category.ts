@@ -1,7 +1,6 @@
 /**
- * Map common Spanish / shorthand category tokens to a canonical ordinal form
- * (e.g. "tercera" → "3ª") so search and value resolution can match DB labels.
- * Unknown tokens are returned trimmed unchanged.
+ * Single place for category free-text → search tokens.
+ * Chat/Hermes may pass a raw phrase; ordinal aliases and stopwords live here.
  */
 
 const CATEGORY_ALIASES: Record<string, string> = {
@@ -35,9 +34,14 @@ const CATEGORY_ALIASES: Record<string, string> = {
   '6ta': '6ª',
   '6ra': '6ª',
   'sexta': '6ª',
+  '7': '7ª',
+  '7a': '7ª',
+  '7ma': '7ª',
+  '7ra': '7ª',
+  'septima': '7ª',
 };
 
-/** Fold for alias lookup: lowercase, strip diacritics, ª/º → a/o. */
+/** Fold for alias / stopword lookup: lowercase, strip diacritics, ª/º → a/o. */
 export function categoryAliasKey(raw: string): string {
   return raw
     .trim()
@@ -49,8 +53,12 @@ export function categoryAliasKey(raw: string): string {
     .replace(/\./g, '');
 }
 
-/** Structural / gender words — gender is filtered separately; dashes are separators. */
+/**
+ * Words that never help disambiguate a category once gender is a separate filter.
+ * Includes question filler so raw user turns can be passed through.
+ */
 const CATEGORY_STOP_KEYS = new Set([
+  // structural / gender
   'categoria',
   'category',
   'grupo',
@@ -63,6 +71,41 @@ const CATEGORY_STOP_KEYS = new Set([
   'fem',
   'm',
   'f',
+  // question filler / articles
+  'que',
+  'cuales',
+  'hay',
+  'en',
+  'la',
+  'el',
+  'los',
+  'las',
+  'de',
+  'del',
+  'un',
+  'una',
+  'me',
+  'dime',
+  'lista',
+  'listar',
+  'mostrar',
+  'equipo',
+  'equipos',
+  'team',
+  'teams',
+  'which',
+  'what',
+  'are',
+  'there',
+  'in',
+  'the',
+  'a',
+  'an',
+  'show',
+  'list',
+  'all',
+  'todas',
+  'todos',
 ]);
 
 export function normalizeCategoryToken(token: string): string {
@@ -81,12 +124,14 @@ function isCategoryStopToken(token: string): boolean {
 
 /**
  * Expand aliases and drop noise so search tokens match DB labels.
- * "3ª CATEGORIA MASCULINA - GRUPO D" → "3ª D"
+ * "que equipos hay en 3ª CATEGORIA MASCULINA - GRUPO D?" → "3ª D"
  */
 export function normalizeCategoryQuery(query: string): string {
   return query
     .trim()
-    .replace(/[-–—_/|,.;:¿?¡!()[\]{}]+/g, ' ')
+    // Spaced / unicode dashes separate words; keep hyphen-minus inside ids.
+    .replace(/\s*[-–—]\s+/g, ' ')
+    .replace(/[–—_/|,.;:¿?¡!()[\]{}]+/g, ' ')
     .split(/\s+/)
     .filter(Boolean)
     .map(normalizeCategoryToken)

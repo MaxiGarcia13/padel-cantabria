@@ -97,13 +97,13 @@ export function createMcpServer(db: DatabaseClient): McpServer {
     'list_teams',
     {
       description:
-        'List teams (and standings) in a category/group. Use when the user asks which teams are in a category. Requires gender M/F and category (the category_value id from search_categories). Optional phase (phase_value from search_phases; defaults to the category phase). Do not use list_categories or search_teams for this.',
+        'List teams (and standings) in a category/group. Use when the user asks which teams are in a category. Requires gender M/F and category (free-text phrase or category_value id; server resolves). Optional phase (phase_value; defaults to the category phase). Do not use list_categories or search_teams for this.',
       inputSchema: {
         gender: z.enum(['M', 'F']).describe('M or F (ask user if unknown)'),
         category: z
           .string()
           .describe(
-            'Argument name is category. Pass the category_value id from search_categories (not the label).',
+            'Argument name is category. Free-text category phrase from the user, or category_value id from search_categories.',
           ),
         phase: z
           .string()
@@ -210,13 +210,13 @@ export function createMcpServer(db: DatabaseClient): McpServer {
     'get_top_players',
     {
       description:
-        'Top points in a category. League is fixed by server config. Requires category (the category_value id from search_categories) and gender M/F. Ask the user if unknown.',
+        'Top points in a category. League is fixed by server config. Requires category (free-text phrase or category_value id) and gender M/F. Ask the user if unknown.',
       inputSchema: {
         gender: z.enum(['M', 'F']).describe('M or F (ask user if unknown)'),
         category: z
           .string()
           .describe(
-            'Argument name is category. Pass the category_value id from search_categories (not the label).',
+            'Argument name is category. Free-text category phrase from the user, or category_value id from search_categories.',
           ),
         limit: z.number().int().positive().optional(),
       },

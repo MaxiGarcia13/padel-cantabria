@@ -14,6 +14,37 @@ function labelKey(label: string): string {
   return categoryAliasKey(label);
 }
 
+function tokenHitsLabel(haystackKey: string, token: string): boolean {
+  const key = categoryAliasKey(token);
+  if (!key) {
+    return false;
+  }
+
+  // Single letters are group codes (A–D), not substring noise.
+  if (key.length === 1) {
+    return (
+      haystackKey.includes(`grupo ${key}`)
+      || haystackKey.includes(`group ${key}`)
+    );
+  }
+
+  return haystackKey.includes(key);
+}
+
+function scoreCategoryMatch(match: CategoryMatch, query: string): number {
+  const haystack = labelKey(match.category_label);
+  const tokens = normalizeCategoryQuery(query).split(/\s+/).filter(Boolean);
+
+  if (tokens.length === 0) {
+    return 0;
+  }
+
+  return tokens.reduce(
+    (score, token) => (tokenHitsLabel(haystack, token) ? score + 1 : score),
+    0,
+  );
+}
+
 function pickCategoryMatch(
   input: string,
   matches: CategoryMatch[],
@@ -40,7 +71,18 @@ function pickCategoryMatch(
     return matches[0];
   }
 
-  return undefined;
+  const scored = matches
+    .map((match) => ({ match, score: scoreCategoryMatch(match, trimmed) }))
+    .filter((entry) => entry.score > 0)
+    .sort((left, right) => right.score - left.score);
+
+  if (scored.length === 0) {
+    return undefined;
+  }
+
+  const best = scored[0]!;
+  const tied = scored.filter((entry) => entry.score === best.score);
+  return tied.length === 1 ? best.match : undefined;
 }
 
 async function searchCategoryMatches(

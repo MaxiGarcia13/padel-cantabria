@@ -36,10 +36,7 @@ export async function fetchCategoryTeamsIfNeeded(options: {
     return { status: 'skip' };
   }
 
-  const args = resolveListTeamsArgs(
-    options.toolResults,
-    options.userMessage,
-  );
+  const args = resolveListTeamsArgs(options.userMessage);
 
   if (!args) {
     return { status: 'skip' };
@@ -48,7 +45,6 @@ export async function fetchCategoryTeamsIfNeeded(options: {
   const toolText = await options.mcp.callTool('list_teams', {
     gender: args.gender,
     category: args.category,
-    ...(args.phase ? { phase: args.phase } : {}),
   });
 
   const categoryError = parseCategoryToolError(toolText);
