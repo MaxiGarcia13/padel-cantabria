@@ -14,7 +14,7 @@ export interface Match extends CategoryKey {
   date: string;
   status: string | null;
   location: string | null;
-  schedule: string | null;
+  rounds: string | null;
 }
 
 /** Shape used when writing matches (team names come from the teams table). */

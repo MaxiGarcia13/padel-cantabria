@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS matches (
   date TEXT NOT NULL,
   status TEXT,
   location TEXT,
-  schedule TEXT,
+  rounds TEXT,
   updated_at TEXT NOT NULL DEFAULT (datetime('now')),
   PRIMARY KEY (league_id, gender, phase, category, id),
   FOREIGN KEY (league_id, gender, phase, category)

@@ -41,5 +41,5 @@ export interface MatchRecord {
   date: string;
   status: string | null;
   location: string | null;
-  schedule: string | null;
+  rounds: string | null;
 }
