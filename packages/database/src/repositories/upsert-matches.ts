@@ -15,7 +15,7 @@ function buildUpsertStatement(match: MatchWrite): BatchStatement {
         date,
         status,
         location,
-        schedule,
+        rounds,
         updated_at
       )
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
@@ -26,7 +26,7 @@ function buildUpsertStatement(match: MatchWrite): BatchStatement {
         date = excluded.date,
         status = excluded.status,
         location = excluded.location,
-        schedule = excluded.schedule,
+        rounds = excluded.rounds,
         updated_at = datetime('now')
     `,
     args: [
@@ -40,7 +40,7 @@ function buildUpsertStatement(match: MatchWrite): BatchStatement {
       match.date,
       match.status,
       match.location,
-      match.schedule,
+      match.rounds,
     ],
   };
 }

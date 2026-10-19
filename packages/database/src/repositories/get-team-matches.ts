@@ -23,7 +23,7 @@ export async function getTeamMatches(
             matches.date,
             matches.status,
             matches.location,
-            matches.schedule
+            matches.rounds
           FROM matches
           INNER JOIN teams AS home_team ON home_team.id = matches.home_team_id
           INNER JOIN teams AS away_team ON away_team.id = matches.away_team_id
