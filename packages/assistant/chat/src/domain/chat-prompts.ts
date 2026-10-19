@@ -10,7 +10,7 @@ League is fixed by the server.
 
 Tools:
 - List all categories ("qué categorías hay?") → list_categories only. Never list_teams for that.
-- Teams in a category/group → gender M/F is required. If the user did not say masculino/femenino, ask M or F and do not call tools yet. Then search_categories + list_teams with category_value + gender. Not list_categories or search_teams.
+- Teams in a category/group → gender M/F is required (masculino/femenino in the question or category label). If missing, ask M or F and do not call tools yet. Then search_categories + list_teams({ gender, category }) where category is the category_value id from search_categories. Not list_categories or search_teams.
 - One category lookup → search_categories. Full catalog → list_categories.
 - Team by name → search_teams. Player by name → search_players (query only; gender only if user said M/F). If gender is ambiguous, ask M or F.
 - When a tool result already has the asked data (e.g. teams[] or category tree), answer in text; do not call more tools.

@@ -1,13 +1,10 @@
-import type { ChatCompletionMessageParam } from '@mlc-ai/web-llm';
 import type { McpBrowserClient } from '../utils/mcp-client';
 import type { PendingCategoryClarification } from './clarification';
-import { formatToolResult } from '../utils/chat-message-helpers';
 import { toolResultsIncludeTeams } from '../utils/parse-tool-json';
 import {
   asksForCategoryTeams,
   needsGenderClarification,
 } from './category-teams-intent';
-import { AFTER_TOOLS_NUDGE } from './chat-prompts';
 import { fetchCategoryTeamsIfNeeded } from './fetch-category-teams';
 import { formatToolResultFallback } from './tool-result-fallback';
 
@@ -70,14 +67,13 @@ export async function ensureCategoryTeamsReply(options: {
 }
 
 /**
- * Mid-loop path: inject list_teams into the conversation for the model to summarize.
- * Category clarification ends the turn (returned as ask-gender-like terminal via status).
+ * Mid-loop path: fetch list_teams when Hermes missed or called it with bad args.
+ * Caller formats toolResults and ends the turn (no extra Hermes round).
  */
 export async function injectCategoryTeamsFollowUp(options: {
   mcp: McpBrowserClient;
   userMessage: string;
   toolResults: string[];
-  messages: ChatCompletionMessageParam[];
 }): Promise<
   | 'ask-gender'
   | 'injected'
@@ -107,10 +103,5 @@ export async function injectCategoryTeamsFollowUp(options: {
   }
 
   options.toolResults.push(fetched.toolText);
-  options.messages.push({
-    role: 'user',
-    content: `${formatToolResult('list_teams', fetched.toolText)}\n\n${AFTER_TOOLS_NUDGE}`,
-  });
-
   return 'injected';
 }

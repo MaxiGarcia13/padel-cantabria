@@ -10,8 +10,10 @@ import {
   previousUserMessages,
   withoutSystemMessages,
 } from '../utils/chat-message-helpers';
+import { toolResultsIncludeTeams } from '../utils/parse-tool-json';
 import {
   ASK_GENDER_MESSAGE,
+  asksForCategoryTeams,
   inferGenderFromText,
   mergeGenderFollowUp,
   needsGenderClarification,
@@ -168,6 +170,14 @@ export async function runChatTurn(options: {
         return clarified;
       }
 
+      // Prefer real teams[] over Hermes prose (model often invents gender asks).
+      if (
+        asksForCategoryTeams(userMessage)
+        && toolResultsIncludeTeams(toolResults)
+      ) {
+        return chatTurnResult(formatToolResultFallback(toolResults));
+      }
+
       const content = message.content?.trim();
       if (content) {
         return chatTurnResult(content);
@@ -217,7 +227,6 @@ export async function runChatTurn(options: {
       mcp: options.mcp,
       userMessage,
       toolResults,
-      messages,
     });
 
     if (followUp === 'ask-gender') {
@@ -229,7 +238,8 @@ export async function runChatTurn(options: {
     }
 
     if (followUp === 'injected') {
-      continue;
+      // Deterministic list beats another Hermes round that may ignore tools.
+      return chatTurnResult(formatToolResultFallback(toolResults));
     }
 
     messages.push({

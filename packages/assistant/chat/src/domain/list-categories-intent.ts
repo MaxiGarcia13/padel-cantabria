@@ -28,7 +28,7 @@ export function asksForCategoryCatalog(text: string): boolean {
     return false;
   }
 
-  return /\b(que|qué|cuales|cuáles|hay|lista|listar|mostrar|todas?|dime|show|list|which|what|all)\b/.test(
+  return /\b(?:que|qué|cuales|cuáles|hay|lista|listar|mostrar|todas?|dime|show|list|which|what|all)\b/.test(
     normalized,
   );
 }
