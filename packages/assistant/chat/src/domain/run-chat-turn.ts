@@ -13,6 +13,12 @@ import {
   mergeGenderFollowUp,
   needsGenderClarification,
 } from './category-teams-intent';
+import { categoryTeamsReplyText } from './category-teams-reply-text';
+import {
+  formatCategoryClarification,
+  formatUnknownCategoryMessage,
+  parseCategoryToolError,
+} from './clarification';
 import { AFTER_TOOLS_NUDGE, USER_GUIDANCE } from './chat-prompts';
 import {
   executeToolCalls,
@@ -27,6 +33,23 @@ import { formatToolResultFallback } from './tool-result-fallback';
 
 /** Enough for search → follow-up tool; last round forces a text answer. */
 const MAX_TOOL_ROUNDS = 3;
+
+function clarificationFromToolResults(toolResults: string[]): string | null {
+  for (let index = toolResults.length - 1; index >= 0; index -= 1) {
+    const error = parseCategoryToolError(toolResults[index]!);
+    if (!error) {
+      continue;
+    }
+
+    if (error.code === 'unknown_category' && error.candidates.length === 0) {
+      return formatUnknownCategoryMessage();
+    }
+
+    return formatCategoryClarification(error.candidates);
+  }
+
+  return null;
+}
 
 export async function runChatTurn(options: {
   engine: MLCEngineInterface;
@@ -68,13 +91,20 @@ export async function runChatTurn(options: {
     const message = completion.choices[0]?.message;
 
     if (!message) {
-      const chained = await ensureCategoryTeamsReply({
-        mcp: options.mcp,
-        userMessage,
-        toolResults,
-      });
-      if (chained) {
-        return chained;
+      const chainedText = categoryTeamsReplyText(
+        await ensureCategoryTeamsReply({
+          mcp: options.mcp,
+          userMessage,
+          toolResults,
+        }),
+      );
+      if (chainedText) {
+        return chainedText;
+      }
+
+      const clarified = clarificationFromToolResults(toolResults);
+      if (clarified) {
+        return clarified;
       }
 
       if (toolResults.length > 0) {
@@ -86,13 +116,20 @@ export async function runChatTurn(options: {
     const toolCalls = forceTextAnswer ? [] : (message.tool_calls ?? []);
 
     if (toolCalls.length === 0) {
-      const ensured = await ensureCategoryTeamsReply({
-        mcp: options.mcp,
-        userMessage,
-        toolResults,
-      });
-      if (ensured) {
-        return ensured;
+      const ensuredText = categoryTeamsReplyText(
+        await ensureCategoryTeamsReply({
+          mcp: options.mcp,
+          userMessage,
+          toolResults,
+        }),
+      );
+      if (ensuredText) {
+        return ensuredText;
+      }
+
+      const clarified = clarificationFromToolResults(toolResults);
+      if (clarified) {
+        return clarified;
       }
 
       const content = message.content?.trim();
@@ -130,6 +167,11 @@ export async function runChatTurn(options: {
       toolResults,
     });
 
+    const clarifiedAfterTools = clarificationFromToolResults(toolResults);
+    if (clarifiedAfterTools) {
+      return clarifiedAfterTools;
+    }
+
     const followUp = await injectCategoryTeamsFollowUp({
       mcp: options.mcp,
       userMessage,
@@ -139,6 +181,10 @@ export async function runChatTurn(options: {
 
     if (followUp === 'ask-gender') {
       return ASK_GENDER_MESSAGE;
+    }
+
+    if (typeof followUp === 'object' && 'clarify' in followUp) {
+      return followUp.clarify;
     }
 
     if (followUp === 'injected') {
@@ -151,13 +197,20 @@ export async function runChatTurn(options: {
     });
   }
 
-  const chained = await ensureCategoryTeamsReply({
-    mcp: options.mcp,
-    userMessage,
-    toolResults,
-  });
-  if (chained) {
-    return chained;
+  const chainedText = categoryTeamsReplyText(
+    await ensureCategoryTeamsReply({
+      mcp: options.mcp,
+      userMessage,
+      toolResults,
+    }),
+  );
+  if (chainedText) {
+    return chainedText;
+  }
+
+  const clarified = clarificationFromToolResults(toolResults);
+  if (clarified) {
+    return clarified;
   }
 
   if (toolResults.length > 0) {

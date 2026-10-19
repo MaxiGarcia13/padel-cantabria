@@ -1,7 +1,22 @@
 import type { McpBrowserClient } from '../utils/mcp-client';
 import { toolResultsIncludeTeams } from '../utils/parse-tool-json';
 import { asksForCategoryTeams } from './category-teams-intent';
+import {
+  formatCategoryClarification,
+  formatUnknownCategoryMessage,
+  parseCategoryToolError,
+  type PendingCategoryClarification,
+} from './clarification';
 import { resolveListTeamsArgs } from './resolve-list-teams-args';
+
+export type FetchCategoryTeamsResult
+  = | { status: 'teams'; toolText: string }
+    | {
+      status: 'clarify';
+      message: string;
+      pending: PendingCategoryClarification;
+    }
+    | { status: 'skip' };
 
 /**
  * When the user asked for teams in a category but tools never returned `teams[]`,
@@ -11,13 +26,13 @@ export async function fetchCategoryTeamsIfNeeded(options: {
   mcp: McpBrowserClient;
   userMessage: string;
   toolResults: string[];
-}): Promise<string | null> {
+}): Promise<FetchCategoryTeamsResult> {
   if (!asksForCategoryTeams(options.userMessage)) {
-    return null;
+    return { status: 'skip' };
   }
 
   if (toolResultsIncludeTeams(options.toolResults)) {
-    return null;
+    return { status: 'skip' };
   }
 
   const args = resolveListTeamsArgs(
@@ -26,12 +41,34 @@ export async function fetchCategoryTeamsIfNeeded(options: {
   );
 
   if (!args) {
-    return null;
+    return { status: 'skip' };
   }
 
-  return options.mcp.callTool('list_teams', {
+  const toolText = await options.mcp.callTool('list_teams', {
     gender: args.gender,
     category: args.category,
     ...(args.phase ? { phase: args.phase } : {}),
   });
+
+  const categoryError = parseCategoryToolError(toolText);
+  if (categoryError) {
+    const message
+      = categoryError.code === 'unknown_category'
+        && categoryError.candidates.length === 0
+        ? formatUnknownCategoryMessage()
+        : formatCategoryClarification(categoryError.candidates);
+
+    return {
+      status: 'clarify',
+      message,
+      pending: {
+        kind: 'category',
+        options: categoryError.candidates,
+        originalQuestion: options.userMessage,
+        gender: args.gender,
+      },
+    };
+  }
+
+  return { status: 'teams', toolText };
 }

@@ -7,61 +7,84 @@ import {
   asksForCategoryTeams,
   needsGenderClarification,
 } from './category-teams-intent';
+import type { PendingCategoryClarification } from './clarification';
 import { AFTER_TOOLS_NUDGE } from './chat-prompts';
 import { fetchCategoryTeamsIfNeeded } from './fetch-category-teams';
 import { formatToolResultFallback } from './tool-result-fallback';
 
-async function fetchAndRecordCategoryTeams(options: {
+export type CategoryTeamsReply
+  = | {
+    status: 'text';
+    text: string;
+    pending?: PendingCategoryClarification;
+  }
+  | { status: 'ask-gender' }
+  | { status: 'none' };
+
+async function fetchCategoryTeamsOutcome(options: {
   mcp: McpBrowserClient;
   userMessage: string;
   toolResults: string[];
-}): Promise<string | null> {
-  const teamsJson = await fetchCategoryTeamsIfNeeded(options);
-  if (!teamsJson) {
-    return null;
+}): Promise<CategoryTeamsReply> {
+  const fetched = await fetchCategoryTeamsIfNeeded(options);
+
+  if (fetched.status === 'skip') {
+    return { status: 'none' };
   }
 
-  options.toolResults.push(teamsJson);
-  return teamsJson;
+  if (fetched.status === 'clarify') {
+    return {
+      status: 'text',
+      text: fetched.message,
+      pending: fetched.pending,
+    };
+  }
+
+  options.toolResults.push(fetched.toolText);
+  return {
+    status: 'text',
+    text: formatToolResultFallback([fetched.toolText]),
+  };
 }
 
 /**
- * Terminal path: ask for gender, or return a deterministic teams list.
+ * Terminal path: ask for gender, clarify category, or return a teams list.
  */
 export async function ensureCategoryTeamsReply(options: {
   mcp: McpBrowserClient;
   userMessage: string;
   toolResults: string[];
-}): Promise<string | null> {
+}): Promise<CategoryTeamsReply> {
   if (!asksForCategoryTeams(options.userMessage)) {
-    return null;
+    return { status: 'none' };
   }
 
   if (toolResultsIncludeTeams(options.toolResults)) {
-    return null;
+    return { status: 'none' };
   }
 
   if (needsGenderClarification(options.userMessage)) {
-    return ASK_GENDER_MESSAGE;
+    return { status: 'ask-gender' };
   }
 
-  const teamsJson = await fetchAndRecordCategoryTeams(options);
-  if (!teamsJson) {
-    return null;
-  }
-
-  return formatToolResultFallback([teamsJson]);
+  return fetchCategoryTeamsOutcome(options);
 }
 
 /**
  * Mid-loop path: inject list_teams into the conversation for the model to summarize.
+ * Category clarification ends the turn (returned as ask-gender-like terminal via status).
  */
 export async function injectCategoryTeamsFollowUp(options: {
   mcp: McpBrowserClient;
   userMessage: string;
   toolResults: string[];
   messages: ChatCompletionMessageParam[];
-}): Promise<'ask-gender' | 'injected' | 'none'> {
+}): Promise<
+  | 'ask-gender'
+  | 'injected'
+  | 'none'
+  | { clarify: string; pending: PendingCategoryClarification }
+> {
   if (!asksForCategoryTeams(options.userMessage)) {
     return 'none';
   }
@@ -74,14 +97,20 @@ export async function injectCategoryTeamsFollowUp(options: {
     return 'ask-gender';
   }
 
-  const teamsJson = await fetchAndRecordCategoryTeams(options);
-  if (!teamsJson) {
+  const fetched = await fetchCategoryTeamsIfNeeded(options);
+
+  if (fetched.status === 'skip') {
     return 'none';
   }
 
+  if (fetched.status === 'clarify') {
+    return { clarify: fetched.message, pending: fetched.pending };
+  }
+
+  options.toolResults.push(fetched.toolText);
   options.messages.push({
     role: 'user',
-    content: `${formatToolResult('list_teams', teamsJson)}\n\n${AFTER_TOOLS_NUDGE}`,
+    content: `${formatToolResult('list_teams', fetched.toolText)}\n\n${AFTER_TOOLS_NUDGE}`,
   });
 
   return 'injected';

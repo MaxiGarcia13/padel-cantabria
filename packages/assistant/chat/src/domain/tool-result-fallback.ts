@@ -1,4 +1,9 @@
 import { isRecord, parseToolJson } from '../utils/parse-tool-json';
+import {
+  formatCategoryClarification,
+  formatUnknownCategoryMessage,
+  parseCategoryToolError,
+} from './clarification';
 
 function formatPlayerLike(record: Record<string, unknown>): string | null {
   const nameParts = [record.name, record.surname]
@@ -135,6 +140,17 @@ function formatValue(value: unknown): string {
 }
 
 function formatToolText(toolText: string): string {
+  const categoryError = parseCategoryToolError(toolText);
+  if (categoryError) {
+    if (
+      categoryError.code === 'unknown_category'
+      && categoryError.candidates.length === 0
+    ) {
+      return formatUnknownCategoryMessage();
+    }
+    return formatCategoryClarification(categoryError.candidates);
+  }
+
   const parsed = parseToolJson(toolText);
   if (parsed === null) {
     return toolText.trim();
