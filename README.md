@@ -54,11 +54,24 @@ Monorepo: scrape federation data into Turso and serve it on the web.
 - [`packages/scrapper`](packages/scrapper) — Puppeteer scrapers ([scripts & when to run them](packages/scrapper/README.md))
 - [`packages/web`](packages/web) — Astro + Vue frontend
 
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (LTS)
+- [pnpm](https://pnpm.io/) **12.11.2** (pinned in `package.json` via `packageManager`)
+
+Install pnpm once:
+
+```bash
+npm install -g pnpm
+```
+
 ### Quick start
+
+From the **repo root**:
 
 ```bash
 pnpm install
-pnpm db:reset   # or `pnpm migrate` on an empty DB
+pnpm db:reset   # or `pnpm db:migrate` on an empty DB
 pnpm scrape:leagues
 pnpm scrape:teams
 pnpm scrape:players
