@@ -1,17 +1,23 @@
 import type { CategoryKey } from '@padel-cantabria/database';
 import type { Page } from 'puppeteer';
-import type { RawCalendarMatch, ScrapedCalendarMatch } from './types.js';
+import type {
+  RawCalendarCell,
+  RawCalendarMatch,
+  ScrapedCalendarMatch,
+} from './types.js';
+import { parseMatchCellDetails } from './parse-match-cell-details.js';
 
 export async function parseCalendarTable(
   page: Page,
   category: CategoryKey,
 ): Promise<ScrapedCalendarMatch[]> {
-  const rawMatches = await page.evaluate((): RawCalendarMatch[] => {
-    const table = Array.from(document.querySelectorAll('table')).find((candidate) =>
-      candidate
-        .querySelector('td.estiloequipos')
-        ?.textContent
-        ?.includes('Local'),
+  const rawCells = await page.evaluate((): RawCalendarCell[] => {
+    const table = Array.from(document.querySelectorAll('table')).find(
+      (candidate) =>
+        candidate
+          .querySelector('td.estiloequipos')
+          ?.textContent
+          ?.includes('Local'),
     );
 
     if (!table) {
@@ -29,20 +35,22 @@ export async function parseCalendarTable(
       .slice(1)
       .map((cell) => cell.textContent?.trim() ?? '');
 
-    const matches: RawCalendarMatch[] = [];
+    const cells: RawCalendarCell[] = [];
 
     for (const row of rows.slice(1)) {
-      const cells = Array.from(row.querySelectorAll('td'));
-      const homeTeam = cells[0]?.textContent?.trim() ?? null;
+      const rowCells = Array.from(row.querySelectorAll('td'));
+      const homeTeam = rowCells[0]?.textContent?.trim() ?? null;
 
-      for (let columnIndex = 1; columnIndex < cells.length; columnIndex += 1) {
-        const cell = cells[columnIndex]!;
+      for (let columnIndex = 1; columnIndex < rowCells.length; columnIndex += 1) {
+        const cell = rowCells[columnIndex]!;
 
         if (cell.classList.contains('nulo')) {
           continue;
         }
 
-        const link = cell.querySelector('a');
+        const link
+          = cell.querySelector('a[href*="Liga_AccesoHorario"]')
+            ?? cell.querySelector('a');
 
         if (!link) {
           continue;
@@ -59,19 +67,36 @@ export async function parseCalendarTable(
           = Array.from(cell.classList).find((className) => className.length > 0)
             ?? null;
 
-        matches.push({
+        const lines = (link.textContent ?? '')
+          .split('\n')
+          .map((line) => line.trim())
+          .filter((line) => line.length > 0);
+
+        cells.push({
           id: Number(idMatch[1]),
           home_team: homeTeam,
           away_team: awayTeams[columnIndex - 1] || null,
-          date: link.textContent?.trim() || null,
           status,
-          location: null,
-          rounds: null,
+          lines,
         });
       }
     }
 
-    return matches;
+    return cells;
+  });
+
+  const rawMatches: RawCalendarMatch[] = rawCells.map((cell) => {
+    const details = parseMatchCellDetails(cell.status, cell.lines);
+
+    return {
+      id: cell.id,
+      home_team: cell.home_team,
+      away_team: cell.away_team,
+      status: cell.status,
+      date: details.date,
+      location: details.location,
+      rounds: details.rounds,
+    };
   });
 
   return rawMatches.flatMap((raw) => {

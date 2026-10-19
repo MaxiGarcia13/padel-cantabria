@@ -10,6 +10,13 @@ export interface RawCalendarMatch {
   rounds: string | null;
 }
 
+export type RawCalendarCell = Omit<
+  RawCalendarMatch,
+  'date' | 'location' | 'rounds'
+> & {
+  lines: string[];
+};
+
 export interface ScrapedCalendarMatch extends CategoryKey {
   id: number;
   home_team: string;
