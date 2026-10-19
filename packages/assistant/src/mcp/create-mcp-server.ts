@@ -5,9 +5,18 @@ import { z } from 'zod';
 import { getTeamOverview } from '../handlers/get-team-overview.js';
 import { getTopPlayersHandler } from '../handlers/get-top-players.js';
 import { listCategories } from '../handlers/list-categories.js';
+import { searchCategoriesHandler } from '../handlers/search-categories.js';
+import { searchPhasesHandler } from '../handlers/search-phases.js';
 import { searchPlayersHandler } from '../handlers/search-players.js';
 import { searchTeamsHandler } from '../handlers/search-teams.js';
 import { toolError, toolResult } from './tool-result.js';
+
+const GENDER_OPTIONAL = z
+  .enum(['M', 'F'])
+  .optional()
+  .describe(
+    'Include only when the user explicitly said masculine or feminine. Allowed values: M or F. Do not include this field otherwise (never send omit/unknown).',
+  );
 
 export function createMcpServer(db: DatabaseClient): McpServer {
   const server = new McpServer({
@@ -19,7 +28,7 @@ export function createMcpServer(db: DatabaseClient): McpServer {
     'list_categories',
     {
       description:
-        'List leagues with genders, phases, and categories (values and Spanish labels).',
+        'List the full leagues tree with genders, phases, and categories. Prefer search_categories / search_phases for targeted lookup. League is fixed by server config.',
     },
     async () => {
       try {
@@ -31,12 +40,68 @@ export function createMcpServer(db: DatabaseClient): McpServer {
   );
 
   server.registerTool(
+    'search_categories',
+    {
+      description:
+        'Search categories by independent tokens (e.g. "3ª"). League is fixed by server config. May return several matches. Do not invent gender.',
+      inputSchema: {
+        query: z.string().optional().describe('Category search tokens'),
+        gender: GENDER_OPTIONAL,
+        limit: z.number().int().positive().optional(),
+      },
+    },
+    async (args) => {
+      try {
+        return toolResult(
+          await searchCategoriesHandler(db, {
+            q: args.query,
+            gender: args.gender,
+            limit: args.limit,
+          }),
+        );
+      } catch (error) {
+        return toolError(error);
+      }
+    },
+  );
+
+  server.registerTool(
+    'search_phases',
+    {
+      description:
+        'Search competition phases by independent tokens. League is fixed by server config. Use when the user asks about a phase or before standings/next match if phase is unclear.',
+      inputSchema: {
+        query: z.string().optional().describe('Phase search tokens'),
+        gender: GENDER_OPTIONAL,
+        limit: z.number().int().positive().optional(),
+      },
+    },
+    async (args) => {
+      try {
+        return toolResult(
+          await searchPhasesHandler(db, {
+            q: args.query,
+            gender: args.gender,
+            limit: args.limit,
+          }),
+        );
+      } catch (error) {
+        return toolError(error);
+      }
+    },
+  );
+
+  server.registerTool(
     'search_teams',
     {
-      description: 'Search teams by name. Returns id, league, gender, category.',
+      description:
+        'Search teams by name tokens. League is fixed by server config. May return several matches; list them when ambiguous. Returns id, name, league/gender/category labels.',
       inputSchema: {
-        query: z.string().optional().describe('Team name fragment'),
-        limit: z.number().int().positive().optional().describe('Max results'),
+        query: z
+          .string()
+          .optional()
+          .describe('One or more words from the team name'),
+        limit: z.number().int().positive().optional(),
       },
     },
     async ({ query, limit }) => {
@@ -54,13 +119,15 @@ export function createMcpServer(db: DatabaseClient): McpServer {
     'get_team_overview',
     {
       description:
-        'Team competition context, standing/position, and next match for a phase.',
+        'Team standing/position and next match for a phase. Use search_phases if phase is unknown. Pass phase_value from search_phases when needed.',
       inputSchema: {
         team_id: z.number().int().positive().describe('Team id from search_teams'),
         phase: z
           .string()
           .optional()
-          .describe('Phase value; defaults to the first available phase'),
+          .describe(
+            'Phase value (phase_value from search_phases); defaults to the first available phase',
+          ),
       },
     },
     async ({ team_id: teamId, phase }) => {
@@ -76,12 +143,14 @@ export function createMcpServer(db: DatabaseClient): McpServer {
     'search_players',
     {
       description:
-        'Search players by name or surname. Returns points, team, and category.',
+        'Search players by name/surname only. League is fixed by server config. Returns team, league, gender and category labels, points. Call with query only unless the user named a gender. If several genders match, ask masculino (M) or femenino (F).',
       inputSchema: {
-        query: z.string().optional().describe('Player name or surname'),
-        league_id: z.number().int().positive().optional(),
-        gender: z.string().optional(),
-        category: z.string().optional(),
+        query: z
+          .string()
+          .describe(
+            'Player name words only (e.g. "Maximiliano Garcia Mortigliengo")',
+          ),
+        gender: GENDER_OPTIONAL,
         limit: z.number().int().positive().optional(),
       },
     },
@@ -90,9 +159,7 @@ export function createMcpServer(db: DatabaseClient): McpServer {
         return toolResult(
           await searchPlayersHandler(db, {
             q: args.query,
-            league_id: args.league_id,
             gender: args.gender,
-            category: args.category,
             limit: args.limit,
           }),
         );
@@ -105,11 +172,13 @@ export function createMcpServer(db: DatabaseClient): McpServer {
   server.registerTool(
     'get_top_players',
     {
-      description: 'Players with most points in a league gender/category.',
+      description:
+        'Top points in a category. League is fixed by server config. Requires category_value from search_categories and gender M/F. Ask the user if unknown.',
       inputSchema: {
-        league_id: z.number().int().positive(),
-        gender: z.string(),
-        category: z.string(),
+        gender: z.enum(['M', 'F']).describe('M or F (ask user if unknown)'),
+        category: z
+          .string()
+          .describe('category_value from search_categories (not the label)'),
         limit: z.number().int().positive().optional(),
       },
     },
@@ -117,7 +186,6 @@ export function createMcpServer(db: DatabaseClient): McpServer {
       try {
         return toolResult(
           await getTopPlayersHandler(db, {
-            league_id: args.league_id,
             gender: args.gender,
             category: args.category,
             limit: args.limit,

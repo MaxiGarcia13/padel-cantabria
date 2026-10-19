@@ -5,7 +5,7 @@ Stdio MCP shim for Claude Desktop / local MCP clients. Tools call the deployed (
 ## Prerequisites
 
 1. Assistant running (`pnpm assistant`) or deployed
-2. `ASSISTANT_URL` pointing at it (default `http://127.0.0.1:3001`)
+2. `ASSISTANT_URL` pointing at it (default `http://localhost:3001`)
 
 ## Claude Desktop
 
@@ -18,7 +18,7 @@ Add to `claude_desktop_config.json`:
       "command": "pnpm",
       "args": ["--dir", "/ABSOLUTE/PATH/to/padel-cantabria", "mcp"],
       "env": {
-        "ASSISTANT_URL": "http://127.0.0.1:3001"
+        "ASSISTANT_URL": "http://localhost:3001"
       }
     }
   }
@@ -31,12 +31,16 @@ For a deployed API, set `ASSISTANT_URL` to that base URL (no Turso env needed).
 
 Prefer the assistant Streamable HTTP endpoint directly:
 
-`http://127.0.0.1:3001/mcp` (or your deployed host + `/mcp`)
+`http://localhost:3001/mcp` (or your deployed host + `/mcp`)
 
 ## Tools
 
 - `list_categories`
+- `search_categories`
+- `search_phases`
 - `search_teams`
 - `get_team_overview`
 - `search_players`
 - `get_top_players`
+
+League id is applied by the assistant/MCP server from `LEAGUE_IDS` in `.env` (not from tool arguments). Scrapers keep using `LEAGUE_IDS` separately as an optional scrape filter.

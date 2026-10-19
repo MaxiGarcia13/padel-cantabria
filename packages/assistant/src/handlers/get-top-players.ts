@@ -1,10 +1,12 @@
 import type { DatabaseClient } from '../db.js';
+import { normalizeGender } from '../config/normalize-gender.js';
+import { getConfiguredLeagueId } from '../config/parse-league-ids.js';
 import { badRequest } from '../errors.js';
+import { presentPlayers } from '../presenters/present-player.js';
 
 const DEFAULT_LIMIT = 5;
 
 export interface GetTopPlayersQuery {
-  league_id?: number;
   gender?: string;
   category?: string;
   limit?: number;
@@ -12,29 +14,24 @@ export interface GetTopPlayersQuery {
 
 export async function getTopPlayersHandler(
   db: DatabaseClient,
-  {
-    league_id: leagueId,
-    gender,
-    category,
-    limit = DEFAULT_LIMIT,
-  }: GetTopPlayersQuery,
+  { gender, category, limit = DEFAULT_LIMIT }: GetTopPlayersQuery,
 ) {
-  if (leagueId === undefined || !Number.isFinite(leagueId)) {
-    throw badRequest('Missing or invalid league_id');
-  }
+  const normalizedGender = normalizeGender(gender);
 
-  if (!gender?.trim()) {
-    throw badRequest('Missing gender');
+  if (!normalizedGender) {
+    throw badRequest('Missing gender (use M or F, or ask the user)');
   }
 
   if (!category?.trim()) {
     throw badRequest('Missing category');
   }
 
-  return db.getTopPlayers({
-    league_id: leagueId,
-    gender: gender.trim(),
+  const players = await db.getTopPlayers({
+    league_id: getConfiguredLeagueId(),
+    gender: normalizedGender,
     category: category.trim(),
     limit,
   });
+
+  return presentPlayers(players);
 }

@@ -9,31 +9,25 @@ export function createPlayersRoutes(db: DatabaseClient): FastifyPluginAsync {
     app.get<{
       Querystring: {
         q?: string;
-        league_id?: string;
         gender?: string;
-        category?: string;
         limit?: string;
       };
     }>('/players/search', async (request) => {
       return searchPlayersHandler(db, {
         q: request.query.q,
-        league_id: parseOptionalPositiveInt(request.query.league_id),
         gender: request.query.gender,
-        category: request.query.category,
         limit: parseOptionalPositiveInt(request.query.limit),
       });
     });
 
     app.get<{
       Querystring: {
-        league_id?: string;
         gender?: string;
         category?: string;
         limit?: string;
       };
     }>('/players/top', async (request) => {
       return getTopPlayersHandler(db, {
-        league_id: parseOptionalPositiveInt(request.query.league_id),
         gender: request.query.gender,
         category: request.query.category,
         limit: parseOptionalPositiveInt(request.query.limit),

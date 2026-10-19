@@ -4,8 +4,10 @@ import Fastify from 'fastify';
 import { HttpError } from './errors.js';
 import { createCategoriesRoutes } from './routes/categories.js';
 import { createMcpRoutes } from './routes/mcp.js';
+import { createPhasesRoutes } from './routes/phases.js';
 import { createPlayersRoutes } from './routes/players.js';
 import { createTeamsRoutes } from './routes/teams.js';
+import { registerChatStatic } from './static-chat.js';
 
 export async function createApp(db: DatabaseClient) {
   const app = Fastify({ logger: true });
@@ -24,9 +26,11 @@ export async function createApp(db: DatabaseClient) {
   app.get('/health', async () => ({ ok: true }));
 
   await app.register(createCategoriesRoutes(db));
+  await app.register(createPhasesRoutes(db));
   await app.register(createTeamsRoutes(db));
   await app.register(createPlayersRoutes(db));
   await app.register(createMcpRoutes(db));
+  await registerChatStatic(app);
 
   return app;
 }

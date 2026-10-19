@@ -1,5 +1,7 @@
 import type { Connection } from '@tursodatabase/serverless';
 import type { GetTopPlayersParams } from './repositories/get-top-players.js';
+import type { SearchCategoriesParams } from './repositories/search-categories.js';
+import type { SearchPhasesParams } from './repositories/search-phases.js';
 import type { SearchPlayersParams } from './repositories/search-players.js';
 import type { SearchTeamsParams } from './repositories/search-teams.js';
 import type { League } from './types/league.js';
@@ -22,6 +24,8 @@ import { getTeamPlayers } from './repositories/get-team-players.js';
 import { getTeamStanding } from './repositories/get-team-standing.js';
 import { getTeams } from './repositories/get-teams.js';
 import { getTopPlayers } from './repositories/get-top-players.js';
+import { searchCategories } from './repositories/search-categories.js';
+import { searchPhases } from './repositories/search-phases.js';
 import { searchPlayers } from './repositories/search-players.js';
 import { searchTeams } from './repositories/search-teams.js';
 import { upsertLeagues } from './repositories/upsert-leagues.js';
@@ -67,6 +71,10 @@ export function createClient(params: TursoConfig) {
   return {
     getLeagues: () => getLeagues(connection),
     getCategories: () => getCategories(connection),
+    searchCategories: (params?: SearchCategoriesParams) =>
+      searchCategories(connection, params),
+    searchPhases: (params?: SearchPhasesParams) =>
+      searchPhases(connection, params),
     getTeams: clientGetTeams,
     searchTeams: (params?: SearchTeamsParams) => searchTeams(connection, params),
     getTeamById: (id: number) => getTeamById(connection, id),
