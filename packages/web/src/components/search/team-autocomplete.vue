@@ -3,12 +3,12 @@ import type { Team } from '@padel-cantabria/database';
 import type { TeamSearchHistoryItem } from './team-search-history.vue';
 import type { AutocompleteItem } from '@/components/autocomplete';
 import { debounce } from '@maxigarcia/js-utils';
+import { getTeamDisplayLabels } from '@padel-cantabria/shared';
 import { computed, ref, watch } from 'vue';
 import { Autocomplete } from '@/components/autocomplete';
 import { useLeagues } from '@/composables/use-leagues';
 import { useSearchTeams } from '@/composables/use-search-teams';
 import { useTeamSearchHistory } from '@/composables/use-team-search-history';
-import { getTeamDisplayLabels } from '@/domain/team/get-team-display-labels';
 import TeamSearchHistory from './team-search-history.vue';
 
 const props = defineProps<{

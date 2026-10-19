@@ -1,8 +1,8 @@
 import type { MaybeRefOrGetter } from 'vue';
+import { getTeamTotalPoints } from '@padel-cantabria/shared';
 import { computed } from 'vue';
 import { useHydrated } from '@/composables/use-hydrated';
 import { useTeamPlayers } from '@/composables/use-team-players';
-import { getTeamTotalPoints } from '@/domain/team/get-team-total-points';
 
 export function useTeamTotalPoints(teamId: MaybeRefOrGetter<number>) {
   const isHydrated = useHydrated();

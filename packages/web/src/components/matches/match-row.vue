@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Match } from '@padel-cantabria/database';
+import { formatMatchMeta } from '@padel-cantabria/shared';
 import { computed } from 'vue';
-import { formatMatchMeta } from '@/domain/matches';
 import { buildMatchPath } from '@/server/load-category-matches';
 
 const props = defineProps<{

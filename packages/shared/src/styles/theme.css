@@ -1,0 +1,21 @@
+:root {
+  --pc-background: #121212;
+  --pc-surface: #1a1a1a;
+  --pc-border: #2e2e2e;
+  --pc-foreground: #e5e5e5;
+  --pc-muted: #8a8a8a;
+  --pc-danger: #b85c5c;
+  --pc-primary: #d4d4d4;
+  --pc-primary-foreground: #141414;
+}
+
+@theme {
+  --color-background: var(--pc-background);
+  --color-surface: var(--pc-surface);
+  --color-border: var(--pc-border);
+  --color-foreground: var(--pc-foreground);
+  --color-muted: var(--pc-muted);
+  --color-danger: var(--pc-danger);
+  --color-primary: var(--pc-primary);
+  --color-primary-foreground: var(--pc-primary-foreground);
+}

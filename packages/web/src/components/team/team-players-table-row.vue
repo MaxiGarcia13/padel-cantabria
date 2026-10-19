@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { TeamPlayer } from '@padel-cantabria/database';
+import { formatStandingValue, getPositionTrend } from '@padel-cantabria/shared';
 import { computed } from 'vue';
 import PositionTrend from '@/components/standings/position-trend.vue';
 import TableRow from '@/components/table/table-row.vue';
-import { formatStandingValue, getPositionTrend } from '@/domain/standings';
 
 const props = defineProps<{
   player: TeamPlayer;

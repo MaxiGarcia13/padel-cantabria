@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { TeamWithStandings } from '@padel-cantabria/database';
-import { computed } from 'vue';
-import PositionTrend from '@/components/standings/position-trend.vue';
 import {
   formatStandingValue,
   getPositionTrend,
-} from '@/domain/standings';
+} from '@padel-cantabria/shared';
+import { computed } from 'vue';
+import PositionTrend from '@/components/standings/position-trend.vue';
 
 const props = defineProps<{
   standing: TeamWithStandings | null;

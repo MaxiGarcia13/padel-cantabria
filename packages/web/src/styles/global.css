@@ -1,15 +1,5 @@
 @import 'tailwindcss';
-
-@theme {
-  --color-background: #121212;
-  --color-surface: #1a1a1a;
-  --color-border: #2e2e2e;
-  --color-foreground: #e5e5e5;
-  --color-muted: #8a8a8a;
-  --color-danger: #b85c5c;
-  --color-primary: #d4d4d4;
-  --color-primary-foreground: #141414;
-}
+@import '@padel-cantabria/shared/styles/theme.css';
 
 html {
   color-scheme: dark;

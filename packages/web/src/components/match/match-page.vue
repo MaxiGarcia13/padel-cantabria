@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Match } from '@padel-cantabria/database';
+import { formatStandingValue } from '@padel-cantabria/shared';
 import { computed, ref } from 'vue';
 import { Tabs } from '@/components/tabs';
 import TeamPlayersTableLazy from '@/components/team/team-players-table-lazy.vue';
 import { useTeamTotalPoints } from '@/composables/use-team-total-points';
-import { formatStandingValue } from '@/domain/standings';
 import MatchHeader from './match-header.vue';
 import MatchMeta from './match-meta.vue';
 

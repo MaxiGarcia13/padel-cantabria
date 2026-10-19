@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PositionTrend } from '@/domain/standings';
+import type { PositionTrend } from '@padel-cantabria/shared';
 import { computed } from 'vue';
 
 const props = defineProps<{
