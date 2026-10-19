@@ -12,6 +12,7 @@ Stdio MCP shim for Claude Desktop, OpenCode, and other local MCP clients. Tools 
    ```
 
    Default URL: `http://localhost:3001`
+
 3. Keep that process running while the MCP client is connected.
 
 For a deployed API, use that base URL instead of `localhost` below (no Turso env needed on the client).
@@ -20,11 +21,11 @@ For a deployed API, use that base URL instead of `localhost` below (no Turso env
 
 From the repo root, print the path to paste into configs below:
 
-| OS | Command |
-| --- | --- |
-| macOS / Linux | `pwd` |
+| OS                   | Command               |
+| -------------------- | --------------------- |
+| macOS / Linux        | `pwd`                 |
 | Windows (PowerShell) | `(Get-Location).Path` |
-| Windows (cmd) | `cd` |
+| Windows (cmd)        | `cd`                  |
 
 Example output: `/Users/you/Workspace/padel-cantabria` or `C:\Users\you\Workspace\padel-cantabria`.
 
