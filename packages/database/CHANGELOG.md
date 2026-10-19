@@ -1,3 +1,15 @@
+## 0.0.4 (2026-10-19)
+
+### 🔄 Refactors
+
+- Integrate MatchRecord type and rename 'schedule' to 'rounds' in match-related structures ([c14365f](https://github.com/MaxiGarcia13/padel-cantabria/commit/c14365f))
+- Update match-related queries to use 'rounds' instead of 'schedule' ([99786ea](https://github.com/MaxiGarcia13/padel-cantabria/commit/99786ea))
+- Rename schedule field to rounds in match schema and types ([986f160](https://github.com/MaxiGarcia13/padel-cantabria/commit/986f160))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.3 (2026-10-17)
 
 ### 🚀 Features

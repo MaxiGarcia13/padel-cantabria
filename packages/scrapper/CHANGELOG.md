@@ -1,3 +1,18 @@
+## 0.0.6 (2026-10-19)
+
+### 🔄 Refactors
+
+- Enhance calendar table parsing and introduce match cell details extraction ([36f62f0](https://github.com/MaxiGarcia13/padel-cantabria/commit/36f62f0))
+- Integrate MatchRecord type and rename 'schedule' to 'rounds' in match-related structures ([c14365f](https://github.com/MaxiGarcia13/padel-cantabria/commit/c14365f))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/database to 0.0.4
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.5 (2026-10-17)
 
 ### 🚀 Features

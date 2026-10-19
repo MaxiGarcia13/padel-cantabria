@@ -1,3 +1,21 @@
+## 0.0.10 (2026-10-19)
+
+### 🔄 Refactors
+
+- Replace 'schedule' with 'rounds' in match metadata components ([bc6d7bb](https://github.com/MaxiGarcia13/padel-cantabria/commit/bc6d7bb))
+
+### 🎨 Styles
+
+- Adjust back button class for improved layout ([dcb86b6](https://github.com/MaxiGarcia13/padel-cantabria/commit/dcb86b6))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/database to 0.0.4
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.9 (2026-10-17)
 
 ### 🎨 Styles
