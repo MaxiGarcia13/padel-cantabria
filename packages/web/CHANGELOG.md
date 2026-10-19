@@ -1,3 +1,13 @@
+## 0.0.11 (2026-10-19)
+
+### 🔄 Refactors
+
+- Simplify match metadata handling by introducing formatMatchMeta utility ([c0a9e51](https://github.com/MaxiGarcia13/padel-cantabria/commit/c0a9e51))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.10 (2026-10-19)
 
 ### 🔄 Refactors
