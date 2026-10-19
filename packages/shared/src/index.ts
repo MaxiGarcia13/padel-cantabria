@@ -1,3 +1,8 @@
+export {
+  categoryAliasKey,
+  normalizeCategoryQuery,
+  normalizeCategoryToken,
+} from './category/index.js';
 export { formatNumber } from './format/index.js';
 export {
   formatMatchMeta,

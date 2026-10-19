@@ -3,7 +3,7 @@ import type { DatabaseClient } from '../db.js';
 import {
   categoryAliasKey,
   normalizeCategoryQuery,
-} from './normalize-category.js';
+} from '@padel-cantabria/shared';
 
 export type CategoryResolveResult
   = | { status: 'matched'; match: CategoryMatch }

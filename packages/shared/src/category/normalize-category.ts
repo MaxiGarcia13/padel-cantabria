@@ -51,7 +51,9 @@ export function categoryAliasKey(raw: string): string {
 const CATEGORY_STOP_KEYS = new Set([
   // structural / gender
   'categoria',
+  'categorias',
   'category',
+  'categories',
   'grupo',
   'group',
   'masculina',

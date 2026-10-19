@@ -1,5 +1,5 @@
 import type { DatabaseClient } from '../db.js';
-import { normalizeCategoryQuery } from '../config/normalize-category.js';
+import { normalizeCategoryQuery } from '@padel-cantabria/shared';
 import { normalizeGender } from '../config/normalize-gender.js';
 import { getConfiguredLeagueId } from '../config/parse-league-ids.js';
 import { presentCategories } from '../presenters/present-category.js';

@@ -9,8 +9,8 @@ function fold(text: string): string {
 }
 
 /**
- * True when the user asks to list the category catalog (not teams in a category).
- * Examples: "qué categorías hay?", "listar categorias".
+ * True when the user asks to list categories (full catalog or filtered).
+ * Examples: "qué categorías hay?", "qué categorías hay en tercera?".
  */
 export function asksForCategoryCatalog(text: string): boolean {
   if (asksForCategoryTeams(text)) {
