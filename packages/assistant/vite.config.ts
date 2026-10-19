@@ -16,6 +16,7 @@ export default defineConfig({
     proxy: {
       '/mcp': 'http://localhost:3001',
       '/health': 'http://localhost:3001',
+      '/chat': 'http://localhost:3001',
       '/categories': 'http://localhost:3001',
       '/phases': 'http://localhost:3001',
       '/teams': 'http://localhost:3001',
