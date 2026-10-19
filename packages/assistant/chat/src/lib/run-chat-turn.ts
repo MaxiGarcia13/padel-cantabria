@@ -14,21 +14,23 @@ const MAX_TOOL_ROUNDS = 3;
  * Hermes function-calling injects its own system prompt; a custom `system`
  * message is rejected when `tools` is set. Keep guidance in the user turn.
  */
-const USER_GUIDANCE = `Responde en español, de forma clara y breve.
-Usa las herramientas solo cuando necesites datos reales. No inventes resultados ni parámetros.
-No uses datos de mensajes anteriores salvo que el usuario diga "ese equipo", "el anterior", etc.
-Para equipos de una categoría/grupo: search_categories (gender M/F si el usuario lo dijo) y luego list_teams con category_value y gender. list_categories y search_teams NO listan equipos de un grupo.
-list_categories solo si piden el catálogo completo; para una categoría usa search_categories.
-Para buscar un jugador, llama search_players solo con query (nombre). No envíes gender salvo que el usuario diga masculino/femenino (M o F).
-Si hay varias coincidencias de género, pregunta: ¿masculino (M) o femenino (F)?
-Cuando el resultado de una herramienta ya contiene el dato pedido (p. ej. lista de teams, team_name), contesta en texto y NO llames más herramientas.
-La liga la fija el servidor.`;
+/** English saves tokens; reply language follows the user question. */
+const USER_GUIDANCE = `Reply in the user's language. Be clear and brief.
+Use tools for real data only. Never invent results, args, teams, or players.
+Ignore prior turns unless the user refers to them ("that team", "the previous one").
+League is fixed by the server.
+
+Tools:
+- Teams in a category/group → search_categories (pass gender M/F only if the user said it), then list_teams with category_value + gender. Not list_categories or search_teams.
+- One category lookup → search_categories. Full catalog only → list_categories.
+- Team by name → search_teams. Player by name → search_players (query only; gender only if user said M/F). If gender is ambiguous, ask M or F.
+- When a tool result already has the asked data (e.g. teams[]), answer in text; do not call more tools.`;
 
 const AFTER_TOOLS_NUDGE
-  = 'Contesta en español solo si el resultado anterior ya tiene el dato pedido (equipos, jugadores, etc.). Si solo hay categorías o ids y faltan equipos u otro dato, llama la herramienta que falta. No inventes ni uses datos de turnos anteriores.';
+  = 'Reply in the user\'s language only if the last tool result already has the asked data (teams, players, etc.). If you only have categories/ids and still need teams or another fact, call the missing tool. Do not invent or reuse prior-turn facts.';
 
 const SUMMARIZE_TOOL_NUDGE
-  = 'Resume en español, de forma clara y breve, solo lo que aparece en el resultado de la herramienta anterior. No inventes equipos ni jugadores. No llames más herramientas.';
+  = 'In the user\'s language, briefly summarize only what is in the last tool result. Do not invent teams or players. Do not call more tools.';
 
 function parseToolArguments(raw: string | undefined): Record<string, unknown> {
   if (!raw) {
@@ -106,7 +108,7 @@ export async function runChatTurn(options: {
     ...withoutSystemMessages(options.history),
     {
       role: 'user',
-      content: `${USER_GUIDANCE}\n\nPregunta: ${options.userMessage}`,
+      content: `${USER_GUIDANCE}\n\nQuestion: ${options.userMessage}`,
     },
   ];
   const toolResults: string[] = [];
