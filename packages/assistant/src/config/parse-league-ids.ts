@@ -1,3 +1,5 @@
+import process from 'node:process';
+
 export function parseLeagueIds(raw: string | undefined): Set<number> | null {
   if (!raw?.trim()) {
     return null;
