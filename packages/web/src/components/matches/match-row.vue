@@ -10,7 +10,7 @@ const props = defineProps<{
 const href = computed(() => buildMatchPath(props.match, props.match.id));
 
 const metaParts = computed(() =>
-  [props.match.date, props.match.location, props.match.schedule].filter(
+  [props.match.date, props.match.location, props.match.rounds].filter(
     (value): value is string => Boolean(value),
   ),
 );

@@ -17,7 +17,7 @@ const metaParts = computed(() => {
     return [];
   }
 
-  return [props.match.date, props.match.location, props.match.schedule].filter(
+  return [props.match.date, props.match.location, props.match.rounds].filter(
     (value): value is string => Boolean(value),
   );
 });
