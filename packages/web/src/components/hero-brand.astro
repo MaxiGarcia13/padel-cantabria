@@ -1,0 +1,33 @@
+---
+import { BrandIcon } from '@/components/icons';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+const letters = [...title];
+---
+
+<div class="inline-flex flex-col items-center gap-2" data-hero-brand>
+  <div class="relative flex h-10 w-full justify-center overflow-visible">
+    <span class="inline-flex will-change-transform" data-hero-ball>
+      <BrandIcon class="size-10 text-foreground" />
+    </span>
+  </div>
+  <h1 class="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl" aria-label={title}>
+    {letters.map((char) => (
+      <span class="inline-block will-change-transform" data-hero-letter aria-hidden="true">
+        {char === ' ' ? '\u00A0' : char}
+      </span>
+    ))}
+  </h1>
+</div>
+
+<script>
+  import { runHeroBrandAnimation } from './run-hero-brand-animation';
+
+  document.addEventListener('astro:page-load', () => {
+    runHeroBrandAnimation();
+  });
+</script>
