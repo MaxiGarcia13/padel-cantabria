@@ -1,3 +1,13 @@
+## 0.0.13 (2026-10-19)
+
+### 🐞 Fixes
+
+- Correct title in AppLayout and HeroBrand components ([0dc907f](https://github.com/MaxiGarcia13/padel-cantabria/commit/0dc907f))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.12 (2026-10-19)
 
 ### 🚀 Features
