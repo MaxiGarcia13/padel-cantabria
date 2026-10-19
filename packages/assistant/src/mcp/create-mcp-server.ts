@@ -1,7 +1,7 @@
 import type { DatabaseClient } from '../db.js';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import packageJson from '@package-json';
 import { z } from 'zod';
-import packageJson from '../../package.json';
 import { getTeamOverview } from '../handlers/get-team-overview.js';
 import { getTopPlayersHandler } from '../handlers/get-top-players.js';
 import { listCategories } from '../handlers/list-categories.js';
