@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue';
 import { cn } from 'cn';
 import { onBeforeUnmount, onMounted, useTemplateRef } from 'vue';
-import { useMessageScrollerContext } from './useMessageScroller';
+import { useMessageScrollerContext } from './use-message-scroller';
 
 const props = defineProps<{
   class?: HTMLAttributes['class'];

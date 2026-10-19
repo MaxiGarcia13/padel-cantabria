@@ -3,9 +3,9 @@ import type {
   ChatCompletionTool,
   MLCEngineInterface,
 } from '@mlc-ai/web-llm';
+import type { McpBrowserClient } from './mcp-client';
 import { asksForCategoryTeams } from './category-teams-intent';
 import { fetchCategoryTeamsIfNeeded } from './fetch-category-teams';
-import type { McpBrowserClient } from './mcp-client';
 import { toolResultsIncludeTeams } from './parse-tool-json';
 import { sanitizeToolArgs } from './sanitize-tool-args';
 import { formatToolResultFallback } from './tool-result-fallback';

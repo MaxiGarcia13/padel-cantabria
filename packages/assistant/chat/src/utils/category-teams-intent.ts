@@ -19,11 +19,11 @@ export function asksForCategoryTeams(text: string): boolean {
 export function inferGenderFromText(text: string): 'M' | 'F' | undefined {
   const normalized = fold(text);
 
-  if (/\b(m|masc|masculin[oa]?)\b/.test(normalized)) {
+  if (/\b(?:m|masc|masculin[oa]?)\b/.test(normalized)) {
     return 'M';
   }
 
-  if (/\b(f|fem|femenin[oa]?)\b/.test(normalized)) {
+  if (/\b(?:f|fem|femenin[oa]?)\b/.test(normalized)) {
     return 'F';
   }
 

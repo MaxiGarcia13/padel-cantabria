@@ -1,9 +1,9 @@
-export { default as MessageScroller } from './MessageScroller.vue';
-export { default as MessageScrollerButton } from './MessageScrollerButton.vue';
-export { default as MessageScrollerContent } from './MessageScrollerContent.vue';
-export { default as MessageScrollerItem } from './MessageScrollerItem.vue';
-export { default as MessageScrollerProvider } from './MessageScrollerProvider.vue';
-export { default as MessageScrollerViewport } from './MessageScrollerViewport.vue';
+export { default as MessageScrollerButton } from './message-scroller-button.vue';
+export { default as MessageScrollerContent } from './message-scroller-content.vue';
+export { default as MessageScrollerItem } from './message-scroller-item.vue';
+export { default as MessageScrollerProvider } from './message-scroller-provider.vue';
+export { default as MessageScrollerViewport } from './message-scroller-viewport.vue';
+export { default as MessageScroller } from './message-scroller.vue';
 
 export type {
   MessageScrollerButtonDirection,
@@ -13,10 +13,10 @@ export type {
   MessageScrollerScrollAlign,
   MessageScrollerScrollOptions,
   MessageScrollerVisibilityState,
-} from './useMessageScroller';
+} from './use-message-scroller';
 
 export {
   useMessageScroller,
   useMessageScrollerScrollable,
   useMessageScrollerVisibility,
-} from './useMessageScroller';
+} from './use-message-scroller';

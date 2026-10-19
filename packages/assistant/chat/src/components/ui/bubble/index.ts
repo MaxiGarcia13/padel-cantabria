@@ -1,10 +1,10 @@
 import type { VariantProps } from 'class-variance-authority';
 import { cva } from 'class-variance-authority';
 
-export { default as Bubble } from './Bubble.vue';
-export { default as BubbleContent } from './BubbleContent.vue';
-export { default as BubbleGroup } from './BubbleGroup.vue';
-export { default as BubbleReactions } from './BubbleReactions.vue';
+export { default as BubbleContent } from './bubble-content.vue';
+export { default as BubbleGroup } from './bubble-group.vue';
+export { default as BubbleReactions } from './bubble-reactions.vue';
+export { default as Bubble } from './bubble.vue';
 
 export const bubbleVariants = cva(
   'group/bubble relative flex w-fit max-w-[80%] min-w-0 flex-col gap-1 group-data-[align=end]/message:self-end data-[align=end]:self-end data-[variant=ghost]:max-w-full',
