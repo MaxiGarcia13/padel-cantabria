@@ -46,4 +46,4 @@ League is taken from root `.env` `LEAGUE_IDS` (first id), not from query params.
 
 - **Chat UI:** open `http://localhost:3001/` (Vue → `/chat/completions` → MCP)
 - **Cursor / remote MCP URL:** `http://<host>:3001/mcp`
-- **Claude Desktop (stdio):** [`packages/mcp`](../mcp/README.md) with `ASSISTANT_URL`
+- **OpenCode / Claude Desktop:** step-by-step in [`packages/mcp`](../mcp/README.md)

@@ -1,15 +1,40 @@
 # `@padel-cantabria/mcp`
 
-Stdio MCP shim for Claude Desktop / local MCP clients. Tools call the deployed (or local) assistant **HTTP API** — no Turso credentials on the client.
+Stdio MCP shim for Claude Desktop, OpenCode, and other local MCP clients. Tools call the deployed (or local) assistant **HTTP API** — no Turso credentials on the client.
 
 ## Prerequisites
 
-1. Assistant running (`pnpm assistant`) or deployed
-2. `ASSISTANT_URL` pointing at it (default `http://localhost:3001`)
+1. Install dependencies from the repo root: `pnpm install`
+2. Start the assistant (or use a deployed host):
+
+   ```bash
+   pnpm assistant
+   ```
+
+   Default URL: `http://localhost:3001`
+3. Keep that process running while the MCP client is connected.
+
+For a deployed API, use that base URL instead of `localhost` below (no Turso env needed on the client).
+
+### Absolute path to this repo
+
+From the repo root, print the path to paste into configs below:
+
+| OS | Command |
+| --- | --- |
+| macOS / Linux | `pwd` |
+| Windows (PowerShell) | `(Get-Location).Path` |
+| Windows (cmd) | `cd` |
+
+Example output: `/Users/you/Workspace/padel-cantabria` or `C:\Users\you\Workspace\padel-cantabria`.
 
 ## Claude Desktop
 
-Add to `claude_desktop_config.json`:
+1. Open Claude Desktop → **Settings** → **Developer** → **Edit Config** (opens `claude_desktop_config.json`).
+2. Merge the server entry below. Replace `/ABSOLUTE/PATH/to/padel-cantabria` with the path from [Absolute path to this repo](#absolute-path-to-this-repo).
+3. Set `ASSISTANT_URL` to your assistant base URL (`http://localhost:3001` locally, or the deployed host).
+4. Save the file and fully quit / reopen Claude Desktop.
+5. Confirm **padel-cantabria** appears under MCP / tools, then ask something like “list categories”.
 
 ```json
 {
@@ -25,7 +50,69 @@ Add to `claude_desktop_config.json`:
 }
 ```
 
-For a deployed API, set `ASSISTANT_URL` to that base URL (no Turso env needed).
+## OpenCode
+
+Prefer the assistant Streamable HTTP endpoint (same as Cursor). Local stdio via this package also works.
+
+### Option A — remote HTTP (recommended)
+
+1. Ensure the assistant is running (see [Prerequisites](#prerequisites)).
+2. Open your OpenCode config:
+   - Project: `opencode.json` (or `opencode.jsonc`) in the project root, or
+   - Global: `~/.config/opencode/opencode.json`
+3. Add the remote MCP server (use your deployed host + `/mcp` when not local):
+
+   ```json
+   {
+     "$schema": "https://opencode.ai/config.json",
+     "mcp": {
+       "padel-cantabria": {
+         "type": "remote",
+         "url": "http://localhost:3001/mcp",
+         "enabled": true
+       }
+     }
+   }
+   ```
+
+4. Restart OpenCode (or reload config).
+5. Check the server is connected:
+
+   ```bash
+   opencode mcp list
+   ```
+
+6. In a chat, ask something like “list categories” (you can mention `padel-cantabria` if the model does not pick the tools on its own).
+
+### Option B — local stdio
+
+1. Ensure the assistant is running and note its base URL.
+2. In `opencode.json` / `opencode.jsonc`, add a local server. Replace `/ABSOLUTE/PATH/to/padel-cantabria` with the path from [Absolute path to this repo](#absolute-path-to-this-repo):
+
+   ```json
+   {
+     "$schema": "https://opencode.ai/config.json",
+     "mcp": {
+       "padel-cantabria": {
+         "type": "local",
+         "command": [
+           "pnpm",
+           "--dir",
+           "/ABSOLUTE/PATH/to/padel-cantabria",
+           "mcp"
+         ],
+         "environment": {
+           "ASSISTANT_URL": "http://localhost:3001"
+         },
+         "enabled": true
+       }
+     }
+   }
+   ```
+
+3. Restart OpenCode and verify with `opencode mcp list`.
+
+See [OpenCode MCP docs](https://opencode.ai/docs/mcp-servers/) for config locations and options.
 
 ## Cursor / remote MCP
 
