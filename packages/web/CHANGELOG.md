@@ -1,3 +1,18 @@
+## 0.0.12 (2026-10-19)
+
+### 🚀 Features
+
+- Implement HeroBrand component with animation ([027932a](https://github.com/MaxiGarcia13/padel-cantabria/commit/027932a))
+- Add GSAP library to web package ([6ee4a45](https://github.com/MaxiGarcia13/padel-cantabria/commit/6ee4a45))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/database to 0.0.5
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.11 (2026-10-19)
 
 ### 🔄 Refactors
