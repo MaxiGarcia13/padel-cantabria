@@ -5,6 +5,7 @@ import type {
 } from '@mlc-ai/web-llm';
 import type { McpBrowserClient } from './mcp-client';
 import { sanitizeToolArgs } from './sanitize-tool-args';
+import { formatToolResultFallback } from './tool-result-fallback';
 
 /** Enough for search → follow-up tool; last round forces a text answer. */
 const MAX_TOOL_ROUNDS = 3;
@@ -22,6 +23,9 @@ La liga la fija el servidor.`;
 
 const AFTER_TOOLS_NUDGE
   = 'Si el resultado anterior ya responde la pregunta, contesta ahora en español sin llamar más herramientas. Solo usa otra herramienta si falta un dato concreto que no esté en el resultado.';
+
+const SUMMARIZE_TOOL_NUDGE
+  = 'Resume en español, de forma clara y breve, el resultado de la herramienta anterior. No llames más herramientas.';
 
 function parseToolArguments(raw: string | undefined): Record<string, unknown> {
   if (!raw) {
@@ -50,6 +54,44 @@ function formatToolResult(name: string, toolText: string): string {
   return `Resultado de ${name}:\n${toolText}`;
 }
 
+async function completeForcedText(
+  engine: MLCEngineInterface,
+  messages: ChatCompletionMessageParam[],
+): Promise<string | null> {
+  const completion = await engine.chat.completions.create({
+    messages: withoutSystemMessages(messages),
+    tool_choice: 'none' as const,
+  });
+
+  return completion.choices[0]?.message?.content?.trim() || null;
+}
+
+async function resolveEmptyModelReply(options: {
+  engine: MLCEngineInterface;
+  messages: ChatCompletionMessageParam[];
+  toolResults: string[];
+}): Promise<string> {
+  if (options.toolResults.length === 0) {
+    return 'No he encontrado una respuesta.';
+  }
+
+  const summarizeMessages: ChatCompletionMessageParam[] = [
+    ...options.messages,
+    { role: 'user', content: SUMMARIZE_TOOL_NUDGE },
+  ];
+
+  const summarized = await completeForcedText(
+    options.engine,
+    summarizeMessages,
+  );
+
+  if (summarized) {
+    return summarized;
+  }
+
+  return formatToolResultFallback(options.toolResults);
+}
+
 export async function runChatTurn(options: {
   engine: MLCEngineInterface;
   mcp: McpBrowserClient;
@@ -64,6 +106,7 @@ export async function runChatTurn(options: {
       content: `${USER_GUIDANCE}\n\nPregunta: ${options.userMessage}`,
     },
   ];
+  const toolResults: string[] = [];
 
   for (let round = 0; round < MAX_TOOL_ROUNDS; round += 1) {
     const forceTextAnswer = round === MAX_TOOL_ROUNDS - 1;
@@ -80,13 +123,25 @@ export async function runChatTurn(options: {
     const message = completion.choices[0]?.message;
 
     if (!message) {
+      if (toolResults.length > 0) {
+        return formatToolResultFallback(toolResults);
+      }
       return 'No he podido generar una respuesta.';
     }
 
     const toolCalls = forceTextAnswer ? [] : (message.tool_calls ?? []);
 
     if (toolCalls.length === 0) {
-      return message.content?.trim() || 'No he encontrado una respuesta.';
+      const content = message.content?.trim();
+      if (content) {
+        return content;
+      }
+
+      return resolveEmptyModelReply({
+        engine: options.engine,
+        messages,
+        toolResults,
+      });
     }
 
     messages.push({
@@ -102,6 +157,7 @@ export async function runChatTurn(options: {
         parseToolArguments(toolCall.function.arguments),
       );
       const toolText = await options.mcp.callTool(name, args);
+      toolResults.push(toolText);
 
       messages.push({
         role: 'tool',
@@ -114,6 +170,10 @@ export async function runChatTurn(options: {
       role: 'user',
       content: AFTER_TOOLS_NUDGE,
     });
+  }
+
+  if (toolResults.length > 0) {
+    return formatToolResultFallback(toolResults);
   }
 
   return 'He alcanzado el límite de herramientas para esta pregunta. Prueba a reformularla.';
