@@ -19,6 +19,6 @@ export function resolveMatchTeams(
     date: match.date,
     status: match.status,
     location: match.location,
-    schedule: match.schedule,
+    rounds: match.rounds,
   }));
 }

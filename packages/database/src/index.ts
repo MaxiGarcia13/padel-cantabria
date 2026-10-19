@@ -1,5 +1,6 @@
 export { createClient, createConnection } from './client.js';
 export type { TursoConfig } from './client.js';
+export type { MatchRecord } from './types/db.js';
 export type {
   BaseLeague,
   Gender,

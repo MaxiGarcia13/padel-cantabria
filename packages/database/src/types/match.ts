@@ -1,21 +1,14 @@
-export interface CategoryKey {
-  league_id: number;
-  gender: string;
-  phase: string;
-  category: string;
-}
+import type { MatchRecord } from './db.js';
 
-export interface Match extends CategoryKey {
-  id: number;
-  home_team_id: number;
-  away_team_id: number;
-  home_team: string;
-  away_team: string;
-  date: string;
-  status: string | null;
-  location: string | null;
-  rounds: string | null;
-}
+export type CategoryKey = Pick<
+  MatchRecord,
+  'league_id' | 'gender' | 'phase' | 'category'
+>;
 
 /** Shape used when writing matches (team names come from the teams table). */
-export type MatchWrite = Omit<Match, 'home_team' | 'away_team'>;
+export type MatchWrite = MatchRecord;
+
+export type Match = MatchRecord & {
+  home_team: string;
+  away_team: string;
+};

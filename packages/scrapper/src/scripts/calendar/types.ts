@@ -7,7 +7,7 @@ export interface RawCalendarMatch {
   date: string | null;
   status: string | null;
   location: string | null;
-  schedule: string | null;
+  rounds: string | null;
 }
 
 export interface ScrapedCalendarMatch extends CategoryKey {
@@ -17,7 +17,7 @@ export interface ScrapedCalendarMatch extends CategoryKey {
   date: string;
   status: string | null;
   location: string | null;
-  schedule: string | null;
+  rounds: string | null;
 }
 
 export type RawStandingRow = {

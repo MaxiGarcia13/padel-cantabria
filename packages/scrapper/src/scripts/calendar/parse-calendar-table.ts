@@ -66,7 +66,7 @@ export async function parseCalendarTable(
           date: link.textContent?.trim() || null,
           status,
           location: null,
-          schedule: null,
+          rounds: null,
         });
       }
     }
@@ -93,7 +93,7 @@ export async function parseCalendarTable(
         date: raw.date,
         status: raw.status,
         location: raw.location,
-        schedule: raw.schedule,
+        rounds: raw.rounds,
       },
     ];
   });
