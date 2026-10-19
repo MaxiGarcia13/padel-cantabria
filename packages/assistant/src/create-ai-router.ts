@@ -1,4 +1,5 @@
 import type { AiRouterInterface } from '@maxigarcia/ai-router';
+import process from 'node:process';
 import { AiRouter } from '@maxigarcia/ai-router';
 
 type ProviderName = 'gemini' | 'open-router' | 'groq';
