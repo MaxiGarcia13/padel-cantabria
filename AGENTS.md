@@ -19,12 +19,12 @@ Human-oriented overview: [README.md](README.md)
 | -------------------- | --------------------------------------- |
 | `packages/database`  | Schema, types, Turso client             |
 | `packages/shared`    | Reusable domain helpers (matches, etc.) |
-| `packages/assistant` | Fastify API + HTTP MCP (deploy target)  |
+| `packages/assistant` | Fastify API + HTTP MCP + Vue chat UI    |
 | `packages/mcp`       | Stdio MCP shim → assistant HTTP API     |
 | `packages/scrapper`  | Puppeteer scrapers → Turso              |
 | `packages/web`       | Astro + Vue frontend                    |
 
-Package manager: **pnpm**. Env vars live in the **repo root** `.env` (`TURSO_URL`, `TURSO_AUTH_TOKEN`; optional `LEAGUE_IDS`).
+Package manager: **pnpm**. Env vars live in the **repo root** `.env` (`TURSO_URL`, `TURSO_AUTH_TOKEN`; optional `LEAGUE_IDS` for scrapers — **required for the assistant/MCP**, which scopes all reads to that league).
 
 ## Common commands (from repo root)
 
@@ -37,7 +37,8 @@ pnpm scrape:teams
 pnpm scrape:players
 pnpm scrape:calendar
 pnpm dev                 # web app
-pnpm assistant           # Fastify read API + /mcp (default :3001)
+pnpm assistant:build     # build Vue chat UI into assistant
+pnpm assistant           # API + /mcp + chat UI (default :3001)
 pnpm mcp                 # stdio MCP shim (needs ASSISTANT_URL)
 pnpm lint
 ```

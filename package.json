@@ -15,14 +15,17 @@
   "scripts": {
     "build": "pnpm --filter @padel-cantabria/web build",
     "preview": "pnpm --filter @padel-cantabria/web preview",
-    "lint": "eslint . --ignore-pattern 'packages/web/**' && pnpm -r --if-present run lint",
-    "lint:fix": "eslint --fix . --ignore-pattern 'packages/web/**' && pnpm -r --if-present run lint:fix",
+
+    "lint": "eslint . --ignore-pattern 'packages/web/**' --ignore-pattern 'packages/assistant/**' && pnpm -r --if-present run lint",
+    "lint:fix": "eslint --fix . --ignore-pattern 'packages/web/**' --ignore-pattern 'packages/assistant/**' && pnpm -r --if-present run lint:fix",
+
     "clean": "rm -rf node_modules dist && pnpm -r run clean",
     "phoenix": "pnpm clean && pnpm install",
     "dev": "pnpm --filter=@padel-cantabria/web dev",
 
     "assistant": "pnpm --filter @padel-cantabria/assistant start",
     "assistant:dev": "pnpm --filter @padel-cantabria/assistant dev",
+    "assistant:build": "pnpm --filter @padel-cantabria/assistant build",
     "mcp": "pnpm --filter @padel-cantabria/mcp start",
 
     "db:migrate": "pnpm --filter @padel-cantabria/database migrate",
