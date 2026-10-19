@@ -15,9 +15,9 @@
   "pointer": true,
   "aliases": {
     "components": "@/components",
-    "utils": "@/lib/utils",
+    "utils": "@/utils/utils",
     "ui": "@/components/ui",
-    "lib": "@/lib",
+    "lib": "@/utils",
     "composables": "@/composables"
   },
   "menuColor": "default",

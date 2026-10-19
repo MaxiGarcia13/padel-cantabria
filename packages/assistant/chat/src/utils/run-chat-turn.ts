@@ -3,7 +3,10 @@ import type {
   ChatCompletionTool,
   MLCEngineInterface,
 } from '@mlc-ai/web-llm';
+import { asksForCategoryTeams } from './category-teams-intent';
+import { fetchCategoryTeamsIfNeeded } from './fetch-category-teams';
 import type { McpBrowserClient } from './mcp-client';
+import { toolResultsIncludeTeams } from './parse-tool-json';
 import { sanitizeToolArgs } from './sanitize-tool-args';
 import { formatToolResultFallback } from './tool-result-fallback';
 
@@ -71,11 +74,36 @@ async function completeForcedText(
   return completion.choices[0]?.message?.content?.trim() || null;
 }
 
+async function resolveWithCategoryTeamsFallback(options: {
+  mcp: McpBrowserClient;
+  userMessage: string;
+  toolResults: string[];
+}): Promise<string | null> {
+  const teamsJson = await fetchCategoryTeamsIfNeeded(options);
+  if (!teamsJson) {
+    return null;
+  }
+
+  options.toolResults.push(teamsJson);
+  return formatToolResultFallback([teamsJson]);
+}
+
 async function resolveEmptyModelReply(options: {
   engine: MLCEngineInterface;
+  mcp: McpBrowserClient;
+  userMessage: string;
   messages: ChatCompletionMessageParam[];
   toolResults: string[];
 }): Promise<string> {
+  const chained = await resolveWithCategoryTeamsFallback({
+    mcp: options.mcp,
+    userMessage: options.userMessage,
+    toolResults: options.toolResults,
+  });
+  if (chained) {
+    return chained;
+  }
+
   if (options.toolResults.length === 0) {
     return 'No he encontrado una respuesta.';
   }
@@ -128,6 +156,15 @@ export async function runChatTurn(options: {
     const message = completion.choices[0]?.message;
 
     if (!message) {
+      const chained = await resolveWithCategoryTeamsFallback({
+        mcp: options.mcp,
+        userMessage: options.userMessage,
+        toolResults,
+      });
+      if (chained) {
+        return chained;
+      }
+
       if (toolResults.length > 0) {
         return formatToolResultFallback(toolResults);
       }
@@ -137,6 +174,21 @@ export async function runChatTurn(options: {
     const toolCalls = forceTextAnswer ? [] : (message.tool_calls ?? []);
 
     if (toolCalls.length === 0) {
+      // Model may stop after categories; fetch teams deterministically when needed.
+      if (
+        asksForCategoryTeams(options.userMessage)
+        && !toolResultsIncludeTeams(toolResults)
+      ) {
+        const chained = await resolveWithCategoryTeamsFallback({
+          mcp: options.mcp,
+          userMessage: options.userMessage,
+          toolResults,
+        });
+        if (chained) {
+          return chained;
+        }
+      }
+
       const content = message.content?.trim();
       if (content) {
         return content;
@@ -144,6 +196,8 @@ export async function runChatTurn(options: {
 
       return resolveEmptyModelReply({
         engine: options.engine,
+        mcp: options.mcp,
+        userMessage: options.userMessage,
         messages,
         toolResults,
       });
@@ -171,10 +225,39 @@ export async function runChatTurn(options: {
       });
     }
 
+    if (
+      asksForCategoryTeams(options.userMessage)
+      && !toolResultsIncludeTeams(toolResults)
+    ) {
+      const teamsJson = await fetchCategoryTeamsIfNeeded({
+        mcp: options.mcp,
+        userMessage: options.userMessage,
+        toolResults,
+      });
+
+      if (teamsJson) {
+        toolResults.push(teamsJson);
+        messages.push({
+          role: 'user',
+          content: `${formatToolResult('list_teams', teamsJson)}\n\n${AFTER_TOOLS_NUDGE}`,
+        });
+        continue;
+      }
+    }
+
     messages.push({
       role: 'user',
       content: AFTER_TOOLS_NUDGE,
     });
+  }
+
+  const chained = await resolveWithCategoryTeamsFallback({
+    mcp: options.mcp,
+    userMessage: options.userMessage,
+    toolResults,
+  });
+  if (chained) {
+    return chained;
   }
 
   if (toolResults.length > 0) {
