@@ -22,6 +22,17 @@ pnpm --filter @padel-cantabria/assistant dev:chat   # UI on :5174 (proxies /mcp 
 
 Default URL: `http://localhost:3001`. Override with `ASSISTANT_PORT` / `ASSISTANT_HOST`.
 
+In production (`NODE_ENV=production`), the server listens on `0.0.0.0` and uses `PORT` when `ASSISTANT_PORT` is unset (Render sets `PORT`).
+
+## Deploy (Render)
+
+Repo root [`render.yaml`](../../render.yaml) defines a Web Service Blueprint.
+
+1. Render → **New** → **Blueprint** → select this repo (or create a Web Service and reuse the build/start commands from `render.yaml`).
+2. Set the secret env vars prompted by the Blueprint (`TURSO_*`, `LEAGUE_IDS`, and at least one LLM key).
+3. Use a **Starter** (or higher) plan so the service stays awake — free sleep breaks MCP sessions.
+4. After deploy: `https://<service>.onrender.com/health`, chat at `/`, MCP at `/mcp`.
+
 ## Endpoints
 
 League is taken from root `.env` `LEAGUE_IDS` (first id), not from query params.

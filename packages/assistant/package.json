@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf node_modules dist",
-    "dev": "tsx watch --env-file=../../.env src/server.ts",
-    "start": "tsx --env-file=../../.env src/server.ts",
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts",
     "build:chat": "vite build",
     "dev:chat": "vite",
     "build": "pnpm build:chat",

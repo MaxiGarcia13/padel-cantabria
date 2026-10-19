@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: padel-cantabria-assistant
+    runtime: node
+    plan: starter
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @padel-cantabria/assistant build
+    startCommand: pnpm --filter @padel-cantabria/assistant start
+    envVars:
+      - key: NODE_VERSION
+        value: '24'
+      - key: NODE_ENV
+        value: production
+      - key: TURSO_URL
+        sync: false
+      - key: TURSO_AUTH_TOKEN
+        sync: false
+      - key: LEAGUE_IDS
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: OPEN_ROUTER_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
