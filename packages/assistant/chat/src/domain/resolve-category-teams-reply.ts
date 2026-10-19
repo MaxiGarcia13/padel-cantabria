@@ -1,13 +1,12 @@
 import type { ChatCompletionMessageParam } from '@mlc-ai/web-llm';
 import type { McpBrowserClient } from '../utils/mcp-client';
+import type { PendingCategoryClarification } from './clarification';
 import { formatToolResult } from '../utils/chat-message-helpers';
 import { toolResultsIncludeTeams } from '../utils/parse-tool-json';
 import {
-  ASK_GENDER_MESSAGE,
   asksForCategoryTeams,
   needsGenderClarification,
 } from './category-teams-intent';
-import type { PendingCategoryClarification } from './clarification';
 import { AFTER_TOOLS_NUDGE } from './chat-prompts';
 import { fetchCategoryTeamsIfNeeded } from './fetch-category-teams';
 import { formatToolResultFallback } from './tool-result-fallback';

@@ -1,16 +1,18 @@
-import { ASK_GENDER_MESSAGE } from './category-teams-intent';
+import type { ChatTurnResult } from './chat-turn-result';
 import type { CategoryTeamsReply } from './resolve-category-teams-reply';
+import { ASK_GENDER_MESSAGE } from './category-teams-intent';
+import { chatTurnResult } from './chat-turn-result';
 
-/** Flatten ensureCategoryTeamsReply into a user-visible string. */
-export function categoryTeamsReplyText(
+/** Flatten ensureCategoryTeamsReply into a chat turn result. */
+export function categoryTeamsTurnResult(
   reply: CategoryTeamsReply,
-): string | null {
+): ChatTurnResult | null {
   if (reply.status === 'ask-gender') {
-    return ASK_GENDER_MESSAGE;
+    return chatTurnResult(ASK_GENDER_MESSAGE);
   }
 
   if (reply.status === 'text') {
-    return reply.text;
+    return chatTurnResult(reply.text, reply.pending);
   }
 
   return null;

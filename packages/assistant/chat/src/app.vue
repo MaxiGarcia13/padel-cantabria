@@ -4,11 +4,14 @@ import type {
   ChatCompletionTool,
   MLCEngineInterface,
 } from '@mlc-ai/web-llm';
+import type { PendingClarification } from './domain/clarification';
 import { CreateMLCEngine, prebuiltAppConfig } from '@mlc-ai/web-llm';
 import { computed, onMounted, ref } from 'vue';
 import { Progress } from '@/components/ui/progress';
 import ChatComposer from './components/chat-composer.vue';
 import ChatMessages from './components/chat-messages.vue';
+import { asksForCategoryTeams } from './domain/category-teams-intent';
+import { resolvePendingCategoryPick } from './domain/resolve-pending-category';
 import { runChatTurn } from './domain/run-chat-turn';
 import { McpBrowserClient } from './utils/mcp-client';
 import { trimChatHistory } from './utils/trim-chat-history';
@@ -35,6 +38,7 @@ const ready = ref(false);
 const busy = ref(false);
 const messages = ref<UiMessage[]>([]);
 const history = ref<ChatCompletionMessageParam[]>([]);
+const pendingClarification = ref<PendingClarification | null>(null);
 
 const mcp = new McpBrowserClient('/mcp');
 let engine: MLCEngineInterface | null = null;
@@ -48,6 +52,15 @@ function pushMessage(role: UiMessage['role'], content: string) {
     role,
     content,
   });
+}
+
+function commitTurn(userText: string, assistantText: string) {
+  pushMessage('assistant', assistantText);
+  history.value = trimChatHistory([
+    ...history.value,
+    { role: 'user', content: userText },
+    { role: 'assistant', content: assistantText },
+  ]);
 }
 
 async function bootstrap() {
@@ -100,7 +113,30 @@ async function onSend(prompt: string) {
   pushMessage('user', trimmed);
 
   try {
-    const reply = await runChatTurn({
+    const pending = pendingClarification.value;
+
+    if (pending?.kind === 'category') {
+      // A brand-new category-teams question replaces the pending pick.
+      if (asksForCategoryTeams(trimmed)) {
+        pendingClarification.value = null;
+      } else {
+        const resolved = await resolvePendingCategoryPick({
+          mcp,
+          pending,
+          userReply: trimmed,
+        });
+
+        if (resolved) {
+          pendingClarification.value = resolved.pending ?? null;
+          commitTurn(trimmed, resolved.text);
+          return;
+        }
+
+        pendingClarification.value = null;
+      }
+    }
+
+    const result = await runChatTurn({
       engine,
       mcp,
       tools,
@@ -108,14 +144,10 @@ async function onSend(prompt: string) {
       userMessage: trimmed,
     });
 
-    pushMessage('assistant', reply);
-    // Model context stays short; UI `messages` keeps the full transcript.
-    history.value = trimChatHistory([
-      ...history.value,
-      { role: 'user', content: trimmed },
-      { role: 'assistant', content: reply },
-    ]);
+    pendingClarification.value = result.pending ?? null;
+    commitTurn(trimmed, result.text);
   } catch (error) {
+    pendingClarification.value = null;
     pushMessage(
       'assistant',
       error instanceof Error

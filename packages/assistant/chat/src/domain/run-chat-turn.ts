@@ -4,22 +4,27 @@ import type {
   MLCEngineInterface,
 } from '@mlc-ai/web-llm';
 import type { McpBrowserClient } from '../utils/mcp-client';
+import type { ChatTurnResult } from './chat-turn-result';
+import type { PendingCategoryClarification } from './clarification';
 import {
   previousUserMessages,
   withoutSystemMessages,
 } from '../utils/chat-message-helpers';
 import {
   ASK_GENDER_MESSAGE,
+  inferGenderFromText,
   mergeGenderFollowUp,
   needsGenderClarification,
 } from './category-teams-intent';
-import { categoryTeamsReplyText } from './category-teams-reply-text';
+import { categoryTeamsTurnResult } from './category-teams-reply-text';
+import { AFTER_TOOLS_NUDGE, USER_GUIDANCE } from './chat-prompts';
+import { chatTurnResult } from './chat-turn-result';
 import {
   formatCategoryClarification,
   formatUnknownCategoryMessage,
   parseCategoryToolError,
+
 } from './clarification';
-import { AFTER_TOOLS_NUDGE, USER_GUIDANCE } from './chat-prompts';
 import {
   executeToolCalls,
   toolCallsIncludeListTeams,
@@ -34,7 +39,12 @@ import { formatToolResultFallback } from './tool-result-fallback';
 /** Enough for search → follow-up tool; last round forces a text answer. */
 const MAX_TOOL_ROUNDS = 3;
 
-function clarificationFromToolResults(toolResults: string[]): string | null {
+function clarificationFromToolResults(
+  toolResults: string[],
+  userMessage: string,
+): ChatTurnResult | null {
+  const gender = inferGenderFromText(userMessage);
+
   for (let index = toolResults.length - 1; index >= 0; index -= 1) {
     const error = parseCategoryToolError(toolResults[index]!);
     if (!error) {
@@ -42,10 +52,22 @@ function clarificationFromToolResults(toolResults: string[]): string | null {
     }
 
     if (error.code === 'unknown_category' && error.candidates.length === 0) {
-      return formatUnknownCategoryMessage();
+      return chatTurnResult(formatUnknownCategoryMessage());
     }
 
-    return formatCategoryClarification(error.candidates);
+    const text = formatCategoryClarification(error.candidates);
+    if (!gender || error.candidates.length === 0) {
+      return chatTurnResult(text);
+    }
+
+    const pending: PendingCategoryClarification = {
+      kind: 'category',
+      options: error.candidates,
+      originalQuestion: userMessage,
+      gender,
+    };
+
+    return chatTurnResult(text, pending);
   }
 
   return null;
@@ -57,14 +79,14 @@ export async function runChatTurn(options: {
   tools: ChatCompletionTool[];
   history: ChatCompletionMessageParam[];
   userMessage: string;
-}): Promise<string> {
+}): Promise<ChatTurnResult> {
   const userMessage = mergeGenderFollowUp(
     options.userMessage,
     previousUserMessages(options.history),
   );
 
   if (needsGenderClarification(userMessage)) {
-    return ASK_GENDER_MESSAGE;
+    return chatTurnResult(ASK_GENDER_MESSAGE);
   }
 
   const messages: ChatCompletionMessageParam[] = [
@@ -91,66 +113,68 @@ export async function runChatTurn(options: {
     const message = completion.choices[0]?.message;
 
     if (!message) {
-      const chainedText = categoryTeamsReplyText(
+      const chained = categoryTeamsTurnResult(
         await ensureCategoryTeamsReply({
           mcp: options.mcp,
           userMessage,
           toolResults,
         }),
       );
-      if (chainedText) {
-        return chainedText;
+      if (chained) {
+        return chained;
       }
 
-      const clarified = clarificationFromToolResults(toolResults);
+      const clarified = clarificationFromToolResults(toolResults, userMessage);
       if (clarified) {
         return clarified;
       }
 
       if (toolResults.length > 0) {
-        return formatToolResultFallback(toolResults);
+        return chatTurnResult(formatToolResultFallback(toolResults));
       }
-      return 'No he podido generar una respuesta.';
+      return chatTurnResult('No he podido generar una respuesta.');
     }
 
     const toolCalls = forceTextAnswer ? [] : (message.tool_calls ?? []);
 
     if (toolCalls.length === 0) {
-      const ensuredText = categoryTeamsReplyText(
+      const ensured = categoryTeamsTurnResult(
         await ensureCategoryTeamsReply({
           mcp: options.mcp,
           userMessage,
           toolResults,
         }),
       );
-      if (ensuredText) {
-        return ensuredText;
+      if (ensured) {
+        return ensured;
       }
 
-      const clarified = clarificationFromToolResults(toolResults);
+      const clarified = clarificationFromToolResults(toolResults, userMessage);
       if (clarified) {
         return clarified;
       }
 
       const content = message.content?.trim();
       if (content) {
-        return content;
+        return chatTurnResult(content);
       }
 
-      return resolveEmptyModelReply({
-        engine: options.engine,
-        mcp: options.mcp,
-        userMessage,
-        messages,
-        toolResults,
-      });
+      return chatTurnResult(
+        await resolveEmptyModelReply({
+          engine: options.engine,
+          mcp: options.mcp,
+          userMessage,
+          messages,
+          toolResults,
+        }),
+      );
     }
 
     if (
       toolCallsIncludeListTeams(toolCalls)
       && needsGenderClarification(userMessage)
     ) {
-      return ASK_GENDER_MESSAGE;
+      return chatTurnResult(ASK_GENDER_MESSAGE);
     }
 
     messages.push({
@@ -167,7 +191,10 @@ export async function runChatTurn(options: {
       toolResults,
     });
 
-    const clarifiedAfterTools = clarificationFromToolResults(toolResults);
+    const clarifiedAfterTools = clarificationFromToolResults(
+      toolResults,
+      userMessage,
+    );
     if (clarifiedAfterTools) {
       return clarifiedAfterTools;
     }
@@ -180,11 +207,11 @@ export async function runChatTurn(options: {
     });
 
     if (followUp === 'ask-gender') {
-      return ASK_GENDER_MESSAGE;
+      return chatTurnResult(ASK_GENDER_MESSAGE);
     }
 
     if (typeof followUp === 'object' && 'clarify' in followUp) {
-      return followUp.clarify;
+      return chatTurnResult(followUp.clarify, followUp.pending);
     }
 
     if (followUp === 'injected') {
@@ -197,25 +224,27 @@ export async function runChatTurn(options: {
     });
   }
 
-  const chainedText = categoryTeamsReplyText(
+  const chained = categoryTeamsTurnResult(
     await ensureCategoryTeamsReply({
       mcp: options.mcp,
       userMessage,
       toolResults,
     }),
   );
-  if (chainedText) {
-    return chainedText;
+  if (chained) {
+    return chained;
   }
 
-  const clarified = clarificationFromToolResults(toolResults);
+  const clarified = clarificationFromToolResults(toolResults, userMessage);
   if (clarified) {
     return clarified;
   }
 
   if (toolResults.length > 0) {
-    return formatToolResultFallback(toolResults);
+    return chatTurnResult(formatToolResultFallback(toolResults));
   }
 
-  return 'He alcanzado el límite de herramientas para esta pregunta. Prueba a reformularla.';
+  return chatTurnResult(
+    'He alcanzado el límite de herramientas para esta pregunta. Prueba a reformularla.',
+  );
 }

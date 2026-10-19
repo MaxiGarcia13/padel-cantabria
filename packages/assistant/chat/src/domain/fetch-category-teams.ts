@@ -1,11 +1,12 @@
 import type { McpBrowserClient } from '../utils/mcp-client';
+import type { PendingCategoryClarification } from './clarification';
 import { toolResultsIncludeTeams } from '../utils/parse-tool-json';
 import { asksForCategoryTeams } from './category-teams-intent';
 import {
   formatCategoryClarification,
   formatUnknownCategoryMessage,
   parseCategoryToolError,
-  type PendingCategoryClarification,
+
 } from './clarification';
 import { resolveListTeamsArgs } from './resolve-list-teams-args';
 
