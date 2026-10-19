@@ -40,6 +40,7 @@ Prefer the assistant Streamable HTTP endpoint directly:
 - `search_phases`
 - `search_teams`
 - `get_team_overview`
+- `list_team_players`
 - `search_players`
 - `get_top_players`
 

@@ -36,6 +36,7 @@ League is taken from root `.env` `LEAGUE_IDS` (first id), not from query params.
 | `GET`  | `/teams?gender=&category=&phase=`       | Teams + standings in a category        |
 | `GET`  | `/teams/search?q=&limit=`               | Search teams (token match)             |
 | `GET`  | `/teams/:id/overview?phase=`            | Team context, standing, next match     |
+| `GET`  | `/teams/:id/players`                    | Team roster (players)                  |
 | `GET`  | `/players/search?q=&gender=&limit=`     | Search players by name                 |
 | `GET`  | `/players/top?gender=&category=&limit=` | Top points in a category               |
 | `POST` | `/chat/completions`                     | AiRouter (Gemini → Open Router → Groq) |

@@ -1,4 +1,4 @@
-import type { PlayerWithTeam } from '@padel-cantabria/database';
+import type { PlayerWithTeam, TeamPlayer } from '@padel-cantabria/database';
 
 /** Human-readable player for API / MCP (labels over opaque codes). */
 export function presentPlayer(player: PlayerWithTeam) {
@@ -17,4 +17,20 @@ export function presentPlayer(player: PlayerWithTeam) {
 
 export function presentPlayers(players: PlayerWithTeam[]) {
   return players.map(presentPlayer);
+}
+
+/** Roster row for a known team (no league joins; team context is separate). */
+export function presentTeamPlayer(player: TeamPlayer) {
+  return {
+    name: player.name,
+    surname: player.surname,
+    points: player.points,
+    position: player.position,
+    previous_position: player.previous_position,
+    previous_points: player.previous_points,
+  };
+}
+
+export function presentTeamPlayers(players: TeamPlayer[]) {
+  return players.map(presentTeamPlayer);
 }

@@ -146,7 +146,7 @@ export function createStdioMcpServer(): McpServer {
     'get_team_overview',
     {
       description:
-        'Team standing/position and next match for a phase. Use search_phases if phase is unknown. Pass phase_value from search_phases when needed.',
+        'Team standing/position and next match for a phase. Use search_phases if phase is unknown. Pass phase_value from search_phases when needed. Does not return the roster; use list_team_players for that.',
       inputSchema: {
         team_id: z.number().int().positive().describe('Team id from search_teams'),
         phase: z
@@ -162,6 +162,28 @@ export function createStdioMcpServer(): McpServer {
         return toolResult(
           await assistantGet(`/teams/${teamId}/overview`, { phase }),
         );
+      } catch (error) {
+        return toolError(error);
+      }
+    },
+  );
+
+  server.registerTool(
+    'list_team_players',
+    {
+      description:
+        'List the roster (players) of one team. Use after search_teams to resolve team_id. If several teams match the name (e.g. same letter in M and F), list the matches or ask masculino/femenino before calling. Do not use search_players for "players in team X".',
+      inputSchema: {
+        team_id: z
+          .number()
+          .int()
+          .positive()
+          .describe('Team id from search_teams'),
+      },
+    },
+    async ({ team_id: teamId }) => {
+      try {
+        return toolResult(await assistantGet(`/teams/${teamId}/players`));
       } catch (error) {
         return toolError(error);
       }
