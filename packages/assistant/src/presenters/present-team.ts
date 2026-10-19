@@ -1,5 +1,6 @@
-import type { League, Team } from '@padel-cantabria/database';
+import type { League, Team, TeamWithStandings } from '@padel-cantabria/database';
 import { getTeamDisplayLabels } from '@padel-cantabria/shared';
+import { resolveCompetitionLabels } from './resolve-competition-labels.js';
 
 /** Human-readable team for API / MCP. Keeps `id` for get_team_overview. */
 export function presentTeam(team: Team, leagues: League[]) {
@@ -17,4 +18,49 @@ export function presentTeam(team: Team, leagues: League[]) {
 
 export function presentTeams(teams: Team[], leagues: League[]) {
   return teams.map((team) => presentTeam(team, leagues));
+}
+
+export interface CategoryTeamsInput {
+  leagueId: number;
+  gender: string;
+  phase: string;
+  category: string;
+  teams: TeamWithStandings[];
+}
+
+function presentStandingTeam(team: TeamWithStandings) {
+  return {
+    id: team.id,
+    name: team.name,
+    position: team.position,
+    points: team.points,
+    matches_played: team.matches_played,
+    matches_won: team.matches_won,
+    confrontations_played: team.confrontations_played,
+  };
+}
+
+/** Teams in one category, with shared competition labels for MCP/chat. */
+export function presentCategoryTeams(
+  input: CategoryTeamsInput,
+  leagues: League[],
+) {
+  const labels = resolveCompetitionLabels(
+    leagues,
+    input.leagueId,
+    input.gender,
+    input.phase,
+    input.category,
+  );
+
+  return {
+    league: labels.league,
+    gender: labels.gender,
+    gender_code: labels.genderCode,
+    phase: labels.phase,
+    phase_value: labels.phaseValue,
+    category: labels.category,
+    category_value: labels.categoryValue,
+    teams: input.teams.map(presentStandingTeam),
+  };
 }

@@ -1,7 +1,7 @@
 import type { DatabaseClient } from './db.js';
 import cors from '@fastify/cors';
 import Fastify from 'fastify';
-import { HttpError } from './errors.js';
+import { HttpError, httpErrorPayload } from './errors.js';
 import { createCategoriesRoutes } from './routes/categories.js';
 import { createMcpRoutes } from './routes/mcp.js';
 import { createPhasesRoutes } from './routes/phases.js';
@@ -16,7 +16,7 @@ export async function createApp(db: DatabaseClient) {
 
   app.setErrorHandler((error, _request, reply) => {
     if (error instanceof HttpError) {
-      return reply.status(error.statusCode).send({ error: error.message });
+      return reply.status(error.statusCode).send(httpErrorPayload(error));
     }
 
     app.log.error(error);

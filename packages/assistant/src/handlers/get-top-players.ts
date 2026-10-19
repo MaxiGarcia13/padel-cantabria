@@ -1,7 +1,8 @@
 import type { DatabaseClient } from '../db.js';
 import { normalizeGender } from '../config/normalize-gender.js';
 import { getConfiguredLeagueId } from '../config/parse-league-ids.js';
-import { resolveCategoryValue } from '../config/resolve-category-value.js';
+import { requireCategoryMatch } from '../config/require-category-match.js';
+import { resolveCategoryMatchResult } from '../config/resolve-category-value.js';
 import { badRequest } from '../errors.js';
 import { presentPlayers } from '../presenters/present-player.js';
 
@@ -28,22 +29,17 @@ export async function getTopPlayersHandler(
   }
 
   const leagueId = getConfiguredLeagueId();
-  const categoryValue = await resolveCategoryValue(db, {
+  const resolved = await resolveCategoryMatchResult(db, {
     category,
     leagueId,
     gender: normalizedGender,
   });
-
-  if (!categoryValue) {
-    throw badRequest(
-      'Unknown or ambiguous category; use search_categories or ask the user',
-    );
-  }
+  const categoryMatch = requireCategoryMatch(resolved);
 
   const players = await db.getTopPlayers({
     league_id: leagueId,
     gender: normalizedGender,
-    category: categoryValue,
+    category: categoryMatch.category,
     limit,
   });
 

@@ -1,9 +1,10 @@
 import type { DatabaseClient } from '../db.js';
 import { normalizeGender } from '../config/normalize-gender.js';
 import { getConfiguredLeagueId } from '../config/parse-league-ids.js';
-import { resolveCategoryMatch } from '../config/resolve-category-value.js';
+import { requireCategoryMatch } from '../config/require-category-match.js';
+import { resolveCategoryMatchResult } from '../config/resolve-category-value.js';
 import { badRequest } from '../errors.js';
-import { presentCategoryTeams } from '../presenters/present-category-teams.js';
+import { presentCategoryTeams } from '../presenters/present-team.js';
 
 export interface ListTeamsQuery {
   gender?: string;
@@ -26,17 +27,12 @@ export async function listTeamsHandler(
   }
 
   const leagueId = getConfiguredLeagueId();
-  const categoryMatch = await resolveCategoryMatch(db, {
+  const resolved = await resolveCategoryMatchResult(db, {
     category,
     leagueId,
     gender: normalizedGender,
   });
-
-  if (!categoryMatch) {
-    throw badRequest(
-      'Unknown or ambiguous category; use search_categories or ask the user',
-    );
-  }
+  const categoryMatch = requireCategoryMatch(resolved);
 
   const phaseValue = phase?.trim() || categoryMatch.phase;
 
