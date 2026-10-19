@@ -1,5 +1,9 @@
 import type { Connection } from '@tursodatabase/serverless';
 import type { Team } from '../types/team.js';
+import {
+  teamNameRelevanceOrder,
+  teamNameTokenClause,
+} from '../utils/team-name-search.js';
 import { tokenizeQuery } from '../utils/tokenize-query.js';
 
 export interface SearchTeamsParams {
@@ -30,14 +34,17 @@ export async function searchTeams(
   const tokenArgs: string[] = [];
 
   for (const token of tokens) {
-    tokenClauses.push(`LOWER(name) LIKE '%' || LOWER(?) || '%'`);
-    tokenArgs.push(token);
+    const fragment = teamNameTokenClause(token);
+    tokenClauses.push(fragment.sql);
+    tokenArgs.push(...fragment.args);
   }
 
   const nameFilterSql
     = tokenClauses.length === 0
       ? '1 = 1'
       : tokenClauses.join('\n            AND ');
+
+  const relevance = teamNameRelevanceOrder(query);
 
   const [result] = await connection.batch(
     [
@@ -53,10 +60,16 @@ export async function searchTeams(
           WHERE
             ${nameFilterSql}
             AND (? IS NULL OR league_id = ?)
-          ORDER BY name
+          ORDER BY ${relevance.sql}
           LIMIT ?
         `,
-        args: [...tokenArgs, leagueId ?? null, leagueId ?? null, safeLimit],
+        args: [
+          ...tokenArgs,
+          leagueId ?? null,
+          leagueId ?? null,
+          ...relevance.args,
+          safeLimit,
+        ],
       },
     ],
     'read',

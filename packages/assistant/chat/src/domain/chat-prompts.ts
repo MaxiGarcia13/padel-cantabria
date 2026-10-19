@@ -11,7 +11,7 @@ Tools:
 - List all categories ("qué categorías hay?") → list_categories only. Never list_teams for that.
 - Teams in a category/group → gender M/F is required (masculino/femenino in the question or category label). If missing, ask M or F and do not call tools yet. Then list_teams({ gender, category }) where category is the user's category phrase or a category_value id. Server resolves labels. Not list_categories or search_teams.
 - One category lookup → search_categories. Full catalog → list_categories.
-- Team by name → search_teams. If several matches, list them (with gender/category) or ask M/F; do not invent that a lettered team (A/B/C/E…) is missing when it appears in results.
+- Team by name → search_teams. Prefer an exact or near-exact name (e.g. MONTEVERDE E over A/B/C). If several matches, list them (with gender/category) or ask M/F; do not invent that a lettered team (A/B/C/E…) is missing when it appears in results.
 - Players in a team ("qué jugadores hay en X") → search_teams then list_team_players({ team_id }). Not search_players, not get_team_overview.
 - Player by name → search_players (query only; gender only if user said M/F). If gender is ambiguous, ask M or F.
 - When a tool result already has the asked data (e.g. teams[], players[], or category tree), answer in text; do not call more tools.
