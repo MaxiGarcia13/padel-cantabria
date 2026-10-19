@@ -1,5 +1,6 @@
 import type { Connection } from '@tursodatabase/serverless';
 import type { PlayerWithTeam } from '../types/player.js';
+import { tokenizeQuery } from '../utils/tokenize-query.js';
 
 export interface SearchPlayersParams {
   query?: string;
@@ -9,7 +10,7 @@ export interface SearchPlayersParams {
   limit?: number;
 }
 
-const DEFAULT_LIMIT = 10;
+const DEFAULT_LIMIT = 15;
 
 export async function searchPlayers(
   connection: Connection,
@@ -21,9 +22,25 @@ export async function searchPlayers(
     limit = DEFAULT_LIMIT,
   }: SearchPlayersParams = {},
 ): Promise<PlayerWithTeam[]> {
-  const normalizedQuery = query.trim();
+  const tokens = tokenizeQuery(query);
   const safeLimit
     = Number.isFinite(limit) && limit > 0 ? Math.floor(limit) : DEFAULT_LIMIT;
+
+  const tokenClauses: string[] = [];
+  const tokenArgs: string[] = [];
+
+  for (const token of tokens) {
+    tokenClauses.push(`(
+      LOWER(team_players.name) LIKE '%' || LOWER(?) || '%'
+      OR LOWER(team_players.surname) LIKE '%' || LOWER(?) || '%'
+    )`);
+    tokenArgs.push(token, token);
+  }
+
+  const nameFilterSql
+    = tokenClauses.length === 0
+      ? '1 = 1'
+      : tokenClauses.join('\n            AND ');
 
   const [result] = await connection.batch(
     [
@@ -39,20 +56,26 @@ export async function searchPlayers(
             team_players.previous_points,
             teams.name AS team_name,
             teams.league_id,
+            leagues.name AS league_name,
             teams.gender,
-            teams.category
+            genders.label AS gender_label,
+            teams.category,
+            (
+              SELECT categories.label
+              FROM categories
+              WHERE categories.league_id = teams.league_id
+                AND categories.gender = teams.gender
+                AND categories.value = teams.category
+              LIMIT 1
+            ) AS category_label
           FROM team_players
           INNER JOIN teams ON teams.id = team_players.team_id
+          INNER JOIN leagues ON leagues.id = teams.league_id
+          INNER JOIN genders
+            ON genders.league_id = teams.league_id
+            AND genders.value = teams.gender
           WHERE
-            (
-              ? = ''
-              OR LOWER(team_players.name) LIKE '%' || LOWER(?) || '%'
-              OR LOWER(team_players.surname) LIKE '%' || LOWER(?) || '%'
-              OR LOWER(team_players.name || ' ' || team_players.surname)
-                LIKE '%' || LOWER(?) || '%'
-              OR LOWER(team_players.surname || ' ' || team_players.name)
-                LIKE '%' || LOWER(?) || '%'
-            )
+            ${nameFilterSql}
             AND (? IS NULL OR teams.league_id = ?)
             AND (? IS NULL OR teams.gender = ?)
             AND (? IS NULL OR teams.category = ?)
@@ -60,11 +83,7 @@ export async function searchPlayers(
           LIMIT ?
         `,
         args: [
-          normalizedQuery,
-          normalizedQuery,
-          normalizedQuery,
-          normalizedQuery,
-          normalizedQuery,
+          ...tokenArgs,
           leagueId ?? null,
           leagueId ?? null,
           gender ?? null,
