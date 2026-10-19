@@ -11,6 +11,7 @@ import ChatComposer from './components/chat-composer.vue';
 import ChatMessages from './components/chat-messages.vue';
 import { McpBrowserClient } from './lib/mcp-client';
 import { runChatTurn } from './lib/run-chat-turn';
+import { trimChatHistory } from './lib/trim-chat-history';
 
 const MODEL_ID = 'Hermes-2-Pro-Llama-3-8B-q4f16_1-MLC';
 
@@ -108,11 +109,12 @@ async function onSend(prompt: string) {
     });
 
     pushMessage('assistant', reply);
-    history.value = [
+    // Model context stays short; UI `messages` keeps the full transcript.
+    history.value = trimChatHistory([
       ...history.value,
       { role: 'user', content: trimmed },
       { role: 'assistant', content: reply },
-    ];
+    ]);
   } catch (error) {
     pushMessage(
       'assistant',
