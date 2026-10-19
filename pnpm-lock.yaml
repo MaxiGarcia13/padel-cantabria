@@ -190,6 +190,9 @@ importers:
       '@lucide/vue':
         specifier: ^1.59.0
         version: 1.59.0(vue@3.5.44(typescript@6.0.3))
+      '@maxigarcia/ai-router':
+        specifier: ^0.1.1
+        version: 0.1.1(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)
       '@mlc-ai/web-llm':
         specifier: ^0.2.86
         version: 0.2.86
@@ -1815,6 +1818,15 @@ packages:
     resolution: {integrity: sha512-uwPAhccfFJlsfCxMYTwOdVfOz3xqyj8xYL3zJj8f0pb30tLohnnFPhLuqp4/qoEz8sNxe4SESZedcBojRefIzg==}
     engines: {node: '>=18'}
     hasBin: true
+
+  '@maxigarcia/ai-router@0.1.1':
+    resolution: {integrity: sha512-rs0lhpi+5cx7hIuMYoh0TPcrUjKx6rDNuDr0V616pY0FtnrVKv+T8Tr1VK5IshGJn9AbGlzdJsH/WJ/OgCJTdw==}
+
+  '@maxigarcia/ai-types@0.0.7':
+    resolution: {integrity: sha512-yNY0bacpIk5W9WMe/3jHIGJ9HWSjrMPMh4qHg0n84aMvEZ5nzCq7cjHevWKX7Cbj9wUJYg1pqCjOXv0GG2x62A==}
+
+  '@maxigarcia/ai-utils@0.1.1':
+    resolution: {integrity: sha512-YaxRZUUmi30etXGmNZ1UeGZ6/Eeh6dsHmUETNFGTrPx/0hNyDkjgjduLQAd5U3Jkz7+Bmi+NXE3TWo8nsZtrng==}
 
   '@maxigarcia/eslint-config@1.14.1':
     resolution: {integrity: sha512-P1w/J50KuK0KXLrLEQ457aYtaJXYQPpsdA/C6tbYMe4+Ti4DA5eyDMOtr5Sq/cFfHiqg01Zgfyg3ugPsD4tGNg==}
@@ -4831,6 +4843,30 @@ packages:
     resolution: {integrity: sha512-++Zlftm0kVLPmzC06t6epuWmcRMDbI4z5P3NNX979WA/k23+NtSOynEGzsVfZwguKw2mi5umVgnBlJQMwRz4Pg==}
     engines: {node: '>=20'}
 
+  openai@7.38.0:
+    resolution: {integrity: sha512-Ef+YyIeoiisZLP/tV4F4/RieJAl4OEJTyJg6gV0AXOb0T9CDkvYJoU224OY5CTmQ4zDJeku4jEHjz2b3/6Ndhw==}
+    engines: {node: '>=22.0.0'}
+    peerDependencies:
+      '@aws-sdk/credential-provider-node': '>=3.972.0 <4'
+      '@smithy/hash-node': '>=4.3.0 <5'
+      '@smithy/signature-v4': '>=5.4.0 <6'
+      undici: '>=5 <9'
+      ws: ^8.21.0
+      zod: ^3.25 || ^4.0
+    peerDependenciesMeta:
+      '@aws-sdk/credential-provider-node':
+        optional: true
+      '@smithy/hash-node':
+        optional: true
+      '@smithy/signature-v4':
+        optional: true
+      undici:
+        optional: true
+      ws:
+        optional: true
+      zod:
+        optional: true
+
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
@@ -7632,6 +7668,32 @@ snapshots:
     transitivePeerDependencies:
       - encoding
       - supports-color
+
+  '@maxigarcia/ai-router@0.1.1(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)':
+    dependencies:
+      '@maxigarcia/ai-types': 0.0.7
+      '@maxigarcia/ai-utils': 0.1.1(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)
+      openai: 7.38.0(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)
+    transitivePeerDependencies:
+      - '@aws-sdk/credential-provider-node'
+      - '@smithy/hash-node'
+      - '@smithy/signature-v4'
+      - undici
+      - ws
+      - zod
+
+  '@maxigarcia/ai-types@0.0.7': {}
+
+  '@maxigarcia/ai-utils@0.1.1(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)':
+    dependencies:
+      openai: 7.38.0(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)
+    transitivePeerDependencies:
+      - '@aws-sdk/credential-provider-node'
+      - '@smithy/hash-node'
+      - '@smithy/signature-v4'
+      - undici
+      - ws
+      - zod
 
   '@maxigarcia/eslint-config@1.14.1(@typescript-eslint/typescript-estree@8.71.2(supports-color@7.2.0)(typescript@6.0.3))(@typescript-eslint/utils@8.71.2(eslint@10.12.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3))(@vue/compiler-sfc@3.5.44)(astro-eslint-parser@3.2.0(supports-color@7.2.0))(eslint-plugin-astro@3.2.1(@typescript-eslint/parser@8.71.2(eslint@10.12.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3))(eslint@10.12.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(jiti@2.7.0)(supports-color@7.2.0)(tailwindcss@4.3.3)(typescript@6.0.3)':
     dependencies:
@@ -11002,6 +11064,12 @@ snapshots:
       is-inside-container: 1.0.0
       powershell-utils: 0.2.1
       wsl-utils: 1.0.1
+
+  openai@7.38.0(undici@8.12.1)(ws@8.22.0)(zod@4.6.7):
+    optionalDependencies:
+      undici: 8.12.1
+      ws: 8.22.0
+      zod: 4.6.7
 
   optionator@0.9.4:
     dependencies:
