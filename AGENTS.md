@@ -24,7 +24,7 @@ Human-oriented overview: [README.md](README.md)
 | `packages/scrapper`  | Puppeteer scrapers → Turso              |
 | `packages/web`       | Astro + Vue frontend                    |
 
-Package manager: **pnpm**. Env vars live in the **repo root** `.env` (`TURSO_URL`, `TURSO_AUTH_TOKEN`; optional `LEAGUE_IDS` for scrapers — **required for the assistant/MCP**, which scopes all reads to that league).
+Package manager: **pnpm**. Env vars live in the **repo root** `.env` (`TURSO_URL`, `TURSO_AUTH_TOKEN`; optional `LEAGUE_IDS` for scrapers — **required for the assistant/MCP**, which scopes all reads to that league). Chat completions also need at least one of `GEMINI_API_KEY`, `OPEN_ROUTER_API_KEY`, `GROQ_API_KEY` (fallback order: Gemini → Open Router → Groq).
 
 ## Common commands (from repo root)
 

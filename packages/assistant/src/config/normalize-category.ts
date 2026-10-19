@@ -1,6 +1,6 @@
 /**
  * Single place for category free-text → search tokens.
- * Chat/Hermes may pass a raw phrase; ordinal aliases and stopwords live here.
+ * Chat may pass a raw phrase; ordinal aliases and stopwords live here.
  */
 
 const CATEGORY_ALIASES: Record<string, string> = {

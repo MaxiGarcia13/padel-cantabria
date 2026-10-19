@@ -19,7 +19,6 @@
     "@fastify/static": "^10.1.6",
     "@lucide/vue": "^1.59.0",
     "@maxigarcia/ai-router": "^0.1.1",
-    "@mlc-ai/web-llm": "^0.2.86",
     "@modelcontextprotocol/sdk": "^1.32.1",
     "@padel-cantabria/database": "workspace:*",
     "@padel-cantabria/shared": "workspace:*",

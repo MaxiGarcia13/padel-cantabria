@@ -67,8 +67,8 @@ export async function ensureCategoryTeamsReply(options: {
 }
 
 /**
- * Mid-loop path: fetch list_teams when Hermes missed or called it with bad args.
- * Caller formats toolResults and ends the turn (no extra Hermes round).
+ * Mid-loop path: fetch list_teams when the model missed or called it with bad args.
+ * Caller formats toolResults and ends the turn (no extra model round).
  */
 export async function injectCategoryTeamsFollowUp(options: {
   mcp: McpBrowserClient;

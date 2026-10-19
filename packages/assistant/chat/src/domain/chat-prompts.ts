@@ -1,6 +1,5 @@
 /**
- * Hermes function-calling injects its own system prompt; a custom `system`
- * message is rejected when `tools` is set. Keep guidance in the user turn.
+ * Guidance rides in the user turn so every provider sees the same tool rules.
  * English saves tokens; reply language follows the user question.
  */
 export const USER_GUIDANCE = `Reply in the user's language. Be clear and brief.
