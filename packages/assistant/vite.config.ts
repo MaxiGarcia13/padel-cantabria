@@ -6,6 +6,11 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   root: resolve(import.meta.dirname, 'chat'),
   plugins: [vue(), tailwindcss()],
+  resolve: {
+    alias: {
+      '@': resolve(import.meta.dirname, 'chat/src'),
+    },
+  },
   server: {
     port: 5174,
     proxy: {
