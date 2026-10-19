@@ -16,6 +16,20 @@ stats, and calendars.
 
 - See leagues, teams, and match calendars in a more readable UI
 - Follow team results and related stats without fighting the original site’s layout
+- Ask an AI assistant about categories, teams, players, and rankings (browser chat or MCP in Cursor / Claude / OpenCode)
+
+## AI assistant & MCP
+
+You can use the league assistant in two ways:
+
+| Option                                            | Link                                                                  |
+| ------------------------------------------------- | --------------------------------------------------------------------- |
+| Chat in the browser                               | [padel-cantabria.onrender.com](https://padel-cantabria.onrender.com/) |
+| Connect Cursor, Claude Desktop, or OpenCode (MCP) | `https://padel-cantabria.onrender.com/mcp`                            |
+
+No database account is required. Step-by-step setup (hosted and local), including config examples for each app:
+
+→ **[packages/mcp/README.md](packages/mcp/README.md)**
 
 ## Where the data comes from
 
@@ -35,8 +49,8 @@ Monorepo: scrape federation data into Turso and serve it on the web.
 
 - [`packages/database`](packages/database) — schema, types, Turso client
 - [`packages/shared`](packages/shared) — reusable domain helpers (matches, standings, team labels)
-- [`packages/assistant`](packages/assistant) — Fastify read API + HTTP MCP (deployable). Hosted chat: [padel-cantabria.onrender.com](https://padel-cantabria.onrender.com/)
-- [`packages/mcp`](packages/mcp) — MCP setup for Cursor / Claude / OpenCode ([guide](packages/mcp/README.md)). Hosted MCP: `https://padel-cantabria.onrender.com/mcp`
+- [`packages/assistant`](packages/assistant) — Fastify read API + HTTP MCP + chat UI ([docs](packages/assistant/README.md))
+- [`packages/mcp`](packages/mcp) — MCP setup for Cursor / Claude / OpenCode ([setup guide](packages/mcp/README.md))
 - [`packages/scrapper`](packages/scrapper) — Puppeteer scrapers ([scripts & when to run them](packages/scrapper/README.md))
 - [`packages/web`](packages/web) — Astro + Vue frontend
 
