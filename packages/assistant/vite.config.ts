@@ -5,6 +5,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   root: resolve(import.meta.dirname, 'chat'),
+  publicDir: resolve(import.meta.dirname, '../web/public'),
   plugins: [vue(), tailwindcss()],
   resolve: {
     alias: {
