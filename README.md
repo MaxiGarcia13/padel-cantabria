@@ -33,10 +33,10 @@ No database account is required. Step-by-step setup (hosted and local), includin
 
 ### Examples
 
-| App         | Demo                                  |
-| ----------- | ------------------------------------- |
-| OpenCode    | [Watch](docs/open-code-example.mov)   |
-| Claude Code | [Watch](docs/claude-code-example.mov) |
+| App         | Demo                                                                                            |
+| ----------- | ----------------------------------------------------------------------------------------------- |
+| OpenCode    | [Watch](https://github.com/MaxiGarcia13/padel-cantabria/blob/main/docs/open-code-example.mov)   |
+| Claude Code | [Watch](https://github.com/MaxiGarcia13/padel-cantabria/blob/main/docs/claude-code-example.mov) |
 
 ## Where the data comes from
 

@@ -55,7 +55,7 @@ If your Cursor version asks for a `type`, choose remote/HTTP and use the same UR
 
 ### OpenCode
 
-Demo: [Watch OpenCode example](../../docs/open-code-example.mov)
+Demo: [Watch OpenCode example](https://github.com/MaxiGarcia13/padel-cantabria/blob/main/docs/open-code-example.mov)
 
 1. Open your OpenCode config:
    - Project: `opencode.json` (or `opencode.jsonc`) in the project root, or
@@ -83,7 +83,7 @@ More detail: [OpenCode MCP docs](https://opencode.ai/docs/mcp-servers/).
 
 ### Claude Code / Claude Desktop
 
-Demo: [Watch Claude Code example](../../docs/claude-code-example.mov)
+Demo: [Watch Claude Code example](https://github.com/MaxiGarcia13/padel-cantabria/blob/main/docs/claude-code-example.mov)
 
 Claude Desktop usually connects through a **local command** (stdio), so you still need this repo on your computer — even when the API is hosted.
 
