@@ -214,6 +214,16 @@ importers:
         specifier: ~6.0.3
         version: 6.0.3
 
+  packages/shared:
+    dependencies:
+      '@padel-cantabria/database':
+        specifier: workspace:*
+        version: link:../database
+    devDependencies:
+      typescript:
+        specifier: ~6.0.3
+        version: 6.0.3
+
   packages/web:
     dependencies:
       '@astrojs/vercel':
@@ -228,6 +238,9 @@ importers:
       '@padel-cantabria/database':
         specifier: workspace:*
         version: link:../database
+      '@padel-cantabria/shared':
+        specifier: workspace:*
+        version: link:../shared
       '@tanstack/vue-query':
         specifier: ^5.104.2
         version: 5.104.2(vue@3.5.44(typescript@6.0.3))

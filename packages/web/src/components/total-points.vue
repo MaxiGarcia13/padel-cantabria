@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { formatStandingValue } from '@padel-cantabria/shared';
 import { computed } from 'vue';
-import { formatStandingValue } from '@/domain/standings';
 
 const props = withDefaults(
   defineProps<{

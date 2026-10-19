@@ -1,4 +1,4 @@
-import { formatNumber } from '@/utils/format-number';
+import { formatNumber } from '../format/format-number.js';
 
 export function formatStandingValue(value: number | null): string {
   if (value === null) {

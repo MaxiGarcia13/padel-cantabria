@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { League, Team } from '@padel-cantabria/database';
 import type { TeamSummaryResponse } from '@/types/team-summary';
+import {
+  getPhaseOptions,
+  getTeamDisplayLabels,
+} from '@padel-cantabria/shared';
 import { computed, ref, watch } from 'vue';
 import Select from '@/components/select.vue';
 import TotalPoints from '@/components/total-points.vue';
@@ -8,10 +12,6 @@ import { useHydrated } from '@/composables/use-hydrated';
 import { useTeamPhases } from '@/composables/use-team-phases';
 import { useTeamPlayers } from '@/composables/use-team-players';
 import { useTeamSummary } from '@/composables/use-team-summary';
-import {
-  getPhaseOptions,
-  getTeamDisplayLabels,
-} from '@/domain/team/get-team-display-labels';
 import { buildCategoryPath } from '@/server/load-category-matches';
 import TeamCardSkeleton from './team-card-skeleton.vue';
 import TeamNextMatchCard from './team-next-match-card.vue';

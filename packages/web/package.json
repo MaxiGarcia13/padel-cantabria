@@ -16,6 +16,7 @@
     "@astrojs/vue": "^7.0.3",
     "@maxigarcia/js-utils": "^1.22.1",
     "@padel-cantabria/database": "workspace:*",
+    "@padel-cantabria/shared": "workspace:*",
     "@tanstack/vue-query": "^5.104.2",
     "astro": "^7.3.8",
     "gsap": "^3.15.0",

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { CategoryKey } from '@padel-cantabria/database';
+import { groupMatchesByDate } from '@padel-cantabria/shared';
 import { computed, toRef } from 'vue';
 import TableSkeleton from '@/components/table-skeleton.vue';
 import { useHydrated } from '@/composables/use-hydrated';
 import { useLeagues } from '@/composables/use-leagues';
 import { useMatches } from '@/composables/use-matches';
-import { groupMatchesByDate } from '@/domain/matches';
 import MatchRow from './match-row.vue';
 
 const props = defineProps<{

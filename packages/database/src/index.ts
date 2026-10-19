@@ -1,5 +1,8 @@
 export { createClient, createConnection } from './client.js';
 export type { TursoConfig } from './client.js';
+export type { GetTopPlayersParams } from './repositories/get-top-players.js';
+export type { SearchPlayersParams } from './repositories/search-players.js';
+export type { SearchTeamsParams } from './repositories/search-teams.js';
 export type { MatchRecord } from './types/db.js';
 export type {
   BaseLeague,
@@ -9,6 +12,7 @@ export type {
   SelectOption,
 } from './types/league.js';
 export type { CategoryKey, Match, MatchWrite } from './types/match.js';
+export type { PlayerWithTeam } from './types/player.js';
 export type { TeamPlayer } from './types/team-player.js';
 export type {
   TeamStanding,
