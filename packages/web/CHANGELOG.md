@@ -1,3 +1,17 @@
+## 0.0.14 (2026-10-19)
+
+### 🚀 Features
+
+- Introduce shared, assistant, and MCP packages with enhanced chat UI ([#1](https://github.com/MaxiGarcia13/padel-cantabria/pull/1))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/database to 0.0.6
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo @MaxiGarcia13
+
 ## 0.0.13 (2026-10-19)
 
 ### 🐞 Fixes
