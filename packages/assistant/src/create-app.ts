@@ -3,6 +3,7 @@ import cors from '@fastify/cors';
 import Fastify from 'fastify';
 import { HttpError } from './errors.js';
 import { createCategoriesRoutes } from './routes/categories.js';
+import { createMcpRoutes } from './routes/mcp.js';
 import { createPlayersRoutes } from './routes/players.js';
 import { createTeamsRoutes } from './routes/teams.js';
 
@@ -25,6 +26,7 @@ export async function createApp(db: DatabaseClient) {
   await app.register(createCategoriesRoutes(db));
   await app.register(createTeamsRoutes(db));
   await app.register(createPlayersRoutes(db));
+  await app.register(createMcpRoutes(db));
 
   return app;
 }

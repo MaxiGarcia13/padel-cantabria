@@ -23,6 +23,7 @@
 
     "assistant": "pnpm --filter @padel-cantabria/assistant start",
     "assistant:dev": "pnpm --filter @padel-cantabria/assistant dev",
+    "mcp": "pnpm --filter @padel-cantabria/mcp start",
 
     "db:migrate": "pnpm --filter @padel-cantabria/database migrate",
     "db:reset": "pnpm --filter @padel-cantabria/database reset",

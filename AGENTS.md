@@ -19,7 +19,8 @@ Human-oriented overview: [README.md](README.md)
 | -------------------- | --------------------------------------- |
 | `packages/database`  | Schema, types, Turso client             |
 | `packages/shared`    | Reusable domain helpers (matches, etc.) |
-| `packages/assistant` | Fastify API (+ MCP/chat later)          |
+| `packages/assistant` | Fastify API + HTTP MCP (deploy target)  |
+| `packages/mcp`       | Stdio MCP shim → assistant HTTP API     |
 | `packages/scrapper`  | Puppeteer scrapers → Turso              |
 | `packages/web`       | Astro + Vue frontend                    |
 
@@ -36,7 +37,8 @@ pnpm scrape:teams
 pnpm scrape:players
 pnpm scrape:calendar
 pnpm dev                 # web app
-pnpm assistant           # Fastify read API (default :3001)
+pnpm assistant           # Fastify read API + /mcp (default :3001)
+pnpm mcp                 # stdio MCP shim (needs ASSISTANT_URL)
 pnpm lint
 ```
 

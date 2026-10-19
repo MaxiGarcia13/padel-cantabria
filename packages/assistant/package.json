@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@fastify/cors": "^11.3.1",
+    "@modelcontextprotocol/sdk": "^1.32.1",
     "@padel-cantabria/database": "workspace:*",
     "@padel-cantabria/shared": "workspace:*",
-    "fastify": "^5.12.7"
+    "fastify": "^5.12.7",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
