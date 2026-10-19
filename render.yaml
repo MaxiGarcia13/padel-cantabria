@@ -3,11 +3,13 @@ services:
     name: padel-cantabria-assistant
     runtime: node
     plan: starter
-    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @padel-cantabria/assistant build
-    startCommand: pnpm --filter @padel-cantabria/assistant start
+    # Avoid corepack (EROFS) and npx/npm-in-repo (EBADDEVENGINES). Install pnpm under
+    # ./.render-pnpm from /tmp so npm does not load this package.json; keep it for start.
+    buildCommand: (cd /tmp && npm install -g pnpm@12.11.2 --prefix "$OLDPWD/.render-pnpm") && export PATH="$PWD/.render-pnpm/bin:$PATH" && pnpm install --frozen-lockfile && pnpm --filter @padel-cantabria/assistant build
+    startCommand: export PATH="$PWD/.render-pnpm/bin:$PATH" && pnpm --filter @padel-cantabria/assistant start
     envVars:
       - key: NODE_VERSION
-        value: '24'
+        value: '22'
       - key: NODE_ENV
         value: production
       - key: TURSO_URL

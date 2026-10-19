@@ -28,7 +28,7 @@ In production (`NODE_ENV=production`), the server listens on `0.0.0.0` and uses 
 
 Repo root [`render.yaml`](../../render.yaml) defines a Web Service Blueprint.
 
-1. Render → **New** → **Blueprint** → select this repo (or create a Web Service and reuse the build/start commands from `render.yaml`).
+1. Render → **New** → **Blueprint** → select this repo (or create a Web Service and copy the build/start commands from `render.yaml`).
 2. Set the secret env vars prompted by the Blueprint (`TURSO_*`, `LEAGUE_IDS`, and at least one LLM key).
 3. Use a **Starter** (or higher) plan so the service stays awake — free sleep breaks MCP sessions.
 4. After deploy: `https://<service>.onrender.com/health`, chat at `/`, MCP at `/mcp`.
