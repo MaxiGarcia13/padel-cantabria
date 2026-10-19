@@ -35,6 +35,7 @@ Monorepo: scrape federation data into Turso and serve it on the web.
 
 - [`packages/database`](packages/database) — schema, types, Turso client
 - [`packages/shared`](packages/shared) — reusable domain helpers (matches, standings, team labels)
+- [`packages/assistant`](packages/assistant) — Fastify read API (deployable; MCP/chat next)
 - [`packages/scrapper`](packages/scrapper) — Puppeteer scrapers ([scripts & when to run them](packages/scrapper/README.md))
 - [`packages/web`](packages/web) — Astro + Vue frontend
 

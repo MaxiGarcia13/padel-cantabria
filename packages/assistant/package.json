@@ -1,0 +1,22 @@
+{
+  "name": "@padel-cantabria/assistant",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "clean": "rm -rf node_modules dist",
+    "dev": "tsx watch --env-file=../../.env src/server.ts",
+    "start": "tsx --env-file=../../.env src/server.ts"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.3.1",
+    "@padel-cantabria/database": "workspace:*",
+    "@padel-cantabria/shared": "workspace:*",
+    "fastify": "^5.12.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.3"
+  }
+}

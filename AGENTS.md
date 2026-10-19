@@ -15,12 +15,13 @@ Human-oriented overview: [README.md](README.md)
 
 ## Monorepo layout
 
-| Package             | Role                                    |
-| ------------------- | --------------------------------------- |
-| `packages/database` | Schema, types, Turso client             |
-| `packages/shared`   | Reusable domain helpers (matches, etc.) |
-| `packages/scrapper` | Puppeteer scrapers → Turso              |
-| `packages/web`      | Astro + Vue frontend                    |
+| Package              | Role                                    |
+| -------------------- | --------------------------------------- |
+| `packages/database`  | Schema, types, Turso client             |
+| `packages/shared`    | Reusable domain helpers (matches, etc.) |
+| `packages/assistant` | Fastify API (+ MCP/chat later)          |
+| `packages/scrapper`  | Puppeteer scrapers → Turso              |
+| `packages/web`       | Astro + Vue frontend                    |
 
 Package manager: **pnpm**. Env vars live in the **repo root** `.env` (`TURSO_URL`, `TURSO_AUTH_TOKEN`; optional `LEAGUE_IDS`).
 
@@ -35,6 +36,7 @@ pnpm scrape:teams
 pnpm scrape:players
 pnpm scrape:calendar
 pnpm dev                 # web app
+pnpm assistant           # Fastify read API (default :3001)
 pnpm lint
 ```
 
