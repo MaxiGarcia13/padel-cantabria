@@ -35,6 +35,8 @@ const {
     <ChatMessages
       :messages="messages"
       :busy="busy"
+      :suggestions-disabled="!canSend"
+      @suggest="send"
     />
 
     <div class="mx-auto w-full max-w-xl px-4">
