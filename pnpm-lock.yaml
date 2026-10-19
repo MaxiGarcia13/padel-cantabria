@@ -234,6 +234,9 @@ importers:
       astro:
         specifier: ^7.3.8
         version: 7.3.8(@types/node@24.19.2)(@vercel/functions@3.10.1(ws@8.22.0))(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
+      gsap:
+        specifier: ^3.15.0
+        version: 3.15.0
       vue:
         specifier: ^3.5.44
         version: 3.5.44(typescript@6.0.3)
@@ -3362,6 +3365,9 @@ packages:
 
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
+
+  gsap@3.15.0:
+    resolution: {integrity: sha512-dMW4CWBTUK1AEEDeZc1g4xpPGIrSf9fJF960qbTZmN/QwZIWY5wgliS6JWl9/25fpTGJrMRtSjGtOmPnfjZB+A==}
 
   h3@1.15.11:
     resolution: {integrity: sha512-L3THSe2MPeBwgIZVSH5zLdBBU90TOxarvhK9d04IDY2AmVS8j2Jz2LIWtwsGOU3lu2I5jCN7FNvVfY2+XyF+mg==}
@@ -8339,6 +8345,8 @@ snapshots:
   globrex@0.1.2: {}
 
   graceful-fs@4.2.11: {}
+
+  gsap@3.15.0: {}
 
   h3@1.15.11:
     dependencies:
