@@ -46,6 +46,8 @@ League is taken from root `.env` `LEAGUE_IDS` (first id), not from query params.
 
 ## Connect an LLM
 
-- **Chat UI:** open `http://localhost:3001/` (Vue → `/chat/completions` → MCP)
-- **Cursor / remote MCP URL:** `http://<host>:3001/mcp`
+- **Chat UI (hosted):** https://padel-cantabria.onrender.com/
+- **Chat UI (local):** `http://localhost:3001/` (Vue → `/chat/completions` → MCP)
+- **Cursor / remote MCP (hosted):** `https://padel-cantabria.onrender.com/mcp`
+- **Cursor / remote MCP (local):** `http://localhost:3001/mcp`
 - **OpenCode / Claude Desktop:** step-by-step in [`packages/mcp`](../mcp/README.md)
