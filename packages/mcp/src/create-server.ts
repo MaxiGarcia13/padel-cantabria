@@ -86,10 +86,43 @@ export function createStdioMcpServer(): McpServer {
   );
 
   server.registerTool(
+    'list_teams',
+    {
+      description:
+        'List teams (and standings) in a category/group. Use when the user asks which teams are in a category. Requires gender M/F and category_value from search_categories. Optional phase_value from search_phases (defaults to the category phase). Do not use list_categories or search_teams for this.',
+      inputSchema: {
+        gender: z.enum(['M', 'F']).describe('M or F (ask user if unknown)'),
+        category: z
+          .string()
+          .describe('category_value from search_categories (not the label)'),
+        phase: z
+          .string()
+          .optional()
+          .describe(
+            'phase_value from search_phases; defaults to the category phase',
+          ),
+      },
+    },
+    async (args) => {
+      try {
+        return toolResult(
+          await assistantGet('/teams', {
+            gender: args.gender,
+            category: args.category,
+            phase: args.phase,
+          }),
+        );
+      } catch (error) {
+        return toolError(error);
+      }
+    },
+  );
+
+  server.registerTool(
     'search_teams',
     {
       description:
-        'Search teams by name tokens. League is fixed by server config. May return several matches; list them when ambiguous. Returns id, name, league/gender/category labels.',
+        'Search teams by team name tokens only (not by category). League is fixed by server config. May return several matches; list them when ambiguous. Returns id, name, league/gender/category labels. To list all teams in a category/group, use list_teams.',
       inputSchema: {
         query: z
           .string()

@@ -9,10 +9,10 @@ function labelKey(label: string): string {
   return categoryAliasKey(label);
 }
 
-function pickCategoryValue(
+function pickCategoryMatch(
   input: string,
   matches: CategoryMatch[],
-): string | undefined {
+): CategoryMatch | undefined {
   if (matches.length === 0) {
     return undefined;
   }
@@ -20,7 +20,7 @@ function pickCategoryValue(
   const trimmed = input.trim();
   const exactValue = matches.find((match) => match.category === trimmed);
   if (exactValue) {
-    return exactValue.category;
+    return exactValue;
   }
 
   const inputKey = labelKey(trimmed);
@@ -28,28 +28,28 @@ function pickCategoryValue(
     (match) => labelKey(match.category_label) === inputKey,
   );
   if (exactLabel) {
-    return exactLabel.category;
+    return exactLabel;
   }
 
   if (matches.length === 1) {
-    return matches[0]!.category;
+    return matches[0];
   }
 
   return undefined;
 }
 
 /**
- * Resolve a model/user category string to federation `categories.value`.
+ * Resolve a model/user category string to a category match (value + phase).
  * Accepts value, label, or ordinal aliases (via search after alias expansion).
  */
-export async function resolveCategoryValue(
+export async function resolveCategoryMatch(
   db: DatabaseClient,
   options: {
     category: string;
     leagueId: number;
     gender: 'M' | 'F';
   },
-): Promise<string | undefined> {
+): Promise<CategoryMatch | undefined> {
   const trimmed = options.category.trim();
   if (!trimmed) {
     return undefined;
@@ -64,6 +64,22 @@ export async function resolveCategoryValue(
     limit: 15,
   });
 
-  return pickCategoryValue(searchQuery, matches)
-    ?? pickCategoryValue(trimmed, matches);
+  return pickCategoryMatch(searchQuery, matches)
+    ?? pickCategoryMatch(trimmed, matches);
+}
+
+/**
+ * Resolve a model/user category string to federation `categories.value`.
+ * Accepts value, label, or ordinal aliases (via search after alias expansion).
+ */
+export async function resolveCategoryValue(
+  db: DatabaseClient,
+  options: {
+    category: string;
+    leagueId: number;
+    gender: 'M' | 'F';
+  },
+): Promise<string | undefined> {
+  const match = await resolveCategoryMatch(db, options);
+  return match?.category;
 }

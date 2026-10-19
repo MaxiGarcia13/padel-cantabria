@@ -31,6 +31,7 @@ League is taken from root `.env` `LEAGUE_IDS` (first id), not from query params.
 | `GET`  | `/categories`                           | League tree with labels            |
 | `GET`  | `/categories/search?q=&gender=&limit=`  | Search categories (token match)    |
 | `GET`  | `/phases/search?q=&gender=&limit=`      | Search phases (token match)        |
+| `GET`  | `/teams?gender=&category=&phase=`       | Teams + standings in a category    |
 | `GET`  | `/teams/search?q=&limit=`               | Search teams (token match)         |
 | `GET`  | `/teams/:id/overview?phase=`            | Team context, standing, next match |
 | `GET`  | `/players/search?q=&gender=&limit=`     | Search players by name             |

@@ -1,6 +1,7 @@
 import type { FastifyPluginAsync } from 'fastify';
 import type { DatabaseClient } from '../db.js';
 import { getTeamOverview } from '../handlers/get-team-overview.js';
+import { listTeamsHandler } from '../handlers/list-teams.js';
 import { searchTeamsHandler } from '../handlers/search-teams.js';
 import {
   parseOptionalPositiveInt,
@@ -9,6 +10,20 @@ import {
 
 export function createTeamsRoutes(db: DatabaseClient): FastifyPluginAsync {
   return async (app) => {
+    app.get<{
+      Querystring: {
+        gender?: string;
+        category?: string;
+        phase?: string;
+      };
+    }>('/teams', async (request) => {
+      return listTeamsHandler(db, {
+        gender: request.query.gender,
+        category: request.query.category,
+        phase: request.query.phase,
+      });
+    });
+
     app.get<{
       Querystring: { q?: string; limit?: string };
     }>('/teams/search', async (request) => {
