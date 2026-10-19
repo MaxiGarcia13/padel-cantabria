@@ -1,8 +1,8 @@
+import { isRecord, parseToolJson } from '../utils/parse-tool-json';
 import {
   categoryQueryFromUserMessage,
   inferGenderFromText,
 } from './category-teams-intent';
-import { isRecord, parseToolJson } from './parse-tool-json';
 
 export interface ListTeamsArgs {
   gender: 'M' | 'F';
@@ -16,6 +16,40 @@ interface FlatCategory {
   genderCode: 'M' | 'F' | undefined;
   phaseValue: string | undefined;
 }
+
+/** Client-side ordinal aliases (mirror assistant normalize-category). */
+const ORDINAL_ALIASES: Record<string, string[]> = {
+  'primera': ['primera', '1a', '1'],
+  'segunda': ['segunda', '2a', '2'],
+  'tercera': ['tercera', '3a', '3'],
+  'cuarta': ['cuarta', '4a', '4'],
+  'quinta': ['quinta', '5a', '5'],
+  'sexta': ['sexta', '6a', '6'],
+  '1a': ['1a', '1', 'primera'],
+  '2a': ['2a', '2', 'segunda'],
+  '3a': ['3a', '3', 'tercera'],
+  '4a': ['4a', '4', 'cuarta'],
+  '5a': ['5a', '5', 'quinta'],
+  '6a': ['6a', '6', 'sexta'],
+};
+
+const STOP_TOKENS = new Set([
+  'de',
+  'del',
+  'la',
+  'el',
+  'los',
+  'las',
+  'en',
+  'grupo',
+  'categoria',
+  'category',
+  'group',
+  'equipos',
+  'equipo',
+  'teams',
+  'team',
+]);
 
 function asGenderCode(value: unknown): 'M' | 'F' | undefined {
   if (value === 'M' || value === 'F') {
@@ -43,20 +77,40 @@ function fold(text: string): string {
     .trim()
     .toLowerCase()
     .normalize('NFD')
-    .replace(/\p{M}/gu, '');
+    .replace(/\p{M}/gu, '')
+    .replace(/ª/g, 'a')
+    .replace(/º/g, 'o');
 }
 
 function significantTokens(text: string): string[] {
   return fold(text)
-    .split(/[^a-z0-9ª]+/u)
-    .map((token) => token.replace(/ª/g, 'a'))
-    .filter((token) => token.length >= 2)
-    .filter(
-      (token) =>
-        !['de', 'del', 'la', 'el', 'los', 'las', 'en', 'grupo', 'categoria', 'category', 'group'].includes(
-          token,
-        ),
+    .split(/[^a-z0-9]+/u)
+    .filter(Boolean)
+    .filter((token) => {
+      if (STOP_TOKENS.has(token)) {
+        return false;
+      }
+      // Keep group letters (A–Z) even at length 1.
+      if (token.length === 1) {
+        return /^[a-z]$/.test(token);
+      }
+      return token.length >= 2;
+    });
+}
+
+function tokenVariants(token: string): string[] {
+  return ORDINAL_ALIASES[token] ?? [token];
+}
+
+function tokenMatches(haystack: string, token: string): boolean {
+  if (token.length === 1) {
+    return (
+      haystack.includes(`grupo ${token}`)
+      || haystack.includes(`group ${token}`)
     );
+  }
+
+  return tokenVariants(token).some((variant) => haystack.includes(variant));
 }
 
 function scoreCategory(category: FlatCategory, userMessage: string): number {
@@ -68,7 +122,7 @@ function scoreCategory(category: FlatCategory, userMessage: string): number {
   }
 
   return tokens.reduce(
-    (score, token) => (haystack.includes(token) ? score + 1 : score),
+    (score, token) => (tokenMatches(haystack, token) ? score + 1 : score),
     0,
   );
 }
@@ -131,16 +185,17 @@ function flattenCategories(value: unknown, acc: FlatCategory[] = []): FlatCatego
 function pickBestCategory(
   categories: FlatCategory[],
   userMessage: string,
+  gender: 'M' | 'F',
 ): FlatCategory | null {
-  if (categories.length === 0) {
+  const scoped = categories.filter(
+    (category) => !category.genderCode || category.genderCode === gender,
+  );
+
+  if (scoped.length === 0) {
     return null;
   }
 
-  if (categories.length === 1) {
-    return categories[0] ?? null;
-  }
-
-  const scored = categories
+  const scored = scoped
     .map((category) => ({ category, score: scoreCategory(category, userMessage) }))
     .filter((entry) => entry.score > 0)
     .sort((left, right) => right.score - left.score);
@@ -160,26 +215,23 @@ function pickBestCategory(
 
 /**
  * Build list_teams args from prior tool JSON and/or the user question.
- * Prefers a unique/best category from tool results; falls back to the question text.
+ * Gender must come from the user text — never inferred from the first tool hit.
  */
 export function resolveListTeamsArgs(
   toolResults: string[],
   userMessage: string,
 ): ListTeamsArgs | null {
+  const gender = inferGenderFromText(userMessage);
+  if (!gender) {
+    return null;
+  }
+
   const categories = toolResults.flatMap((text) => {
     const parsed = parseToolJson(text);
     return parsed === null ? [] : flattenCategories(parsed);
   });
 
-  const best = pickBestCategory(categories, userMessage);
-  const gender
-    = inferGenderFromText(userMessage)
-      ?? best?.genderCode
-      ?? undefined;
-
-  if (!gender) {
-    return null;
-  }
+  const best = pickBestCategory(categories, userMessage, gender);
 
   const category
     = best?.categoryValue

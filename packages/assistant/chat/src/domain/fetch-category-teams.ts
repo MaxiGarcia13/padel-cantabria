@@ -1,6 +1,6 @@
-import type { McpBrowserClient } from './mcp-client';
+import type { McpBrowserClient } from '../utils/mcp-client';
+import { toolResultsIncludeTeams } from '../utils/parse-tool-json';
 import { asksForCategoryTeams } from './category-teams-intent';
-import { toolResultsIncludeTeams } from './parse-tool-json';
 import { resolveListTeamsArgs } from './resolve-list-teams-args';
 
 /**

@@ -1,4 +1,4 @@
-import { isRecord, parseToolJson } from './parse-tool-json';
+import { isRecord, parseToolJson } from '../utils/parse-tool-json';
 
 function formatPlayerLike(record: Record<string, unknown>): string | null {
   const nameParts = [record.name, record.surname]

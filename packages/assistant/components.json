@@ -18,6 +18,7 @@
     "utils": "@/utils/utils",
     "ui": "@/components/ui",
     "lib": "@/utils",
+    "domain": "@/domain",
     "composables": "@/composables"
   },
   "menuColor": "default",

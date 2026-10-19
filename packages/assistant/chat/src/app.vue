@@ -9,8 +9,8 @@ import { computed, onMounted, ref } from 'vue';
 import { Progress } from '@/components/ui/progress';
 import ChatComposer from './components/chat-composer.vue';
 import ChatMessages from './components/chat-messages.vue';
+import { runChatTurn } from './domain/run-chat-turn';
 import { McpBrowserClient } from './utils/mcp-client';
-import { runChatTurn } from './utils/run-chat-turn';
 import { trimChatHistory } from './utils/trim-chat-history';
 
 const MODEL_ID = 'Hermes-2-Pro-Llama-3-8B-q4f16_1-MLC';
