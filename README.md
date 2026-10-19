@@ -31,6 +31,16 @@ No database account is required. Step-by-step setup (hosted and local), includin
 
 → **[packages/mcp/README.md](packages/mcp/README.md)**
 
+### Examples
+
+**OpenCode**
+
+<video src="docs/open-code-example.mov" controls width="720" title="OpenCode MCP example"></video>
+
+**Claude Code**
+
+<video src="docs/claude-code-example.mov" controls width="720" title="Claude Code MCP example"></video>
+
 ## Where the data comes from
 
 Data is copied automatically from the Federación Cántabra de Pádel website (a “scraper”: a script that reads public pages and stores the useful bits in a database so the web app can show them nicely).
