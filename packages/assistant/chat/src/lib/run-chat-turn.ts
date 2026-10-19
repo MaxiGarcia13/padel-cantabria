@@ -16,16 +16,19 @@ const MAX_TOOL_ROUNDS = 3;
  */
 const USER_GUIDANCE = `Responde en español, de forma clara y breve.
 Usa las herramientas solo cuando necesites datos reales. No inventes resultados ni parámetros.
+No uses datos de mensajes anteriores salvo que el usuario diga "ese equipo", "el anterior", etc.
+Para equipos de una categoría/grupo: search_categories (gender M/F si el usuario lo dijo) y luego list_teams con category_value y gender. list_categories y search_teams NO listan equipos de un grupo.
+list_categories solo si piden el catálogo completo; para una categoría usa search_categories.
 Para buscar un jugador, llama search_players solo con query (nombre). No envíes gender salvo que el usuario diga masculino/femenino (M o F).
 Si hay varias coincidencias de género, pregunta: ¿masculino (M) o femenino (F)?
-Cuando el resultado de una herramienta ya responde la pregunta (p. ej. team_name), contesta en texto y NO llames más herramientas.
+Cuando el resultado de una herramienta ya contiene el dato pedido (p. ej. lista de teams, team_name), contesta en texto y NO llames más herramientas.
 La liga la fija el servidor.`;
 
 const AFTER_TOOLS_NUDGE
-  = 'Si el resultado anterior ya responde la pregunta, contesta ahora en español sin llamar más herramientas. Solo usa otra herramienta si falta un dato concreto que no esté en el resultado.';
+  = 'Contesta en español solo si el resultado anterior ya tiene el dato pedido (equipos, jugadores, etc.). Si solo hay categorías o ids y faltan equipos u otro dato, llama la herramienta que falta. No inventes ni uses datos de turnos anteriores.';
 
 const SUMMARIZE_TOOL_NUDGE
-  = 'Resume en español, de forma clara y breve, el resultado de la herramienta anterior. No llames más herramientas.';
+  = 'Resume en español, de forma clara y breve, solo lo que aparece en el resultado de la herramienta anterior. No inventes equipos ni jugadores. No llames más herramientas.';
 
 function parseToolArguments(raw: string | undefined): Record<string, unknown> {
   if (!raw) {

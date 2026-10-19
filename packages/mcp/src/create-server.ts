@@ -22,7 +22,7 @@ export function createStdioMcpServer(): McpServer {
     'list_categories',
     {
       description:
-        'List the full leagues tree with genders, phases, and categories. Prefer search_categories / search_phases for targeted lookup. League is fixed by server config.',
+        'List the full leagues tree with genders, phases, and categories. Prefer search_categories / search_phases for targeted lookup. Do not use to answer which teams are in a category (use list_teams). League is fixed by server config.',
     },
     async () => {
       try {
