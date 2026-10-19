@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue';
 import { cn } from 'cn';
-import { useMessageScrollerContext } from './use-message-scroller';
+import { useMessageScrollerContext } from './message-scroller-context';
 
 const props = defineProps<{
   class?: HTMLAttributes['class'];

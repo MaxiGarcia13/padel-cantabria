@@ -12,11 +12,9 @@ export type {
   MessageScrollerScrollable,
   MessageScrollerScrollAlign,
   MessageScrollerScrollOptions,
-  MessageScrollerVisibilityState,
-} from './use-message-scroller';
+} from './types';
 
 export {
   useMessageScroller,
   useMessageScrollerScrollable,
-  useMessageScrollerVisibility,
-} from './use-message-scroller';
+} from '@/composables/use-message-scroller';

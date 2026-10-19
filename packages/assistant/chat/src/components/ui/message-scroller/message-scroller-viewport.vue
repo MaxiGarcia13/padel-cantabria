@@ -2,7 +2,8 @@
 import type { HTMLAttributes } from 'vue';
 import { cn } from 'cn';
 import { onBeforeUnmount, onMounted, useTemplateRef, watch } from 'vue';
-import { SCROLL_KEYS, useMessageScrollerContext } from './use-message-scroller';
+import { SCROLL_KEYS } from './constants';
+import { useMessageScrollerContext } from './message-scroller-context';
 
 const props = withDefaults(defineProps<{
   class?: HTMLAttributes['class'];
