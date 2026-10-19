@@ -1,6 +1,9 @@
 import type { DatabaseClient } from '../db.js';
 import { badRequest, notFound } from '../errors.js';
-import { presentTeamPlayers } from '../presenters/present-player.js';
+import {
+  presentRosterTotals,
+  presentTeamPlayers,
+} from '../presenters/present-player.js';
 import { presentTeam } from '../presenters/present-team.js';
 
 export async function listTeamPlayersHandler(
@@ -25,5 +28,6 @@ export async function listTeamPlayersHandler(
   return {
     team: presentTeam(team, leagues),
     players: presentTeamPlayers(players),
+    totals: presentRosterTotals(players),
   };
 }

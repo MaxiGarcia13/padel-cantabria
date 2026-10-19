@@ -122,7 +122,7 @@ export function createStdioMcpServer(): McpServer {
     'search_teams',
     {
       description:
-        'Search teams by team name tokens only (not by category). League is fixed by server config. May return several matches; list them when ambiguous. Returns id, name, league/gender/category labels. To list all teams in a category/group, use list_teams.',
+        'Search teams by team name tokens only (not by category). League is fixed by server config. Prefer exact/near-exact names. If several matches, list them (gender/category) or ask; if none, ask gender/category or a clearer name. Returns id, name, league/gender/category labels. To list all teams in a category/group, use list_teams.',
       inputSchema: {
         query: z
           .string()
@@ -172,7 +172,7 @@ export function createStdioMcpServer(): McpServer {
     'list_team_players',
     {
       description:
-        'List the roster (players) of one team. Use after search_teams to resolve team_id. If several teams match the name (e.g. same letter in M and F), list the matches or ask masculino/femenino before calling. Do not use search_players for "players in team X".',
+        'List the roster (players) of one team, plus totals (player_count, sum of player points). Use after search_teams to resolve team_id. For comparing player points across teams, call once per team and use totals.points. If several teams match the name (e.g. same letter in M and F), list the matches or ask masculino/femenino before calling. Do not use search_players for "players in team X". Standing points are get_team_overview, not this tool.',
       inputSchema: {
         team_id: z
           .number()

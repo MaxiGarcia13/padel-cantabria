@@ -34,3 +34,24 @@ export function presentTeamPlayer(player: TeamPlayer) {
 export function presentTeamPlayers(players: TeamPlayer[]) {
   return players.map(presentTeamPlayer);
 }
+
+/** Aggregates for compare / summarize without relying on model arithmetic. */
+export function presentRosterTotals(players: TeamPlayer[]) {
+  let points = 0;
+  let previousPoints = 0;
+  let hasPreviousPoints = false;
+
+  for (const player of players) {
+    points += player.points;
+    if (player.previous_points != null) {
+      previousPoints += player.previous_points;
+      hasPreviousPoints = true;
+    }
+  }
+
+  return {
+    player_count: players.length,
+    points,
+    previous_points: hasPreviousPoints ? previousPoints : null,
+  };
+}

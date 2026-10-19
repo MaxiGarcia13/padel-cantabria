@@ -2,6 +2,20 @@ import { isRecord } from '@/utils/parse-tool-json';
 import { formatPlayerLike } from './format-player-like';
 import { joinDisplayParts, stringField } from './join-display-parts';
 
+function formatRosterTotals(totals: Record<string, unknown>): string | null {
+  const playerCount = totals.player_count;
+  const points = totals.points;
+  if (typeof playerCount !== 'number' || typeof points !== 'number') {
+    return null;
+  }
+
+  const previous = totals.previous_points;
+  const previousPart
+    = typeof previous === 'number' ? `, ${previous} pts anteriores` : '';
+
+  return `Total: ${playerCount} jugadores, ${points} pts${previousPart}`;
+}
+
 export function formatTeamRoster(
   record: Record<string, unknown>,
 ): string | null {
@@ -18,6 +32,10 @@ export function formatTeamRoster(
       ])
     : '';
 
+  const totals = isRecord(record.totals)
+    ? formatRosterTotals(record.totals)
+    : null;
+
   const players = record.players
     .map((entry) => {
       if (!isRecord(entry)) {
@@ -28,8 +46,9 @@ export function formatTeamRoster(
     .filter(Boolean);
 
   if (players.length === 0) {
-    return header ? `${header}\nSin jugadores.` : 'Sin jugadores.';
+    const empty = header ? `${header}\nSin jugadores.` : 'Sin jugadores.';
+    return totals ? `${empty}\n${totals}` : empty;
   }
 
-  return [header, ...players].filter(Boolean).join('\n');
+  return [header, totals, ...players].filter(Boolean).join('\n');
 }
