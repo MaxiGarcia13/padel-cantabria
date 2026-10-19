@@ -1,4 +1,5 @@
 import type { DatabaseClient } from '../db.js';
+import { normalizeCategoryQuery } from '../config/normalize-category.js';
 import { normalizeGender } from '../config/normalize-gender.js';
 import { getConfiguredLeagueId } from '../config/parse-league-ids.js';
 import { presentCategories } from '../presenters/present-category.js';
@@ -16,7 +17,7 @@ export async function searchCategoriesHandler(
   { q = '', gender, limit = DEFAULT_LIMIT }: SearchCategoriesQuery,
 ) {
   const categories = await db.searchCategories({
-    query: q,
+    query: normalizeCategoryQuery(q),
     league_id: getConfiguredLeagueId(),
     gender: normalizeGender(gender),
     limit,

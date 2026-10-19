@@ -1,6 +1,7 @@
 import type { DatabaseClient } from '../db.js';
 import { normalizeGender } from '../config/normalize-gender.js';
 import { getConfiguredLeagueId } from '../config/parse-league-ids.js';
+import { resolveCategoryValue } from '../config/resolve-category-value.js';
 import { badRequest } from '../errors.js';
 import { presentPlayers } from '../presenters/present-player.js';
 
@@ -26,10 +27,23 @@ export async function getTopPlayersHandler(
     throw badRequest('Missing category');
   }
 
-  const players = await db.getTopPlayers({
-    league_id: getConfiguredLeagueId(),
+  const leagueId = getConfiguredLeagueId();
+  const categoryValue = await resolveCategoryValue(db, {
+    category,
+    leagueId,
     gender: normalizedGender,
-    category: category.trim(),
+  });
+
+  if (!categoryValue) {
+    throw badRequest(
+      'Unknown or ambiguous category; use search_categories or ask the user',
+    );
+  }
+
+  const players = await db.getTopPlayers({
+    league_id: leagueId,
+    gender: normalizedGender,
+    category: categoryValue,
     limit,
   });
 
