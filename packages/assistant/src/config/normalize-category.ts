@@ -49,6 +49,22 @@ export function categoryAliasKey(raw: string): string {
     .replace(/\./g, '');
 }
 
+/** Structural / gender words — gender is filtered separately; dashes are separators. */
+const CATEGORY_STOP_KEYS = new Set([
+  'categoria',
+  'category',
+  'grupo',
+  'group',
+  'masculina',
+  'masculino',
+  'femenina',
+  'femenino',
+  'masc',
+  'fem',
+  'm',
+  'f',
+]);
+
 export function normalizeCategoryToken(token: string): string {
   const trimmed = token.trim();
   if (!trimmed) {
@@ -59,12 +75,21 @@ export function normalizeCategoryToken(token: string): string {
   return aliased ?? trimmed;
 }
 
-/** Expand aliases in a free-text category query (space-separated tokens). */
+function isCategoryStopToken(token: string): boolean {
+  return CATEGORY_STOP_KEYS.has(categoryAliasKey(token));
+}
+
+/**
+ * Expand aliases and drop noise so search tokens match DB labels.
+ * "3ª CATEGORIA MASCULINA - GRUPO D" → "3ª D"
+ */
 export function normalizeCategoryQuery(query: string): string {
   return query
     .trim()
+    .replace(/[-–—_/|,.;:¿?¡!()[\]{}]+/g, ' ')
     .split(/\s+/)
     .filter(Boolean)
     .map(normalizeCategoryToken)
+    .filter((token) => token.length > 0 && !isCategoryStopToken(token))
     .join(' ');
 }
