@@ -22,6 +22,7 @@ export async function resolveEmptyModelReply(options: {
       userMessage: options.userMessage,
       toolResults: options.toolResults,
     }),
+    options.userMessage,
   );
   if (chained) {
     return chained.text;

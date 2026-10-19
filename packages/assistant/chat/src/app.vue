@@ -10,7 +10,11 @@ import { computed, onMounted, ref } from 'vue';
 import { Progress } from '@/components/ui/progress';
 import ChatComposer from './components/chat-composer.vue';
 import ChatMessages from './components/chat-messages.vue';
-import { asksForCategoryTeams } from './domain/category-teams-intent';
+import {
+  ASK_GENDER_MESSAGE,
+  asksForCategoryTeams,
+  inferGenderFromText,
+} from './domain/category-teams-intent';
 import { resolvePendingCategoryPick } from './domain/resolve-pending-category';
 import { runChatTurn } from './domain/run-chat-turn';
 import { McpBrowserClient } from './utils/mcp-client';
@@ -114,8 +118,22 @@ async function onSend(prompt: string) {
 
   try {
     const pending = pendingClarification.value;
+    let userMessage = trimmed;
 
-    if (pending?.kind === 'category') {
+    if (pending?.kind === 'gender') {
+      if (asksForCategoryTeams(trimmed)) {
+        // New question replaces the gender wait.
+        pendingClarification.value = null;
+      } else if (inferGenderFromText(trimmed)) {
+        // Resume the original question with the stated gender.
+        userMessage = `${pending.originalQuestion} ${trimmed}`;
+        pendingClarification.value = null;
+      } else {
+        pendingClarification.value = pending;
+        commitTurn(trimmed, ASK_GENDER_MESSAGE);
+        return;
+      }
+    } else if (pending?.kind === 'category') {
       // A brand-new category-teams question replaces the pending pick.
       if (asksForCategoryTeams(trimmed)) {
         pendingClarification.value = null;
@@ -141,7 +159,7 @@ async function onSend(prompt: string) {
       mcp,
       tools,
       history: history.value,
-      userMessage: trimmed,
+      userMessage,
     });
 
     pendingClarification.value = result.pending ?? null;

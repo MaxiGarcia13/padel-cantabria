@@ -5,7 +5,7 @@ import type {
 } from '@mlc-ai/web-llm';
 import type { McpBrowserClient } from '../utils/mcp-client';
 import type { ChatTurnResult } from './chat-turn-result';
-import type { PendingCategoryClarification } from './clarification';
+import type { PendingCategoryClarification, PendingGenderClarification } from './clarification';
 import {
   previousUserMessages,
   withoutSystemMessages,
@@ -19,12 +19,7 @@ import {
 import { categoryTeamsTurnResult } from './category-teams-reply-text';
 import { AFTER_TOOLS_NUDGE, USER_GUIDANCE } from './chat-prompts';
 import { chatTurnResult } from './chat-turn-result';
-import {
-  formatCategoryClarification,
-  formatUnknownCategoryMessage,
-  parseCategoryToolError,
-
-} from './clarification';
+import { formatCategoryClarification, formatUnknownCategoryMessage, parseCategoryToolError } from './clarification';
 import {
   executeToolCalls,
   toolCallsIncludeListTeams,
@@ -38,6 +33,14 @@ import { formatToolResultFallback } from './tool-result-fallback';
 
 /** Enough for search → follow-up tool; last round forces a text answer. */
 const MAX_TOOL_ROUNDS = 3;
+
+function askGenderResult(originalQuestion: string): ChatTurnResult {
+  const pending: PendingGenderClarification = {
+    kind: 'gender',
+    originalQuestion,
+  };
+  return chatTurnResult(ASK_GENDER_MESSAGE, pending);
+}
 
 function clarificationFromToolResults(
   toolResults: string[],
@@ -86,7 +89,7 @@ export async function runChatTurn(options: {
   );
 
   if (needsGenderClarification(userMessage)) {
-    return chatTurnResult(ASK_GENDER_MESSAGE);
+    return askGenderResult(userMessage);
   }
 
   const messages: ChatCompletionMessageParam[] = [
@@ -119,6 +122,7 @@ export async function runChatTurn(options: {
           userMessage,
           toolResults,
         }),
+        userMessage,
       );
       if (chained) {
         return chained;
@@ -144,6 +148,7 @@ export async function runChatTurn(options: {
           userMessage,
           toolResults,
         }),
+        userMessage,
       );
       if (ensured) {
         return ensured;
@@ -174,7 +179,7 @@ export async function runChatTurn(options: {
       toolCallsIncludeListTeams(toolCalls)
       && needsGenderClarification(userMessage)
     ) {
-      return chatTurnResult(ASK_GENDER_MESSAGE);
+      return askGenderResult(userMessage);
     }
 
     messages.push({
@@ -207,7 +212,7 @@ export async function runChatTurn(options: {
     });
 
     if (followUp === 'ask-gender') {
-      return chatTurnResult(ASK_GENDER_MESSAGE);
+      return askGenderResult(userMessage);
     }
 
     if (typeof followUp === 'object' && 'clarify' in followUp) {
@@ -230,6 +235,7 @@ export async function runChatTurn(options: {
       userMessage,
       toolResults,
     }),
+    userMessage,
   );
   if (chained) {
     return chained;

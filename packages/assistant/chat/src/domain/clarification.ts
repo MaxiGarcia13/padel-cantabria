@@ -16,7 +16,14 @@ export interface PendingCategoryClarification {
   gender: 'M' | 'F';
 }
 
-export type PendingClarification = PendingCategoryClarification;
+/** Waiting for M/F after a category-teams question omitted gender. */
+export interface PendingGenderClarification {
+  kind: 'gender';
+  originalQuestion: string;
+}
+
+export type PendingClarification
+  = PendingCategoryClarification | PendingGenderClarification;
 
 const UNKNOWN_CATEGORY_MESSAGE
   = 'No encontré esa categoría. ¿Puedes reformularla?';
