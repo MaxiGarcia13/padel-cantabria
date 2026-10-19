@@ -1,0 +1,26 @@
+---
+description: Prefer in-place SQL schema changes over db:reset
+alwaysApply: true
+---
+
+# Schema changes
+
+`pnpm db:migrate` only runs `CREATE TABLE IF NOT EXISTS`. It does **not** rename columns or migrate existing data.
+
+When the live Turso schema must change, **suggest the lightest path first**. Full reset is last resort.
+
+## Preference order
+
+1. **No schema change** — reuse an existing unused column only if the name still fits the domain (do not overload unrelated names).
+2. **In-place SQL** — `ALTER TABLE … RENAME COLUMN`, `ADD COLUMN`, etc. Update `schema.sql` + types/repos to match. Keep existing rows.
+3. **`pnpm db:reset`** — only when in-place ALTER is impossible or unsafe (table rebuild required, data is wrong/corrupt, or user explicitly asks). After reset, scrapers must be re-run in order.
+
+```sql
+-- ✅ Prefer (example)
+ALTER TABLE matches RENAME COLUMN schedule TO rounds;
+
+-- ❌ Avoid as the default suggestion
+-- pnpm db:reset
+```
+
+When proposing a rename/add, always mention the one-off `ALTER` (or equivalent) **before** suggesting `db:reset`.
