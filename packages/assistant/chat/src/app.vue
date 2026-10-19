@@ -15,6 +15,7 @@ import {
   asksForCategoryTeams,
   inferGenderFromText,
 } from './domain/category-teams-intent';
+import { asksForCategoryCatalog } from './domain/list-categories-intent';
 import { resolvePendingCategoryPick } from './domain/resolve-pending-category';
 import { runChatTurn } from './domain/run-chat-turn';
 import { McpBrowserClient } from './utils/mcp-client';
@@ -121,7 +122,7 @@ async function onSend(prompt: string) {
     let userMessage = trimmed;
 
     if (pending?.kind === 'gender') {
-      if (asksForCategoryTeams(trimmed)) {
+      if (asksForCategoryTeams(trimmed) || asksForCategoryCatalog(trimmed)) {
         // New question replaces the gender wait.
         pendingClarification.value = null;
       } else if (inferGenderFromText(trimmed)) {
@@ -134,8 +135,8 @@ async function onSend(prompt: string) {
         return;
       }
     } else if (pending?.kind === 'category') {
-      // A brand-new category-teams question replaces the pending pick.
-      if (asksForCategoryTeams(trimmed)) {
+      // A brand-new question replaces the pending pick.
+      if (asksForCategoryTeams(trimmed) || asksForCategoryCatalog(trimmed)) {
         pendingClarification.value = null;
       } else {
         const resolved = await resolvePendingCategoryPick({

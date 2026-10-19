@@ -24,6 +24,7 @@ import {
   executeToolCalls,
   toolCallsIncludeListTeams,
 } from './execute-tool-calls';
+import { fetchCategoryCatalogIfNeeded } from './fetch-list-categories';
 import {
   ensureCategoryTeamsReply,
   injectCategoryTeamsFollowUp,
@@ -87,6 +88,14 @@ export async function runChatTurn(options: {
     options.userMessage,
     previousUserMessages(options.history),
   );
+
+  const catalog = await fetchCategoryCatalogIfNeeded({
+    mcp: options.mcp,
+    userMessage,
+  });
+  if (catalog) {
+    return catalog;
+  }
 
   if (needsGenderClarification(userMessage)) {
     return askGenderResult(userMessage);
