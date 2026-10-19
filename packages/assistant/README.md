@@ -26,20 +26,20 @@ Default URL: `http://localhost:3001`. Override with `ASSISTANT_PORT` / `ASSISTAN
 
 League is taken from root `.env` `LEAGUE_IDS` (first id), not from query params.
 
-| Method | Path                                    | Notes                              |
-| ------ | --------------------------------------- | ---------------------------------- |
-| `GET`  | `/`                                     | Vue chat UI (after `build:chat`)   |
-| `GET`  | `/health`                               | `{ ok: true }`                     |
-| `GET`  | `/categories`                           | League tree with labels            |
-| `GET`  | `/categories/search?q=&gender=&limit=`  | Search categories (token match)    |
-| `GET`  | `/phases/search?q=&gender=&limit=`      | Search phases (token match)        |
-| `GET`  | `/teams?gender=&category=&phase=`       | Teams + standings in a category    |
-| `GET`  | `/teams/search?q=&limit=`               | Search teams (token match)         |
-| `GET`  | `/teams/:id/overview?phase=`            | Team context, standing, next match |
-| `GET`  | `/players/search?q=&gender=&limit=`     | Search players by name             |
-| `GET`  | `/players/top?gender=&category=&limit=` | Top points in a category           |
+| Method | Path                                    | Notes                                  |
+| ------ | --------------------------------------- | -------------------------------------- |
+| `GET`  | `/`                                     | Vue chat UI (after `build:chat`)       |
+| `GET`  | `/health`                               | `{ ok: true }`                         |
+| `GET`  | `/categories`                           | League tree with labels                |
+| `GET`  | `/categories/search?q=&gender=&limit=`  | Search categories (token match)        |
+| `GET`  | `/phases/search?q=&gender=&limit=`      | Search phases (token match)            |
+| `GET`  | `/teams?gender=&category=&phase=`       | Teams + standings in a category        |
+| `GET`  | `/teams/search?q=&limit=`               | Search teams (token match)             |
+| `GET`  | `/teams/:id/overview?phase=`            | Team context, standing, next match     |
+| `GET`  | `/players/search?q=&gender=&limit=`     | Search players by name                 |
+| `GET`  | `/players/top?gender=&category=&limit=` | Top points in a category               |
 | `POST` | `/chat/completions`                     | AiRouter (Gemini → Open Router → Groq) |
-| `POST` | `/mcp`                                  | Streamable HTTP MCP (same tools)   |
+| `POST` | `/mcp`                                  | Streamable HTTP MCP (same tools)       |
 
 ## Connect an LLM
 
