@@ -30,7 +30,7 @@ defineProps<{
 
 <template>
   <MessageScrollerProvider auto-scroll>
-    <MessageScroller class="min-h-0">
+    <MessageScroller class="h-full min-h-0">
       <MessageScrollerViewport>
         <MessageScrollerContent
           :aria-busy="busy"

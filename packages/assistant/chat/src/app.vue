@@ -131,7 +131,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mx-auto grid min-h-dvh max-w-xl grid-rows-[auto_1fr_auto] gap-4 px-4 py-6">
+  <div class="mx-auto grid h-dvh max-w-xl grid-rows-[auto_minmax(0,1fr)_auto] gap-4 overflow-hidden px-4 py-6">
     <header>
       <h1 class="mb-2 text-3xl tracking-tight">
         Asistente Padel Cantabria
