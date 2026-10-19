@@ -17,11 +17,18 @@
   "dependencies": {
     "@fastify/cors": "^11.3.1",
     "@fastify/static": "^10.1.6",
+    "@lucide/vue": "^1.59.0",
     "@mlc-ai/web-llm": "^0.2.86",
     "@modelcontextprotocol/sdk": "^1.32.1",
     "@padel-cantabria/database": "workspace:*",
     "@padel-cantabria/shared": "workspace:*",
+    "@vueuse/core": "^15.0.0",
+    "class-variance-authority": "^0.7.1",
+    "cn": "^0.5.0",
     "fastify": "^5.12.7",
+    "reka-ui": "^2.11.0",
+    "shadcn-vue": "^2.8.2",
+    "tw-animate-css": "^1.4.0",
     "vue": "^3.5.44",
     "zod": "^4.6.7"
   },
