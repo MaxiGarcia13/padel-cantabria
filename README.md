@@ -33,13 +33,10 @@ No database account is required. Step-by-step setup (hosted and local), includin
 
 ### Examples
 
-**OpenCode**
-
-<video src="docs/open-code-example.mov" controls width="720" title="OpenCode MCP example"></video>
-
-**Claude Code**
-
-<video src="docs/claude-code-example.mov" controls width="720" title="Claude Code MCP example"></video>
+| App         | Demo                                  |
+| ----------- | ------------------------------------- |
+| OpenCode    | [Watch](docs/open-code-example.mov)   |
+| Claude Code | [Watch](docs/claude-code-example.mov) |
 
 ## Where the data comes from
 
