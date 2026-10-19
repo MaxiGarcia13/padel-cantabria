@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Markdown } from '@comark/vue';
 import { MessageCircleDashedIcon } from '@lucide/vue';
 import { Bubble, BubbleContent } from '@/components/ui/bubble';
 import {
@@ -54,7 +55,7 @@ defineProps<{
           </Empty>
 
           <MessageScrollerItem
-            v-for="message in messages"
+            v-for="(message, index) in messages"
             :key="message.id"
             :message-id="message.id"
           >
@@ -83,9 +84,13 @@ defineProps<{
 
             <Message v-else>
               <MessageContent class="gap-2">
-                <p class="max-w-[90%] leading-snug whitespace-pre-wrap">
-                  {{ message.content }}
-                </p>
+                <Suspense>
+                  <Markdown
+                    class="typeset typeset-chat max-w-[90%]"
+                    :value="message.content"
+                    :streaming="busy && index === messages.length - 1"
+                  />
+                </Suspense>
               </MessageContent>
             </Message>
           </MessageScrollerItem>

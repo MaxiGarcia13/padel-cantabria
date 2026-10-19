@@ -2,6 +2,7 @@
 @import '@padel-cantabria/shared/styles/theme.css';
 @import 'tw-animate-css';
 @import 'shadcn-vue/tailwind.css';
+@import './typeset.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -121,6 +122,12 @@ html {
 #app {
   height: 100dvh;
   overflow: hidden;
+}
+
+.typeset-chat {
+  --typeset-flow: 1em;
+  --typeset-leading: 1.6;
+  --typeset-size: 0.875em;
 }
 
 @layer base {
