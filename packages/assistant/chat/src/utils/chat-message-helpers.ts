@@ -1,4 +1,4 @@
-import type { ChatCompletionMessageParam } from '@mlc-ai/web-llm';
+import type { ChatCompletionMessageParam } from './chat-completion-types';
 
 export function withoutSystemMessages(
   messages: ChatCompletionMessageParam[],

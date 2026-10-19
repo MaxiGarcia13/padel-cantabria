@@ -1,16 +1,16 @@
 import type {
   ChatCompletionMessageParam,
-  MLCEngineInterface,
-} from '@mlc-ai/web-llm';
+  ChatCompletionsClient,
+} from './chat-completion-types';
 import { withoutSystemMessages } from './chat-message-helpers';
 
 export async function completeForcedText(
-  engine: MLCEngineInterface,
+  client: ChatCompletionsClient,
   messages: ChatCompletionMessageParam[],
 ): Promise<string | null> {
-  const completion = await engine.chat.completions.create({
+  const completion = await client.create({
     messages: withoutSystemMessages(messages),
-    tool_choice: 'none' as const,
+    tool_choice: 'none',
   });
 
   return completion.choices[0]?.message?.content?.trim() || null;

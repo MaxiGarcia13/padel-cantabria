@@ -1,8 +1,8 @@
 import type {
   ChatCompletionMessageParam,
+  ChatCompletionsClient,
   ChatCompletionTool,
-  MLCEngineInterface,
-} from '@mlc-ai/web-llm';
+} from '../utils/chat-completion-types';
 import type { McpBrowserClient } from '../utils/mcp-client';
 import type { ChatTurnResult } from './chat-turn-result';
 import type { PendingCategoryClarification, PendingGenderClarification } from './clarification';
@@ -80,7 +80,7 @@ function clarificationFromToolResults(
 }
 
 export async function runChatTurn(options: {
-  engine: MLCEngineInterface;
+  client: ChatCompletionsClient;
   mcp: McpBrowserClient;
   tools: ChatCompletionTool[];
   history: ChatCompletionMessageParam[];
@@ -115,9 +115,7 @@ export async function runChatTurn(options: {
   for (let round = 0; round < MAX_TOOL_ROUNDS; round += 1) {
     const forceTextAnswer = round === MAX_TOOL_ROUNDS - 1;
 
-    // WebLLM mutates `request.messages` by unshifting its Hermes system prompt.
-    // Pass a fresh copy without any system role so later tool rounds do not fail.
-    const completion = await options.engine.chat.completions.create({
+    const completion = await options.client.create({
       messages: withoutSystemMessages(messages),
       ...(forceTextAnswer
         ? { tool_choice: 'none' as const }
@@ -170,7 +168,7 @@ export async function runChatTurn(options: {
         return clarified;
       }
 
-      // Prefer real teams[] over Hermes prose (model often invents gender asks).
+      // Prefer real teams[] over free-form prose (model often invents gender asks).
       if (
         asksForCategoryTeams(userMessage)
         && toolResultsIncludeTeams(toolResults)
@@ -185,7 +183,7 @@ export async function runChatTurn(options: {
 
       return chatTurnResult(
         await resolveEmptyModelReply({
-          engine: options.engine,
+          client: options.client,
           mcp: options.mcp,
           userMessage,
           messages,
@@ -203,7 +201,6 @@ export async function runChatTurn(options: {
 
     messages.push({
       role: 'assistant',
-      // Hermes/WebLLM require string content even when only tool_calls are set.
       content: message.content ?? '',
       tool_calls: toolCalls,
     });
@@ -238,7 +235,7 @@ export async function runChatTurn(options: {
     }
 
     if (followUp === 'injected') {
-      // Deterministic list beats another Hermes round that may ignore tools.
+      // Deterministic list beats another model round that may ignore tools.
       return chatTurnResult(formatToolResultFallback(toolResults));
     }
 

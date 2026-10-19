@@ -1,7 +1,7 @@
 import type {
   ChatCompletionMessageParam,
   ChatCompletionMessageToolCall,
-} from '@mlc-ai/web-llm';
+} from '../utils/chat-completion-types';
 import type { McpBrowserClient } from '../utils/mcp-client';
 import {
   formatToolResult,

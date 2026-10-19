@@ -1,7 +1,7 @@
 import type {
   ChatCompletionMessageParam,
-  MLCEngineInterface,
-} from '@mlc-ai/web-llm';
+  ChatCompletionsClient,
+} from '../utils/chat-completion-types';
 import type { McpBrowserClient } from '../utils/mcp-client';
 import { completeForcedText } from '../utils/complete-forced-text';
 import { categoryTeamsTurnResult } from './category-teams-reply-text';
@@ -10,7 +10,7 @@ import { ensureCategoryTeamsReply } from './resolve-category-teams-reply';
 import { formatToolResultFallback } from './tool-result-fallback';
 
 export async function resolveEmptyModelReply(options: {
-  engine: MLCEngineInterface;
+  client: ChatCompletionsClient;
   mcp: McpBrowserClient;
   userMessage: string;
   messages: ChatCompletionMessageParam[];
@@ -38,7 +38,7 @@ export async function resolveEmptyModelReply(options: {
   ];
 
   const summarized = await completeForcedText(
-    options.engine,
+    options.client,
     summarizeMessages,
   );
 

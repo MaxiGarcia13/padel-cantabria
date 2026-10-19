@@ -1,4 +1,4 @@
-import type { ChatCompletionMessageParam } from '@mlc-ai/web-llm';
+import type { ChatCompletionMessageParam } from './chat-completion-types';
 
 /** How many prior user+assistant pairs the model may see. */
 const MAX_HISTORY_TURNS = 2;

@@ -1,13 +1,10 @@
 <script setup lang="ts">
+import type { PendingClarification } from './domain/clarification';
 import type {
   ChatCompletionMessageParam,
   ChatCompletionTool,
-  MLCEngineInterface,
-} from '@mlc-ai/web-llm';
-import type { PendingClarification } from './domain/clarification';
-import { CreateMLCEngine, prebuiltAppConfig } from '@mlc-ai/web-llm';
+} from './utils/chat-completion-types';
 import { computed, onMounted, ref } from 'vue';
-import { Progress } from '@/components/ui/progress';
 import ChatComposer from './components/chat-composer.vue';
 import ChatMessages from './components/chat-messages.vue';
 import {
@@ -18,16 +15,9 @@ import {
 import { asksForCategoryCatalog } from './domain/list-categories-intent';
 import { resolvePendingCategoryPick } from './domain/resolve-pending-category';
 import { runChatTurn } from './domain/run-chat-turn';
+import { HttpChatCompletionsClient } from './utils/chat-completions-client';
 import { McpBrowserClient } from './utils/mcp-client';
 import { trimChatHistory } from './utils/trim-chat-history';
-
-const MODEL_ID = 'Hermes-2-Pro-Llama-3-8B-q4f16_1-MLC';
-
-/** Cache API needs a secure context; IndexedDB works more reliably on localhost HTTP. */
-const APP_CONFIG = {
-  ...prebuiltAppConfig,
-  cacheBackend: 'indexeddb' as const,
-};
 
 interface UiMessage {
   id: string;
@@ -37,8 +27,6 @@ interface UiMessage {
 
 const status = ref('Preparando…');
 const statusTone = ref<'info' | 'error'>('info');
-const progress = ref(0);
-const showProgress = ref(false);
 const ready = ref(false);
 const busy = ref(false);
 const messages = ref<UiMessage[]>([]);
@@ -46,7 +34,7 @@ const history = ref<ChatCompletionMessageParam[]>([]);
 const pendingClarification = ref<PendingClarification | null>(null);
 
 const mcp = new McpBrowserClient('/mcp');
-let engine: MLCEngineInterface | null = null;
+const chatClient = new HttpChatCompletionsClient('/chat/completions');
 let tools: ChatCompletionTool[] = [];
 
 const canSend = computed(() => ready.value && !busy.value);
@@ -75,27 +63,14 @@ async function bootstrap() {
     const mcpTools = await mcp.listTools();
     tools = mcp.toOpenAiTools(mcpTools);
 
-    status.value = 'Descargando modelo en el navegador…';
-    showProgress.value = true;
-
-    engine = await CreateMLCEngine(MODEL_ID, {
-      appConfig: APP_CONFIG,
-      initProgressCallback: (report) => {
-        status.value = report.text;
-        progress.value = Math.round((report.progress ?? 0) * 100);
-      },
-    });
-
-    showProgress.value = false;
     ready.value = true;
     statusTone.value = 'info';
-    status.value = `Listo · ${mcpTools.length} herramientas MCP · modelo local`;
+    status.value = `Listo · ${mcpTools.length} herramientas MCP`;
     pushMessage(
       'system',
       'Puedes preguntar por categorías, equipos, posiciones, jugadores y próximos partidos.',
     );
   } catch (error) {
-    showProgress.value = false;
     statusTone.value = 'error';
     status.value
       = error instanceof Error
@@ -105,7 +80,7 @@ async function bootstrap() {
 }
 
 async function onSend(prompt: string) {
-  if (!engine || !canSend.value) {
+  if (!canSend.value) {
     return;
   }
 
@@ -156,7 +131,7 @@ async function onSend(prompt: string) {
     }
 
     const result = await runChatTurn({
-      engine,
+      client: chatClient,
       mcp,
       tools,
       history: history.value,
@@ -191,7 +166,7 @@ onMounted(() => {
       </h1>
       <p class="m-0 leading-snug text-muted-foreground">
         Pregunta por equipos, clasificaciones, jugadores y próximos partidos.
-        El modelo corre en tu navegador; los datos salen del MCP del servidor.
+        Los datos salen del MCP del servidor.
       </p>
       <p
         class="mt-2 text-sm leading-snug"
@@ -200,11 +175,6 @@ onMounted(() => {
       >
         {{ status }}
       </p>
-      <Progress
-        v-show="showProgress"
-        class="mt-2 h-2"
-        :model-value="progress"
-      />
     </header>
 
     <ChatMessages

@@ -1,4 +1,4 @@
-import type { ChatCompletionTool } from '@mlc-ai/web-llm';
+import type { ChatCompletionTool } from './chat-completion-types';
 
 interface JsonRpcSuccess {
   result?: unknown;
