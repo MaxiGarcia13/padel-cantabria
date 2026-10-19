@@ -5,7 +5,7 @@ export function toolResult(data: unknown) {
     content: [
       {
         type: 'text' as const,
-        text: JSON.stringify(data, null, 2),
+        text: JSON.stringify(data),
       },
     ],
   };
@@ -17,7 +17,7 @@ export function toolError(error: unknown) {
       content: [
         {
           type: 'text' as const,
-          text: JSON.stringify(httpErrorPayload(error), null, 2),
+          text: JSON.stringify(httpErrorPayload(error)),
         },
       ],
       isError: true,

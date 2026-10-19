@@ -83,7 +83,7 @@ export class McpBrowserClient {
     const content = result?.content;
 
     if (!Array.isArray(content)) {
-      return JSON.stringify(result ?? {}, null, 2);
+      return JSON.stringify(result ?? {});
     }
 
     return content

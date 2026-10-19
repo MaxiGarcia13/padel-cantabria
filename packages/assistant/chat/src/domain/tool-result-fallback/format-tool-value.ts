@@ -12,7 +12,7 @@ function formatRecord(record: Record<string, unknown>): string {
     ?? formatPlayerLike(record)
     ?? formatStandingTeam(record)
     ?? formatCategoryLike(record)
-    ?? JSON.stringify(record, null, 2)
+    ?? JSON.stringify(record)
   );
 }
 

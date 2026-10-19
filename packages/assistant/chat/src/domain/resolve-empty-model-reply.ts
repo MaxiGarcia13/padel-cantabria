@@ -7,7 +7,10 @@ import { completeForcedText } from '../utils/complete-forced-text';
 import { categoryTeamsTurnResult } from './category-teams-reply-text';
 import { SUMMARIZE_TOOL_NUDGE } from './chat-prompts';
 import { ensureCategoryTeamsReply } from './resolve-category-teams-reply';
-import { formatToolResultFallback } from './tool-result-fallback';
+import {
+  formatToolResultFallback,
+  tryFormatToolResultFallback,
+} from './tool-result-fallback';
 
 export async function resolveEmptyModelReply(options: {
   client: ChatCompletionsClient;
@@ -30,6 +33,11 @@ export async function resolveEmptyModelReply(options: {
 
   if (options.toolResults.length === 0) {
     return 'No he encontrado una respuesta.';
+  }
+
+  const formatted = tryFormatToolResultFallback(options.toolResults);
+  if (formatted) {
+    return formatted;
   }
 
   const summarizeMessages: ChatCompletionMessageParam[] = [

@@ -19,7 +19,7 @@ export function previousUserMessages(
 }
 
 export function formatToolResult(name: string, toolText: string): string {
-  return `Resultado de ${name}:\n${toolText}`;
+  return `${name}: ${toolText}`;
 }
 
 export function parseToolArguments(

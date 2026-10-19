@@ -1,20 +1,41 @@
 import { formatToolText } from './format-tool-text';
 import { pickPreferredToolResults } from './pick-preferred-tool-results';
 
+const UNFORMATTED_FALLBACK
+  = 'He recibido una respuesta de las herramientas, pero no pude redactarla.';
+
+function buildFallbackBody(toolResults: string[]): string {
+  return pickPreferredToolResults(toolResults)
+    .map((text) => formatToolText(text))
+    .filter(Boolean)
+    .join('\n\n')
+    .trim();
+}
+
+function looksLikeRawJson(text: string): boolean {
+  const trimmed = text.trim();
+  return trimmed.startsWith('{') || trimmed.startsWith('[');
+}
+
+/**
+ * Spanish display text when formatters cover the tool payload.
+ * Returns null when the body is empty or still raw JSON (caller may summarize).
+ */
+export function tryFormatToolResultFallback(
+  toolResults: string[],
+): string | null {
+  const body = buildFallbackBody(toolResults);
+  if (!body || looksLikeRawJson(body)) {
+    return null;
+  }
+
+  return body;
+}
+
 /**
  * Deterministic Spanish fallback when the model returns empty content
  * after a successful tool call.
  */
 export function formatToolResultFallback(toolResults: string[]): string {
-  const body = pickPreferredToolResults(toolResults)
-    .map((text) => formatToolText(text))
-    .filter(Boolean)
-    .join('\n\n')
-    .trim();
-
-  if (!body) {
-    return 'He recibido una respuesta de las herramientas, pero no pude redactarla.';
-  }
-
-  return body;
+  return buildFallbackBody(toolResults) || UNFORMATTED_FALLBACK;
 }
