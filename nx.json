@@ -24,9 +24,12 @@
   },
   "release": {
     "projects": [
-      "packages/scrapper",
+      "packages/shared",
       "packages/database",
-      "packages/web"
+      "packages/scrapper",
+      "packages/web",
+      "packages/mcp",
+      "packages/assistant"
     ],
     "projectsRelationship": "independent",
     "version": {
