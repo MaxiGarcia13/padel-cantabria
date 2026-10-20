@@ -2,15 +2,31 @@ import type { ComputedRef, ShallowRef } from 'vue';
 import type {
   MessageScrollerProviderProps,
   MessageScrollerScrollable,
+  MessageScrollerScrollOptions,
 } from '../types';
-import type { Mode, PendingScrollToMessage, PrependRestore } from './engine-types';
 import { computed, shallowRef } from 'vue';
 import {
   DEFAULT_SCROLL_EDGE_THRESHOLD,
   DEFAULT_SCROLL_MARGIN,
   DEFAULT_SCROLL_PREVIOUS_ITEM_PEEK,
 } from '../constants';
-import { EMPTY_SCROLLABLE } from '../dom/scrollable';
+import { EMPTY_SCROLLABLE } from '../dom';
+
+export type Mode
+  = | 'following-bottom'
+    | 'free-scrolling'
+    | 'anchored-to-message'
+    | 'settling-jump';
+
+export interface PrependRestore {
+  element: HTMLElement;
+  viewportTop: number;
+}
+
+export interface PendingScrollToMessage {
+  messageId: string;
+  options?: MessageScrollerScrollOptions;
+}
 
 export interface EngineState {
   autoScroll: () => boolean;

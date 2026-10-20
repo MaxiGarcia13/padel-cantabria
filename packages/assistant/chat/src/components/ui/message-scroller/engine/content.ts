@@ -1,25 +1,61 @@
-import type { EngineState } from './engine-state';
+import type { EngineState } from './state';
 import {
+  findFirstVisibleMessage,
   findLastAnchor,
   findScrollAnchor,
-} from '../dom/anchors';
-import {
   getElementOffsetTop,
   getMessageChildren,
+  getRelativeTop,
+  isNear,
   measureContentHeight,
-} from '../dom/measure';
-import { commitScrollState, scheduleStateCommit } from './mode-and-scroll-state';
+} from '../dom';
 import {
-  applyPrependRestore,
-  capturePrependAnchor,
-} from './prepend-restore';
-import {
+  commitScrollState,
   flushPendingScrollToMessage,
   reanchorToAnchoredMessage,
+  scheduleStateCommit,
   scrollToElement,
   scrollToEnd,
   scrollToStart,
-} from './scroll-actions';
+} from './scroll';
+
+export function applyPrependRestore(state: EngineState): boolean {
+  if (!state.prependRestore || !state.viewport || !state.prependRestore.element.isConnected)
+    return false;
+  const delta = getRelativeTop(state.prependRestore.element, state.viewport)
+    - state.prependRestore.viewportTop;
+  if (isNear(delta, 0))
+    return false;
+  state.viewport.scrollTop += delta;
+  state.prependRestore.viewportTop = getRelativeTop(state.prependRestore.element, state.viewport);
+  scheduleStateCommit(state);
+  return true;
+}
+
+export function capturePrependAnchor(state: EngineState) {
+  if (!state.content || !state.viewport) {
+    state.prependRestore = null;
+    return;
+  }
+  const element = findFirstVisibleMessage({
+    content: state.content,
+    spacer: state.spacer,
+    viewport: state.viewport,
+  });
+  state.prependRestore = element
+    ? { element, viewportTop: getRelativeTop(element, state.viewport) }
+    : null;
+}
+
+export function schedulePendingScrollFlush(state: EngineState) {
+  if (state.pendingScrollFrame !== null)
+    return;
+  state.pendingScrollFrame = window.requestAnimationFrame(() => {
+    state.pendingScrollFrame = null;
+    if (flushPendingScrollToMessage(state))
+      capturePrependAnchor(state);
+  });
+}
 
 export function applyDefaultScrollPosition(state: EngineState): boolean {
   if (state.defaultScrollPositionApplied || state.itemCount === 0)
@@ -133,7 +169,6 @@ export function handleResize(state: EngineState) {
   }
   const previousSpacerHeight = state.spacerHeight;
   if (reanchorToAnchoredMessage(state)) {
-    // Spacer drained by streaming reply → hand off to live edge.
     if (state.autoScroll() && previousSpacerHeight > 0 && state.spacerHeight === 0)
       scrollToEnd(state, { behavior: 'auto' });
     return;

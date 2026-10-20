@@ -5,18 +5,19 @@ import type {
 } from '../types';
 import {
   applyDefaultScrollPosition,
+  capturePrependAnchor,
   handleContentChange,
   handleResize,
-} from './content-change';
-import { createEngineState } from './engine-state';
-import { commitScrollState } from './mode-and-scroll-state';
-import { capturePrependAnchor, schedulePendingScrollFlush } from './prepend-restore';
+  schedulePendingScrollFlush,
+} from './content';
 import {
+  commitScrollState,
   scrollToEnd,
   scrollToMessage,
   scrollToStart,
   setSpacerElement,
-} from './scroll-actions';
+} from './scroll';
+import { createEngineState } from './state';
 
 export function createMessageScrollerEngine(props: MessageScrollerProviderProps) {
   const state = createEngineState(props);
