@@ -16,7 +16,7 @@ const TREND_LABELS: Record<PositionTrend, string | null> = {
 const TREND_SYMBOLS: Record<PositionTrend, string | null> = {
   up: '↑',
   down: '↓',
-  same: '=',
+  same: null,
   none: null,
 };
 
