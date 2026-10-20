@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
+import { loadTeamStandingAndNextMatch } from '@padel-cantabria/shared';
 import { getDb } from '@/server/db';
 import { jsonApiError } from '@/server/json-api-error';
-import { loadTeamSummary } from '@/server/load-team-summary';
 
 export const prerender = false;
 
@@ -24,7 +24,12 @@ export const GET: APIRoute = async ({ params, url }) => {
       return jsonApiError(404);
     }
 
-    const payload = await loadTeamSummary(db, team, phase, leagues);
+    const payload = await loadTeamStandingAndNextMatch(
+      db,
+      team,
+      phase,
+      leagues,
+    );
 
     return Response.json(payload);
   } catch (error) {

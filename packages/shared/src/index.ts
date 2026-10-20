@@ -26,6 +26,8 @@ export {
   getPhaseOptions,
   getTeamDisplayLabels,
   getTeamTotalPoints,
+  loadTeamStandingAndNextMatch,
   type TeamDisplayLabels,
+  type TeamStandingAndNextMatch,
 } from './team/index.js';
 export { foldText } from './text/index.js';

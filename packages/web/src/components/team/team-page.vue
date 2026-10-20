@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { League, Team } from '@padel-cantabria/database';
-import type { TeamSummaryResponse } from '@/types/team-summary';
+import type { TeamStandingAndNextMatch } from '@padel-cantabria/shared';
 import {
   getPhaseOptions,
   getTeamDisplayLabels,
+
 } from '@padel-cantabria/shared';
 import { computed, ref, watch } from 'vue';
 import Select from '@/components/select.vue';
@@ -22,7 +23,7 @@ const props = defineProps<{
   team: Team;
   leagues: League[];
   initialPhases: string[];
-  initialSummary: TeamSummaryResponse | null;
+  initialSummary: TeamStandingAndNextMatch | null;
 }>();
 
 const selectedPhase = ref(props.initialPhases[0] ?? '');

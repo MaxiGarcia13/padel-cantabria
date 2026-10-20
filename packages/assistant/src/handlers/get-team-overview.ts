@@ -4,7 +4,7 @@ import type {
   Team,
   TeamWithStandings,
 } from '@padel-cantabria/database';
-import { getClosestMatches } from '@padel-cantabria/shared';
+import { loadTeamStandingAndNextMatch } from '@padel-cantabria/shared';
 import { badRequest, notFound } from '../errors.js';
 import { presentTeamOverview } from '../presenters/present-team-overview.js';
 
@@ -51,25 +51,12 @@ export async function getTeamOverview(
     );
   }
 
-  const categoryKey = {
-    league_id: team.league_id,
-    gender: team.gender,
+  const { standing, nextMatch } = await loadTeamStandingAndNextMatch(
+    db,
+    team,
     phase,
-    category: team.category,
-  };
-
-  const [standing, matches] = await Promise.all([
-    db.getTeamStanding(team.id, categoryKey),
-    db.getTeamMatches(team.id, categoryKey),
-  ]);
-
-  const season = leagues.find(
-    (league) => league.league_id === team.league_id,
-  )?.schedule;
-
-  const nextMatch = season
-    ? (getClosestMatches(matches, season, 1)[0] ?? null)
-    : (matches[0] ?? null);
+    leagues,
+  );
 
   return presentTeamOverview(
     {

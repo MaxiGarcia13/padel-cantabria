@@ -1,13 +1,23 @@
-import type { DatabaseClient, League, Team } from '@padel-cantabria/database';
-import type { TeamSummaryResponse } from '@/types/team-summary';
-import { getClosestMatches } from '@padel-cantabria/shared';
+import type {
+  DatabaseClient,
+  League,
+  Match,
+  Team,
+  TeamWithStandings,
+} from '@padel-cantabria/database';
+import { getClosestMatches } from '../matches/get-closest-matches.js';
 
-export async function loadTeamSummary(
+export interface TeamStandingAndNextMatch {
+  standing: TeamWithStandings | null;
+  nextMatch: Match | null;
+}
+
+export async function loadTeamStandingAndNextMatch(
   db: DatabaseClient,
   team: Team,
   phase: string,
   leagues: League[],
-): Promise<TeamSummaryResponse> {
+): Promise<TeamStandingAndNextMatch> {
   const categoryKey = {
     league_id: team.league_id,
     gender: team.gender,

@@ -3,8 +3,8 @@ import BackButton from '@/components/back-button.vue';
 import Header from '@/components/header.astro';
 import TeamPage from '@/components/team/team-page.vue';
 import AppLayout from '@/layouts/app-layout.astro';
+import { loadTeamStandingAndNextMatch } from '@padel-cantabria/shared';
 import { getDb } from '@/server/db';
-import { loadTeamSummary } from '@/server/load-team-summary';
 
 export const prerender = false;
 
@@ -24,7 +24,7 @@ if (!team) {
 
 const initialPhases = await db.getTeamPhases(teamId);
 const initialPhase = initialPhases[0] ?? '';
-const initialSummary = initialPhase ? await loadTeamSummary(db, team, initialPhase, leagues) : null;
+const initialSummary = initialPhase ? await loadTeamStandingAndNextMatch(db, team, initialPhase, leagues) : null;
 ---
 
 <AppLayout title={`${team.name} · Pádel Cantabria`}>
