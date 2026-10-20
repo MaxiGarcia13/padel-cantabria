@@ -1,0 +1,16 @@
+## 0.0.2 (2026-10-20)
+
+### 🚀 Features
+
+- Introduce shared, assistant, and MCP packages with enhanced chat UI ([#1](https://github.com/MaxiGarcia13/padel-cantabria/pull/1))
+
+### 📚 Documentation
+
+- Update README.md and packages/mcp/README.md to include direct links for video demonstrations ([7488fea](https://github.com/MaxiGarcia13/padel-cantabria/commit/7488fea))
+- Update README.md and packages/mcp/README.md to replace video embeds with links ([8444eb7](https://github.com/MaxiGarcia13/padel-cantabria/commit/8444eb7))
+- Add examples section to README and include video demonstrations for OpenCode and Claude Code ([4682a41](https://github.com/MaxiGarcia13/padel-cantabria/commit/4682a41))
+- Update README and package documentation for clarity and accuracy ([f4b2506](https://github.com/MaxiGarcia13/padel-cantabria/commit/f4b2506))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo @MaxiGarcia13
