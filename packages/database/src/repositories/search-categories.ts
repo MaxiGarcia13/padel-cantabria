@@ -1,5 +1,7 @@
 import type { Connection } from '@tursodatabase/serverless';
 import type { CategoryMatch } from '../types/category-match.js';
+import { joinAndFilters } from '../utils/join-and-filters.js';
+import { safeLimit } from '../utils/safe-limit.js';
 import { tokenizeQuery } from '../utils/tokenize-query.js';
 
 export interface SearchCategoriesParams {
@@ -17,13 +19,10 @@ export async function searchCategories(
     query = '',
     league_id: leagueId,
     gender,
-    limit = DEFAULT_LIMIT,
+    limit,
   }: SearchCategoriesParams = {},
 ): Promise<CategoryMatch[]> {
   const tokens = tokenizeQuery(query);
-  const safeLimit
-    = Number.isFinite(limit) && limit > 0 ? Math.floor(limit) : DEFAULT_LIMIT;
-
   const tokenClauses: string[] = [];
   const tokenArgs: string[] = [];
 
@@ -39,11 +38,6 @@ export async function searchCategories(
     )`);
     tokenArgs.push(token, token, token, token, token, token, token);
   }
-
-  const textFilterSql
-    = tokenClauses.length === 0
-      ? '1 = 1'
-      : tokenClauses.join('\n            AND ');
 
   const [result] = await connection.batch(
     [
@@ -68,7 +62,7 @@ export async function searchCategories(
             AND phases.gender = categories.gender
             AND phases.value = categories.phase
           WHERE
-            ${textFilterSql}
+            ${joinAndFilters(tokenClauses)}
             AND (? IS NULL OR categories.league_id = ?)
             AND (? IS NULL OR categories.gender = ?)
           ORDER BY
@@ -84,7 +78,7 @@ export async function searchCategories(
           leagueId ?? null,
           gender ?? null,
           gender ?? null,
-          safeLimit,
+          safeLimit(limit, DEFAULT_LIMIT),
         ],
       },
     ],

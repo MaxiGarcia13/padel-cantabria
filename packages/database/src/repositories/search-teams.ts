@@ -1,5 +1,7 @@
 import type { Connection } from '@tursodatabase/serverless';
 import type { Team } from '../types/team.js';
+import { joinAndFilters } from '../utils/join-and-filters.js';
+import { safeLimit } from '../utils/safe-limit.js';
 import {
   teamNameRelevanceOrder,
   teamNameTokenClause,
@@ -34,10 +36,8 @@ export async function searchTeams(
   connection: Connection,
   params: SearchTeamsParams = {},
 ): Promise<Team[]> {
-  const { query = '', limit = DEFAULT_LIMIT } = params;
+  const { query = '', limit } = params;
   const tokens = tokenizeQuery(query);
-  const safeLimit
-    = Number.isFinite(limit) && limit > 0 ? Math.floor(limit) : DEFAULT_LIMIT;
   const resolvedLeagueIds = resolveLeagueIds(params);
 
   const tokenClauses: string[] = [];
@@ -48,11 +48,6 @@ export async function searchTeams(
     tokenClauses.push(fragment.sql);
     tokenArgs.push(...fragment.args);
   }
-
-  const nameFilterSql
-    = tokenClauses.length === 0
-      ? '1 = 1'
-      : tokenClauses.join('\n            AND ');
 
   const relevance = teamNameRelevanceOrder(query);
 
@@ -73,7 +68,7 @@ export async function searchTeams(
             name
           FROM teams
           WHERE
-            ${nameFilterSql}
+            ${joinAndFilters(tokenClauses)}
             AND ${leagueFilterSql}
           ORDER BY ${relevance.sql}
           LIMIT ?
@@ -82,7 +77,7 @@ export async function searchTeams(
           ...tokenArgs,
           ...(resolvedLeagueIds ?? []),
           ...relevance.args,
-          safeLimit,
+          safeLimit(limit, DEFAULT_LIMIT),
         ],
       },
     ],
