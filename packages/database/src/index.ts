@@ -1,5 +1,10 @@
 export { createClient, createConnection } from './client.js';
-export type { TursoConfig } from './client.js';
+export type { DatabaseClient, TursoConfig } from './client.js';
+export { createClientFromEnv } from './create-client-from-env.js';
+export {
+  getConfiguredLeagueId,
+  parseLeagueIds,
+} from './parse-league-ids.js';
 export type { GetTopPlayersParams } from './repositories/get-top-players.js';
 export type { SearchCategoriesParams } from './repositories/search-categories.js';
 export type { SearchPhasesParams } from './repositories/search-phases.js';

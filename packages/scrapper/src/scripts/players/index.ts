@@ -1,11 +1,13 @@
 import process from 'node:process';
-import { createDbClient } from '@/create-db-client.js';
+import {
+  createClientFromEnv,
+  parseLeagueIds,
+} from '@padel-cantabria/database';
 import { parseGenders } from '../league/parse-genders.js';
-import { parseLeagueIds } from '../league/parse-league-ids.js';
 import { scrapePlayers } from './scrape-players.js';
 
 async function main(): Promise<void> {
-  const db = createDbClient();
+  const db = createClientFromEnv();
   const allowedLeagueIds = parseLeagueIds(process.env.LEAGUE_IDS);
   const allowedGenders = parseGenders(process.env.SCRAPE_GENDERS);
   const teams = (await db.getTeams()).filter(

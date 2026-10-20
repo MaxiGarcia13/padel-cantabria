@@ -1,11 +1,11 @@
 import type { APIRoute } from 'astro';
-import { createClient } from '@padel-cantabria/database';
-import { TURSO_AUTH_TOKEN, TURSO_URL } from 'astro:env/server';
+import { getDb } from '@/server/db';
 import { jsonApiError } from '@/server/json-api-error';
 import { parseCategoryParams } from '@/server/load-category-matches';
 
 export const prerender = false;
 
+// Intentionally lower than assistant/DB default (15) for autocomplete UX.
 const DEFAULT_SEARCH_LIMIT = 10;
 
 export const GET: APIRoute = async ({ url }) => {
@@ -16,10 +16,7 @@ export const GET: APIRoute = async ({ url }) => {
   const hasCategoryParams = Boolean(league || gender || phase || category);
 
   try {
-    const db = createClient({
-      url: TURSO_URL,
-      authToken: TURSO_AUTH_TOKEN,
-    });
+    const db = getDb();
 
     if (!hasCategoryParams) {
       const query = url.searchParams.get('q') ?? '';

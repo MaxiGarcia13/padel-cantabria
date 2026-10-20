@@ -1,4 +1,4 @@
-import type { DatabaseClient } from './db.js';
+import type { DatabaseClient } from '@padel-cantabria/database';
 import cors from '@fastify/cors';
 import Fastify from 'fastify';
 import { createAiRouter } from './create-ai-router.js';

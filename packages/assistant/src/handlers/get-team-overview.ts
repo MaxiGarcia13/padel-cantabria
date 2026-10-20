@@ -1,5 +1,9 @@
-import type { Match, Team, TeamWithStandings } from '@padel-cantabria/database';
-import type { DatabaseClient } from '../db.js';
+import type {
+  DatabaseClient,
+  Match,
+  Team,
+  TeamWithStandings,
+} from '@padel-cantabria/database';
 import { getClosestMatches } from '@padel-cantabria/shared';
 import { badRequest, notFound } from '../errors.js';
 import { presentTeamOverview } from '../presenters/present-team-overview.js';

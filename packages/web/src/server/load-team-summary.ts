@@ -1,8 +1,6 @@
-import type { createClient, League, Team } from '@padel-cantabria/database';
+import type { DatabaseClient, League, Team } from '@padel-cantabria/database';
 import type { TeamSummaryResponse } from '@/types/team-summary';
 import { getClosestMatches } from '@padel-cantabria/shared';
-
-type DatabaseClient = ReturnType<typeof createClient>;
 
 export async function loadTeamSummary(
   db: DatabaseClient,

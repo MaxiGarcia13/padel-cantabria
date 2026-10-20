@@ -1,5 +1,5 @@
+import type { DatabaseClient } from '@padel-cantabria/database';
 import type { FastifyPluginAsync } from 'fastify';
-import type { DatabaseClient } from '../db.js';
 import { listCategories } from '../handlers/list-categories.js';
 import { searchCategoriesHandler } from '../handlers/search-categories.js';
 import { parseOptionalPositiveInt } from '../parse-query.js';

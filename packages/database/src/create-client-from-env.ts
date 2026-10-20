@@ -1,7 +1,7 @@
 import process from 'node:process';
-import { createClient } from '@padel-cantabria/database';
+import { createClient } from './client.js';
 
-export function createDbClient() {
+export function createClientFromEnv() {
   const url = process.env.TURSO_URL;
   const authToken = process.env.TURSO_AUTH_TOKEN;
 

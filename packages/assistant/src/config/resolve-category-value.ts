@@ -1,5 +1,7 @@
-import type { CategoryMatch } from '@padel-cantabria/database';
-import type { DatabaseClient } from '../db.js';
+import type {
+  CategoryMatch,
+  DatabaseClient,
+} from '@padel-cantabria/database';
 import {
   categoryAliasKey,
   normalizeCategoryQuery,

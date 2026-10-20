@@ -1,4 +1,4 @@
-import type { DatabaseClient } from '../db.js';
+import type { DatabaseClient } from '@padel-cantabria/database';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import packageJson from '@package-json';
 import { z } from 'zod';

@@ -1,5 +1,5 @@
+import type { DatabaseClient } from '@padel-cantabria/database';
 import type { FastifyPluginAsync } from 'fastify';
-import type { DatabaseClient } from '../db.js';
 import { getTeamOverview } from '../handlers/get-team-overview.js';
 import { listTeamPlayersHandler } from '../handlers/list-team-players.js';
 import { listTeamsHandler } from '../handlers/list-teams.js';

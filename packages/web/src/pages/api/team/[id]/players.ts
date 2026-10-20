@@ -1,6 +1,5 @@
 import type { APIRoute } from 'astro';
-import { createClient } from '@padel-cantabria/database';
-import { TURSO_AUTH_TOKEN, TURSO_URL } from 'astro:env/server';
+import { getDb } from '@/server/db';
 import { jsonApiError } from '@/server/json-api-error';
 
 export const prerender = false;
@@ -13,10 +12,7 @@ export const GET: APIRoute = async ({ params }) => {
   }
 
   try {
-    const db = createClient({
-      url: TURSO_URL,
-      authToken: TURSO_AUTH_TOKEN,
-    });
+    const db = getDb();
     const team = await db.getTeamById(teamId);
 
     if (!team) {

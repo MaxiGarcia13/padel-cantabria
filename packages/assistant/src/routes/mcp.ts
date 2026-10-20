@@ -1,6 +1,6 @@
+import type { DatabaseClient } from '@padel-cantabria/database';
 import type { FastifyPluginAsync } from 'fastify';
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import type { DatabaseClient } from '../db.js';
 import { randomUUID } from 'node:crypto';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { createMcpServer } from '../mcp/create-mcp-server.js';

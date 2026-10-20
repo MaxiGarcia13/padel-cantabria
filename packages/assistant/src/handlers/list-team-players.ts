@@ -1,4 +1,4 @@
-import type { DatabaseClient } from '../db.js';
+import type { DatabaseClient } from '@padel-cantabria/database';
 import { badRequest, notFound } from '../errors.js';
 import {
   presentRosterTotals,

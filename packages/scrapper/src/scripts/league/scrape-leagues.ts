@@ -7,9 +7,9 @@ import type {
 } from '@padel-cantabria/database';
 import type { Page } from 'puppeteer';
 import process from 'node:process';
+import { parseLeagueIds } from '@padel-cantabria/database';
 import { LEAGUE_CALENDAR_URL } from '@/constants/urls.js';
 import { launchBrowser } from '@/launch-browser.js';
-import { parseLeagueIds } from './parse-league-ids.js';
 import { scrapeBaseLeagues } from './scrape-league.js';
 
 const PHASE_PLACEHOLDERS = ['0'];

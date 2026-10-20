@@ -1,8 +1,10 @@
 import { resolve } from 'node:path';
 import process, { loadEnvFile } from 'node:process';
-import { getConfiguredLeagueId } from './config/parse-league-ids.js';
+import {
+  createClientFromEnv,
+  getConfiguredLeagueId,
+} from '@padel-cantabria/database';
 import { createApp } from './create-app.js';
-import { createDatabaseClient } from './db.js';
 
 const DEFAULT_PORT = 3001;
 const ROOT_ENV_PATH = resolve(import.meta.dirname, '../../../.env');
@@ -21,7 +23,7 @@ async function main() {
       ?? (process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost');
   const leagueId = getConfiguredLeagueId();
 
-  const db = createDatabaseClient();
+  const db = createClientFromEnv();
   const app = await createApp(db);
 
   await app.listen({ port, host });

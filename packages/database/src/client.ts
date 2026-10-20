@@ -47,6 +47,8 @@ export function createConnection({ url, authToken }: TursoConfig): Connection {
   return connect({ url, authToken });
 }
 
+export type DatabaseClient = ReturnType<typeof createClient>;
+
 export function createClient(params: TursoConfig) {
   const connection = createConnection(params);
 
