@@ -1,7 +1,8 @@
+import type { PresentedPlayerLike } from '@presenters/presented-types';
 import { joinDisplayParts, stringField } from './join-display-parts';
 
 export function formatPlayerLike(
-  record: Record<string, unknown>,
+  record: PresentedPlayerLike,
 ): string | null {
   const name = joinDisplayParts([
     stringField(record, 'name'),
@@ -12,8 +13,8 @@ export function formatPlayerLike(
     return null;
   }
 
-  const team = stringField(record, 'team');
-  const category = stringField(record, 'category');
+  const team = 'team' in record ? stringField(record, 'team') : '';
+  const category = 'category' in record ? stringField(record, 'category') : '';
 
   return joinDisplayParts([
     name,

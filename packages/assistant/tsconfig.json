@@ -5,6 +5,7 @@
     "moduleResolution": "Bundler",
     "paths": {
       "@/*": ["./chat/src/*"],
+      "@presenters/*": ["./src/presenters/*"],
       "@package-json": ["./package.json"]
     },
     "resolveJsonModule": true,

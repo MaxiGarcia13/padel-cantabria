@@ -4,17 +4,32 @@ import { formatCategoryTeams } from './format-category-teams';
 import { formatPlayerLike } from './format-player-like';
 import { formatStandingTeam } from './format-standing-team';
 import { formatTeamRoster } from './format-team-roster';
+import {
+  isPresentedCategory,
+  isPresentedCategoryTeams,
+  isPresentedPlayerLike,
+  isPresentedStandingTeam,
+  isPresentedTeamRoster,
+} from './is-presented';
 import { asMarkdownList, joinMarkdownBlocks } from './markdown-blocks';
 
 function formatRecord(record: Record<string, unknown>): string {
-  return (
-    formatTeamRoster(record)
-    ?? formatCategoryTeams(record)
-    ?? formatPlayerLike(record)
-    ?? formatStandingTeam(record)
-    ?? formatCategoryLike(record)
-    ?? JSON.stringify(record)
-  );
+  if (isPresentedTeamRoster(record)) {
+    return formatTeamRoster(record) ?? JSON.stringify(record);
+  }
+  if (isPresentedCategoryTeams(record)) {
+    return formatCategoryTeams(record) ?? JSON.stringify(record);
+  }
+  if (isPresentedPlayerLike(record)) {
+    return formatPlayerLike(record) ?? JSON.stringify(record);
+  }
+  if (isPresentedStandingTeam(record)) {
+    return formatStandingTeam(record) ?? JSON.stringify(record);
+  }
+  if (isPresentedCategory(record)) {
+    return formatCategoryLike(record) ?? JSON.stringify(record);
+  }
+  return JSON.stringify(record);
 }
 
 export function formatToolValue(value: unknown): string {

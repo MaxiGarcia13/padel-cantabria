@@ -1,4 +1,5 @@
 import { isRecord, parseToolJson } from '../utils/parse-tool-json';
+import { isPresentedCategory } from './tool-result-fallback/is-presented';
 import { joinDisplayParts, stringField } from './tool-result-fallback/join-display-parts';
 
 export function formatCategorySearchResults(toolText: string): string {
@@ -10,7 +11,7 @@ export function formatCategorySearchResults(toolText: string): string {
   const lines: string[] = [];
 
   for (const entry of parsed) {
-    if (!isRecord(entry)) {
+    if (!isRecord(entry) || !isPresentedCategory(entry)) {
       continue;
     }
 

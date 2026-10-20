@@ -10,7 +10,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(import.meta.dirname, 'chat/src'),
+      '@presenters': resolve(import.meta.dirname, 'src/presenters'),
     },
+
   },
   server: {
     port: 5174,

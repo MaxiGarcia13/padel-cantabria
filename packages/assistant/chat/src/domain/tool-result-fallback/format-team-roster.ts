@@ -1,9 +1,13 @@
-import { isRecord } from '@/utils/parse-tool-json';
+import type {
+  PresentedRosterTotals,
+  PresentedTeamRoster,
+} from '@presenters/presented-types';
 import { formatPlayerLike } from './format-player-like';
+import { isPresentedPlayerLike } from './is-presented';
 import { joinDisplayParts, stringField } from './join-display-parts';
 import { asMarkdownList, joinMarkdownBlocks } from './markdown-blocks';
 
-function formatRosterTotals(totals: Record<string, unknown>): string | null {
+function formatRosterTotals(totals: PresentedRosterTotals): string | null {
   const playerCount = totals.player_count;
   const points = totals.points;
   if (typeof playerCount !== 'number' || typeof points !== 'number') {
@@ -18,28 +22,19 @@ function formatRosterTotals(totals: Record<string, unknown>): string | null {
 }
 
 export function formatTeamRoster(
-  record: Record<string, unknown>,
+  record: PresentedTeamRoster,
 ): string | null {
-  if (!Array.isArray(record.players)) {
-    return null;
-  }
+  const header = joinDisplayParts([
+    stringField(record.team, 'name') || null,
+    stringField(record.team, 'gender') || null,
+    stringField(record.team, 'category') || null,
+  ]);
 
-  const team = isRecord(record.team) ? record.team : null;
-  const header = team
-    ? joinDisplayParts([
-        stringField(team, 'name') || null,
-        stringField(team, 'gender') || null,
-        stringField(team, 'category') || null,
-      ])
-    : '';
-
-  const totals = isRecord(record.totals)
-    ? formatRosterTotals(record.totals)
-    : null;
+  const totals = formatRosterTotals(record.totals);
 
   const players = record.players
     .map((entry) => {
-      if (!isRecord(entry)) {
+      if (!isPresentedPlayerLike(entry)) {
         return String(entry);
       }
       return formatPlayerLike(entry) ?? JSON.stringify(entry);

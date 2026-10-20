@@ -1,7 +1,8 @@
+import type { PresentedCategory } from '@presenters/presented-types';
 import { joinDisplayParts, stringField } from './join-display-parts';
 
 export function formatCategoryLike(
-  record: Record<string, unknown>,
+  record: PresentedCategory,
 ): string | null {
   const category = stringField(record, 'category');
   if (!category) {

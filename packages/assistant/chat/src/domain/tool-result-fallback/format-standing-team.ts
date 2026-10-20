@@ -1,7 +1,8 @@
+import type { PresentedStandingTeam } from '@presenters/presented-types';
 import { joinDisplayParts, stringField } from './join-display-parts';
 
 export function formatStandingTeam(
-  record: Record<string, unknown>,
+  record: PresentedStandingTeam,
 ): string | null {
   const name = stringField(record, 'name');
   if (!name) {

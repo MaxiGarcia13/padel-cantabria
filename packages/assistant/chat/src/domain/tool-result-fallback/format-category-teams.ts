@@ -1,15 +1,12 @@
-import { isRecord } from '@/utils/parse-tool-json';
+import type { PresentedCategoryTeams } from '@presenters/presented-types';
 import { formatStandingTeam } from './format-standing-team';
+import { isPresentedStandingTeam } from './is-presented';
 import { joinDisplayParts, stringField } from './join-display-parts';
 import { asMarkdownList, joinMarkdownBlocks } from './markdown-blocks';
 
 export function formatCategoryTeams(
-  record: Record<string, unknown>,
+  record: PresentedCategoryTeams,
 ): string | null {
-  if (!Array.isArray(record.teams)) {
-    return null;
-  }
-
   const header = joinDisplayParts([
     stringField(record, 'category') || null,
     stringField(record, 'gender') || null,
@@ -18,7 +15,7 @@ export function formatCategoryTeams(
 
   const teams = record.teams
     .map((entry) => {
-      if (!isRecord(entry)) {
+      if (!isPresentedStandingTeam(entry)) {
         return String(entry);
       }
       return formatStandingTeam(entry) ?? JSON.stringify(entry);

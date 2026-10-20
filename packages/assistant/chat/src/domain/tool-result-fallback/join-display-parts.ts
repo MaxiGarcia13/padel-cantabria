@@ -15,9 +15,9 @@ export function joinDisplayParts(
     .join(' · ');
 }
 
-export function stringField(
-  record: Record<string, unknown>,
-  key: string,
+export function stringField<T extends object>(
+  record: T,
+  key: keyof T & string,
 ): string {
   const value = record[key];
   return typeof value === 'string' ? value.trim() : '';
