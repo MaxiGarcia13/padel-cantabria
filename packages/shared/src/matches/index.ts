@@ -15,4 +15,4 @@ export {
   type MatchDateRange,
   parseMatchDateRange,
   type SeasonRange,
-} from './parse-match-date.js';
+} from './parse-match-date/index.js';

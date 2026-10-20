@@ -1,5 +1,5 @@
 import type { Match } from '@padel-cantabria/database';
-import type { SeasonRange } from './parse-match-date.js';
+import type { SeasonRange } from './parse-match-date/index.js';
 import { sortMatchesByDate } from './get-closest-matches.js';
 
 export interface MatchDateGroup {

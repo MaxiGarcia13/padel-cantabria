@@ -29,7 +29,7 @@ import {
   maxScrollTop,
   measureContentHeight,
   scrollableEqual,
-} from './message-scroller-dom';
+} from './dom';
 
 type Mode
   = | 'following-bottom'
