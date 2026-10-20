@@ -1,32 +1,28 @@
 import type { APIRoute } from 'astro';
 import { loadTeamStandingAndNextMatch } from '@padel-cantabria/shared';
-import { getDb } from '@/server/db';
 import { jsonApiError } from '@/server/json-api-error';
+import { requireTeamById } from '@/server/require-team-by-id';
 
 export const prerender = false;
 
 export const GET: APIRoute = async ({ params, url }) => {
-  const teamId = Number(params.id);
   const phase = url.searchParams.get('phase')?.trim() ?? '';
 
-  if (!Number.isFinite(teamId) || !phase) {
+  if (!phase) {
     return jsonApiError(400);
   }
 
+  const loaded = await requireTeamById(params.id);
+
+  if (!loaded.ok) {
+    return loaded.response;
+  }
+
   try {
-    const db = getDb();
-    const [team, leagues] = await Promise.all([
-      db.getTeamById(teamId),
-      db.getLeagues(),
-    ]);
-
-    if (!team) {
-      return jsonApiError(404);
-    }
-
+    const leagues = await loaded.db.getLeagues();
     const payload = await loadTeamStandingAndNextMatch(
-      db,
-      team,
+      loaded.db,
+      loaded.team,
       phase,
       leagues,
     );

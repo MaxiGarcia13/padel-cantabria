@@ -1,26 +1,18 @@
 import type { APIRoute } from 'astro';
-import { getDb } from '@/server/db';
 import { jsonApiError } from '@/server/json-api-error';
+import { requireTeamById } from '@/server/require-team-by-id';
 
 export const prerender = false;
 
 export const GET: APIRoute = async ({ params }) => {
-  const teamId = Number(params.id);
+  const loaded = await requireTeamById(params.id);
 
-  if (!Number.isFinite(teamId)) {
-    return jsonApiError(400);
+  if (!loaded.ok) {
+    return loaded.response;
   }
 
   try {
-    const db = getDb();
-    const team = await db.getTeamById(teamId);
-
-    if (!team) {
-      return jsonApiError(404);
-    }
-
-    const players = await db.getTeamPlayers(teamId);
-
+    const players = await loaded.db.getTeamPlayers(loaded.team.id);
     return Response.json({ players });
   } catch (error) {
     return jsonApiError(500, error);
