@@ -1,3 +1,16 @@
+## 0.0.9 (2026-10-20)
+
+### 🔄 Refactors
+
+- Enhance database query structure and introduce utility functions ([2bc96b2](https://github.com/MaxiGarcia13/padel-cantabria/commit/2bc96b2))
+- Update league ID handling and improve documentation ([ab38b75](https://github.com/MaxiGarcia13/padel-cantabria/commit/ab38b75))
+- Remove outdated comments and improve code clarity ([feb91e6](https://github.com/MaxiGarcia13/padel-cantabria/commit/feb91e6))
+- Migrate database client usage to centralized package ([1d6fefc](https://github.com/MaxiGarcia13/padel-cantabria/commit/1d6fefc))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.8 (2026-10-20)
 
 This was a version bump only for @padel-cantabria/database to align it with other projects, there were no code changes.

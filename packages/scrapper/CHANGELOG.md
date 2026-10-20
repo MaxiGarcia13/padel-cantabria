@@ -1,3 +1,24 @@
+## 0.0.11 (2026-10-20)
+
+### 🚀 Features
+
+- Add utility functions for integer parsing and federation readiness ([178638f](https://github.com/MaxiGarcia13/padel-cantabria/commit/178638f))
+
+### 🔄 Refactors
+
+- Introduce scraping utility functions and enhance script organization ([b949bdb](https://github.com/MaxiGarcia13/padel-cantabria/commit/b949bdb))
+- Update league ID handling and improve documentation ([ab38b75](https://github.com/MaxiGarcia13/padel-cantabria/commit/ab38b75))
+- Consolidate MCP client imports and restructure related utilities ([640b917](https://github.com/MaxiGarcia13/padel-cantabria/commit/640b917))
+- Migrate database client usage to centralized package ([1d6fefc](https://github.com/MaxiGarcia13/padel-cantabria/commit/1d6fefc))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/database to 0.0.9
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.10 (2026-10-20)
 
 ### 🧱 Updated Dependencies

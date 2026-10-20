@@ -1,3 +1,21 @@
+## 0.0.4 (2026-10-20)
+
+### 🚀 Features
+
+- Introduce mcp-tools package and integrate into existing services ([fe0afda](https://github.com/MaxiGarcia13/padel-cantabria/commit/fe0afda))
+
+### 🔄 Refactors
+
+- Simplify MCP server tool registration and enhance modularity ([8cd02c1](https://github.com/MaxiGarcia13/padel-cantabria/commit/8cd02c1))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/mcp-tools to 0.0.2
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.3 (2026-10-20)
 
 This was a version bump only for @padel-cantabria/mcp to align it with other projects, there were no code changes.

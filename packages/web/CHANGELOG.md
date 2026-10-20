@@ -1,3 +1,31 @@
+## 0.0.17 (2026-10-20)
+
+### 🚀 Features
+
+- Add utility functions for integer parsing and federation readiness ([178638f](https://github.com/MaxiGarcia13/padel-cantabria/commit/178638f))
+
+### 🔄 Refactors
+
+- Update trend symbols in position-trend component ([1599cfd](https://github.com/MaxiGarcia13/padel-cantabria/commit/1599cfd))
+- Introduce requireConfiguredCategory utility and streamline player/team handlers ([169aaad](https://github.com/MaxiGarcia13/padel-cantabria/commit/169aaad))
+- Introduce competition labels presentation module and update related imports ([86dd20b](https://github.com/MaxiGarcia13/padel-cantabria/commit/86dd20b))
+- Update league ID handling and improve documentation ([ab38b75](https://github.com/MaxiGarcia13/padel-cantabria/commit/ab38b75))
+- Restructure message scroller engine and consolidate related functionalities ([42356eb](https://github.com/MaxiGarcia13/padel-cantabria/commit/42356eb))
+- Remove unused select components and consolidate selection logic ([55d1867](https://github.com/MaxiGarcia13/padel-cantabria/commit/55d1867))
+- Replace team summary logic with loadTeamStandingAndNextMatch utility ([8e79591](https://github.com/MaxiGarcia13/padel-cantabria/commit/8e79591))
+- Remove outdated comments and improve code clarity ([feb91e6](https://github.com/MaxiGarcia13/padel-cantabria/commit/feb91e6))
+- Replace local text processing functions with shared utilities ([9a353db](https://github.com/MaxiGarcia13/padel-cantabria/commit/9a353db))
+- Migrate database client usage to centralized package ([1d6fefc](https://github.com/MaxiGarcia13/padel-cantabria/commit/1d6fefc))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/shared to 0.0.4
+- Updated @padel-cantabria/database to 0.0.9
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.16 (2026-10-20)
 
 ### 🧱 Updated Dependencies
