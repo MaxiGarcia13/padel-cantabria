@@ -67,7 +67,8 @@ export function useTeamPage(options: {
   const phaseOptions = computed(() =>
     getPhaseOptions(
       options.leagues,
-      options.team,
+      options.team.league_id,
+      options.team.gender,
       phases.value ?? options.initialPhases,
     ),
   );

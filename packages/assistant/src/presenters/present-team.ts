@@ -1,6 +1,6 @@
 import type { League, Team, TeamWithStandings } from '@padel-cantabria/database';
 import { getTeamDisplayLabels } from '@padel-cantabria/shared';
-import { resolveCompetitionLabels } from './resolve-competition-labels.js';
+import { presentCompetitionLabels } from './present-competition-labels.js';
 
 export function presentTeam(team: Team, leagues: League[]) {
   const league = leagues.find((item) => item.league_id === team.league_id);
@@ -43,7 +43,7 @@ export function presentCategoryTeams(
   input: CategoryTeamsInput,
   leagues: League[],
 ) {
-  const labels = resolveCompetitionLabels(
+  const labels = presentCompetitionLabels(
     leagues,
     input.leagueId,
     input.gender,
@@ -52,13 +52,7 @@ export function presentCategoryTeams(
   );
 
   return {
-    league: labels.league,
-    gender: labels.gender,
-    gender_code: labels.genderCode,
-    phase: labels.phase,
-    phase_value: labels.phaseValue,
-    category: labels.category,
-    category_value: labels.categoryValue,
+    ...labels,
     teams: input.teams.map(presentStandingTeam),
   };
 }

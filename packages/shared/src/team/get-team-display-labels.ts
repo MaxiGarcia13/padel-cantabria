@@ -1,4 +1,5 @@
-import type { League, SelectOption, Team } from '@padel-cantabria/database';
+import type { League, Team } from '@padel-cantabria/database';
+import { findLeagueGender } from './resolve-competition-labels.js';
 
 export interface TeamDisplayLabels {
   genderLabel: string;
@@ -9,12 +10,7 @@ export function getTeamDisplayLabels(
   leagues: League[] | undefined,
   team: Team,
 ): TeamDisplayLabels {
-  const league = leagues?.find(
-    (entry) => entry.league_id === team.league_id,
-  );
-  const gender = league?.genders.find(
-    (entry) => entry.value === team.gender,
-  );
+  const { gender } = findLeagueGender(leagues, team.league_id, team.gender);
 
   let categoryLabel = team.category;
 
@@ -33,25 +29,4 @@ export function getTeamDisplayLabels(
     genderLabel: gender?.label ?? team.gender,
     categoryLabel,
   };
-}
-
-export function getPhaseOptions(
-  leagues: League[] | undefined,
-  team: Team,
-  phases: string[],
-): SelectOption[] {
-  const league = leagues?.find(
-    (entry) => entry.league_id === team.league_id,
-  );
-  const gender = league?.genders.find(
-    (entry) => entry.value === team.gender,
-  );
-  const phaseLabels = new Map(
-    (gender?.phases ?? []).map((phase) => [phase.value, phase.label]),
-  );
-
-  return phases.map((phase) => ({
-    value: phase,
-    label: phaseLabels.get(phase) ?? phase,
-  }));
 }

@@ -23,11 +23,16 @@ export {
   type PositionTrend,
 } from './standings/index.js';
 export {
+  type CompetitionKey,
+  type CompetitionLabels,
+  findLeagueGender,
   getPhaseOptions,
   getTeamDisplayLabels,
   getTeamTotalPoints,
   loadTeamStandingAndNextMatch,
+  resolveCompetitionLabels,
   type TeamDisplayLabels,
   type TeamStandingAndNextMatch,
 } from './team/index.js';
+
 export { foldText } from './text/index.js';

@@ -1,13 +1,13 @@
 import type { League, Match } from '@padel-cantabria/database';
 import type { TeamOverview } from '../handlers/get-team-overview.js';
 import {
+  presentCompetitionLabels,
   presentPhaseOptions,
-  resolveCompetitionLabels,
-} from './resolve-competition-labels.js';
+} from './present-competition-labels.js';
 
 function presentMatch(
   match: Match,
-  labels: ReturnType<typeof resolveCompetitionLabels>,
+  labels: ReturnType<typeof presentCompetitionLabels>,
 ) {
   return {
     home_team: match.home_team,
@@ -28,7 +28,7 @@ export function presentTeamOverview(
 ) {
   const { team, phase, phases, standing, nextMatch } = overview;
 
-  const labels = resolveCompetitionLabels(
+  const labels = presentCompetitionLabels(
     leagues,
     team.league_id,
     team.gender,
@@ -51,7 +51,7 @@ export function presentTeamOverview(
       phases,
     ),
     phase: labels.phase,
-    phase_value: labels.phaseValue,
+    phase_value: labels.phase_value,
     standing: standing
       ? {
           position: standing.position,
