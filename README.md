@@ -56,15 +56,16 @@ Monorepo: scrape federation data into Turso and serve it on the web.
 
 - [`packages/database`](packages/database) — schema, types, Turso client
 - [`packages/shared`](packages/shared) — reusable domain helpers (matches, standings, team labels)
+- [`packages/mcp-tools`](packages/mcp-tools) — shared MCP tool names, descriptions, and Zod schemas
 - [`packages/assistant`](packages/assistant) — Fastify read API + HTTP MCP + chat UI ([docs](packages/assistant/README.md))
-- [`packages/mcp`](packages/mcp) — MCP setup for Cursor / Claude / OpenCode ([setup guide](packages/mcp/README.md))
+- [`packages/mcp`](packages/mcp) — stdio MCP shim → assistant HTTP API ([setup guide](packages/mcp/README.md))
 - [`packages/scrapper`](packages/scrapper) — Puppeteer scrapers ([scripts & when to run them](packages/scrapper/README.md))
 - [`packages/web`](packages/web) — Astro + Vue frontend
 
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) (LTS)
-- [pnpm](https://pnpm.io/) **12.11.2** (pinned in `package.json` via `packageManager`)
+- [pnpm](https://pnpm.io/) **12.14.0** (pinned in `package.json` via `packageManager`)
 
 Install pnpm once:
 
