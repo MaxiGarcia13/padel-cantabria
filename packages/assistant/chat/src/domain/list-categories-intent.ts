@@ -1,12 +1,5 @@
+import { foldText } from '@padel-cantabria/shared';
 import { asksForCategoryTeams } from './category-teams-intent';
-
-function fold(text: string): string {
-  return text
-    .trim()
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/\p{M}/gu, '');
-}
 
 /**
  * True when the user asks to list categories (full catalog or filtered).
@@ -17,7 +10,7 @@ export function asksForCategoryCatalog(text: string): boolean {
     return false;
   }
 
-  const normalized = fold(text);
+  const normalized = foldText(text);
 
   if (/\bequipos?\b|\bteams?\b/.test(normalized)) {
     return false;

@@ -3,8 +3,10 @@ import {
 
   getConfiguredLeagueId,
 } from '@padel-cantabria/database';
-import { normalizeCategoryQuery } from '@padel-cantabria/shared';
-import { normalizeGender } from '../config/normalize-gender.js';
+import {
+  normalizeCategoryQuery,
+  normalizeGender,
+} from '@padel-cantabria/shared';
 import { presentCategories } from '../presenters/present-category.js';
 
 const DEFAULT_LIMIT = 15;

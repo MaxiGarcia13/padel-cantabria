@@ -3,7 +3,7 @@ import {
 
   getConfiguredLeagueId,
 } from '@padel-cantabria/database';
-import { normalizeGender } from '../config/normalize-gender.js';
+import { normalizeGender } from '@padel-cantabria/shared';
 import { presentPhases } from '../presenters/present-phase.js';
 
 const DEFAULT_LIMIT = 15;

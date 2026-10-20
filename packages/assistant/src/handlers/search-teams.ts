@@ -1,5 +1,8 @@
 import type { DatabaseClient } from '@padel-cantabria/database';
-import { getConfiguredLeagueId } from '@padel-cantabria/database';
+import {
+
+  getConfiguredLeagueId,
+} from '@padel-cantabria/database';
 import { presentTeams } from '../presenters/present-team.js';
 
 const DEFAULT_LIMIT = 15;

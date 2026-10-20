@@ -6,10 +6,10 @@ import type {
 import type { McpBrowserClient } from '../utils/mcp-client';
 import type { ChatTurnResult } from './chat-turn-result';
 import type { PendingClarification } from './clarification';
+import { inferGenderFromText } from '@padel-cantabria/shared';
 import {
   ASK_GENDER_MESSAGE,
   asksForCategoryTeams,
-  inferGenderFromText,
 } from './category-teams-intent';
 import { chatTurnResult } from './chat-turn-result';
 import { asksForCategoryCatalog } from './list-categories-intent';

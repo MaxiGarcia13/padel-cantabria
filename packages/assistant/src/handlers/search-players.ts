@@ -1,6 +1,9 @@
 import type { DatabaseClient } from '@padel-cantabria/database';
-import { getConfiguredLeagueId } from '@padel-cantabria/database';
-import { normalizeGender } from '../config/normalize-gender.js';
+import {
+
+  getConfiguredLeagueId,
+} from '@padel-cantabria/database';
+import { normalizeGender } from '@padel-cantabria/shared';
 import { presentPlayers } from '../presenters/present-player.js';
 
 const DEFAULT_LIMIT = 15;

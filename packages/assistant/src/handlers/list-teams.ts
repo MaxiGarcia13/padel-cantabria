@@ -3,7 +3,7 @@ import {
 
   getConfiguredLeagueId,
 } from '@padel-cantabria/database';
-import { normalizeGender } from '../config/normalize-gender.js';
+import { normalizeGender } from '@padel-cantabria/shared';
 import { requireCategoryMatch } from '../config/require-category-match.js';
 import { resolveCategoryMatchResult } from '../config/resolve-category-value.js';
 import { badRequest } from '../errors.js';

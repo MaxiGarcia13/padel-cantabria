@@ -4,6 +4,7 @@ export {
   normalizeCategoryToken,
 } from './category/index.js';
 export { formatNumber } from './format/index.js';
+export { inferGenderFromText, normalizeGender } from './gender/index.js';
 export {
   formatMatchMeta,
   formatMatchMetaParts,
@@ -27,3 +28,4 @@ export {
   getTeamTotalPoints,
   type TeamDisplayLabels,
 } from './team/index.js';
+export { foldText } from './text/index.js';

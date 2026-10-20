@@ -1,3 +1,5 @@
+import { foldText } from '../text/fold-text.js';
+
 const CATEGORY_ALIASES: Record<string, string> = {
   '1': '1ª',
   '1a': '1ª',
@@ -36,13 +38,9 @@ const CATEGORY_ALIASES: Record<string, string> = {
   'septima': '7ª',
 };
 
-/** Fold for alias / stopword lookup: lowercase, strip diacritics, ª/º → a/o. */
+/** Fold for alias / stopword lookup: foldText plus ª/º → a/o and drop dots. */
 export function categoryAliasKey(raw: string): string {
-  return raw
-    .trim()
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/\p{M}/gu, '')
+  return foldText(raw)
     .replace(/ª/g, 'a')
     .replace(/º/g, 'o')
     .replace(/\./g, '');

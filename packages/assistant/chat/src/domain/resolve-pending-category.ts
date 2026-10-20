@@ -1,7 +1,7 @@
 import type { McpBrowserClient } from '../utils/mcp-client';
 import type { ChatTurnResult } from './chat-turn-result';
 import type { PendingCategoryClarification } from './clarification';
-import { inferGenderFromText } from './category-teams-intent';
+import { inferGenderFromText } from '@padel-cantabria/shared';
 import { chatTurnResult } from './chat-turn-result';
 import {
   formatCategoryClarification,

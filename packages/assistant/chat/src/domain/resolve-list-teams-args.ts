@@ -1,4 +1,4 @@
-import { inferGenderFromText } from './category-teams-intent';
+import { inferGenderFromText } from '@padel-cantabria/shared';
 
 export interface ListTeamsArgs {
   gender: 'M' | 'F';

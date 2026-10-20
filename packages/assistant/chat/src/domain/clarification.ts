@@ -1,3 +1,4 @@
+import { foldText } from '@padel-cantabria/shared';
 import { isRecord, parseToolJson } from '../utils/parse-tool-json';
 
 export interface CategoryCandidate {
@@ -56,14 +57,6 @@ function asCandidate(value: unknown): CategoryCandidate | null {
       ? { phase_value: value.phase_value }
       : {}),
   };
-}
-
-function fold(text: string): string {
-  return text
-    .trim()
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/\p{M}/gu, '');
 }
 
 /** Parse structured category errors from list_teams / get_top_players. */
@@ -138,17 +131,17 @@ export function parseCategoryPick(
     return options[asNumber - 1] ?? null;
   }
 
-  const foldedReply = fold(trimmed);
+  const foldedReply = foldText(trimmed);
   const exact = options.find(
-    (option) => fold(option.category) === foldedReply
-      || fold(option.category_value) === foldedReply,
+    (option) => foldText(option.category) === foldedReply
+      || foldText(option.category_value) === foldedReply,
   );
   if (exact) {
     return exact;
   }
 
   const partial = options.filter((option) =>
-    fold(option.category).includes(foldedReply),
+    foldText(option.category).includes(foldedReply),
   );
   if (partial.length === 1) {
     return partial[0] ?? null;

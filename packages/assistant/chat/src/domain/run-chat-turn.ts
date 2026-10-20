@@ -6,6 +6,7 @@ import type {
 import type { McpBrowserClient } from '../utils/mcp-client';
 import type { ChatTurnResult } from './chat-turn-result';
 import type { PendingCategoryClarification, PendingGenderClarification } from './clarification';
+import { inferGenderFromText } from '@padel-cantabria/shared';
 import {
   previousUserMessages,
   withoutSystemMessages,
@@ -15,7 +16,6 @@ import { toolResultsIncludeTeams } from '../utils/parse-tool-json';
 import {
   ASK_GENDER_MESSAGE,
   asksForCategoryTeams,
-  inferGenderFromText,
   mergeGenderFollowUp,
   needsGenderClarification,
 } from './category-teams-intent';
