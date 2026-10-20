@@ -1,3 +1,9 @@
+## 0.0.10 (2026-10-20)
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/database to 0.0.8
+
 ## 0.0.9 (2026-10-20)
 
 ### 🧱 Updated Dependencies
