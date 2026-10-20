@@ -1,5 +1,5 @@
-import process from 'node:process';
 import { createClientFromEnv } from '@padel-cantabria/database';
+import { runScrapeScript } from '@/run-scrape-script.js';
 import { scrapeLeagues } from './scrape-leagues.js';
 
 async function main(): Promise<void> {
@@ -9,7 +9,4 @@ async function main(): Promise<void> {
   console.warn(`Saved ${leagues.length} league(s).`);
 }
 
-main().catch((error: unknown) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+runScrapeScript(main);

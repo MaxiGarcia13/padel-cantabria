@@ -1,7 +1,7 @@
 import type { League } from '@padel-cantabria/database';
 import process from 'node:process';
 import { parseLeagueIds } from '@padel-cantabria/database';
-import { launchBrowser } from '@/launch-browser.js';
+import { withBrowserPage } from '@/with-browser-page.js';
 import { scrapeLeague } from './scrape-league-tree.js';
 import { scrapeBaseLeagues } from './scrape-league.js';
 
@@ -22,10 +22,7 @@ export async function scrapeLeagues(): Promise<League[]> {
     throw new Error('No leagues found');
   }
 
-  const browser = await launchBrowser();
-
-  try {
-    const page = await browser.newPage();
+  return withBrowserPage(async (page) => {
     const result: League[] = [];
 
     for (const baseLeague of filteredLeagues) {
@@ -33,7 +30,5 @@ export async function scrapeLeagues(): Promise<League[]> {
     }
 
     return result;
-  } finally {
-    await browser.close();
-  }
+  });
 }

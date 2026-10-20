@@ -7,9 +7,11 @@ import type {
 import type { Page } from 'puppeteer';
 import type { ScrapedCalendarMatch, ScrapedTeamStanding } from './types.js';
 import { LEAGUE_CALENDAR_URL } from '@/constants/urls.js';
-import { delayBetweenRequests } from '@/delay.js';
-import { launchBrowser } from '@/launch-browser.js';
 import { waitForFederationReady } from '@/wait-for-federation-ready.js';
+import {
+  forEachWithRequestDelay,
+  withBrowserPage,
+} from '@/with-browser-page.js';
 import { mergeTeamStandings } from './merge-team-standings.js';
 import { parseCalendarTable } from './parse-calendar-table.js';
 import { parseStandingsTable } from './parse-standings-table.js';
@@ -33,18 +35,11 @@ export async function scrapeCalendars(
     throw new Error('No teams found');
   }
 
-  const browser = await launchBrowser();
-
-  try {
-    const page = await browser.newPage();
+  return withBrowserPage(async (page) => {
     const scrapedMatches: ScrapedCalendarMatch[] = [];
     const mergedStandings: TeamStanding[] = [];
 
-    for (const [index, category] of categories.entries()) {
-      if (index > 0) {
-        await delayBetweenRequests();
-      }
-
+    await forEachWithRequestDelay(categories, async (category) => {
       const { matches, standings } = await scrapeCategoryCalendar(
         page,
         category,
@@ -59,15 +54,13 @@ export async function scrapeCalendars(
           previousPositions,
         ),
       );
-    }
+    });
 
     return {
       matches: resolveMatchTeams(scrapedMatches, teams),
       standings: mergedStandings,
     };
-  } finally {
-    await browser.close();
-  }
+  });
 }
 
 async function scrapeCategoryCalendar(
@@ -104,12 +97,6 @@ function buildCalendarUrl(category: CategoryKey): string {
 
 async function waitForCalendarReady(page: Page): Promise<void> {
   await waitForFederationReady(page, () => {
-    const mandando = document.getElementById('mandando');
-
-    if (mandando && mandando.style.display !== 'none') {
-      return false;
-    }
-
     const table = Array.from(document.querySelectorAll('table')).find(
       (candidate) =>
         candidate

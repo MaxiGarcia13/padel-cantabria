@@ -1,9 +1,11 @@
 import type { Team, TeamPlayer } from '@padel-cantabria/database';
 import type { Page } from 'puppeteer';
 import { LEAGUE_TEAM_DETAIL_URL } from '@/constants/urls.js';
-import { delayBetweenRequests } from '@/delay.js';
-import { launchBrowser } from '@/launch-browser.js';
 import { waitForFederationReady } from '@/wait-for-federation-ready.js';
+import {
+  forEachWithRequestDelay,
+  withBrowserPage,
+} from '@/with-browser-page.js';
 import { mergeTeamPlayers } from './merge-team-players.js';
 import { parsePlayersTable } from './parse-players-table.js';
 import { playerKey } from './player-key.js';
@@ -23,26 +25,17 @@ export async function scrapePlayers(
     ]),
   );
 
-  const browser = await launchBrowser();
-
-  try {
-    const page = await browser.newPage();
+  return withBrowserPage(async (page) => {
     const players: TeamPlayer[] = [];
 
-    for (const [index, team] of teams.entries()) {
-      if (index > 0) {
-        await delayBetweenRequests();
-      }
-
+    await forEachWithRequestDelay(teams, async (team) => {
       players.push(
         ...(await scrapeTeamPlayers(page, team, previousByKey)),
       );
-    }
+    });
 
     return players;
-  } finally {
-    await browser.close();
-  }
+  });
 }
 
 async function scrapeTeamPlayers(
@@ -72,12 +65,6 @@ function buildTeamDetailUrl(team: Team): string {
 
 async function waitForPlayersReady(page: Page): Promise<void> {
   await waitForFederationReady(page, () => {
-    const mandando = document.getElementById('mandando');
-
-    if (mandando && mandando.style.display !== 'none') {
-      return false;
-    }
-
     const table = Array.from(document.querySelectorAll('table')).find(
       (candidate) =>
         candidate.textContent?.includes('Apellido 1') ?? false,

@@ -1,9 +1,11 @@
 import type { CategoryKey, Team } from '@padel-cantabria/database';
 import type { Page } from 'puppeteer';
 import { LEAGUE_TEAMS_URL } from '@/constants/urls.js';
-import { delayBetweenRequests } from '@/delay.js';
-import { launchBrowser } from '@/launch-browser.js';
 import { waitForFederationReady } from '@/wait-for-federation-ready.js';
+import {
+  forEachWithRequestDelay,
+  withBrowserPage,
+} from '@/with-browser-page.js';
 import { parseTeamsTable } from './parse-teams-table.js';
 
 export async function scrapeTeams(categories: CategoryKey[]): Promise<Team[]> {
@@ -11,24 +13,15 @@ export async function scrapeTeams(categories: CategoryKey[]): Promise<Team[]> {
     throw new Error('No categories found');
   }
 
-  const browser = await launchBrowser();
-
-  try {
-    const page = await browser.newPage();
+  return withBrowserPage(async (page) => {
     const teams: Team[] = [];
 
-    for (const [index, category] of categories.entries()) {
-      if (index > 0) {
-        await delayBetweenRequests();
-      }
-
+    await forEachWithRequestDelay(categories, async (category) => {
       teams.push(...(await scrapeCategoryTeams(page, category)));
-    }
+    });
 
     return teams;
-  } finally {
-    await browser.close();
-  }
+  });
 }
 
 async function scrapeCategoryTeams(
@@ -55,12 +48,6 @@ function buildTeamsUrl(category: CategoryKey): string {
 
 async function waitForTeamsReady(page: Page): Promise<void> {
   await waitForFederationReady(page, () => {
-    const mandando = document.getElementById('mandando');
-
-    if (mandando && mandando.style.display !== 'none') {
-      return false;
-    }
-
     const table = Array.from(document.querySelectorAll('table')).find(
       (candidate) =>
         candidate.textContent?.includes('Nombre del Equipo') ?? false,

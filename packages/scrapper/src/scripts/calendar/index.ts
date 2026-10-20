@@ -3,6 +3,7 @@ import {
   createClientFromEnv,
   parseLeagueIds,
 } from '@padel-cantabria/database';
+import { runScrapeScript } from '@/run-scrape-script.js';
 import { loadPreviousPositions } from './load-previous-positions.js';
 import { scrapeCalendars } from './scrape-calendars.js';
 
@@ -46,7 +47,4 @@ async function main(): Promise<void> {
   );
 }
 
-main().catch((error: unknown) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+runScrapeScript(main);
