@@ -9,22 +9,36 @@ import { tokenizeQuery } from '../utils/tokenize-query.js';
 export interface SearchTeamsParams {
   query?: string;
   league_id?: number;
+  league_ids?: number[];
   limit?: number;
 }
 
 const DEFAULT_LIMIT = 15;
 
+function resolveLeagueIds({
+  league_id: leagueId,
+  league_ids: leagueIds,
+}: SearchTeamsParams): number[] | null {
+  if (leagueIds && leagueIds.length > 0) {
+    return leagueIds;
+  }
+
+  if (leagueId != null) {
+    return [leagueId];
+  }
+
+  return null;
+}
+
 export async function searchTeams(
   connection: Connection,
-  {
-    query = '',
-    league_id: leagueId,
-    limit = DEFAULT_LIMIT,
-  }: SearchTeamsParams = {},
+  params: SearchTeamsParams = {},
 ): Promise<Team[]> {
+  const { query = '', limit = DEFAULT_LIMIT } = params;
   const tokens = tokenizeQuery(query);
   const safeLimit
     = Number.isFinite(limit) && limit > 0 ? Math.floor(limit) : DEFAULT_LIMIT;
+  const resolvedLeagueIds = resolveLeagueIds(params);
 
   const tokenClauses: string[] = [];
   const tokenArgs: string[] = [];
@@ -42,6 +56,11 @@ export async function searchTeams(
 
   const relevance = teamNameRelevanceOrder(query);
 
+  const leagueFilterSql
+    = resolvedLeagueIds == null
+      ? '1 = 1'
+      : `league_id IN (${resolvedLeagueIds.map(() => '?').join(', ')})`;
+
   const [result] = await connection.batch(
     [
       {
@@ -55,14 +74,13 @@ export async function searchTeams(
           FROM teams
           WHERE
             ${nameFilterSql}
-            AND (? IS NULL OR league_id = ?)
+            AND ${leagueFilterSql}
           ORDER BY ${relevance.sql}
           LIMIT ?
         `,
         args: [
           ...tokenArgs,
-          leagueId ?? null,
-          leagueId ?? null,
+          ...(resolvedLeagueIds ?? []),
           ...relevance.args,
           safeLimit,
         ],

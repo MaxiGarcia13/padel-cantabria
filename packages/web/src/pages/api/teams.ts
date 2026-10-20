@@ -1,4 +1,6 @@
 import type { APIRoute } from 'astro';
+import { parseLeagueIds } from '@padel-cantabria/database';
+import { LEAGUE_IDS } from 'astro:env/server';
 import { getDb } from '@/server/db';
 import { jsonApiError } from '@/server/json-api-error';
 import { parseCategoryParams } from '@/server/load-category-matches';
@@ -24,7 +26,12 @@ export const GET: APIRoute = async ({ url }) => {
       const limit = Number.isFinite(limitParam) && limitParam > 0
         ? Math.floor(limitParam)
         : DEFAULT_SEARCH_LIMIT;
-      const teams = await db.searchTeams({ query, limit });
+      const leagueIds = parseLeagueIds(LEAGUE_IDS);
+      const teams = await db.searchTeams({
+        query,
+        limit,
+        league_ids: leagueIds ? [...leagueIds] : undefined,
+      });
 
       return Response.json(teams);
     }

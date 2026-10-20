@@ -14,8 +14,9 @@ TURSO_AUTH_TOKEN=...
 Optional filters and politeness settings:
 
 ```env
-# Limit scrapers to specific leagues (comma-separated federation IDs)
+# Limit scrapers (and web team search) to specific leagues; assistant/MCP require this
 LEAGUE_IDS=28942
+
 
 # Players only: limit to federation gender values (same strings as teams.gender)
 SCRAPE_GENDERS=M
