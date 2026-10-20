@@ -5,14 +5,12 @@ import Button from '@/components/button.vue';
 import ChevronDownIcon from '@/components/icons/chevron-down-icon.vue';
 import LoaderIcon from '@/components/icons/loader-icon.vue';
 import XIcon from '@/components/icons/x-icon.vue';
+import Select from '@/components/select.vue';
 import { useHydrated } from '@/composables/use-hydrated';
 import { useLeagues } from '@/composables/use-leagues';
 import { useSearchFilters } from '@/composables/use-search-filters';
 import { useSearchNavigation } from '@/composables/use-search-navigation';
-import CategorySelect from './category-select.vue';
-import GenderSelect from './gender-select.vue';
 import LeagueSelect from './league-select.vue';
-import PhaseSelect from './phase-select.vue';
 import SearcherSkeleton from './searcher-skeleton.vue';
 import TeamAutocomplete from './team-autocomplete.vue';
 
@@ -192,23 +190,29 @@ function onSearchFilters(): void {
             @update:model-value="onLeagueChange"
           />
 
-          <GenderSelect
+          <Select
+            id="gender"
             :model-value="genderValue"
-            :genders="genders"
+            label="Género"
+            :options="genders"
             :disabled="!leagueId || isNavigating"
             @update:model-value="onGenderChange"
           />
 
-          <PhaseSelect
+          <Select
+            id="phase"
             :model-value="phaseValue"
-            :phases="phases"
+            label="Fase"
+            :options="phases"
             :disabled="!genderValue || isNavigating"
             @update:model-value="onPhaseChange"
           />
 
-          <CategorySelect
+          <Select
+            id="category"
             v-model="categoryValue"
-            :categories="categories"
+            label="Categoría"
+            :options="categories"
             :disabled="!phaseValue || isNavigating"
           />
         </div>
