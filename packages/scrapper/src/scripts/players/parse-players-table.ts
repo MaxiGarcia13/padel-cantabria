@@ -1,17 +1,6 @@
 import type { Page } from 'puppeteer';
 import type { RawPlayerRow, ScrapedPlayer } from './types.js';
-
-function parseInteger(value: string | null | undefined): number | null {
-  const trimmed = value?.trim() ?? '';
-
-  if (trimmed.length === 0) {
-    return null;
-  }
-
-  const parsed = Number(trimmed);
-
-  return Number.isFinite(parsed) ? parsed : null;
-}
+import { parseInteger } from '@/parse-integer.js';
 
 function joinSurnames(
   surname1: string | null | undefined,

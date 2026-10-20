@@ -2,19 +2,12 @@ import type { TeamPlayer } from '@padel-cantabria/database';
 import type { MaybeRefOrGetter } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { computed, toValue } from 'vue';
+import { request } from '@/utils/request';
 
 async function fetchTeamPlayers(teamId: number): Promise<TeamPlayer[]> {
-  const response = await fetch(`/api/team/${teamId}/players`);
-
-  if (!response.ok) {
-    const payload = (await response.json().catch(() => null)) as {
-      error?: string;
-    } | null;
-
-    throw new Error(payload?.error ?? 'Failed to load players');
-  }
-
-  const body = (await response.json()) as { players: TeamPlayer[] };
+  const body = await request(`/api/team/${teamId}/players`).json<{
+    players: TeamPlayer[];
+  }>('Failed to load players');
 
   return body.players;
 }

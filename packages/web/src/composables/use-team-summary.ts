@@ -2,23 +2,17 @@ import type { TeamStandingAndNextMatch } from '@padel-cantabria/shared';
 import type { MaybeRefOrGetter } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { computed, toValue } from 'vue';
+import { request } from '@/utils/request';
 
 async function fetchTeamSummary(
   teamId: number,
   phase: string,
 ): Promise<TeamStandingAndNextMatch> {
   const params = new URLSearchParams({ phase });
-  const response = await fetch(`/api/team/${teamId}/summary?${params}`);
 
-  if (!response.ok) {
-    const payload = (await response.json().catch(() => null)) as {
-      error?: string;
-    } | null;
-
-    throw new Error(payload?.error ?? 'Failed to load team summary');
-  }
-
-  return response.json() as Promise<TeamStandingAndNextMatch>;
+  return request(`/api/team/${teamId}/summary?${params}`).json<
+    TeamStandingAndNextMatch
+  >('Failed to load team summary');
 }
 
 export function useTeamSummary(

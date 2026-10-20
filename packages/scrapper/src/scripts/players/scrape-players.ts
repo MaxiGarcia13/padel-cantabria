@@ -3,11 +3,10 @@ import type { Page } from 'puppeteer';
 import { LEAGUE_TEAM_DETAIL_URL } from '@/constants/urls.js';
 import { delayBetweenRequests } from '@/delay.js';
 import { launchBrowser } from '@/launch-browser.js';
+import { waitForFederationReady } from '@/wait-for-federation-ready.js';
 import { mergeTeamPlayers } from './merge-team-players.js';
 import { parsePlayersTable } from './parse-players-table.js';
 import { playerKey } from './player-key.js';
-
-const PLAYERS_READY_TIMEOUT_MS = 30_000;
 
 export async function scrapePlayers(
   teams: Team[],
@@ -72,21 +71,18 @@ function buildTeamDetailUrl(team: Team): string {
 }
 
 async function waitForPlayersReady(page: Page): Promise<void> {
-  await page.waitForFunction(
-    () => {
-      const mandando = document.getElementById('mandando');
+  await waitForFederationReady(page, () => {
+    const mandando = document.getElementById('mandando');
 
-      if (mandando && mandando.style.display !== 'none') {
-        return false;
-      }
+    if (mandando && mandando.style.display !== 'none') {
+      return false;
+    }
 
-      const table = Array.from(document.querySelectorAll('table')).find(
-        (candidate) =>
-          candidate.textContent?.includes('Apellido 1') ?? false,
-      );
+    const table = Array.from(document.querySelectorAll('table')).find(
+      (candidate) =>
+        candidate.textContent?.includes('Apellido 1') ?? false,
+    );
 
-      return Boolean(table);
-    },
-    { timeout: PLAYERS_READY_TIMEOUT_MS },
-  );
+    return Boolean(table);
+  });
 }

@@ -2,6 +2,7 @@ import type { CategoryKey, Match } from '@padel-cantabria/database';
 import type { MaybeRefOrGetter } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { computed, toValue } from 'vue';
+import { request } from '@/utils/request';
 
 async function fetchMatches(
   category: CategoryKey,
@@ -18,17 +19,9 @@ async function fetchMatches(
     params.set('team', String(teamId));
   }
 
-  const response = await fetch(`/api/matches?${params}`);
-
-  if (!response.ok) {
-    const payload = (await response.json().catch(() => null)) as {
-      error?: string;
-    } | null;
-
-    throw new Error(payload?.error ?? 'Failed to load matches');
-  }
-
-  return response.json() as Promise<Match[]>;
+  return request(`/api/matches?${params}`).json<Match[]>(
+    'Failed to load matches',
+  );
 }
 
 export function useMatches(

@@ -9,12 +9,11 @@ import type { ScrapedCalendarMatch, ScrapedTeamStanding } from './types.js';
 import { LEAGUE_CALENDAR_URL } from '@/constants/urls.js';
 import { delayBetweenRequests } from '@/delay.js';
 import { launchBrowser } from '@/launch-browser.js';
+import { waitForFederationReady } from '@/wait-for-federation-ready.js';
 import { mergeTeamStandings } from './merge-team-standings.js';
 import { parseCalendarTable } from './parse-calendar-table.js';
 import { parseStandingsTable } from './parse-standings-table.js';
 import { resolveMatchTeams } from './resolve-match-teams.js';
-
-const CALENDAR_READY_TIMEOUT_MS = 30_000;
 
 export interface ScrapeCalendarsResult {
   matches: MatchWrite[];
@@ -104,24 +103,21 @@ function buildCalendarUrl(category: CategoryKey): string {
 }
 
 async function waitForCalendarReady(page: Page): Promise<void> {
-  await page.waitForFunction(
-    () => {
-      const mandando = document.getElementById('mandando');
+  await waitForFederationReady(page, () => {
+    const mandando = document.getElementById('mandando');
 
-      if (mandando && mandando.style.display !== 'none') {
-        return false;
-      }
+    if (mandando && mandando.style.display !== 'none') {
+      return false;
+    }
 
-      const table = Array.from(document.querySelectorAll('table')).find(
-        (candidate) =>
-          candidate
-            .querySelector('td.estiloequipos')
-            ?.textContent
-            ?.includes('Local'),
-      );
+    const table = Array.from(document.querySelectorAll('table')).find(
+      (candidate) =>
+        candidate
+          .querySelector('td.estiloequipos')
+          ?.textContent
+          ?.includes('Local'),
+    );
 
-      return Boolean(table && table.querySelectorAll('tr').length > 1);
-    },
-    { timeout: CALENDAR_READY_TIMEOUT_MS },
-  );
+    return Boolean(table && table.querySelectorAll('tr').length > 1);
+  });
 }

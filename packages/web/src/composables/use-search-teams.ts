@@ -2,6 +2,7 @@ import type { Team } from '@padel-cantabria/database';
 import type { MaybeRefOrGetter } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { computed, toValue } from 'vue';
+import { request } from '@/utils/request';
 
 const DEFAULT_LIMIT = 10;
 
@@ -10,17 +11,8 @@ async function fetchSearchTeams(query: string): Promise<Team[]> {
     q: query,
     limit: String(DEFAULT_LIMIT),
   });
-  const response = await fetch(`/api/teams?${params}`);
 
-  if (!response.ok) {
-    const payload = (await response.json().catch(() => null)) as {
-      error?: string;
-    } | null;
-
-    throw new Error(payload?.error ?? 'Failed to load teams');
-  }
-
-  return response.json() as Promise<Team[]>;
+  return request(`/api/teams?${params}`).json<Team[]>('Failed to load teams');
 }
 
 export function useSearchTeams(query: MaybeRefOrGetter<string>) {

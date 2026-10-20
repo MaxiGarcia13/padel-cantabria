@@ -1,19 +1,12 @@
 import type { MaybeRefOrGetter } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { computed, toValue } from 'vue';
+import { request } from '@/utils/request';
 
 async function fetchTeamPhases(teamId: number): Promise<string[]> {
-  const response = await fetch(`/api/team/${teamId}/phases`);
-
-  if (!response.ok) {
-    const payload = (await response.json().catch(() => null)) as {
-      error?: string;
-    } | null;
-
-    throw new Error(payload?.error ?? 'Failed to load phases');
-  }
-
-  const body = (await response.json()) as { phases: string[] };
+  const body = await request(`/api/team/${teamId}/phases`).json<{
+    phases: string[];
+  }>('Failed to load phases');
 
   return body.phases;
 }

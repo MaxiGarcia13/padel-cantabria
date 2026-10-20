@@ -2,6 +2,7 @@ import type { CategoryKey, TeamWithStandings } from '@padel-cantabria/database';
 import type { MaybeRefOrGetter } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { computed, toValue } from 'vue';
+import { request } from '@/utils/request';
 
 async function fetchTeams(
   category: CategoryKey,
@@ -12,17 +13,10 @@ async function fetchTeams(
     phase: category.phase,
     category: category.category,
   });
-  const response = await fetch(`/api/teams?${params}`);
 
-  if (!response.ok) {
-    const payload = (await response.json().catch(() => null)) as {
-      error?: string;
-    } | null;
-
-    throw new Error(payload?.error ?? 'Failed to load teams');
-  }
-
-  return response.json() as Promise<TeamWithStandings[]>;
+  return request(`/api/teams?${params}`).json<TeamWithStandings[]>(
+    'Failed to load teams',
+  );
 }
 
 export function useTeams(category: MaybeRefOrGetter<CategoryKey>) {

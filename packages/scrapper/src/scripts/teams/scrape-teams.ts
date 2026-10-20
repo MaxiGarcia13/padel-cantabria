@@ -3,9 +3,8 @@ import type { Page } from 'puppeteer';
 import { LEAGUE_TEAMS_URL } from '@/constants/urls.js';
 import { delayBetweenRequests } from '@/delay.js';
 import { launchBrowser } from '@/launch-browser.js';
+import { waitForFederationReady } from '@/wait-for-federation-ready.js';
 import { parseTeamsTable } from './parse-teams-table.js';
-
-const TEAMS_READY_TIMEOUT_MS = 30_000;
 
 export async function scrapeTeams(categories: CategoryKey[]): Promise<Team[]> {
   if (categories.length === 0) {
@@ -55,30 +54,27 @@ function buildTeamsUrl(category: CategoryKey): string {
 }
 
 async function waitForTeamsReady(page: Page): Promise<void> {
-  await page.waitForFunction(
-    () => {
-      const mandando = document.getElementById('mandando');
+  await waitForFederationReady(page, () => {
+    const mandando = document.getElementById('mandando');
 
-      if (mandando && mandando.style.display !== 'none') {
-        return false;
-      }
+    if (mandando && mandando.style.display !== 'none') {
+      return false;
+    }
 
-      const table = Array.from(document.querySelectorAll('table')).find(
-        (candidate) =>
-          candidate.textContent?.includes('Nombre del Equipo') ?? false,
-      );
+    const table = Array.from(document.querySelectorAll('table')).find(
+      (candidate) =>
+        candidate.textContent?.includes('Nombre del Equipo') ?? false,
+    );
 
-      if (!table) {
-        return false;
-      }
+    if (!table) {
+      return false;
+    }
 
-      const hasTeams = table.querySelector('tr.lineas a[href*="IdEquipo="]');
-      const isEmpty = table.textContent?.includes(
-        'ningún equipo inscrito',
-      ) || table.textContent?.includes('ningun equipo inscrito');
+    const hasTeams = table.querySelector('tr.lineas a[href*="IdEquipo="]');
+    const isEmpty = table.textContent?.includes(
+      'ningún equipo inscrito',
+    ) || table.textContent?.includes('ningun equipo inscrito');
 
-      return Boolean(hasTeams || isEmpty);
-    },
-    { timeout: TEAMS_READY_TIMEOUT_MS },
-  );
+    return Boolean(hasTeams || isEmpty);
+  });
 }
