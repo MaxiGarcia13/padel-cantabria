@@ -1,18 +1,10 @@
 <script setup lang="ts">
-import type { Team } from '@padel-cantabria/database';
-import { computed, ref, watch } from 'vue';
 import Button from '@/components/button.vue';
 import ChevronDownIcon from '@/components/icons/chevron-down-icon.vue';
-import LoaderIcon from '@/components/icons/loader-icon.vue';
 import XIcon from '@/components/icons/x-icon.vue';
-import Select from '@/components/select.vue';
-import { useHydrated } from '@/composables/use-hydrated';
-import { useLeagues } from '@/composables/use-leagues';
-import { useSearchFilters } from '@/composables/use-search-filters';
-import { useSearchNavigation } from '@/composables/use-search-navigation';
-import LeagueSelect from './league-select.vue';
-import SearcherSkeleton from './searcher-skeleton.vue';
+import SearcherFiltersForm from './searcher-filters-form.vue';
 import TeamAutocomplete from './team-autocomplete.vue';
+import { useSearcherForm } from './use-searcher-form';
 
 const props = defineProps<{
   initialLeagueId?: string;
@@ -26,26 +18,13 @@ const emit = defineEmits<{
   close: [];
 }>();
 
-const { data: leagues, isPending, isError } = useLeagues();
-const { search, searchTeam } = useSearchNavigation();
-
-const teamQuery = ref('');
-const selectedTeam = ref<Team | null>(null);
-const isNavigating = ref(false);
-const isHydrated = useHydrated();
-const hasInitialFilters = Boolean(
-  props.initialLeagueId
-  && props.initialGenderValue
-  && props.initialPhaseValue
-  && props.initialCategoryValue,
-);
-const filtersExpanded = ref(hasInitialFilters);
-
-const showFiltersSkeleton = computed(
-  () => !isHydrated.value || isPending.value,
-);
-
 const {
+  leagues,
+  teamQuery,
+  isNavigating,
+  filtersExpanded,
+  showFiltersSkeleton,
+  errorMessage,
   leagueId,
   genderValue,
   phaseValue,
@@ -57,59 +36,15 @@ const {
   onLeagueChange,
   onGenderChange,
   onPhaseChange,
-} = useSearchFilters(leagues, {
+  onTeamSelect,
+  toggleFilters,
+  onSearchFilters,
+} = useSearcherForm({
   leagueId: props.initialLeagueId,
   genderValue: props.initialGenderValue,
   phaseValue: props.initialPhaseValue,
   categoryValue: props.initialCategoryValue,
 });
-
-const errorMessage = computed(() =>
-  isError.value ? 'No se pudieron cargar las ligas' : null,
-);
-
-watch(teamQuery, (value) => {
-  if (selectedTeam.value && value !== selectedTeam.value.name) {
-    selectedTeam.value = null;
-  }
-});
-
-function onTeamSelect(team: Team): void {
-  selectedTeam.value = team;
-
-  onSearchTeam();
-}
-
-function toggleFilters(): void {
-  if (isNavigating.value) {
-    return;
-  }
-
-  filtersExpanded.value = !filtersExpanded.value;
-}
-
-function onSearchTeam(): void {
-  if (!selectedTeam.value || isNavigating.value) {
-    return;
-  }
-
-  isNavigating.value = true;
-  searchTeam(selectedTeam.value.id);
-}
-
-function onSearchFilters(): void {
-  if (!canSearch.value || isNavigating.value) {
-    return;
-  }
-
-  isNavigating.value = true;
-  search({
-    leagueId: leagueId.value,
-    genderValue: genderValue.value,
-    phaseValue: phaseValue.value,
-    categoryValue: categoryValue.value,
-  });
-}
 </script>
 
 <template>
@@ -160,75 +95,24 @@ function onSearchFilters(): void {
         o
       </p>
 
-      <SearcherSkeleton v-if="showFiltersSkeleton" />
-
-      <p
-        v-else-if="errorMessage"
-        class="text-sm text-danger"
-        role="alert"
-      >
-        {{ errorMessage }}
-      </p>
-
-      <p
-        v-else-if="!leagues?.length"
-        class="text-sm text-muted"
-      >
-        No hay ligas disponibles.
-      </p>
-
-      <form
-        v-else
-        class="flex flex-col gap-4 lg:flex-row lg:items-end"
-        @submit.prevent="onSearchFilters"
-      >
-        <div class="grid min-w-0 flex-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <LeagueSelect
-            :model-value="leagueId"
-            :leagues="leagues"
-            :disabled="isNavigating"
-            @update:model-value="onLeagueChange"
-          />
-
-          <Select
-            id="gender"
-            :model-value="genderValue"
-            label="Género"
-            :options="genders"
-            :disabled="!leagueId || isNavigating"
-            @update:model-value="onGenderChange"
-          />
-
-          <Select
-            id="phase"
-            :model-value="phaseValue"
-            label="Fase"
-            :options="phases"
-            :disabled="!genderValue || isNavigating"
-            @update:model-value="onPhaseChange"
-          />
-
-          <Select
-            id="category"
-            v-model="categoryValue"
-            label="Categoría"
-            :options="categories"
-            :disabled="!phaseValue || isNavigating"
-          />
-        </div>
-
-        <Button
-          type="submit"
-          class="w-full gap-2 lg:w-auto"
-          :disabled="!canSearch || isNavigating"
-        >
-          <LoaderIcon
-            v-if="isNavigating"
-            class="size-5 animate-spin"
-          />
-          Buscar
-        </Button>
-      </form>
+      <SearcherFiltersForm
+        v-model:category-value="categoryValue"
+        :leagues="leagues"
+        :show-skeleton="showFiltersSkeleton"
+        :error-message="errorMessage"
+        :is-navigating="isNavigating"
+        :can-search="canSearch"
+        :league-id="leagueId"
+        :gender-value="genderValue"
+        :phase-value="phaseValue"
+        :genders="genders"
+        :phases="phases"
+        :categories="categories"
+        @submit="onSearchFilters"
+        @update:league-id="onLeagueChange"
+        @update:gender-value="onGenderChange"
+        @update:phase-value="onPhaseChange"
+      />
     </template>
   </div>
 </template>

@@ -1,7 +1,7 @@
 import type { InjectionKey } from 'vue';
 import type { MessageScrollerContext, MessageScrollerProviderProps, RegisterMessage } from './types';
 import { inject, onMounted, onScopeDispose, provide, watch } from 'vue';
-import { createMessageScrollerEngine } from './create-message-scroller-engine';
+import { createMessageScrollerEngine } from './engine/create-message-scroller-engine';
 
 const CONTEXT_KEY: InjectionKey<MessageScrollerContext> = Symbol('MessageScrollerContext');
 const REGISTER_KEY: InjectionKey<RegisterMessage> = Symbol('MessageScrollerRegister');
