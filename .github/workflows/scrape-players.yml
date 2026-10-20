@@ -2,8 +2,8 @@ name: Scrape Players
 
 on:
   schedule:
-    # Tuesday 05:00 Europe/Madrid (CET = UTC+1) — masculine.
-    # Wednesday 05:00 Europe/Madrid — feminine.
+    # Tuesday 05:00 Europe/Madrid (CET = UTC+1) — feminine.
+    # Wednesday 05:00 Europe/Madrid — masculine.
     # During CEST (UTC+2) these run at 06:00 local.
     - cron: '0 4 * * 2'
     - cron: '0 4 * * 3'

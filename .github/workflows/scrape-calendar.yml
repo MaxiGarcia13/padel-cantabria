@@ -2,8 +2,9 @@ name: Scrape Calendar
 
 on:
   schedule:
-    # Tuesday 06:00 Europe/Madrid (CET = UTC+1).
-    # After Tuesday players (masculine). During CEST this runs at 07:00 local.
+    # Tuesday + Thursday 06:00 Europe/Madrid (CET = UTC+1).
+    # During CEST this runs at 07:00 local.
+    - cron: '0 5 * * 4'
     - cron: '0 5 * * 2'
   workflow_dispatch:
 
