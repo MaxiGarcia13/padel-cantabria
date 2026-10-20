@@ -2,7 +2,7 @@ import type {
   ChatCompletionMessageParam,
   ChatCompletionMessageToolCall,
 } from '../utils/chat-completion-types';
-import type { McpBrowserClient } from '../utils/mcp-client';
+import type { McpBrowserClient } from '../utils/mcp';
 import {
   formatToolResult,
   parseToolArguments,

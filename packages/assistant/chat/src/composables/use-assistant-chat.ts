@@ -6,7 +6,7 @@ import type {
 import { computed, onMounted, ref } from 'vue';
 import { resolveUserMessage } from '../domain/resolve-user-message';
 import { HttpChatCompletionsClient } from '../utils/chat-completions-client';
-import { McpBrowserClient } from '../utils/mcp-client';
+import { McpBrowserClient } from '../utils/mcp';
 import { trimChatHistory } from '../utils/trim-chat-history';
 
 interface ChatUiMessage {

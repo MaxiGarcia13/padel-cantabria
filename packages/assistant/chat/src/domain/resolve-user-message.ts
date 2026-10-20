@@ -3,7 +3,7 @@ import type {
   ChatCompletionsClient,
   ChatCompletionTool,
 } from '../utils/chat-completion-types';
-import type { McpBrowserClient } from '../utils/mcp-client';
+import type { McpBrowserClient } from '../utils/mcp';
 import type { ChatTurnResult } from './chat-turn-result';
 import type { PendingClarification } from './clarification';
 import { inferGenderFromText } from '@padel-cantabria/shared';
@@ -11,10 +11,10 @@ import {
   ASK_GENDER_MESSAGE,
   asksForCategoryTeams,
 } from './category-teams-intent';
+import { runChatTurn } from './chat-turn';
 import { chatTurnResult } from './chat-turn-result';
 import { asksForCategoryCatalog } from './list-categories-intent';
 import { resolvePendingCategoryPick } from './resolve-pending-category';
-import { runChatTurn } from './run-chat-turn';
 
 function replacesPendingClarification(text: string): boolean {
   return asksForCategoryTeams(text) || asksForCategoryCatalog(text);

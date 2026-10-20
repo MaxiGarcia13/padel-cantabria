@@ -1,7 +1,8 @@
 import type { Match } from '@padel-cantabria/database';
+import type { SeasonRange } from './parse-match-date/index.js';
 import {
   getMatchSortTime,
-  type SeasonRange,
+
 } from './parse-match-date/index.js';
 
 const DEFAULT_CLOSEST_LIMIT = 5;

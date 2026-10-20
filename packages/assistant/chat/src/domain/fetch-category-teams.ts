@@ -1,4 +1,4 @@
-import type { McpBrowserClient } from '../utils/mcp-client';
+import type { McpBrowserClient } from '../utils/mcp';
 import type { PendingCategoryClarification } from './clarification';
 import { toolResultsIncludeTeams } from '../utils/parse-tool-json';
 import { asksForCategoryTeams } from './category-teams-intent';

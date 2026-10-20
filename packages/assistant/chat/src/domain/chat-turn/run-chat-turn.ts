@@ -1,132 +1,36 @@
+import type { ChatTurnResult } from '../chat-turn-result';
 import type {
   ChatCompletionMessageParam,
   ChatCompletionsClient,
   ChatCompletionTool,
-} from '../utils/chat-completion-types';
-import type { McpBrowserClient } from '../utils/mcp-client';
-import type { ChatTurnResult } from './chat-turn-result';
-import type { PendingCategoryClarification, PendingGenderClarification } from './clarification';
-import { inferGenderFromText } from '@padel-cantabria/shared';
+} from '@/utils/chat-completion-types';
+import type { McpBrowserClient } from '@/utils/mcp';
 import {
   previousUserMessages,
   withoutSystemMessages,
-} from '../utils/chat-message-helpers';
-import { looksLikeToolCallLeak } from '../utils/looks-like-tool-call-leak';
-import { toolResultsIncludeTeams } from '../utils/parse-tool-json';
+} from '@/utils/chat-message-helpers';
 import {
-  ASK_GENDER_MESSAGE,
-  asksForCategoryTeams,
   mergeGenderFollowUp,
   needsGenderClarification,
-} from './category-teams-intent';
-import { categoryTeamsTurnResult } from './category-teams-reply-text';
-import { AFTER_TOOLS_NUDGE, USER_GUIDANCE } from './chat-prompts';
-import { chatTurnResult } from './chat-turn-result';
-import { formatCategoryClarification, formatUnknownCategoryMessage, parseCategoryToolError } from './clarification';
+} from '../category-teams-intent';
+import { categoryTeamsTurnResult } from '../category-teams-reply-text';
+import { AFTER_TOOLS_NUDGE, USER_GUIDANCE } from '../chat-prompts';
+import { chatTurnResult } from '../chat-turn-result';
 import {
   executeToolCalls,
   toolCallsIncludeListTeams,
-} from './execute-tool-calls';
-import { fetchCategoryCatalogIfNeeded } from './fetch-list-categories';
+} from '../execute-tool-calls';
+import { fetchCategoryCatalogIfNeeded } from '../fetch-list-categories';
 import {
   ensureCategoryTeamsReply,
   injectCategoryTeamsFollowUp,
-} from './resolve-category-teams-reply';
-import { resolveEmptyModelReply } from './resolve-empty-model-reply';
-import { formatToolResultFallback } from './tool-result-fallback';
+} from '../resolve-category-teams-reply';
+import { formatToolResultFallback } from '../tool-result-fallback';
+import { askGenderResult } from './ask-gender-result';
+import { clarificationFromToolResults } from './clarification-from-tool-results';
+import { finalizeModelTextAnswer } from './finalize-model-text-answer';
 
 const MAX_TOOL_ROUNDS = 3;
-
-function askGenderResult(originalQuestion: string): ChatTurnResult {
-  const pending: PendingGenderClarification = {
-    kind: 'gender',
-    originalQuestion,
-  };
-  return chatTurnResult(ASK_GENDER_MESSAGE, pending);
-}
-
-async function finalizeModelTextAnswer(options: {
-  client: ChatCompletionsClient;
-  mcp: McpBrowserClient;
-  userMessage: string;
-  messages: ChatCompletionMessageParam[];
-  toolResults: string[];
-  content: string | null;
-}): Promise<string> {
-  const ensured = categoryTeamsTurnResult(
-    await ensureCategoryTeamsReply({
-      mcp: options.mcp,
-      userMessage: options.userMessage,
-      toolResults: options.toolResults,
-    }),
-    options.userMessage,
-  );
-  if (ensured) {
-    return ensured.text;
-  }
-
-  const clarified = clarificationFromToolResults(
-    options.toolResults,
-    options.userMessage,
-  );
-  if (clarified) {
-    return clarified.text;
-  }
-
-  // Prefer real teams[] over free-form prose (model often invents gender asks).
-  if (
-    asksForCategoryTeams(options.userMessage)
-    && toolResultsIncludeTeams(options.toolResults)
-  ) {
-    return formatToolResultFallback(options.toolResults);
-  }
-
-  if (options.content && !looksLikeToolCallLeak(options.content)) {
-    return options.content;
-  }
-
-  return resolveEmptyModelReply({
-    client: options.client,
-    mcp: options.mcp,
-    userMessage: options.userMessage,
-    messages: options.messages,
-    toolResults: options.toolResults,
-  });
-}
-
-function clarificationFromToolResults(
-  toolResults: string[],
-  userMessage: string,
-): ChatTurnResult | null {
-  const gender = inferGenderFromText(userMessage);
-
-  for (let index = toolResults.length - 1; index >= 0; index -= 1) {
-    const error = parseCategoryToolError(toolResults[index]!);
-    if (!error) {
-      continue;
-    }
-
-    if (error.code === 'unknown_category' && error.candidates.length === 0) {
-      return chatTurnResult(formatUnknownCategoryMessage());
-    }
-
-    const text = formatCategoryClarification(error.candidates);
-    if (!gender || error.candidates.length === 0) {
-      return chatTurnResult(text);
-    }
-
-    const pending: PendingCategoryClarification = {
-      kind: 'category',
-      options: error.candidates,
-      originalQuestion: userMessage,
-      gender,
-    };
-
-    return chatTurnResult(text, pending);
-  }
-
-  return null;
-}
 
 export async function runChatTurn(options: {
   client: ChatCompletionsClient;

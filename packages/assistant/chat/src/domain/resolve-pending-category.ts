@@ -1,4 +1,4 @@
-import type { McpBrowserClient } from '../utils/mcp-client';
+import type { McpBrowserClient } from '../utils/mcp';
 import type { ChatTurnResult } from './chat-turn-result';
 import type { PendingCategoryClarification } from './clarification';
 import { inferGenderFromText } from '@padel-cantabria/shared';

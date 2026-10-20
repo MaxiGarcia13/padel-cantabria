@@ -2,7 +2,7 @@ import type {
   ChatCompletionMessageParam,
   ChatCompletionsClient,
 } from '../utils/chat-completion-types';
-import type { McpBrowserClient } from '../utils/mcp-client';
+import type { McpBrowserClient } from '../utils/mcp';
 import { completeForcedText } from '../utils/complete-forced-text';
 import { categoryTeamsTurnResult } from './category-teams-reply-text';
 import { SUMMARIZE_TOOL_NUDGE } from './chat-prompts';
