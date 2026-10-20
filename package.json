@@ -2,7 +2,7 @@
   "name": "@padel-cantabria",
   "type": "module",
   "version": "0.0.0",
-  "packageManager": "pnpm@12.11.2",
+  "packageManager": "pnpm@12.14.0",
   "description": "",
   "author": "",
   "license": "ISC",
@@ -15,13 +15,12 @@
   "scripts": {
     "build": "pnpm --filter @padel-cantabria/web build",
     "preview": "pnpm --filter @padel-cantabria/web preview",
+    "dev": "pnpm --filter=@padel-cantabria/web dev",
 
     "lint": "eslint . --ignore-pattern 'packages/web/**' --ignore-pattern 'packages/assistant/**' && pnpm -r --if-present run lint",
     "lint:fix": "eslint --fix . --ignore-pattern 'packages/web/**' --ignore-pattern 'packages/assistant/**' && pnpm -r --if-present run lint:fix",
-
     "clean": "rm -rf node_modules dist && pnpm -r run clean",
     "phoenix": "pnpm clean && pnpm install",
-    "dev": "pnpm --filter=@padel-cantabria/web dev",
 
     "assistant": "pnpm --filter @padel-cantabria/assistant start",
     "assistant:dev": "pnpm --filter @padel-cantabria/assistant dev",
@@ -36,13 +35,13 @@
     "scrape:players": "pnpm --filter @padel-cantabria/scrapper scrape:players",
     "scrape:calendar": "pnpm --filter @padel-cantabria/scrapper scrape:calendar",
 
-    "release": "nx release --skip-publish --first-release",
-    "release:dry": "nx release --dry-run --first-release"
+    "release": "nx release --skip-publish",
+    "release:dry": "nx release --dry-run"
   },
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "12.11.2",
+      "version": "12.14.0",
       "onFail": "download"
     }
   },
