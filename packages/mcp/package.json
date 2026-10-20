@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.1",
+    "@padel-cantabria/mcp-tools": "workspace:*",
     "zod": "^4.1.12"
   },
   "devDependencies": {

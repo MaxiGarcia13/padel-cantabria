@@ -1,0 +1,19 @@
+{
+  "name": "@padel-cantabria/mcp-tools",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "types": "./src/index.ts",
+  "scripts": {
+    "clean": "rm -rf node_modules dist"
+  },
+  "dependencies": {
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "typescript": "~6.0.3"
+  }
+}

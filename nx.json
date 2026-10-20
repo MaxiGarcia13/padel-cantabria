@@ -26,6 +26,7 @@
     "projects": [
       "packages/shared",
       "packages/database",
+      "packages/mcp-tools",
       "packages/scrapper",
       "packages/web",
       "packages/mcp",

@@ -22,6 +22,7 @@
     "@maxigarcia/ai-router": "^0.1.1",
     "@modelcontextprotocol/sdk": "^1.32.1",
     "@padel-cantabria/database": "workspace:*",
+    "@padel-cantabria/mcp-tools": "workspace:*",
     "@padel-cantabria/shared": "workspace:*",
     "@vueuse/core": "^15.0.0",
     "class-variance-authority": "^0.7.1",

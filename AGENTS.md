@@ -19,6 +19,7 @@ Human-oriented overview: [README.md](README.md)
 | -------------------- | --------------------------------------- |
 | `packages/database`  | Schema, types, Turso client             |
 | `packages/shared`    | Reusable domain helpers (matches, etc.) |
+| `packages/mcp-tools` | Shared MCP tool names/descriptions/zod  |
 | `packages/assistant` | Fastify API + HTTP MCP + Vue chat UI    |
 | `packages/mcp`       | Stdio MCP shim → assistant HTTP API     |
 | `packages/scrapper`  | Puppeteer scrapers → Turso              |

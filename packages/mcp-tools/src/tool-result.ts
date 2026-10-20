@@ -1,5 +1,3 @@
-import { HttpError, httpErrorPayload } from '../errors.js';
-
 export function toolResult(data: unknown) {
   return {
     content: [
@@ -11,13 +9,18 @@ export function toolResult(data: unknown) {
   };
 }
 
-export function toolError(error: unknown) {
-  if (error instanceof HttpError) {
+export function toolError(
+  error: unknown,
+  serialize?: (error: unknown) => unknown | undefined,
+) {
+  const payload = serialize?.(error);
+
+  if (payload !== undefined) {
     return {
       content: [
         {
           type: 'text' as const,
-          text: JSON.stringify(httpErrorPayload(error)),
+          text: JSON.stringify(payload),
         },
       ],
       isError: true,
