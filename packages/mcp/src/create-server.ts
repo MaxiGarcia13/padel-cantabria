@@ -1,9 +1,5 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import {
-  MCP_TOOLS,
-  toolError,
-  toolResult,
-} from '@padel-cantabria/mcp-tools';
+import { registerMcpTools } from '@padel-cantabria/mcp-tools';
 import packageJson from '../package.json';
 import { assistantGet } from './assistant-client.js';
 
@@ -13,147 +9,45 @@ export function createStdioMcpServer(): McpServer {
     version: packageJson.version,
   });
 
-  server.registerTool(
-    'list_categories',
-    MCP_TOOLS.list_categories,
-    async () => {
-      try {
-        return toolResult(await assistantGet('/categories'));
-      } catch (error) {
-        return toolError(error);
-      }
-    },
-  );
-
-  server.registerTool(
-    'search_categories',
-    MCP_TOOLS.search_categories,
-    async (args) => {
-      try {
-        return toolResult(
-          await assistantGet('/categories/search', {
-            q: args.query,
-            gender: args.gender,
-            limit: args.limit,
-          }),
-        );
-      } catch (error) {
-        return toolError(error);
-      }
-    },
-  );
-
-  server.registerTool(
-    'search_phases',
-    MCP_TOOLS.search_phases,
-    async (args) => {
-      try {
-        return toolResult(
-          await assistantGet('/phases/search', {
-            q: args.query,
-            gender: args.gender,
-            limit: args.limit,
-          }),
-        );
-      } catch (error) {
-        return toolError(error);
-      }
-    },
-  );
-
-  server.registerTool(
-    'list_teams',
-    MCP_TOOLS.list_teams,
-    async (args) => {
-      try {
-        return toolResult(
-          await assistantGet('/teams', {
-            gender: args.gender,
-            category: args.category,
-            phase: args.phase,
-          }),
-        );
-      } catch (error) {
-        return toolError(error);
-      }
-    },
-  );
-
-  server.registerTool(
-    'search_teams',
-    MCP_TOOLS.search_teams,
-    async ({ query, limit }) => {
-      try {
-        return toolResult(
-          await assistantGet('/teams/search', { q: query, limit }),
-        );
-      } catch (error) {
-        return toolError(error);
-      }
-    },
-  );
-
-  server.registerTool(
-    'get_team_overview',
-    MCP_TOOLS.get_team_overview,
-    async ({ team_id: teamId, phase }) => {
-      try {
-        return toolResult(
-          await assistantGet(`/teams/${teamId}/overview`, { phase }),
-        );
-      } catch (error) {
-        return toolError(error);
-      }
-    },
-  );
-
-  server.registerTool(
-    'list_team_players',
-    MCP_TOOLS.list_team_players,
-    async ({ team_id: teamId }) => {
-      try {
-        return toolResult(await assistantGet(`/teams/${teamId}/players`));
-      } catch (error) {
-        return toolError(error);
-      }
-    },
-  );
-
-  server.registerTool(
-    'search_players',
-    MCP_TOOLS.search_players,
-    async (args) => {
-      try {
-        return toolResult(
-          await assistantGet('/players/search', {
-            q: args.query,
-            gender: args.gender,
-            limit: args.limit,
-          }),
-        );
-      } catch (error) {
-        return toolError(error);
-      }
-    },
-  );
-
-  server.registerTool(
-    'get_top_players',
-    MCP_TOOLS.get_top_players,
-    async (args) => {
-      try {
-        return toolResult(
-          await assistantGet('/players/top', {
-            gender: args.gender,
-            category: args.category,
-            limit: args.limit,
-          }),
-        );
-      } catch (error) {
-        return toolError(error);
-      }
-    },
-  );
+  registerMcpTools(server, {
+    list_categories: () => assistantGet('/categories'),
+    search_categories: (args) =>
+      assistantGet('/categories/search', {
+        q: args.query,
+        gender: args.gender,
+        limit: args.limit,
+      }),
+    search_phases: (args) =>
+      assistantGet('/phases/search', {
+        q: args.query,
+        gender: args.gender,
+        limit: args.limit,
+      }),
+    list_teams: (args) =>
+      assistantGet('/teams', {
+        gender: args.gender,
+        category: args.category,
+        phase: args.phase,
+      }),
+    search_teams: (args) =>
+      assistantGet('/teams/search', { q: args.query, limit: args.limit }),
+    get_team_overview: (args) =>
+      assistantGet(`/teams/${args.team_id}/overview`, { phase: args.phase }),
+    list_team_players: (args) =>
+      assistantGet(`/teams/${args.team_id}/players`),
+    search_players: (args) =>
+      assistantGet('/players/search', {
+        q: args.query,
+        gender: args.gender,
+        limit: args.limit,
+      }),
+    get_top_players: (args) =>
+      assistantGet('/players/top', {
+        gender: args.gender,
+        category: args.category,
+        limit: args.limit,
+      }),
+  });
 
   return server;
 }

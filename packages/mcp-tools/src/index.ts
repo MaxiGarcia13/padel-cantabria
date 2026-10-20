@@ -1,4 +1,12 @@
 export {
+  registerMcpTools,
+} from './register-mcp-tools/index.js';
+export type {
+  McpToolArgs,
+  McpToolHandlers,
+} from './register-mcp-tools/index.js';
+
+export {
   CATEGORY_ARG,
   GENDER_OPTIONAL,
   GENDER_REQUIRED,
