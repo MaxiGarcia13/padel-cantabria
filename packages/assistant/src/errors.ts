@@ -32,7 +32,6 @@ export function notFound(
   return new HttpError(404, message, options);
 }
 
-/** JSON body for HTTP clients and MCP tool errors. */
 export function httpErrorPayload(error: HttpError) {
   return {
     error: error.message,

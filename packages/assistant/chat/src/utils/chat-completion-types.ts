@@ -1,5 +1,3 @@
-/** Minimal OpenAI-compatible types used by the chat tool loop. */
-
 export interface ChatCompletionTool {
   type: 'function';
   function: {

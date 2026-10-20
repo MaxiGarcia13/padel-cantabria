@@ -1,6 +1,5 @@
 import type { League } from '@padel-cantabria/database';
 
-/** League tree with labels first; keep codes for tool chaining. */
 export function presentLeagues(leagues: League[]) {
   return leagues.map((league) => ({
     league: league.name,

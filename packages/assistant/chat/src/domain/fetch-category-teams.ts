@@ -19,10 +19,6 @@ export type FetchCategoryTeamsResult
     }
     | { status: 'skip' };
 
-/**
- * When the user asked for teams in a category but tools never returned `teams[]`,
- * call `list_teams` with args resolved from prior results and/or the question.
- */
 export async function fetchCategoryTeamsIfNeeded(options: {
   mcp: McpBrowserClient;
   userMessage: string;

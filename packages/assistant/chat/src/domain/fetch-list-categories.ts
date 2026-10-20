@@ -8,7 +8,6 @@ import { asksForCategoryCatalog } from './list-categories-intent';
 
 const SEARCH_CATEGORIES_LIMIT = 50;
 
-/** Full catalog, or search_categories when the message has category tokens. */
 export async function fetchCategoryCatalogIfNeeded(options: {
   mcp: McpBrowserClient;
   userMessage: string;

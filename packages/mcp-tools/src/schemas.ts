@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-/** String (not enum); handlers keep only M/F via normalizeGender. */
 export const GENDER_OPTIONAL = z
   .string()
   .optional()

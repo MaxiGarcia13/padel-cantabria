@@ -1,7 +1,3 @@
-/**
- * True when the model pasted a tool invocation into message content
- * instead of a user-facing reply (common when tool_choice is none).
- */
 export function looksLikeToolCallLeak(content: string): boolean {
   const text = content.trim();
   if (!text) {

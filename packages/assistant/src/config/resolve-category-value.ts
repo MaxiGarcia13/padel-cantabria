@@ -112,9 +112,6 @@ async function searchCategoryMatches(
   return { searchQuery, trimmed, matches };
 }
 
-/**
- * Resolve a category or return search candidates when unknown/ambiguous.
- */
 export async function resolveCategoryMatchResult(
   db: DatabaseClient,
   options: {
@@ -147,10 +144,6 @@ export async function resolveCategoryMatchResult(
   return { status: 'ambiguous', candidates: matches };
 }
 
-/**
- * Resolve a model/user category string to a category match (value + phase).
- * Accepts value, label, or ordinal aliases (via search after alias expansion).
- */
 export async function resolveCategoryMatch(
   db: DatabaseClient,
   options: {
@@ -163,10 +156,6 @@ export async function resolveCategoryMatch(
   return result.status === 'matched' ? result.match : undefined;
 }
 
-/**
- * Resolve a model/user category string to federation `categories.value`.
- * Accepts value, label, or ordinal aliases (via search after alias expansion).
- */
 export async function resolveCategoryValue(
   db: DatabaseClient,
   options: {

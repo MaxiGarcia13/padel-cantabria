@@ -10,7 +10,6 @@ const QUERY_CLIENT_OPTIONS = {
   },
 } as const;
 
-/** Shared on the client so Astro islands reuse the same cache. */
 const browserQueryClient = import.meta.env.SSR
   ? null
   : new QueryClient(QUERY_CLIENT_OPTIONS);

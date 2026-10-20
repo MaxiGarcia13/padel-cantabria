@@ -14,10 +14,6 @@ export interface SearchTeamsParams {
 
 const DEFAULT_LIMIT = 15;
 
-/**
- * Name search used by the web autocomplete and the assistant.
- * Returns the plain `Team` shape (no label joins) so web clients stay stable.
- */
 export async function searchTeams(
   connection: Connection,
   {

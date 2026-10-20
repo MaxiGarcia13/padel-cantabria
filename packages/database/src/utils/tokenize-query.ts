@@ -1,11 +1,7 @@
-/**
- * Split a free-text query into AND tokens.
- * Spaced / unicode dashes are separators; hyphen-minus inside tokens
- * (e.g. category_value ids) is kept.
- */
 export function tokenizeQuery(query: string): string[] {
   return query
     .trim()
+    // Spaced / unicode dashes separate words; keep hyphen-minus inside ids.
     .replace(/\s*[-–—]\s+/g, ' ')
     .replace(/[–—_/|,.;:¿?¡!()[\]{}]+/g, ' ')
     .split(/\s+/)

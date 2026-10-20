@@ -23,11 +23,6 @@ function pickNonEmptyString(...values: unknown[]): string | undefined {
   return undefined;
 }
 
-/**
- * Normalize model tool args before MCP.
- * - Drop invalid gender values
- * - Map category_value / phase_value aliases → category / phase
- */
 export function sanitizeToolArgs(
   args: Record<string, unknown>,
 ): Record<string, unknown> {

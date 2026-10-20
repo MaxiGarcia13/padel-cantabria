@@ -1,6 +1,5 @@
 import type { PlayerWithTeam, TeamPlayer } from '@padel-cantabria/database';
 
-/** Human-readable player for API / MCP (labels over opaque codes). */
 export function presentPlayer(player: PlayerWithTeam) {
   return {
     name: player.name,
@@ -19,7 +18,6 @@ export function presentPlayers(players: PlayerWithTeam[]) {
   return players.map(presentPlayer);
 }
 
-/** Roster row for a known team (no league joins; team context is separate). */
 export function presentTeamPlayer(player: TeamPlayer) {
   return {
     name: player.name,
@@ -35,7 +33,6 @@ export function presentTeamPlayers(players: TeamPlayer[]) {
   return players.map(presentTeamPlayer);
 }
 
-/** Aggregates for compare / summarize without relying on model arithmetic. */
 export function presentRosterTotals(players: TeamPlayer[]) {
   let points = 0;
   let previousPoints = 0;

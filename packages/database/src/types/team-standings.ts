@@ -16,10 +16,8 @@ export interface TeamStandings {
   games_average: number | null;
 }
 
-/** Team with standings for a specific phase (joined read shape). */
 export type TeamWithStandings = Team & TeamStandings;
 
-/** Standings row keyed by category + team (team_standings table). */
 export interface TeamStanding extends CategoryKey, TeamStandings {
   team_id: number;
 }

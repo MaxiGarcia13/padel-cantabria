@@ -4,9 +4,6 @@ function asString(value: unknown): string {
   return typeof value === 'string' ? value.trim() : '';
 }
 
-/**
- * Format list_categories / presentLeagues JSON into readable Spanish text.
- */
 export function formatLeagueCategories(toolText: string): string {
   const parsed = parseToolJson(toolText);
   if (!Array.isArray(parsed) || parsed.length === 0) {

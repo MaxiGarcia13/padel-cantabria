@@ -38,7 +38,6 @@ const CATEGORY_ALIASES: Record<string, string> = {
   'septima': '7ª',
 };
 
-/** Fold for alias / stopword lookup: foldText plus ª/º → a/o and drop dots. */
 export function categoryAliasKey(raw: string): string {
   return foldText(raw)
     .replace(/ª/g, 'a')

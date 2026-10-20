@@ -17,10 +17,6 @@ function looksLikeRawJson(text: string): boolean {
   return trimmed.startsWith('{') || trimmed.startsWith('[');
 }
 
-/**
- * Spanish display text when formatters cover the tool payload.
- * Returns null when the body is empty or still raw JSON (caller may summarize).
- */
 export function tryFormatToolResultFallback(
   toolResults: string[],
 ): string | null {
@@ -32,10 +28,6 @@ export function tryFormatToolResultFallback(
   return body;
 }
 
-/**
- * Deterministic Spanish fallback when the model returns empty content
- * after a successful tool call.
- */
 export function formatToolResultFallback(toolResults: string[]): string {
   return buildFallbackBody(toolResults) || UNFORMATTED_FALLBACK;
 }

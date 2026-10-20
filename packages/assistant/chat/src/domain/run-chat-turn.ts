@@ -35,7 +35,6 @@ import {
 import { resolveEmptyModelReply } from './resolve-empty-model-reply';
 import { formatToolResultFallback } from './tool-result-fallback';
 
-/** Enough for search → follow-up tool; last round forces a text answer. */
 const MAX_TOOL_ROUNDS = 3;
 
 function askGenderResult(originalQuestion: string): ChatTurnResult {

@@ -17,7 +17,6 @@ function formatRecord(record: Record<string, unknown>): string {
   );
 }
 
-/** Turn a parsed tool JSON value into Spanish display text. */
 export function formatToolValue(value: unknown): string {
   if (Array.isArray(value)) {
     if (value.length === 0) {

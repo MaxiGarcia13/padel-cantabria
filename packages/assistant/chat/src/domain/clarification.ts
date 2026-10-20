@@ -17,7 +17,6 @@ export interface PendingCategoryClarification {
   gender: 'M' | 'F';
 }
 
-/** Waiting for M/F after a category-teams question omitted gender. */
 export interface PendingGenderClarification {
   kind: 'gender';
   originalQuestion: string;
@@ -59,7 +58,6 @@ function asCandidate(value: unknown): CategoryCandidate | null {
   };
 }
 
-/** Parse structured category errors from list_teams / get_top_players. */
 export function parseCategoryToolError(toolText: string): {
   code: 'ambiguous_category' | 'unknown_category';
   candidates: CategoryCandidate[];
@@ -88,7 +86,6 @@ export function formatUnknownCategoryMessage(): string {
   return UNKNOWN_CATEGORY_MESSAGE;
 }
 
-/** Spanish numbered list for the user to pick a category. */
 export function formatCategoryClarification(
   candidates: CategoryCandidate[],
 ): string {
@@ -106,9 +103,6 @@ export function formatCategoryClarification(
   return ['¿Cuál categoría?', '', ...lines].join('\n');
 }
 
-/**
- * Resolve a user reply to one candidate (1-based index or label substring).
- */
 export function parseCategoryPick(
   reply: string,
   options: CategoryCandidate[],

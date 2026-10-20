@@ -13,10 +13,6 @@ const PROVIDER_ENV: ReadonlyArray<{
   { name: 'groq', env: 'GROQ_API_KEY' },
 ];
 
-/**
- * Builds an AiRouter with Gemini → Open Router → Groq fallback,
- * including only providers that have a non-empty API key.
- */
 export function createAiRouter(): AiRouterInterface | null {
   const fallback: ProviderName[] = [];
   const providers: Partial<Record<ProviderName, { apiKey: string }>> = {};

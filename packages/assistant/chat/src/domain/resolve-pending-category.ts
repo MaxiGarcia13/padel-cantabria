@@ -15,10 +15,6 @@ import { formatToolResultFallback } from './tool-result-fallback';
 const INVALID_PICK_HINT
   = 'No entendí la elección. Indica el número de la lista o el nombre de la categoría.';
 
-/**
- * Resolve a numbered/label reply against a pending category clarification.
- * Returns null when the reply should start a new chat turn instead.
- */
 export async function resolvePendingCategoryPick(options: {
   mcp: McpBrowserClient;
   pending: PendingCategoryClarification;

@@ -1,7 +1,3 @@
-/**
- * Map Spanish / display labels to federation gender values stored in the DB.
- * Anything that is not clearly M/F is treated as unset.
- */
 export function normalizeGender(
   value: string | undefined,
 ): 'M' | 'F' | undefined {

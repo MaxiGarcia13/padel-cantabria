@@ -1,4 +1,3 @@
-/** Join non-empty trimmed strings with a middle-dot separator. */
 export function joinDisplayParts(
   parts: Array<string | number | null | undefined>,
 ): string {

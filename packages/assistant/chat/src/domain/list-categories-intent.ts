@@ -1,10 +1,6 @@
 import { foldText } from '@padel-cantabria/shared';
 import { asksForCategoryTeams } from './category-teams-intent';
 
-/**
- * True when the user asks to list categories (full catalog or filtered).
- * Examples: "qué categorías hay?", "qué categorías hay en tercera?".
- */
 export function asksForCategoryCatalog(text: string): boolean {
   if (asksForCategoryTeams(text)) {
     return false;

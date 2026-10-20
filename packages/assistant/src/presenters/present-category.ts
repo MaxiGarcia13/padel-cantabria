@@ -1,9 +1,5 @@
 import type { CategoryMatch } from '@padel-cantabria/database';
 
-/**
- * Prefer labels for display. Keep `*_value` / `gender_code` for follow-up tools
- * (list_teams, get_top_players, get_team_overview).
- */
 export function presentCategory(category: CategoryMatch) {
   return {
     league: category.league_name,

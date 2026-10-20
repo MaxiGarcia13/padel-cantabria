@@ -5,7 +5,6 @@ export type CategoryKey = Pick<
   'league_id' | 'gender' | 'phase' | 'category'
 >;
 
-/** Shape used when writing matches (team names come from the teams table). */
 export type MatchWrite = MatchRecord;
 
 export type Match = MatchRecord & {

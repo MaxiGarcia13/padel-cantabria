@@ -8,7 +8,6 @@ function genderPending(originalQuestion: string): PendingGenderClarification {
   return { kind: 'gender', originalQuestion };
 }
 
-/** Flatten ensureCategoryTeamsReply into a chat turn result. */
 export function categoryTeamsTurnResult(
   reply: CategoryTeamsReply,
   originalQuestion?: string,

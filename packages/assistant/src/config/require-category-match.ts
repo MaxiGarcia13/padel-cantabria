@@ -3,9 +3,6 @@ import type { CategoryResolveResult } from './resolve-category-value.js';
 import { badRequest } from '../errors.js';
 import { presentCategories } from '../presenters/present-category.js';
 
-/**
- * Turn a non-matched category resolve result into a structured 400 for HTTP/MCP.
- */
 export function unresolvedCategoryError(
   result: Exclude<CategoryResolveResult, { status: 'matched' }>,
 ) {

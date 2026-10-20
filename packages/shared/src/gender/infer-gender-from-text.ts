@@ -1,6 +1,5 @@
 import { foldText } from '../text/fold-text.js';
 
-/** Detect M/F from free-text (chat / natural language). */
 export function inferGenderFromText(text: string): 'M' | 'F' | undefined {
   const normalized = foldText(text);
 

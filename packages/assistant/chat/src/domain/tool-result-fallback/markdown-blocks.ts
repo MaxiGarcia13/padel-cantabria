@@ -1,6 +1,5 @@
 const MARKDOWN_LIST_ITEM = /^(?:[-*+]|\d+\.)\s/;
 
-/** Separate blocks so the chat Markdown renderer keeps them apart. */
 export function joinMarkdownBlocks(
   blocks: Array<string | null | undefined>,
 ): string {
@@ -10,7 +9,6 @@ export function joinMarkdownBlocks(
     .join('\n\n');
 }
 
-/** Bullet list. A single newline between plain lines is collapsed to a space. */
 export function asMarkdownList(lines: string[]): string {
   return lines
     .map((line) => line.trim())
