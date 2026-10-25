@@ -1,3 +1,13 @@
+## 0.5.0 (2026-10-25)
+
+### 🚀 Features
+
+- Add custom 404 page for improved user experience ([dbb707d](https://github.com/MaxiGarcia13/padel-cantabria/commit/dbb707d))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.4.0 (2026-10-25)
 
 ### 🚀 Features
