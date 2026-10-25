@@ -3,6 +3,7 @@ import type { TeamWithStandings } from '@padel-cantabria/database';
 import { formatStandingValue, getPositionTrend } from '@padel-cantabria/shared';
 import { computed } from 'vue';
 import TableRow from '@/components/table/table-row.vue';
+import { buildTeamPath } from '@/server/load-category-matches';
 import PositionTrend from './position-trend.vue';
 
 const props = defineProps<{
@@ -12,6 +13,8 @@ const props = defineProps<{
 const trend = computed(() =>
   getPositionTrend(props.team.position, props.team.previous_position),
 );
+
+const href = buildTeamPath(props.team.id);
 </script>
 
 <template>
@@ -23,7 +26,12 @@ const trend = computed(() =>
       <PositionTrend :trend="trend" />
     </td>
     <td class="px-4 py-4 font-medium text-foreground">
-      {{ team.name }}
+      <a
+        :href="href"
+        class="text-inherit no-underline hover:underline focus-visible:rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+      >
+        {{ team.name }}
+      </a>
     </td>
     <td class="px-4 py-4 text-center text-muted">
       {{ formatStandingValue(team.confrontations_played) }}

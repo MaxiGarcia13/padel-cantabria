@@ -1,0 +1,48 @@
+---
+description: Avoid unnecessary Vue computed/watch; prefer plain values and derived state
+globs: packages/web/**/*.{vue,ts}
+alwaysApply: false
+---
+
+# Vue reactivity — no unnecessary memorize
+
+Do not wrap cheap, synchronous derives in `computed` or `watch`. Prefer plain `const`, template expressions, or a real derived `computed` only when it earns its keep.
+
+## Prefer
+
+| Use | When |
+| --- | --- |
+| Plain `const` / inline | Cheap sync value from props (paths, labels, simple maps) |
+| `computed` | Result depends on reactive state, is reused, or would otherwise re-run non-trivial work in the template |
+| `watch` | Side effects only (fetch, DOM, navigate, reset unrelated state) |
+
+## Avoid
+
+| Avoid | Why |
+| --- | --- |
+| `computed(() => buildPath(props.id))` | No caching benefit; use `const href = buildPath(props.id)` |
+| `watch(x, v => { y.value = f(v) })` | That is derived state — use `computed` (or a plain const if not reactive) |
+| `watch` to mirror props into local `ref` | Prefer using the prop (or `toRef`) directly |
+
+```typescript
+// ❌ BAD — memorize a cheap string
+const href = computed(() => buildTeamPath(props.team.id));
+
+// ✅ GOOD
+const href = buildTeamPath(props.team.id);
+
+// ❌ BAD — watch as derived state
+watch(query, (value) => {
+  isEmpty.value = !value.trim();
+});
+
+// ✅ GOOD
+const isEmpty = computed(() => !query.value.trim());
+
+// ✅ GOOD — watch for a side effect
+watch(teamQuery, (value) => {
+  void loadSuggestions(value);
+});
+```
+
+`computed` is fine for UI gates and cascades (`showSkeleton`, `errorMessage`, filter option lists). Do not add it by habit.
