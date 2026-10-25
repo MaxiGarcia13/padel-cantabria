@@ -1,3 +1,13 @@
+## 0.0.7 (2026-10-25)
+
+### 🚀 Features
+
+- Introduce team couple statistics and enhance match data handling ([ee35335](https://github.com/MaxiGarcia13/padel-cantabria/commit/ee35335))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.6 (2026-10-25)
 
 ### 🚀 Features

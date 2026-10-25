@@ -1,3 +1,9 @@
+## 0.0.14 (2026-10-25)
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/shared to 0.0.7
+
 ## 0.0.13 (2026-10-25)
 
 ### 🧱 Updated Dependencies
