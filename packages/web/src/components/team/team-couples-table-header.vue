@@ -5,7 +5,7 @@ import { TableHead, TableHeader, TableRow } from '@/components/ui/table';
 <template>
   <TableHeader>
     <TableRow>
-      <TableHead>
+      <TableHead class="w-48 max-w-48">
         Pareja
       </TableHead>
       <TableHead class="text-center whitespace-nowrap">

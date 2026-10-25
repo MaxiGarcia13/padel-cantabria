@@ -25,10 +25,11 @@ const href = buildTeamPath(props.team.id);
     <TableCell class="w-8 text-center">
       <PositionTrend :trend="trend" />
     </TableCell>
-    <TableCell class="font-medium text-foreground">
+    <TableCell class="w-40 max-w-40 whitespace-normal">
       <a
         :href="href"
-        class="text-inherit no-underline hover:underline focus-visible:rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+        class="line-clamp-2 font-medium break-words text-inherit no-underline hover:underline focus-visible:rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+        :title="team.name"
       >
         {{ team.name }}
       </a>

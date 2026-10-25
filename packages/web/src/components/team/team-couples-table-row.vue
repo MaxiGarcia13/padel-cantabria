@@ -13,10 +13,21 @@ defineProps<{
 
 <template>
   <TableRow>
-    <TableCell class="font-medium whitespace-nowrap text-foreground">
-      {{ couple.player_1.name }} {{ couple.player_1.surname }}
-      /
-      {{ couple.player_2.name }} {{ couple.player_2.surname }}
+    <TableCell class="w-48 max-w-48 whitespace-normal">
+      <div class="flex flex-col leading-tight">
+        <span
+          class="truncate font-medium text-foreground"
+          :title="`${couple.player_1.name} ${couple.player_1.surname}`"
+        >
+          {{ couple.player_1.name }} {{ couple.player_1.surname }}
+        </span>
+        <span
+          class="truncate font-medium text-foreground"
+          :title="`${couple.player_2.name} ${couple.player_2.surname}`"
+        >
+          {{ couple.player_2.name }} {{ couple.player_2.surname }}
+        </span>
+      </div>
     </TableCell>
     <TableCell class="text-center whitespace-nowrap text-muted">
       {{ formatStandingValue(couple.games_played) }}
