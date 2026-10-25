@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { CategoryKey } from '@padel-cantabria/database';
 import type { TeamCoupleStats } from '@padel-cantabria/shared';
 import {
   formatStandingValue,
@@ -10,10 +11,19 @@ import { buildPlayerPath } from '@/routes';
 const props = defineProps<{
   couple: TeamCoupleStats;
   teamId: number;
+  category: CategoryKey;
 }>();
 
-const player1Href = buildPlayerPath(props.teamId, props.couple.player_1);
-const player2Href = buildPlayerPath(props.teamId, props.couple.player_2);
+const player1Href = buildPlayerPath(
+  props.category,
+  props.teamId,
+  props.couple.player_1,
+);
+const player2Href = buildPlayerPath(
+  props.category,
+  props.teamId,
+  props.couple.player_2,
+);
 const player1Name = `${props.couple.player_1.name} ${props.couple.player_1.surname}`;
 const player2Name = `${props.couple.player_2.name} ${props.couple.player_2.surname}`;
 </script>

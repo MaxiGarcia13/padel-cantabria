@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { CategoryKey } from '@padel-cantabria/database';
 import type { TeamPlayerWithMatchStats } from '@padel-cantabria/shared';
 import { formatStandingValue, getPositionTrend } from '@padel-cantabria/shared';
 import PositionTrend from '@/components/standings/position-trend.vue';
@@ -7,6 +8,7 @@ import { buildPlayerPath } from '@/routes';
 
 const props = defineProps<{
   player: TeamPlayerWithMatchStats;
+  category: CategoryKey;
 }>();
 
 const trend = getPositionTrend(
@@ -14,7 +16,7 @@ const trend = getPositionTrend(
   props.player.previous_position,
 );
 
-const href = buildPlayerPath(props.player.team_id, props.player);
+const href = buildPlayerPath(props.category, props.player.team_id, props.player);
 const displayName = `${props.player.name} ${props.player.surname}`;
 </script>
 

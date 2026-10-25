@@ -69,7 +69,9 @@ export function useSearcherForm(initial: SearcherFormInitial) {
     }
 
     isNavigating.value = true;
-    searchTeam(selectedTeam.value.id);
+    void searchTeam(selectedTeam.value, filters.phaseValue.value).catch(() => {
+      isNavigating.value = false;
+    });
   }
 
   function onSearchFilters(): void {

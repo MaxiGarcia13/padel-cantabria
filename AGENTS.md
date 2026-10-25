@@ -24,11 +24,11 @@ Humans: [README.md](README.md) (product) · [CONTRIBUTING.md](CONTRIBUTING.md) (
 
 Package manager: **pnpm**. Env vars live in the **repo root** `.env`.
 
-| Variable                                                  | Notes                                                                                                                           |
-| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `TURSO_URL`, `TURSO_AUTH_TOKEN`                           | Required for DB access                                                                                                          |
-| `LEAGUE_IDS`                                              | Optional for scrapers and web (scopes team search when set). **Required** for assistant/MCP (scopes all reads to the first id). |
-| `GEMINI_API_KEY` / `OPEN_ROUTER_API_KEY` / `GROQ_API_KEY` | Chat: at least one; fallback Gemini → Open Router → Groq                                                                        |
+| Variable                                                  | Notes                                                                                                                                                 |
+| --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TURSO_URL`, `TURSO_AUTH_TOKEN`                           | Required for DB access                                                                                                                                |
+| `LEAGUE_IDS`                                              | Optional for scrapers (limits what is ingested). **Required** for assistant/MCP (scopes all reads to the first id). Web scopes from URL/query params. |
+| `GEMINI_API_KEY` / `OPEN_ROUTER_API_KEY` / `GROQ_API_KEY` | Chat: at least one; fallback Gemini → Open Router → Groq                                                                                              |
 
 ## Common commands (from repo root)
 

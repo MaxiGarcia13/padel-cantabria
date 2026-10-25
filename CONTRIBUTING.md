@@ -27,11 +27,11 @@ From the **repo root**:
 
    Optional / feature-specific:
 
-   | Variable                                                  | Used by                      | Notes                                                                                                            |
-   | --------------------------------------------------------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-   | `LEAGUE_IDS`                                              | Scrapers, web, assistant/MCP | Optional filter for scrapers and web team search. **Required** for assistant/MCP (scopes reads to the first id). |
-   | `GEMINI_API_KEY` / `OPEN_ROUTER_API_KEY` / `GROQ_API_KEY` | Assistant chat               | At least one; fallback order Gemini → Open Router → Groq.                                                        |
-   | `SCRAPE_GENDERS` / `SCRAPE_DELAY_MS`                      | Scrapers                     | See [packages/scrapper/README.md](packages/scrapper/README.md).                                                  |
+   | Variable                                                  | Used by                 | Notes                                                                                                                          |
+   | --------------------------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+   | `LEAGUE_IDS`                                              | Scrapers, assistant/MCP | Optional filter for scrapers. **Required** for assistant/MCP (scopes reads to the first id). Web scopes from URL/query params. |
+   | `GEMINI_API_KEY` / `OPEN_ROUTER_API_KEY` / `GROQ_API_KEY` | Assistant chat          | At least one; fallback order Gemini → Open Router → Groq.                                                                      |
+   | `SCRAPE_GENDERS` / `SCRAPE_DELAY_MS`                      | Scrapers                | See [packages/scrapper/README.md](packages/scrapper/README.md).                                                                |
 
 3. Apply the schema: `pnpm db:migrate` (or `pnpm db:reset` on a fresh or broken DB).
 4. Run a full scrape sync (order matters):

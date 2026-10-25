@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TeamPlayer } from '@padel-cantabria/database';
+import type { CategoryKey, TeamPlayer } from '@padel-cantabria/database';
 import type { TeamDisplayLabels } from '@padel-cantabria/shared';
 import {
   formatStandingValue,
@@ -13,10 +13,11 @@ const props = defineProps<{
   player: TeamPlayer;
   teamName: string;
   teamId: number;
+  category: CategoryKey;
   displayLabels: TeamDisplayLabels;
 }>();
 
-const teamHref = buildTeamPath(props.teamId);
+const teamHref = buildTeamPath(props.category, props.teamId);
 const displayName = `${props.player.name} ${props.player.surname}`;
 const trend = getPositionTrend(
   props.player.position,

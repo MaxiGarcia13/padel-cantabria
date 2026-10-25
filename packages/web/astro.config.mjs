@@ -34,11 +34,6 @@ export default defineConfig({
     schema: {
       TURSO_URL: envField.string({ context: 'server', access: 'secret' }),
       TURSO_AUTH_TOKEN: envField.string({ context: 'server', access: 'secret' }),
-      LEAGUE_IDS: envField.string({
-        context: 'server',
-        access: 'secret',
-        optional: true,
-      }),
     },
   },
 });

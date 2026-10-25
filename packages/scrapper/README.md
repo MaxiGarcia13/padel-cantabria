@@ -14,7 +14,7 @@ TURSO_AUTH_TOKEN=...
 Optional filters and politeness settings:
 
 ```env
-# Limit scrapers (and web team search) to specific leagues; assistant/MCP require this
+# Limit scrapers to specific leagues; assistant/MCP require this
 LEAGUE_IDS=28942
 
 

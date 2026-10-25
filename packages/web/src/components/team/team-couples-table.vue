@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { CategoryKey } from '@padel-cantabria/database';
 import type { TeamCoupleStats } from '@padel-cantabria/shared';
 import { computed, ref } from 'vue';
 import { Button } from '@/components/ui/button';
@@ -9,6 +10,7 @@ import TeamCouplesTableRow from './team-couples-table-row.vue';
 const props = defineProps<{
   couples: TeamCoupleStats[];
   teamId: number;
+  category: CategoryKey;
 }>();
 
 const INITIAL_VISIBLE_COUNT = 5;
@@ -48,6 +50,7 @@ function toggleShowAll() {
             :key="`${couple.player_1.surname}-${couple.player_1.name}-${couple.player_2.surname}-${couple.player_2.name}`"
             :couple="couple"
             :team-id="teamId"
+            :category="category"
           />
         </TableBody>
       </Table>

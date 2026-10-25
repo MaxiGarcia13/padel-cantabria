@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { League, Team, TeamPlayer } from '@padel-cantabria/database';
+import type { CategoryKey, League, Team, TeamPlayer } from '@padel-cantabria/database';
 import type { TeamPlayerPagePayload } from '@/types/team-player-page';
 import { getTeamDisplayLabels } from '@padel-cantabria/shared';
 import { computed } from 'vue';
@@ -14,6 +14,7 @@ const props = defineProps<{
   team: Team;
   player: TeamPlayer;
   leagues: League[];
+  category: CategoryKey;
   initialPayload: TeamPlayerPagePayload | null;
 }>();
 
@@ -43,6 +44,7 @@ const showSkeleton = computed(
       :player="player"
       :team-name="team.name"
       :team-id="team.id"
+      :category="category"
       :display-labels="displayLabels"
     />
 
@@ -63,6 +65,7 @@ const showSkeleton = computed(
         <PlayerPartnersTable
           :partners="stats.partners"
           :team-id="team.id"
+          :category="category"
         />
 
         <PlayerHistoryList :courts="stats.recent_courts" />

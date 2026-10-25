@@ -4,7 +4,7 @@ import {
   getTeamDisplayLabels,
   resolveCompetitionLabels,
 } from '@padel-cantabria/shared';
-import { buildCategoryPath, buildTeamPath } from '@/routes';
+import { buildCategoryPath, buildTeamPath, teamCategoryKey } from '@/routes';
 
 export interface BreadcrumbItem {
   label: string;
@@ -91,12 +91,7 @@ export function teamBreadcrumbItems(
   phase: string,
 ): BreadcrumbItem[] {
   const { categoryLabel, genderLabel } = getTeamDisplayLabels(leagues, team);
-  const category: CategoryKey = {
-    league_id: team.league_id,
-    gender: team.gender,
-    phase,
-    category: team.category,
-  };
+  const category = teamCategoryKey(team, phase);
 
   return [
     HOME_ITEM,
@@ -115,12 +110,7 @@ export function playerBreadcrumbItems(
   player: { name: string; surname: string },
 ): BreadcrumbItem[] {
   const { categoryLabel, genderLabel } = getTeamDisplayLabels(leagues, team);
-  const category: CategoryKey = {
-    league_id: team.league_id,
-    gender: team.gender,
-    phase,
-    category: team.category,
-  };
+  const category = teamCategoryKey(team, phase);
 
   return [
     HOME_ITEM,
@@ -128,7 +118,7 @@ export function playerBreadcrumbItems(
       label: categoryCrumbLabel(categoryLabel, genderLabel),
       href: phase ? buildCategoryPath(category) : undefined,
     },
-    { label: team.name, href: buildTeamPath(team.id) },
+    { label: team.name, href: buildTeamPath(category, team.id) },
     { label: `${player.name} ${player.surname}` },
   ];
 }

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { CategoryKey } from '@padel-cantabria/database';
 import { computed, toRef } from 'vue';
 import TableSkeleton from '@/components/table-skeleton.vue';
 import { Table, TableBody } from '@/components/ui/table';
@@ -10,6 +11,7 @@ import TeamPlayersTableRow from './team-players-table-row.vue';
 
 const props = defineProps<{
   teamId: number;
+  category: CategoryKey;
 }>();
 
 const teamId = toRef(props, 'teamId');
@@ -64,6 +66,7 @@ const errorMessage = computed(() =>
             v-for="player in players"
             :key="`${player.surname}-${player.name}`"
             :player="player"
+            :category="category"
           />
         </TableBody>
       </Table>
@@ -86,6 +89,7 @@ const errorMessage = computed(() =>
       v-else-if="!errorMessage"
       :couples="couples"
       :team-id="teamId"
+      :category="category"
     />
   </div>
 </template>

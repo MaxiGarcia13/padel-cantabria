@@ -4,37 +4,29 @@ import {
   getPhaseOptions,
   getTeamDisplayLabels,
 } from '@padel-cantabria/shared';
-import { computed, ref, watch } from 'vue';
+import { navigate } from 'astro:transitions/client';
+import { computed, toRef } from 'vue';
 import { useHydrated } from '@/composables/use-hydrated';
 import { useTeamPhases } from '@/composables/use-team-phases';
 import { useTeamPlayers } from '@/composables/use-team-players';
 import { useTeamSummary } from '@/composables/use-team-summary';
-import { buildCategoryPath } from '@/routes';
+import { buildCategoryPath, buildTeamPath, teamCategoryKey } from '@/routes';
 
 export function useTeamPage(options: {
   team: Team;
   leagues: League[];
+  phase: string;
   initialPhases: string[];
   initialSummary: TeamStandingAndNextMatch | null;
 }) {
-  const selectedPhase = ref(options.initialPhases[0] ?? '');
+  const phase = toRef(options, 'phase');
   const { data: phases, isPending: isPhasesPending } = useTeamPhases(
     options.team.id,
     options.initialPhases,
   );
 
-  watch(
-    phases,
-    (phaseList) => {
-      if (!phaseList?.length) {
-        return;
-      }
-
-      if (!selectedPhase.value || !phaseList.includes(selectedPhase.value)) {
-        selectedPhase.value = phaseList[0];
-      }
-    },
-    { immediate: true },
+  const categoryKey = computed(() =>
+    teamCategoryKey(options.team, phase.value),
   );
 
   const {
@@ -43,9 +35,12 @@ export function useTeamPage(options: {
     isError,
   } = useTeamSummary(
     options.team.id,
-    selectedPhase,
-    options.initialSummary && options.initialPhases[0]
-      ? { phase: options.initialPhases[0], data: options.initialSummary }
+    categoryKey,
+    options.initialSummary
+      ? {
+          category: teamCategoryKey(options.team, options.phase),
+          data: options.initialSummary,
+        }
       : undefined,
   );
 
@@ -73,19 +68,12 @@ export function useTeamPage(options: {
     ),
   );
 
-  const categoryKey = computed(() => ({
-    league_id: options.team.league_id,
-    gender: options.team.gender,
-    phase: selectedPhase.value,
-    category: options.team.category,
-  }));
-
   const standingsHref = computed(() =>
-    selectedPhase.value ? buildCategoryPath(categoryKey.value) : '#',
+    phase.value ? buildCategoryPath(categoryKey.value) : '#',
   );
 
   const calendarHref = computed(() => {
-    if (!selectedPhase.value) {
+    if (!phase.value) {
       return '#';
     }
 
@@ -101,11 +89,22 @@ export function useTeamPage(options: {
   const isPending = computed(
     () =>
       isPhasesPending.value
-      || (Boolean(selectedPhase.value) && isSummaryPending.value),
+      || (Boolean(phase.value) && isSummaryPending.value),
   );
 
+  function onPhaseChange(nextPhase: string): void {
+    if (!nextPhase || nextPhase === phase.value) {
+      return;
+    }
+
+    void navigate(
+      buildTeamPath(teamCategoryKey(options.team, nextPhase), options.team.id),
+    );
+  }
+
   return {
-    selectedPhase,
+    phase,
+    categoryKey,
     summary,
     totalPoints,
     displayLabels,
@@ -114,5 +113,6 @@ export function useTeamPage(options: {
     calendarHref,
     errorMessage,
     isPending,
+    onPhaseChange,
   };
 }

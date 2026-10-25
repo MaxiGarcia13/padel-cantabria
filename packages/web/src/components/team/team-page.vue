@@ -12,12 +12,14 @@ import { useTeamPage } from './use-team-page';
 const props = defineProps<{
   team: Team;
   leagues: League[];
+  phase: string;
   initialPhases: string[];
   initialSummary: TeamStandingAndNextMatch | null;
 }>();
 
 const {
-  selectedPhase,
+  phase,
+  categoryKey,
   summary,
   totalPoints,
   displayLabels,
@@ -26,6 +28,7 @@ const {
   calendarHref,
   errorMessage,
   isPending,
+  onPhaseChange,
 } = useTeamPage(props);
 </script>
 
@@ -40,11 +43,11 @@ const {
     <div class="w-full max-w-xs">
       <Select
         id="team-phase"
-        :model-value="selectedPhase"
+        :model-value="phase"
         label="Fase"
         :options="phaseOptions"
         :disabled="phaseOptions.length === 0"
-        @update:model-value="selectedPhase = $event"
+        @update:model-value="onPhaseChange"
       />
     </div>
 
@@ -63,7 +66,7 @@ const {
       No hay fases disponibles para este equipo.
     </p>
 
-    <template v-else-if="selectedPhase">
+    <template v-else-if="phase">
       <div
         v-if="isPending"
         class="grid grid-cols-1 gap-4 sm:grid-cols-2"
@@ -87,6 +90,9 @@ const {
       </div>
     </template>
 
-    <TeamPlayersTableLazy :team-id="team.id" />
+    <TeamPlayersTableLazy
+      :team-id="team.id"
+      :category="categoryKey"
+    />
   </div>
 </template>

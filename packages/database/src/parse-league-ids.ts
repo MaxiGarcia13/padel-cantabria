@@ -13,7 +13,7 @@ export function parseLeagueIds(raw: string | undefined): Set<number> | null {
   return ids.length > 0 ? new Set(ids) : null;
 }
 
-// Assistant/MCP: first id in LEAGUE_IDS (required). Scrapers and web treat it as optional.
+// Assistant/MCP: first id in LEAGUE_IDS (required). Scrapers treat it as optional.
 export function getConfiguredLeagueId(): number {
   const ids = parseLeagueIds(process.env.LEAGUE_IDS);
 

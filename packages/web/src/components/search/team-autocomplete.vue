@@ -13,6 +13,7 @@ import TeamSearchHistory from './team-search-history.vue';
 
 const props = defineProps<{
   selectedTeamId?: number | null;
+  leagueId?: string;
   loading?: boolean;
   defaultOpen?: boolean;
 }>();
@@ -48,7 +49,10 @@ watch(
 );
 
 const { data: leagues } = useLeagues();
-const { data: teams, isPending, isError } = useSearchTeams(searchQuery);
+const { data: teams, isPending, isError } = useSearchTeams(
+  searchQuery,
+  () => props.leagueId,
+);
 const { entries, add, remove } = useTeamSearchHistory();
 
 const isQueryEmpty = computed(() => !query.value.trim());

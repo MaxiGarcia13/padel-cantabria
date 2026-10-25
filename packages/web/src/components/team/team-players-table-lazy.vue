@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import type { CategoryKey } from '@padel-cantabria/database';
 import { defineAsyncComponent } from 'vue';
 import TableSkeleton from '@/components/table-skeleton.vue';
 
 defineProps<{
   teamId: number;
+  category: CategoryKey;
 }>();
 
 const TeamPlayersTable = defineAsyncComponent(
@@ -13,7 +15,10 @@ const TeamPlayersTable = defineAsyncComponent(
 
 <template>
   <Suspense>
-    <TeamPlayersTable :team-id="teamId" />
+    <TeamPlayersTable
+      :team-id="teamId"
+      :category="category"
+    />
 
     <template #fallback>
       <div class="flex flex-col gap-8">

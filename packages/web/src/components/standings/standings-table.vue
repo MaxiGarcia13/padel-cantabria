@@ -53,6 +53,7 @@ const errorMessage = computed(() =>
           v-for="team in teams"
           :key="team.id"
           :team="team"
+          :category="category"
         />
       </TableBody>
     </Table>

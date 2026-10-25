@@ -3,6 +3,7 @@ import type { MatchResultSummary } from '@padel-cantabria/shared';
 import type { MaybeRefOrGetter } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { computed, toValue } from 'vue';
+import { categorySearchParams } from '@/routes';
 import { request } from '@/utils/request';
 
 export type MatchResultsById = Record<string, MatchResultSummary>;
@@ -15,13 +16,8 @@ async function fetchMatchResults(
     return {};
   }
 
-  const params = new URLSearchParams({
-    league: String(category.league_id),
-    gender: category.gender,
-    phase: category.phase,
-    category: category.category,
-    ids: matchIds.join(','),
-  });
+  const params = categorySearchParams(category);
+  params.set('ids', matchIds.join(','));
 
   return request(`/api/match-results?${params}`).json<MatchResultsById>(
     'Failed to load match results',

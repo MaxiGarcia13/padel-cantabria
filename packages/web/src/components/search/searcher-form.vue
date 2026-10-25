@@ -54,6 +54,7 @@ const {
       <div class="min-w-0 flex-1">
         <TeamAutocomplete
           v-model="teamQuery"
+          :league-id="leagueId"
           :loading="isNavigating"
           :default-open="closable"
           @select="onTeamSelect"

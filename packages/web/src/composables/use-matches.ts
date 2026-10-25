@@ -2,18 +2,14 @@ import type { CategoryKey, Match } from '@padel-cantabria/database';
 import type { MaybeRefOrGetter } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { computed, toValue } from 'vue';
+import { categorySearchParams } from '@/routes';
 import { request } from '@/utils/request';
 
 async function fetchMatches(
   category: CategoryKey,
   teamId?: number,
 ): Promise<Match[]> {
-  const params = new URLSearchParams({
-    league: String(category.league_id),
-    gender: category.gender,
-    phase: category.phase,
-    category: category.category,
-  });
+  const params = categorySearchParams(category);
 
   if (teamId != null) {
     params.set('team', String(teamId));

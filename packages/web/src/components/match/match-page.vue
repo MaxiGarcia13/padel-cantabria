@@ -74,6 +74,9 @@ const games = props.games ?? [];
       </TabsList>
     </Tabs>
 
-    <TeamPlayersTableLazy :team-id="selectedTeamId" />
+    <TeamPlayersTableLazy
+      :team-id="selectedTeamId"
+      :category="match"
+    />
   </div>
 </template>

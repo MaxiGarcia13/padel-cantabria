@@ -2,17 +2,13 @@ import type { CategoryKey, TeamWithStandings } from '@padel-cantabria/database';
 import type { MaybeRefOrGetter } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { computed, toValue } from 'vue';
+import { categorySearchParams } from '@/routes';
 import { request } from '@/utils/request';
 
 async function fetchTeams(
   category: CategoryKey,
 ): Promise<TeamWithStandings[]> {
-  const params = new URLSearchParams({
-    league: String(category.league_id),
-    gender: category.gender,
-    phase: category.phase,
-    category: category.category,
-  });
+  const params = categorySearchParams(category);
 
   return request(`/api/teams?${params}`).json<TeamWithStandings[]>(
     'Failed to load teams',

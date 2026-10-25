@@ -5,13 +5,15 @@ import TeamPage from '@/components/team/team-page.vue';
 import AppLayout from '@/layouts/app-layout.astro';
 import { loadTeamStandingAndNextMatch } from '@padel-cantabria/shared';
 import { getDb } from '@/server/db';
+import { buildTeamPath, parseCategoryParams, teamCategoryKey, teamMatchesCategory } from '@/routes';
 import { teamBreadcrumbItems } from '@/utils/breadcrumb-items';
 
 export const prerender = false;
 
+const categoryKey = parseCategoryParams(Astro.params);
 const teamId = Number(Astro.params.id);
 
-if (!Number.isFinite(teamId)) {
+if (!categoryKey || !Number.isFinite(teamId)) {
   return Astro.redirect('/');
 }
 
@@ -23,10 +25,18 @@ if (!team) {
   return Astro.redirect('/');
 }
 
+if (!teamMatchesCategory(team, categoryKey)) {
+  return Astro.redirect(buildTeamPath(teamCategoryKey(team, categoryKey.phase), teamId));
+}
+
 const initialPhases = await db.getTeamPhases(teamId);
-const initialPhase = initialPhases[0] ?? '';
-const initialSummary = initialPhase ? await loadTeamStandingAndNextMatch(db, team, initialPhase, leagues) : null;
-const breadcrumbItems = teamBreadcrumbItems(leagues, team, initialPhase);
+
+if (initialPhases.length > 0 && !initialPhases.includes(categoryKey.phase)) {
+  return Astro.redirect(buildTeamPath(teamCategoryKey(team, initialPhases[0]), teamId));
+}
+
+const initialSummary = await loadTeamStandingAndNextMatch(db, team, categoryKey.phase, leagues);
+const breadcrumbItems = teamBreadcrumbItems(leagues, team, categoryKey.phase);
 ---
 
 <AppLayout title={`${team.name} · Pádel Cantabria`}>
@@ -34,7 +44,7 @@ const breadcrumbItems = teamBreadcrumbItems(leagues, team, initialPhase);
     teamName={team.name}
     league={String(team.league_id)}
     gender={team.gender}
-    phase={initialPhase}
+    phase={categoryKey.phase}
     category={team.category}
   />
 
@@ -45,6 +55,7 @@ const breadcrumbItems = teamBreadcrumbItems(leagues, team, initialPhase);
         client:load
         team={team}
         leagues={leagues}
+        phase={categoryKey.phase}
         initialPhases={initialPhases}
         initialSummary={initialSummary}
       />

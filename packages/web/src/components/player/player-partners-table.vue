@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { CategoryKey } from '@padel-cantabria/database';
 import type { PlayerPartnerStats } from '@padel-cantabria/shared';
 import {
   formatStandingValue,
@@ -10,10 +11,11 @@ import { buildPlayerPath } from '@/routes';
 const props = defineProps<{
   partners: PlayerPartnerStats[];
   teamId: number;
+  category: CategoryKey;
 }>();
 
 function partnerHref(partner: PlayerPartnerStats['partner']): string {
-  return buildPlayerPath(props.teamId, partner);
+  return buildPlayerPath(props.category, props.teamId, partner);
 }
 
 function partnerName(partner: PlayerPartnerStats['partner']): string {

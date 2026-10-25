@@ -3,18 +3,19 @@ import Breadcrumb from '@/components/breadcrumb.vue';
 import Header from '@/components/header.astro';
 import PlayerPage from '@/components/player/player-page.vue';
 import AppLayout from '@/layouts/app-layout.astro';
-import { buildTeamPath } from '@/routes';
 import { getDb } from '@/server/db';
 import { loadTeamPlayerPageData } from '@/server/load-team-player-page-data';
+import { buildPlayerPath, buildTeamPath, parseCategoryParams, teamCategoryKey, teamMatchesCategory } from '@/routes';
 import { playerBreadcrumbItems } from '@/utils/breadcrumb-items';
 
 export const prerender = false;
 
+const categoryKey = parseCategoryParams(Astro.params);
 const teamId = Number(Astro.params.id);
 const surname = Astro.params.surname ? decodeURIComponent(Astro.params.surname) : '';
 const name = Astro.params.name ? decodeURIComponent(Astro.params.name) : '';
 
-if (!Number.isFinite(teamId) || !surname || !name) {
+if (!categoryKey || !Number.isFinite(teamId) || !surname || !name) {
   return Astro.redirect('/');
 }
 
@@ -26,19 +27,36 @@ if (!team) {
   return Astro.redirect('/');
 }
 
+if (!teamMatchesCategory(team, categoryKey)) {
+  return Astro.redirect(
+    buildPlayerPath(teamCategoryKey(team, categoryKey.phase), teamId, {
+      surname,
+      name,
+    }),
+  );
+}
+
 const [initialPayload, phases] = await Promise.all([
   loadTeamPlayerPageData(db, team, surname, name),
   db.getTeamPhases(teamId),
 ]);
 
 if (!initialPayload) {
-  return Astro.redirect(buildTeamPath(teamId));
+  return Astro.redirect(buildTeamPath(categoryKey, teamId));
+}
+
+if (phases.length > 0 && !phases.includes(categoryKey.phase)) {
+  return Astro.redirect(
+    buildPlayerPath(teamCategoryKey(team, phases[0]), teamId, {
+      surname,
+      name,
+    }),
+  );
 }
 
 const player = initialPayload.player;
 const displayName = `${player.name} ${player.surname}`;
-const phase = phases[0] ?? '';
-const breadcrumbItems = playerBreadcrumbItems(leagues, team, phase, player);
+const breadcrumbItems = playerBreadcrumbItems(leagues, team, categoryKey.phase, player);
 ---
 
 <AppLayout title={`${displayName} · ${team.name} · Pádel Cantabria`}>
@@ -46,14 +64,21 @@ const breadcrumbItems = playerBreadcrumbItems(leagues, team, phase, player);
     teamName={team.name}
     league={String(team.league_id)}
     gender={team.gender}
-    phase={phase}
+    phase={categoryKey.phase}
     category={team.category}
   />
 
   <div class="mx-auto flex w-full max-w-6xl flex-col gap-4 p-4" transition:animate="fade">
     <Breadcrumb items={breadcrumbItems} />
     <main>
-      <PlayerPage client:load team={team} player={player} leagues={leagues} initialPayload={initialPayload} />
+      <PlayerPage
+        client:load
+        team={team}
+        player={player}
+        leagues={leagues}
+        category={categoryKey}
+        initialPayload={initialPayload}
+      />
     </main>
   </div>
 </AppLayout>

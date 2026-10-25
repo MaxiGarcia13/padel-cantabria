@@ -1,4 +1,4 @@
-import type { CategoryKey } from '@padel-cantabria/database';
+import type { CategoryKey, Team } from '@padel-cantabria/database';
 
 export function parseCategoryParams(params: {
   league?: string;
@@ -25,6 +25,18 @@ export function parseCategoryParams(params: {
   };
 }
 
+export function teamCategoryKey(
+  team: Pick<Team, 'league_id' | 'gender' | 'category'>,
+  phase: string,
+): CategoryKey {
+  return {
+    league_id: team.league_id,
+    gender: team.gender,
+    phase,
+    category: team.category,
+  };
+}
+
 export function buildCategoryPath(category: CategoryKey): string {
   return [
     '',
@@ -38,16 +50,17 @@ export function buildCategoryPath(category: CategoryKey): string {
     .join('/');
 }
 
-export function buildTeamPath(teamId: number): string {
-  return `/team/${encodeURIComponent(String(teamId))}`;
+export function buildTeamPath(category: CategoryKey, teamId: number): string {
+  return `${buildCategoryPath(category)}/team/${encodeURIComponent(String(teamId))}`;
 }
 
 export function buildPlayerPath(
+  category: CategoryKey,
   teamId: number,
   player: { surname: string; name: string },
 ): string {
   return [
-    buildTeamPath(teamId),
+    buildTeamPath(category, teamId),
     'player',
     encodeURIComponent(player.surname),
     encodeURIComponent(player.name),
@@ -59,4 +72,24 @@ export function buildMatchPath(
   matchId: number,
 ): string {
   return `${buildCategoryPath(category)}/match/${encodeURIComponent(String(matchId))}`;
+}
+
+export function categorySearchParams(category: CategoryKey): URLSearchParams {
+  return new URLSearchParams({
+    league: String(category.league_id),
+    gender: category.gender,
+    phase: category.phase,
+    category: category.category,
+  });
+}
+
+export function teamMatchesCategory(
+  team: Pick<Team, 'league_id' | 'gender' | 'category'>,
+  category: CategoryKey,
+): boolean {
+  return (
+    team.league_id === category.league_id
+    && team.gender === category.gender
+    && team.category === category.category
+  );
 }
