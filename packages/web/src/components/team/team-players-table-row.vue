@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { TeamPlayerWithMatchStats } from '@padel-cantabria/shared';
 import { formatStandingValue, getPositionTrend } from '@padel-cantabria/shared';
-import { computed } from 'vue';
 import PositionTrend from '@/components/standings/position-trend.vue';
 import TableRow from '@/components/table/table-row.vue';
 
@@ -9,8 +8,9 @@ const props = defineProps<{
   player: TeamPlayerWithMatchStats;
 }>();
 
-const trend = computed(() =>
-  getPositionTrend(props.player.position, props.player.previous_position),
+const trend = getPositionTrend(
+  props.player.position,
+  props.player.previous_position,
 );
 </script>
 

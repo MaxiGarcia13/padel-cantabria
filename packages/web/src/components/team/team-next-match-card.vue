@@ -9,10 +9,6 @@ const props = defineProps<{
   calendarHref: string;
 }>();
 
-const matchHref = computed(() =>
-  props.match ? buildMatchPath(props.match, props.match.id) : '#',
-);
-
 const meta = computed(() =>
   props.match ? formatMatchMeta(props.match) : '',
 );
@@ -33,7 +29,7 @@ const meta = computed(() =>
 
     <a
       v-else
-      :href="matchHref"
+      :href="buildMatchPath(match, match.id)"
       class="flex flex-col gap-2 text-inherit no-underline transition-colors hover:opacity-80 focus-visible:rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
     >
       <p class="text-sm font-medium text-foreground">

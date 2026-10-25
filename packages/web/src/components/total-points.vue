@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { formatStandingValue } from '@padel-cantabria/shared';
-import { computed } from 'vue';
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     points: number | null;
     label?: string;
@@ -11,8 +10,6 @@ const props = withDefaults(
     label: 'Puntos',
   },
 );
-
-const formattedPoints = computed(() => formatStandingValue(props.points));
 </script>
 
 <template>
@@ -21,7 +18,7 @@ const formattedPoints = computed(() => formatStandingValue(props.points));
       {{ label }}
     </span>
     <span class="text-2xl font-semibold tracking-tight text-foreground">
-      {{ formattedPoints }}
+      {{ formatStandingValue(points) }}
     </span>
   </div>
 </template>

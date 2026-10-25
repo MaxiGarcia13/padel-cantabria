@@ -4,22 +4,12 @@ import {
   formatStandingValue,
   getPositionTrend,
 } from '@padel-cantabria/shared';
-import { computed } from 'vue';
 import PositionTrend from '@/components/standings/position-trend.vue';
 
-const props = defineProps<{
+defineProps<{
   standing: TeamWithStandings | null;
   standingsHref: string;
 }>();
-
-const trend = computed(() =>
-  props.standing
-    ? getPositionTrend(
-        props.standing.position,
-        props.standing.previous_position,
-      )
-    : 'none',
-);
 </script>
 
 <template>
@@ -45,7 +35,14 @@ const trend = computed(() =>
         </dt>
         <dd class="flex items-center gap-2 text-lg font-medium text-foreground">
           {{ formatStandingValue(standing.position) }}
-          <PositionTrend :trend="trend" />
+          <PositionTrend
+            :trend="
+              getPositionTrend(
+                standing.position,
+                standing.previous_position,
+              )
+            "
+          />
         </dd>
       </div>
 

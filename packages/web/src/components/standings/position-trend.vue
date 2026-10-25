@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { PositionTrend } from '@padel-cantabria/shared';
-import { computed } from 'vue';
 
-const props = defineProps<{
+defineProps<{
   trend: PositionTrend;
 }>();
 
@@ -26,20 +25,16 @@ const TREND_COLOR_CLASSES: Record<PositionTrend, string> = {
   same: 'text-muted',
   none: '',
 };
-
-const label = computed(() => TREND_LABELS[props.trend]);
-const symbol = computed(() => TREND_SYMBOLS[props.trend]);
-const colorClass = computed(() => TREND_COLOR_CLASSES[props.trend]);
 </script>
 
 <template>
   <span
-    v-if="symbol"
+    v-if="TREND_SYMBOLS[trend]"
     class="inline-block w-4 text-center text-sm"
-    :class="colorClass"
-    :aria-label="label ?? undefined"
-    :title="label ?? undefined"
+    :class="TREND_COLOR_CLASSES[trend]"
+    :aria-label="TREND_LABELS[trend] ?? undefined"
+    :title="TREND_LABELS[trend] ?? undefined"
   >
-    {{ symbol }}
+    {{ TREND_SYMBOLS[trend] }}
   </span>
 </template>

@@ -10,9 +10,9 @@ const props = defineProps<{
   result?: MatchResultSummary | null;
 }>();
 
-const href = computed(() => buildMatchPath(props.match, props.match.id));
+const href = buildMatchPath(props.match, props.match.id);
 
-const meta = computed(() => formatMatchMeta(props.match));
+const meta = formatMatchMeta(props.match);
 
 const isPlayed = computed(() => Boolean(props.result?.is_played));
 

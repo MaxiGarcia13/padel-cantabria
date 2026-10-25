@@ -12,8 +12,9 @@ Do not wrap cheap, synchronous derives in `computed` or `watch`. Prefer plain `c
 
 | Use | When |
 | --- | --- |
-| Plain `const` / inline | Cheap sync value from props (paths, labels, simple maps) |
-| `computed` | Result depends on reactive state, is reused, or would otherwise re-run non-trivial work in the template |
+| Plain `const` / inline | Cheap sync value from stable props (paths, static variant, maps) |
+| Template expression | Cheap derive from props that can change (`formatX(prop)`, class ternaries) |
+| `computed` | Reactive deps + reuse, or non-trivial work worth caching |
 | `watch` | Side effects only (fetch, DOM, navigate, reset unrelated state) |
 
 ## Avoid

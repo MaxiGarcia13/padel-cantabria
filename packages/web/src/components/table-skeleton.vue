@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import Skeleton from './skeleton.vue';
 
 const props = withDefaults(
@@ -13,15 +12,14 @@ const props = withDefaults(
   },
 );
 
-const rowIndexes = computed(() =>
-  Array.from({ length: props.rows }, (_, index) => index),
+const rowIndexes = Array.from({ length: props.rows }, (_, index) => index);
+const columnIndexes = Array.from(
+  { length: props.columns },
+  (_, index) => index,
 );
-const columnIndexes = computed(() =>
-  Array.from({ length: props.columns }, (_, index) => index),
-);
-const gridStyle = computed(() => ({
+const gridStyle = {
   gridTemplateColumns: `repeat(${props.columns}, minmax(0, 1fr))`,
-}));
+};
 </script>
 
 <template>

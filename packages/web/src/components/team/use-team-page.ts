@@ -60,9 +60,7 @@ export function useTeamPage(options: {
     return players.value.reduce((sum, player) => sum + player.points, 0);
   });
 
-  const displayLabels = computed(() =>
-    getTeamDisplayLabels(options.leagues, options.team),
-  );
+  const displayLabels = getTeamDisplayLabels(options.leagues, options.team);
 
   const phaseOptions = computed(() =>
     getPhaseOptions(

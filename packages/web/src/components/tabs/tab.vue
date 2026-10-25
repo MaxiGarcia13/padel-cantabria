@@ -1,7 +1,5 @@
 <script setup lang="ts" generic="T extends string | number">
-import { computed } from 'vue';
-
-const props = defineProps<{
+defineProps<{
   value: T;
   label: string;
   secondary?: string;
@@ -11,12 +9,6 @@ const props = defineProps<{
 const emit = defineEmits<{
   select: [value: T];
 }>();
-
-const buttonClass = computed(() =>
-  props.active
-    ? 'bg-background font-medium text-foreground'
-    : 'bg-transparent font-normal text-foreground/70',
-);
 </script>
 
 <template>
@@ -25,7 +17,11 @@ const buttonClass = computed(() =>
     role="tab"
     :aria-selected="active"
     class="min-w-0 flex-1 rounded-xl px-4 py-2 text-sm transition-colors"
-    :class="buttonClass"
+    :class="
+      active
+        ? 'bg-background font-medium text-foreground'
+        : 'bg-transparent font-normal text-foreground/70'
+    "
     @click="emit('select', value)"
   >
     <span class="flex flex-col items-center text-center leading-tight">

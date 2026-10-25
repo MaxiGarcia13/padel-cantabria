@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { TeamWithStandings } from '@padel-cantabria/database';
 import { formatStandingValue, getPositionTrend } from '@padel-cantabria/shared';
-import { computed } from 'vue';
 import TableRow from '@/components/table/table-row.vue';
 import { buildTeamPath } from '@/server/load-category-matches';
 import PositionTrend from './position-trend.vue';
@@ -10,8 +9,9 @@ const props = defineProps<{
   team: TeamWithStandings;
 }>();
 
-const trend = computed(() =>
-  getPositionTrend(props.team.position, props.team.previous_position),
+const trend = getPositionTrend(
+  props.team.position,
+  props.team.previous_position,
 );
 
 const href = buildTeamPath(props.team.id);

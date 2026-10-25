@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useTemplateRef } from 'vue';
+import { useTemplateRef } from 'vue';
 import Button from '@/components/button.vue';
 import Dialog from '@/components/dialog.vue';
 import ZoomIcon from '@/components/icons/zoom-icon.vue';
@@ -24,7 +24,7 @@ const dialogRef = useTemplateRef<{
   close: () => void;
 }>('dialog');
 
-const isHeader = computed(() => props.variant === 'header');
+const isHeader = props.variant === 'header';
 
 function openDialog(): void {
   dialogRef.value?.showModal();

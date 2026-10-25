@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-
 const props = withDefaults(
   defineProps<{
     variant?: 'primary' | 'outline' | 'ghost';
@@ -32,15 +30,13 @@ const sizeClassName: Record<NonNullable<typeof props.size>, string> = {
   'icon-sm': 'size-8',
 };
 
-const className = computed(() =>
-  [
-    'inline-flex shrink-0 cursor-pointer items-center justify-center rounded-xl transition-colors',
-    variantClassName[props.variant],
-    sizeClassName[props.size],
-  ]
-    .filter(Boolean)
-    .join(' '),
-);
+const className = [
+  'inline-flex shrink-0 cursor-pointer items-center justify-center rounded-xl transition-colors',
+  variantClassName[props.variant],
+  sizeClassName[props.size],
+]
+  .filter(Boolean)
+  .join(' ');
 </script>
 
 <template>

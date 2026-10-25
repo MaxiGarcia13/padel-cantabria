@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useTemplateRef } from 'vue';
+import { useTemplateRef } from 'vue';
 import Button from '@/components/button.vue';
 import XIcon from '@/components/icons/x-icon.vue';
 import { useClickOutside } from '@/composables/use-click-outside';
@@ -17,16 +17,14 @@ const dialogRef = useTemplateRef<HTMLDialogElement>('dialog');
 
 useClickOutside(dialogRef, close);
 
-const isPlain = computed(() => props.variant === 'plain');
+const isPlain = props.variant === 'plain';
 
-const dialogClassName = computed(() =>
-  [
-    'm-auto box-border max-h-[90dvh] w-[calc(100%-2rem)] max-w-3xl text-foreground backdrop:bg-background/80 backdrop:backdrop-blur-sm',
-    isPlain.value
-      ? 'overflow-visible border-0 bg-transparent p-0 shadow-none'
-      : 'overflow-y-auto rounded-xl border border-border bg-surface p-6 shadow-lg',
-  ].join(' '),
-);
+const dialogClassName = [
+  'm-auto box-border max-h-[90dvh] w-[calc(100%-2rem)] max-w-3xl text-foreground backdrop:bg-background/80 backdrop:backdrop-blur-sm',
+  isPlain
+    ? 'overflow-visible border-0 bg-transparent p-0 shadow-none'
+    : 'overflow-y-auto rounded-xl border border-border bg-surface p-6 shadow-lg',
+].join(' ');
 
 function showModal() {
   dialogRef.value?.showModal();
