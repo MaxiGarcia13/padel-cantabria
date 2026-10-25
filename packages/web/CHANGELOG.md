@@ -1,3 +1,19 @@
+## 0.6.0 (2026-10-25)
+
+### 🚀 Features
+
+- Add dark mode support to app layout ([8f3326f](https://github.com/MaxiGarcia13/padel-cantabria/commit/8f3326f))
+- Implement theme toggle functionality and enhance styling ([b0558f1](https://github.com/MaxiGarcia13/padel-cantabria/commit/b0558f1))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/shared to 0.3.0
+- Updated @padel-cantabria/database to 0.3.0
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.5.0 (2026-10-25)
 
 ### 🚀 Features
