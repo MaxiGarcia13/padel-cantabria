@@ -10,7 +10,7 @@ const props = defineProps<{
 <template>
   <td
     data-slot="table-cell"
-    :class="cn('px-4 py-4 align-middle whitespace-nowrap', props.class)"
+    :class="cn('px-2 py-4 align-middle whitespace-nowrap', props.class)"
   >
     <slot />
   </td>

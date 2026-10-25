@@ -16,10 +16,10 @@ const trend = getPositionTrend(
 
 <template>
   <TableRow>
-    <TableCell class="text-center font-medium text-foreground">
+    <TableCell class="w-12 text-center font-medium text-foreground">
       {{ formatStandingValue(player.position) }}
     </TableCell>
-    <TableCell class="text-center">
+    <TableCell class="w-8 text-center">
       <PositionTrend :trend="trend" />
     </TableCell>
     <TableCell class="font-medium text-foreground">

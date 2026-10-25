@@ -5,10 +5,10 @@ import { TableHead, TableHeader, TableRow } from '@/components/ui/table';
 <template>
   <TableHeader>
     <TableRow>
-      <TableHead>
+      <TableHead class="w-12 text-center">
         Pos.
       </TableHead>
-      <TableHead />
+      <TableHead class="w-8" />
       <TableHead>
         Equipo
       </TableHead>
