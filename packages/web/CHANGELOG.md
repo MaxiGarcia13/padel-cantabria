@@ -1,3 +1,17 @@
+## 0.0.23 (2026-10-25)
+
+### 🐞 Fixes
+
+- Update autocomplete component to use v-model for search term ([ef5f569](https://github.com/MaxiGarcia13/padel-cantabria/commit/ef5f569))
+
+### 🔄 Refactors
+
+- Simplify autocomplete component by removing unused props ([24c5540](https://github.com/MaxiGarcia13/padel-cantabria/commit/24c5540))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.22 (2026-10-25)
 
 ### 🚀 Features
