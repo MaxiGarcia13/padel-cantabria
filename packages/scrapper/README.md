@@ -87,6 +87,8 @@ Scheduled workflows stagger load on the federation site:
 
 | Workflow              | When (UTC)      | Scope                                 |
 | --------------------- | --------------- | ------------------------------------- |
+| `scrape-results.yml`  | Monday 14:00    | Masculine (`SCRAPE_GENDERS_TUESDAY`)  |
+| `scrape-results.yml`  | Monday 15:00    | Feminine (`SCRAPE_GENDERS_WEDNESDAY`) |
 | `scrape-players.yml`  | Tuesday 04:00   | Masculine (`SCRAPE_GENDERS_TUESDAY`)  |
 | `scrape-calendar.yml` | Tuesday 05:00   | All categories                        |
 | `scrape-players.yml`  | Wednesday 04:00 | Feminine (`SCRAPE_GENDERS_WEDNESDAY`) |
@@ -97,4 +99,4 @@ Set these **repository variables** in GitHub Actions (exact federation gender va
 - `SCRAPE_GENDERS_WEDNESDAY` — feminine gender value(s)
 - `LEAGUE_IDS` — optional, same as local `.env`
 
-Manual `workflow_dispatch` on players accepts an optional `genders` input (empty = all). Inter-request delay uses the scraper default unless `SCRAPE_DELAY_MS` is passed via prepare-scrape.
+Manual `workflow_dispatch` on players and results accepts an optional `genders` input (empty = all). Inter-request delay uses the scraper default unless `SCRAPE_DELAY_MS` is passed via prepare-scrape.
