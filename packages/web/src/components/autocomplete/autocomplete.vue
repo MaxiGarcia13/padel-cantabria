@@ -83,18 +83,17 @@ defineExpose({ close });
   <Combobox
     :model-value="selectedItem"
     :open="isOpen"
-    :search-term="query"
     by="value"
     :ignore-filter="true"
     :open-on-focus="true"
     :disabled="disabled || loading"
     @update:model-value="onModelUpdate"
     @update:open="isOpen = $event"
-    @update:search-term="query = $event"
   >
     <ComboboxAnchor class="relative w-full">
       <ComboboxInput
         :id="id"
+        v-model="query"
         :placeholder="placeholder"
         autocomplete="off"
         :autofocus="defaultOpen"
