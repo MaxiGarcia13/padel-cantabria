@@ -49,13 +49,16 @@ watch(
 );
 
 const { data: leagues } = useLeagues();
-const { data: teams, isPending, isError } = useSearchTeams(
+const { data: teams, isFetching, isError } = useSearchTeams(
   searchQuery,
   () => props.leagueId,
 );
 const { entries, add, remove } = useTeamSearchHistory();
 
 const isQueryEmpty = computed(() => !query.value.trim());
+const isSearching = computed(
+  () => !isQueryEmpty.value && isFetching.value,
+);
 
 const items = computed<AutocompleteItem[]>(() => {
   if (isQueryEmpty.value) {
@@ -129,7 +132,7 @@ function onSelect(item: AutocompleteItem): void {
 
 defineExpose({
   selectedTeam,
-  isPending,
+  isSearching,
   isError,
 });
 </script>
@@ -143,6 +146,7 @@ defineExpose({
     :items="items"
     :disabled="isError"
     :loading="loading"
+    :searching="isSearching"
     :default-open="defaultOpen"
     @select="onSelect"
   >

@@ -40,13 +40,15 @@ const {
       :display-labels="displayLabels"
     />
 
-    <div class="w-full max-w-xs">
+    <div
+      v-if="phaseOptions.length > 1"
+      class="w-full max-w-xs"
+    >
       <Select
         id="team-phase"
         :model-value="phase"
         label="Fase"
         :options="phaseOptions"
-        :disabled="phaseOptions.length === 0"
         @update:model-value="onPhaseChange"
       />
     </div>

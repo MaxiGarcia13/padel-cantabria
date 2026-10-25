@@ -3,7 +3,6 @@ import type { League, SelectOption } from '@padel-cantabria/database';
 import LoaderIcon from '@/components/icons/loader-icon.vue';
 import Select from '@/components/select.vue';
 import { Button } from '@/components/ui/button';
-import LeagueSelect from './league-select.vue';
 import SearcherSkeleton from './searcher-skeleton.vue';
 
 defineProps<{
@@ -12,7 +11,6 @@ defineProps<{
   errorMessage: string | null;
   isNavigating: boolean;
   canSearch: boolean;
-  leagueId: string;
   genderValue: string;
   phaseValue: string;
   genders: SelectOption[];
@@ -22,7 +20,6 @@ defineProps<{
 
 const emit = defineEmits<{
   'submit': [];
-  'update:leagueId': [value: string];
   'update:genderValue': [value: string];
   'update:phaseValue': [value: string];
 }>();
@@ -53,24 +50,19 @@ const categoryValue = defineModel<string>('categoryValue', { required: true });
     class="flex flex-col gap-4 lg:flex-row lg:items-end"
     @submit.prevent="emit('submit')"
   >
-    <div class="grid min-w-0 flex-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      <LeagueSelect
-        :model-value="leagueId"
-        :leagues="leagues"
-        :disabled="isNavigating"
-        @update:model-value="emit('update:leagueId', $event)"
-      />
-
+    <div class="grid min-w-0 flex-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <Select
+        v-if="genders.length > 1"
         id="gender"
         :model-value="genderValue"
         label="Género"
         :options="genders"
-        :disabled="!leagueId || isNavigating"
+        :disabled="isNavigating"
         @update:model-value="emit('update:genderValue', $event)"
       />
 
       <Select
+        v-if="phases.length > 1"
         id="phase"
         :model-value="phaseValue"
         label="Fase"
@@ -80,6 +72,7 @@ const categoryValue = defineModel<string>('categoryValue', { required: true });
       />
 
       <Select
+        v-if="categories.length > 1"
         id="category"
         v-model="categoryValue"
         label="Categoría"

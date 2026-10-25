@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import ChevronDownIcon from '@/components/icons/chevron-down-icon.vue';
 import XIcon from '@/components/icons/x-icon.vue';
 import { Button } from '@/components/ui/button';
+import LeagueSelect from './league-select.vue';
 import SearcherFiltersForm from './searcher-filters-form.vue';
 import TeamAutocomplete from './team-autocomplete.vue';
 import { useSearcherForm } from './use-searcher-form';
@@ -46,6 +48,10 @@ const {
   categoryValue: props.initialCategoryValue,
   filtersExpanded: props.closable ? false : undefined,
 });
+
+const showLeagueSelect = computed(
+  () => (leagues.value?.length ?? 0) > 1,
+);
 </script>
 
 <template>
@@ -58,6 +64,19 @@ const {
           :loading="isNavigating"
           :default-open="closable"
           @select="onTeamSelect"
+        />
+      </div>
+
+      <div
+        v-if="showLeagueSelect"
+        class="w-40 shrink-0 sm:w-52"
+      >
+        <LeagueSelect
+          :model-value="leagueId"
+          :leagues="leagues!"
+          hide-label
+          :disabled="isNavigating"
+          @update:model-value="onLeagueChange"
         />
       </div>
 
@@ -105,14 +124,12 @@ const {
         :error-message="errorMessage"
         :is-navigating="isNavigating"
         :can-search="canSearch"
-        :league-id="leagueId"
         :gender-value="genderValue"
         :phase-value="phaseValue"
         :genders="genders"
         :phases="phases"
         :categories="categories"
         @submit="onSearchFilters"
-        @update:league-id="onLeagueChange"
         @update:gender-value="onGenderChange"
         @update:phase-value="onPhaseChange"
       />

@@ -85,6 +85,65 @@ export function useSearchFilters(
     { immediate: true },
   );
 
+  watch(
+    genders,
+    (genderOptions) => {
+      if (genderOptions.length === 1) {
+        genderValue.value = genderOptions[0].value;
+        return;
+      }
+
+      if (
+        genderValue.value
+        && !genderOptions.some((gender) => gender.value === genderValue.value)
+      ) {
+        genderValue.value = getDefaultGenderValue(genderOptions);
+        phaseValue.value = '';
+        categoryValue.value = '';
+      }
+    },
+    { immediate: true },
+  );
+
+  watch(
+    phases,
+    (phaseOptions) => {
+      if (phaseOptions.length === 1) {
+        phaseValue.value = phaseOptions[0].value;
+        return;
+      }
+
+      if (
+        phaseValue.value
+        && !phaseOptions.some((phase) => phase.value === phaseValue.value)
+      ) {
+        phaseValue.value = '';
+        categoryValue.value = '';
+      }
+    },
+    { immediate: true },
+  );
+
+  watch(
+    categories,
+    (categoryOptions) => {
+      if (categoryOptions.length === 1) {
+        categoryValue.value = categoryOptions[0].value;
+        return;
+      }
+
+      if (
+        categoryValue.value
+        && !categoryOptions.some(
+          (category) => category.value === categoryValue.value,
+        )
+      ) {
+        categoryValue.value = '';
+      }
+    },
+    { immediate: true },
+  );
+
   function onLeagueChange(value: string): void {
     leagueId.value = value;
     genderValue.value = getDefaultGenderValue(

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AcceptableValue } from 'reka-ui';
 import type { AutocompleteItem } from './types';
-import { computed, ref, useSlots } from 'vue';
+import { computed, ref, useSlots, watch } from 'vue';
 import LoaderIcon from '@/components/icons/loader-icon.vue';
 import {
   Combobox,
@@ -19,11 +19,13 @@ const props = withDefaults(
     items: AutocompleteItem[];
     disabled?: boolean;
     loading?: boolean;
+    searching?: boolean;
     defaultOpen?: boolean;
   }>(),
   {
     disabled: false,
     loading: false,
+    searching: false,
     defaultOpen: false,
   },
 );
@@ -44,7 +46,13 @@ const canShowPopup = computed(() => {
     return Boolean(slots.empty);
   }
 
-  return props.items.length > 0;
+  return props.searching || props.items.length > 0;
+});
+
+watch(canShowPopup, (canShow) => {
+  if (canShow && !isQueryEmpty.value) {
+    isOpen.value = true;
+  }
 });
 
 function isAutocompleteItem(value: AcceptableValue): value is AutocompleteItem {
@@ -113,6 +121,14 @@ defineExpose({ close });
         />
 
         <template v-else>
+          <div
+            v-if="searching && items.length === 0"
+            class="flex items-center justify-center gap-2 px-4 py-2 text-sm text-muted"
+          >
+            <LoaderIcon class="size-4 animate-spin" />
+            Buscando…
+          </div>
+
           <ComboboxItem
             v-for="item in items"
             :key="item.value"

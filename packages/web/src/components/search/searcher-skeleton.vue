@@ -8,9 +8,9 @@ import { Skeleton } from '@/components/ui/skeleton';
     role="status"
     aria-label="Cargando ligas"
   >
-    <div class="grid min-w-0 flex-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="grid min-w-0 flex-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <div
-        v-for="index in 4"
+        v-for="index in 3"
         :key="index"
         class="flex flex-col gap-2"
       >

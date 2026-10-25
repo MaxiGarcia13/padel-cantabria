@@ -3,10 +3,16 @@ import type { League } from '@padel-cantabria/database';
 import { computed } from 'vue';
 import Select from '@/components/select.vue';
 
-const props = defineProps<{
-  leagues: League[];
-  disabled?: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    leagues: League[];
+    disabled?: boolean;
+    hideLabel?: boolean;
+  }>(),
+  {
+    hideLabel: false,
+  },
+);
 
 const model = defineModel<string>({ required: true });
 
@@ -25,5 +31,6 @@ const options = computed(() =>
     label="Liga"
     :options="options"
     :disabled="disabled"
+    :hide-label="hideLabel"
   />
 </template>

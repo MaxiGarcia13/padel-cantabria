@@ -6,13 +6,19 @@ import {
   NativeSelectOption,
 } from '@/components/ui/native-select';
 
-defineProps<{
-  id: string;
-  label: string;
-  modelValue: string;
-  options: SelectOption[];
-  disabled?: boolean;
-}>();
+withDefaults(
+  defineProps<{
+    id: string;
+    label: string;
+    modelValue: string;
+    options: SelectOption[];
+    disabled?: boolean;
+    hideLabel?: boolean;
+  }>(),
+  {
+    hideLabel: false,
+  },
+);
 
 const emit = defineEmits<{
   'update:modelValue': [value: string];
@@ -26,6 +32,7 @@ function onUpdate(value: unknown): void {
 <template>
   <Field>
     <FieldLabel
+      v-if="!hideLabel"
       :for="id"
       class="text-muted"
     >
@@ -35,6 +42,7 @@ function onUpdate(value: unknown): void {
     <NativeSelect
       :id="id"
       :model-value="modelValue"
+      :aria-label="hideLabel ? label : undefined"
       :disabled="disabled || options.length === 0"
       @update:model-value="onUpdate"
     >
