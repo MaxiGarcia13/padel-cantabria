@@ -1,3 +1,13 @@
+## 0.7.0 (2026-10-25)
+
+### 🚀 Features
+
+- Enhance select and autocomplete components with label visibility and loading states ([bbdb34d](https://github.com/MaxiGarcia13/padel-cantabria/commit/bbdb34d))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.6.2 (2026-10-25)
 
 ### 🐞 Fixes
