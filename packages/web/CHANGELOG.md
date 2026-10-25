@@ -1,3 +1,14 @@
+## 0.0.21 (2026-10-25)
+
+### 🎨 Styles
+
+- Update table component widths for improved layout ([6dcdd42](https://github.com/MaxiGarcia13/padel-cantabria/commit/6dcdd42))
+- Improve team options display in match page ([a2edfe8](https://github.com/MaxiGarcia13/padel-cantabria/commit/a2edfe8))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.20 (2026-10-25)
 
 ### 🚀 Features
