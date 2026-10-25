@@ -8,10 +8,12 @@
     "scrape:leagues": "tsx --env-file=../../.env src/scripts/league/index.ts",
     "scrape:teams": "tsx --env-file=../../.env src/scripts/teams/index.ts",
     "scrape:players": "tsx --env-file=../../.env src/scripts/players/index.ts",
-    "scrape:calendar": "tsx --env-file=../../.env src/scripts/calendar/index.ts"
+    "scrape:calendar": "tsx --env-file=../../.env src/scripts/calendar/index.ts",
+    "scrape:results": "tsx --env-file=../../.env src/scripts/results/index.ts"
   },
   "dependencies": {
     "@padel-cantabria/database": "workspace:*",
+    "@padel-cantabria/shared": "workspace:*",
     "puppeteer": "^25.13.0"
   },
   "devDependencies": {

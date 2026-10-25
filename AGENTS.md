@@ -37,6 +37,7 @@ pnpm scrape:leagues
 pnpm scrape:teams
 pnpm scrape:players
 pnpm scrape:calendar
+pnpm scrape:results
 pnpm dev                 # web app
 pnpm assistant:build     # build Vue chat UI into assistant
 pnpm assistant           # API + /mcp + chat UI (default :3001)

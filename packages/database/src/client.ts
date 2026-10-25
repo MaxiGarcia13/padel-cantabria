@@ -15,6 +15,7 @@ import type {
 } from './types/team-standings.js';
 import type { Team } from './types/team.js';
 import { connect } from '@tursodatabase/serverless';
+import { getAllMatches } from './repositories/get-all-matches.js';
 import { getCategories } from './repositories/get-categories.js';
 import { getLeagues } from './repositories/get-leagues.js';
 import { getMatchById } from './repositories/get-match-by-id.js';
@@ -100,6 +101,7 @@ export function createClient(params: TursoConfig) {
     getTopPlayers: (params: GetTopPlayersParams) =>
       getTopPlayers(connection, params),
     getMatches: (category: CategoryKey) => getMatches(connection, category),
+    getAllMatches: () => getAllMatches(connection),
     getMatchById: (category: CategoryKey, id: number) =>
       getMatchById(connection, category, id),
     getMatchResults: (category: CategoryKey, matchIds?: number[]) =>

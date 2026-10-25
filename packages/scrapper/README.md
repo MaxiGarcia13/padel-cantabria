@@ -25,12 +25,12 @@ SCRAPE_GENDERS=M
 SCRAPE_DELAY_MS=1500
 ```
 
-`SCRAPE_DELAY_MS` applies to teams, players, and calendar scrapers. `SCRAPE_GENDERS` applies only to `scrape:players` (empty = all genders).
+`SCRAPE_DELAY_MS` applies to teams, players, calendar, and results scrapers. `SCRAPE_GENDERS` applies only to `scrape:players` (empty = all genders).
 
 Apply the schema first (from repo root):
 
 ```bash
-pnpm migrate
+pnpm db:migrate
 ```
 
 `migrate` only runs `CREATE TABLE IF NOT EXISTS`. It does **not** rename columns or migrate old data. After a breaking schema change, wipe and recreate:
@@ -51,15 +51,17 @@ Run from the **repo root**. Order matters: each step depends on data from the pr
 | `pnpm scrape:teams`    | Scrapes teams per category (`Liga_ListadoEquipos`) | After leagues exist; before calendar/players |
 | `pnpm scrape:players`  | Scrapes team rosters (`Liga_DetalleEquipo`)        | After teams exist                            |
 | `pnpm scrape:calendar` | Scrapes matches and links them to team IDs         | After teams exist                            |
+| `pnpm scrape:results`  | Scrapes recent played results (`Liga_Resultado`)   | After calendar; current/previous weekend     |
 
 ## Full sync (first time or after schema recreate)
 
 ```bash
-pnpm db:reset   # or `pnpm migrate` on an empty DB
+pnpm db:reset   # or `pnpm db:migrate` on an empty DB
 pnpm scrape:leagues
 pnpm scrape:teams
 pnpm scrape:players
 pnpm scrape:calendar
+pnpm scrape:results
 ```
 
 ## When to re-run individual scrapers
@@ -68,12 +70,14 @@ pnpm scrape:calendar
 2. **`scrape:teams`** — team list changed (inscriptions, names, confirmed status). Required before calendar/players if new teams appeared.
 3. **`scrape:players`** — roster ranking/points updates. Re-runs keep `previous_position` / `previous_points` from the last scrape.
 4. **`scrape:calendar`** — match dates/results/schedule updates. Resolves home/away team names to IDs in memory; fails if a team was not scraped yet.
+5. **`scrape:results`** — lineups and scores for matches already played in the current or previous weekend. Skips pages that are not ready yet.
 
 Typical refresh when only fixtures changed:
 
 ```bash
 pnpm scrape:teams
 pnpm scrape:calendar
+pnpm scrape:results
 ```
 
 ## GitHub Actions schedule

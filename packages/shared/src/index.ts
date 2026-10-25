@@ -8,14 +8,17 @@ export { inferGenderFromText, normalizeGender } from './gender/index.js';
 export {
   formatMatchMeta,
   formatMatchMetaParts,
+  getActiveWeekendRange,
   getClosestMatches,
   getMatchSortTime,
+  getWeekendRangeContaining,
   groupMatchesByDate,
   type MatchDateGroup,
   type MatchDateRange,
   parseMatchDateRange,
   type SeasonRange,
   sortMatchesByDate,
+  type WeekendRange,
 } from './matches/index.js';
 export {
   formatStandingValue,

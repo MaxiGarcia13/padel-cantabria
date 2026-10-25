@@ -3,6 +3,11 @@ export {
   formatMatchMetaParts,
 } from './format-match-meta.js';
 export {
+  getActiveWeekendRange,
+  getWeekendRangeContaining,
+  type WeekendRange,
+} from './get-active-weekend-range.js';
+export {
   getClosestMatches,
   sortMatchesByDate,
 } from './get-closest-matches.js';
