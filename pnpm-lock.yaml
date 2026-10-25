@@ -320,6 +320,9 @@ importers:
       '@padel-cantabria/database':
         specifier: workspace:*
         version: link:../database
+      '@padel-cantabria/shared':
+        specifier: workspace:*
+        version: link:../shared
       puppeteer:
         specifier: ^25.13.0
         version: 25.13.0

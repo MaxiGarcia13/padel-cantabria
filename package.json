@@ -35,6 +35,7 @@
     "scrape:teams": "pnpm --filter @padel-cantabria/scrapper scrape:teams",
     "scrape:players": "pnpm --filter @padel-cantabria/scrapper scrape:players",
     "scrape:calendar": "pnpm --filter @padel-cantabria/scrapper scrape:calendar",
+    "scrape:results": "pnpm --filter @padel-cantabria/scrapper scrape:results",
 
     "release": "nx release --skip-publish",
     "release:dry": "nx release --dry-run"
