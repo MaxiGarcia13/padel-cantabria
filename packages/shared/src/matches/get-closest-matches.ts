@@ -1,9 +1,12 @@
 import type { Match } from '@padel-cantabria/database';
+import type { WeekendRange } from './get-active-weekend-range.js';
 import type { SeasonRange } from './parse-match-date/index.js';
 import {
-  getMatchSortTime,
+  getActiveWeekendRange,
+  getWeekendRangeContaining,
 
-} from './parse-match-date/index.js';
+} from './get-active-weekend-range.js';
+import { getMatchSortTime } from './parse-match-date/index.js';
 
 const DEFAULT_CLOSEST_LIMIT = 5;
 
@@ -44,6 +47,40 @@ function toSortedMatches(
     .sort(compareMatches);
 }
 
+function matchesInRange(
+  sorted: MatchWithSortTime[],
+  range: WeekendRange,
+): MatchWithSortTime[] {
+  return sorted.filter(
+    (entry) =>
+      entry.sortTime !== null
+      && entry.sortTime >= range.start
+      && entry.sortTime < range.end,
+  );
+}
+
+function resolveWeekendMatches(
+  sorted: MatchWithSortTime[],
+  now: Date,
+): MatchWithSortTime[] {
+  const activeWeekend = getActiveWeekendRange(now);
+  const inActiveWeekend = matchesInRange(sorted, activeWeekend);
+
+  if (inActiveWeekend.length > 0) {
+    return inActiveWeekend;
+  }
+
+  const nextMatch = sorted.find(
+    (entry) => entry.sortTime !== null && entry.sortTime >= activeWeekend.start,
+  );
+
+  if (!nextMatch || nextMatch.sortTime === null) {
+    return [];
+  }
+
+  return matchesInRange(sorted, getWeekendRangeContaining(nextMatch.sortTime));
+}
+
 export function getClosestMatches(
   matches: Match[],
   season: SeasonRange,
@@ -51,16 +88,7 @@ export function getClosestMatches(
   now = new Date(),
 ): Match[] {
   const sorted = toSortedMatches(matches, season);
-  const todayUtc = Date.UTC(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate(),
-  );
-
-  const upcoming = sorted.filter(
-    (entry) => entry.sortTime !== null && entry.sortTime >= todayUtc,
-  );
-  const selected = upcoming.length > 0 ? upcoming : sorted;
+  const selected = resolveWeekendMatches(sorted, now);
 
   return selected.slice(0, limit).map((entry) => entry.match);
 }
