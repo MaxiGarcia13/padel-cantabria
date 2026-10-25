@@ -31,7 +31,7 @@ const errorMessage = computed(() =>
     <TableSkeleton
       v-if="showSkeleton"
       :rows="8"
-      :columns="8"
+      :columns="7"
     />
 
     <p

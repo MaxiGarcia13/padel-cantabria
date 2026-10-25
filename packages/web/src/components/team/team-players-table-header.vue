@@ -10,10 +10,7 @@ import { TableHead, TableHeader, TableRow } from '@/components/ui/table';
       </TableHead>
       <TableHead class="w-8" />
       <TableHead>
-        Apellidos
-      </TableHead>
-      <TableHead>
-        Nombre
+        Jugador
       </TableHead>
       <TableHead class="text-center">
         Puntos
