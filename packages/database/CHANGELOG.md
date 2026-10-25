@@ -1,3 +1,13 @@
+## 0.1.0 (2026-10-25)
+
+### 🚀 Features
+
+- Enhance player statistics and history display ([991b8ff](https://github.com/MaxiGarcia13/padel-cantabria/commit/991b8ff))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.12 (2026-10-25)
 
 This was a version bump only for @padel-cantabria/database to align it with other projects, there were no code changes.

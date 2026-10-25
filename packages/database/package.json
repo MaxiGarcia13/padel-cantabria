@@ -1,7 +1,7 @@
 {
   "name": "@padel-cantabria/database",
   "type": "module",
-  "version": "0.0.12",
+  "version": "0.1.0",
   "private": true,
   "exports": {
     ".": "./src/index.ts"

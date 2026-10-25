@@ -1,3 +1,10 @@
+## 0.1.0 (2026-10-25)
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/shared to 0.1.0
+- Updated @padel-cantabria/database to 0.1.0
+
 ## 0.0.9 (2026-10-25)
 
 ### 🔄 Refactors
