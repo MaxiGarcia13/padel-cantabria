@@ -1,0 +1,57 @@
+---
+import BackButton from '@/components/back-button.vue';
+import Header from '@/components/header.astro';
+import PlayerPage from '@/components/player/player-page.vue';
+import AppLayout from '@/layouts/app-layout.astro';
+import { buildTeamPath } from '@/routes';
+import { getDb } from '@/server/db';
+import { loadTeamPlayerPageData } from '@/server/load-team-player-page-data';
+
+export const prerender = false;
+
+const teamId = Number(Astro.params.id);
+const surname = Astro.params.surname ? decodeURIComponent(Astro.params.surname) : '';
+const name = Astro.params.name ? decodeURIComponent(Astro.params.name) : '';
+
+if (!Number.isFinite(teamId) || !surname || !name) {
+  return Astro.redirect('/');
+}
+
+const db = getDb();
+
+const [team, leagues] = await Promise.all([db.getTeamById(teamId), db.getLeagues()]);
+
+if (!team) {
+  return Astro.redirect('/');
+}
+
+const [initialPayload, phases] = await Promise.all([
+  loadTeamPlayerPageData(db, team, surname, name),
+  db.getTeamPhases(teamId),
+]);
+
+if (!initialPayload) {
+  return Astro.redirect(buildTeamPath(teamId));
+}
+
+const player = initialPayload.player;
+const displayName = `${player.name} ${player.surname}`;
+const phase = phases[0] ?? '';
+---
+
+<AppLayout title={`${displayName} · ${team.name} · Pádel Cantabria`}>
+  <Header
+    teamName={team.name}
+    league={String(team.league_id)}
+    gender={team.gender}
+    phase={phase}
+    category={team.category}
+  />
+
+  <div class="mx-auto flex w-full max-w-6xl flex-col gap-4 p-4" transition:animate="fade">
+    <BackButton client:idle />
+    <main>
+      <PlayerPage client:load team={team} player={player} leagues={leagues} initialPayload={initialPayload} />
+    </main>
+  </div>
+</AppLayout>

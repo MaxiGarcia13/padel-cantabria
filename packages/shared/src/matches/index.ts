@@ -4,6 +4,13 @@ export {
   type TeamPlayerWithMatchStats,
 } from './attach-player-match-stats.js';
 export {
+  computePlayerPageStats,
+  type PlayerCourtAppearance,
+  type PlayerPageStats,
+  type PlayerPartnerStats,
+  type PlayerSideSplit,
+} from './compute-player-page-stats.js';
+export {
   computeTeamCoupleStats,
   type TeamCouplePlayer,
   type TeamCoupleStats,

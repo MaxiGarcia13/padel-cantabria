@@ -7,6 +7,7 @@ export { formatNumber } from './format/index.js';
 export { inferGenderFromText, normalizeGender } from './gender/index.js';
 export {
   attachPlayerMatchStats,
+  computePlayerPageStats,
   computeTeamCoupleStats,
   formatMatchMeta,
   formatMatchMetaParts,
@@ -22,7 +23,11 @@ export {
   type MatchResultSummary,
   type MatchWinnerSide,
   parseMatchDateRange,
+  type PlayerCourtAppearance,
   type PlayerMatchStats,
+  type PlayerPageStats,
+  type PlayerPartnerStats,
+  type PlayerSideSplit,
   type SeasonRange,
   sortMatchesByDate,
   summarizeMatchResult,

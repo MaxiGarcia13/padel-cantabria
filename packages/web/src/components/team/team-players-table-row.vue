@@ -3,6 +3,7 @@ import type { TeamPlayerWithMatchStats } from '@padel-cantabria/shared';
 import { formatStandingValue, getPositionTrend } from '@padel-cantabria/shared';
 import PositionTrend from '@/components/standings/position-trend.vue';
 import { TableCell, TableRow } from '@/components/ui/table';
+import { buildPlayerPath } from '@/routes';
 
 const props = defineProps<{
   player: TeamPlayerWithMatchStats;
@@ -12,6 +13,9 @@ const trend = getPositionTrend(
   props.player.position,
   props.player.previous_position,
 );
+
+const href = buildPlayerPath(props.player.team_id, props.player);
+const displayName = `${props.player.name} ${props.player.surname}`;
 </script>
 
 <template>
@@ -23,9 +27,13 @@ const trend = getPositionTrend(
       <PositionTrend :trend="trend" />
     </TableCell>
     <TableCell class="max-w-56 min-w-45 whitespace-normal">
-      <span class="font-medium wrap-break-word text-foreground">
-        {{ player.name }} {{ player.surname }}
-      </span>
+      <a
+        :href="href"
+        class="font-medium wrap-break-word text-inherit no-underline hover:underline focus-visible:rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+        :title="displayName"
+      >
+        {{ displayName }}
+      </a>
     </TableCell>
     <TableCell class="text-center text-muted">
       {{ formatStandingValue(player.points) }}

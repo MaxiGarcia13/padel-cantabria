@@ -85,6 +85,7 @@ const errorMessage = computed(() =>
     <TeamCouplesTable
       v-else-if="!errorMessage"
       :couples="couples"
+      :team-id="teamId"
     />
   </div>
 </template>

@@ -42,6 +42,18 @@ export function buildTeamPath(teamId: number): string {
   return `/team/${encodeURIComponent(String(teamId))}`;
 }
 
+export function buildPlayerPath(
+  teamId: number,
+  player: { surname: string; name: string },
+): string {
+  return [
+    buildTeamPath(teamId),
+    'player',
+    encodeURIComponent(player.surname),
+    encodeURIComponent(player.name),
+  ].join('/');
+}
+
 export function buildMatchPath(
   category: CategoryKey,
   matchId: number,

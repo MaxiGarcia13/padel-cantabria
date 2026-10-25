@@ -8,6 +8,7 @@ import TeamCouplesTableRow from './team-couples-table-row.vue';
 
 const props = defineProps<{
   couples: TeamCoupleStats[];
+  teamId: number;
 }>();
 
 const INITIAL_VISIBLE_COUNT = 5;
@@ -46,6 +47,7 @@ function toggleShowAll() {
             v-for="couple in visibleCouples"
             :key="`${couple.player_1.surname}-${couple.player_1.name}-${couple.player_2.surname}-${couple.player_2.name}`"
             :couple="couple"
+            :team-id="teamId"
           />
         </TableBody>
       </Table>

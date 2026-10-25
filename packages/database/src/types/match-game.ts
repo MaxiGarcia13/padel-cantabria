@@ -23,4 +23,5 @@ export interface MatchGame {
 export type MatchGameForTeam = MatchGame & {
   home_team_id: number;
   away_team_id: number;
+  date: string | null;
 };

@@ -98,7 +98,8 @@ export async function getMatchGamesByTeamId(
             match_games.away_player_2,
             match_games.away_player_2_points,
             matches.home_team_id,
-            matches.away_team_id
+            matches.away_team_id,
+            matches.date
           FROM match_games
           INNER JOIN matches
             ON matches.league_id = match_games.league_id
@@ -108,7 +109,7 @@ export async function getMatchGamesByTeamId(
             AND matches.id = match_games.match_id
           WHERE matches.home_team_id = ?
              OR matches.away_team_id = ?
-          ORDER BY match_games.match_id, match_games.game_number
+          ORDER BY matches.date DESC, match_games.match_id DESC, match_games.game_number
         `,
         args: [teamId, teamId],
       },
