@@ -1,3 +1,13 @@
+## 0.0.9 (2026-10-25)
+
+### 🔄 Refactors
+
+- Simplify provider configuration in create-ai-router.ts ([ae1987c](https://github.com/MaxiGarcia13/padel-cantabria/commit/ae1987c))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.8 (2026-10-25)
 
 ### 🧱 Updated Dependencies
