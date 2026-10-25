@@ -30,7 +30,7 @@ const meta = computed(() =>
     <a
       v-else
       :href="buildMatchPath(match, match.id)"
-      class="flex flex-col gap-2 text-inherit no-underline transition-colors hover:opacity-80 focus-visible:rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+      class="flex flex-1 flex-col gap-2 text-inherit no-underline transition-colors hover:opacity-80 focus-visible:rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
     >
       <p class="text-sm font-medium text-foreground">
         {{ match.home_team }}
