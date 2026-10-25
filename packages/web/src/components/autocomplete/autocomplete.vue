@@ -70,8 +70,12 @@ function onModelUpdate(value: AcceptableValue): void {
   }
 
   selectedItem.value = value;
-  query.value = value.label;
   emit('select', value);
+
+  if (query.value !== value.label) {
+    query.value = value.label;
+  }
+
   isOpen.value = false;
 }
 

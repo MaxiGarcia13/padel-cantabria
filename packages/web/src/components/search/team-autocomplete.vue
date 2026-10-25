@@ -30,7 +30,17 @@ const selectedTeam = ref<Team | null>(null);
 const autocompleteRef = ref<{ close: () => void } | null>(null);
 
 const applySearch = debounce((value: string) => {
-  searchQuery.value = value.trim();
+  const trimmed = value.trim();
+
+  if (
+    !trimmed
+    || trimmed !== query.value.trim()
+    || (selectedTeam.value && trimmed === selectedTeam.value.name)
+  ) {
+    return;
+  }
+
+  searchQuery.value = trimmed;
 }, SEARCH_DELAY_MS);
 
 watch(
@@ -38,7 +48,10 @@ watch(
   (value) => {
     const trimmed = value.trim();
 
-    if (!trimmed) {
+    if (
+      !trimmed
+      || (selectedTeam.value && trimmed === selectedTeam.value.name)
+    ) {
       searchQuery.value = '';
       return;
     }
@@ -57,11 +70,14 @@ const { entries, add, remove } = useTeamSearchHistory();
 
 const isQueryEmpty = computed(() => !query.value.trim());
 const isSearching = computed(
-  () => !isQueryEmpty.value && isFetching.value,
+  () =>
+    !isQueryEmpty.value
+    && !selectedTeam.value
+    && isFetching.value,
 );
 
 const items = computed<AutocompleteItem[]>(() => {
-  if (isQueryEmpty.value) {
+  if (isQueryEmpty.value || selectedTeam.value) {
     return [];
   }
 
@@ -112,6 +128,7 @@ watch(
 
 function selectTeam(team: Team): void {
   selectedTeam.value = team;
+  searchQuery.value = '';
   query.value = team.name;
   add(team);
   emit('select', team);
