@@ -17,6 +17,10 @@ export function getTheme(): Theme {
   return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
 }
 
+export function applyStoredTheme(): void {
+  document.documentElement.classList.toggle('dark', getStoredTheme() === 'dark');
+}
+
 export function setTheme(theme: Theme): void {
   document.documentElement.classList.toggle('dark', theme === 'dark');
   themeStorage.setItem(theme);

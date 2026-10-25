@@ -25,7 +25,7 @@ const { title = 'Pádel Cantabria' } = Astro.props;
     <script is:inline>
       (() => {
         function applyTheme() {
-          const stored = localStorage.getItem('theme');
+          const stored = localStorage.getItem('app-storage-theme');
           const theme = stored === 'light' || stored === 'dark' ? stored : 'dark';
           document.documentElement.classList.toggle('dark', theme === 'dark');
         }
