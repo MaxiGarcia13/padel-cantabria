@@ -1,9 +1,11 @@
 ---
-import BackButton from '@/components/back-button.vue';
+import Breadcrumb from '@/components/breadcrumb.vue';
 import MatchesByDate from '@/components/matches/matches-by-date.vue';
 import Header from '@/components/header.astro';
 import AppLayout from '@/layouts/app-layout.astro';
+import { getDb } from '@/server/db';
 import { parseCategoryParams } from '@/routes';
+import { calendarBreadcrumbItems } from '@/utils/breadcrumb-items';
 
 export const prerender = false;
 
@@ -18,13 +20,15 @@ const parsedTeamId = teamParam != null ? Number(teamParam) : undefined;
 const teamId = parsedTeamId != null && Number.isFinite(parsedTeamId) ? parsedTeamId : undefined;
 
 const { league, gender, phase, category } = Astro.params;
+const leagues = await getDb().getLeagues();
+const breadcrumbItems = calendarBreadcrumbItems(leagues, categoryKey);
 ---
 
 <AppLayout title="Calendario · Pádel Cantabria">
   <Header league={league} gender={gender} phase={phase} category={category} />
 
   <div class="mx-auto flex w-full max-w-6xl flex-col gap-4 p-4" transition:animate="fade">
-    <BackButton client:idle />
+    <Breadcrumb items={breadcrumbItems} />
     <main class="flex flex-col gap-6">
       <h1 class="text-lg font-medium text-foreground">Calendario</h1>
       <MatchesByDate client:load category={categoryKey} teamId={teamId} />

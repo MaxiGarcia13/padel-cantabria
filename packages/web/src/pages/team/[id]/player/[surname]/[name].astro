@@ -1,11 +1,12 @@
 ---
-import BackButton from '@/components/back-button.vue';
+import Breadcrumb from '@/components/breadcrumb.vue';
 import Header from '@/components/header.astro';
 import PlayerPage from '@/components/player/player-page.vue';
 import AppLayout from '@/layouts/app-layout.astro';
 import { buildTeamPath } from '@/routes';
 import { getDb } from '@/server/db';
 import { loadTeamPlayerPageData } from '@/server/load-team-player-page-data';
+import { playerBreadcrumbItems } from '@/utils/breadcrumb-items';
 
 export const prerender = false;
 
@@ -37,6 +38,7 @@ if (!initialPayload) {
 const player = initialPayload.player;
 const displayName = `${player.name} ${player.surname}`;
 const phase = phases[0] ?? '';
+const breadcrumbItems = playerBreadcrumbItems(leagues, team, phase, player);
 ---
 
 <AppLayout title={`${displayName} · ${team.name} · Pádel Cantabria`}>
@@ -49,7 +51,7 @@ const phase = phases[0] ?? '';
   />
 
   <div class="mx-auto flex w-full max-w-6xl flex-col gap-4 p-4" transition:animate="fade">
-    <BackButton client:idle />
+    <Breadcrumb items={breadcrumbItems} />
     <main>
       <PlayerPage client:load team={team} player={player} leagues={leagues} initialPayload={initialPayload} />
     </main>

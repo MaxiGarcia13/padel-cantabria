@@ -1,11 +1,12 @@
 ---
 import { summarizeMatchResult } from '@padel-cantabria/shared';
-import BackButton from '@/components/back-button.vue';
+import Breadcrumb from '@/components/breadcrumb.vue';
 import Header from '@/components/header.astro';
 import MatchPage from '@/components/match/match-page.vue';
 import AppLayout from '@/layouts/app-layout.astro';
 import { getDb } from '@/server/db';
 import { parseCategoryParams } from '@/routes';
+import { matchBreadcrumbItems } from '@/utils/breadcrumb-items';
 
 export const prerender = false;
 
@@ -24,13 +25,15 @@ if (!match) {
   return Astro.redirect('/');
 }
 
-const [results, games] = await Promise.all([
+const [results, games, leagues] = await Promise.all([
   db.getMatchResults(categoryKey, [matchId]),
   db.getMatchGames(categoryKey, matchId),
+  db.getLeagues(),
 ]);
 
 const matchResult = results[0] ?? null;
 const result = matchResult ? summarizeMatchResult(matchResult, games) : null;
+const breadcrumbItems = matchBreadcrumbItems(leagues, categoryKey, match);
 
 const title = `${match.home_team} vs ${match.away_team} · Pádel Cantabria`;
 ---
@@ -39,7 +42,7 @@ const title = `${match.home_team} vs ${match.away_team} · Pádel Cantabria`;
   <Header league={String(match.league_id)} gender={match.gender} phase={match.phase} category={match.category} />
 
   <div class="mx-auto flex w-full max-w-6xl flex-col gap-4 p-4" transition:animate="fade">
-    <BackButton client:idle />
+    <Breadcrumb items={breadcrumbItems} />
     <main>
       <MatchPage client:load match={match} result={result} games={games} />
     </main>
