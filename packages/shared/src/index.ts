@@ -6,6 +6,7 @@ export {
 export { formatNumber } from './format/index.js';
 export { inferGenderFromText, normalizeGender } from './gender/index.js';
 export {
+  attachPlayerMatchStats,
   formatMatchMeta,
   formatMatchMetaParts,
   getActiveWeekendRange,
@@ -18,9 +19,11 @@ export {
   type MatchResultSummary,
   type MatchWinnerSide,
   parseMatchDateRange,
+  type PlayerMatchStats,
   type SeasonRange,
   sortMatchesByDate,
   summarizeMatchResult,
+  type TeamPlayerWithMatchStats,
   type WeekendRange,
 } from './matches/index.js';
 export {

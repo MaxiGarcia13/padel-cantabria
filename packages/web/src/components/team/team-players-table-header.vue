@@ -17,5 +17,14 @@ import TableHeader from '@/components/table/table-header.vue';
     <th class="px-4 py-4 text-center font-medium">
       Puntos
     </th>
+    <th class="px-4 py-4 text-center font-medium">
+      Jugados
+    </th>
+    <th class="px-4 py-4 text-center font-medium">
+      Ganados
+    </th>
+    <th class="px-4 py-4 text-center font-medium">
+      Perdidos
+    </th>
   </TableHeader>
 </template>

@@ -23,7 +23,7 @@ export type {
   Phase,
   SelectOption,
 } from './types/league.js';
-export type { MatchGame } from './types/match-game.js';
+export type { MatchGame, MatchGameForTeam } from './types/match-game.js';
 export type { MatchResult } from './types/match-result.js';
 export type { CategoryKey, Match, MatchWrite } from './types/match.js';
 export type { PhaseMatch } from './types/phase-match.js';

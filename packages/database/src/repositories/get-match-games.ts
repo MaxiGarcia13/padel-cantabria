@@ -1,5 +1,5 @@
 import type { Connection } from '@tursodatabase/serverless';
-import type { MatchGame } from '../types/match-game.js';
+import type { MatchGame, MatchGameForTeam } from '../types/match-game.js';
 import type { CategoryKey } from '../types/match.js';
 
 const MATCH_GAME_COLUMNS = `
@@ -60,7 +60,7 @@ export async function getMatchGames(
 export async function getMatchGamesByTeamId(
   connection: Connection,
   teamId: number,
-): Promise<MatchGame[]> {
+): Promise<MatchGameForTeam[]> {
   const [result] = await connection.batch(
     [
       {
@@ -84,7 +84,9 @@ export async function getMatchGamesByTeamId(
             match_games.away_player_1,
             match_games.away_player_1_points,
             match_games.away_player_2,
-            match_games.away_player_2_points
+            match_games.away_player_2_points,
+            matches.home_team_id,
+            matches.away_team_id
           FROM match_games
           INNER JOIN matches
             ON matches.league_id = match_games.league_id
@@ -102,5 +104,5 @@ export async function getMatchGamesByTeamId(
     'read',
   );
 
-  return result.rows as MatchGame[];
+  return result.rows as MatchGameForTeam[];
 }

@@ -19,3 +19,8 @@ export interface MatchGame {
   away_player_2: string;
   away_player_2_points: number | null;
 }
+
+export type MatchGameForTeam = MatchGame & {
+  home_team_id: number;
+  away_team_id: number;
+};

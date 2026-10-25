@@ -22,7 +22,7 @@ const TeamPlayersTable = defineAsyncComponent(
         </h2>
         <TableSkeleton
           :rows="8"
-          :columns="5"
+          :columns="8"
         />
       </section>
     </template>

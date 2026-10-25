@@ -1,4 +1,9 @@
 export {
+  attachPlayerMatchStats,
+  type PlayerMatchStats,
+  type TeamPlayerWithMatchStats,
+} from './attach-player-match-stats.js';
+export {
   formatMatchMeta,
   formatMatchMetaParts,
 } from './format-match-meta.js';
