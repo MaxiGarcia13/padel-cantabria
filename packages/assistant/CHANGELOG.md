@@ -1,3 +1,13 @@
+## 0.3.2 (2026-10-25)
+
+### 🐞 Fixes
+
+- Update HTML structure for dark mode support ([c7e5b12](https://github.com/MaxiGarcia13/padel-cantabria/commit/c7e5b12))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.3.1 (2026-10-25)
 
 ### 🐞 Fixes
