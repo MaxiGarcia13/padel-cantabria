@@ -111,16 +111,14 @@ function selectTeam(team: Team): void {
 }
 
 function onSelect(item: AutocompleteItem): void {
-  const team = teams.value?.find((entry) => String(entry.id) === item.value);
+  const team
+    = teams.value?.find((entry) => String(entry.id) === item.value)
+      ?? entries.value.find((entry) => String(entry.id) === item.value);
 
   if (!team) {
     return;
   }
 
-  selectTeam(team);
-}
-
-function onHistorySelect(team: Team): void {
   selectTeam(team);
 }
 
@@ -137,9 +135,11 @@ defineExpose({
     ref="autocompleteRef"
     v-model="query"
     placeholder="Buscar equipo"
+    empty-message="No se encontraron equipos."
     :items="items"
     :disabled="isError"
     :loading="loading"
+    :pending="isPending"
     @select="onSelect"
   >
     <template
@@ -148,7 +148,6 @@ defineExpose({
     >
       <TeamSearchHistory
         :items="historyItems"
-        @select="onHistorySelect"
         @remove="remove"
       />
     </template>

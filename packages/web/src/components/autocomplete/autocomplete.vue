@@ -1,92 +1,102 @@
 <script setup lang="ts">
+import type { AcceptableValue } from 'reka-ui';
 import type { AutocompleteItem } from './types';
-import { toRef } from 'vue';
+import { computed, ref, useSlots } from 'vue';
 import LoaderIcon from '@/components/icons/loader-icon.vue';
-import AutocompleteListbox from './autocomplete-listbox.vue';
-import AutocompleteOption from './autocomplete-option.vue';
-import { useAutocomplete } from './use-autocomplete';
+import {
+  Combobox,
+  ComboboxAnchor,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+  ComboboxViewport,
+} from '@/components/ui/combobox';
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     id: string;
-    label?: string;
     placeholder?: string;
     items: AutocompleteItem[];
-    modelValue: string;
     disabled?: boolean;
     loading?: boolean;
+    pending?: boolean;
+    emptyMessage?: string;
   }>(),
   {
     disabled: false,
     loading: false,
+    pending: false,
+    emptyMessage: 'No se encontraron resultados.',
   },
 );
 
 const emit = defineEmits<{
-  'update:modelValue': [value: string];
-  'select': [item: AutocompleteItem];
+  select: [item: AutocompleteItem];
 }>();
 
-const {
-  isDisabled,
-  isClient,
-  isOpen,
-  activeIndex,
-  inputRef,
-  listboxId,
-  floatingStyle,
-  teleportTo,
-  showResults,
-  showFloating,
-  onInput,
-  selectItem,
-  onKeydown,
-  onFocus,
-  onBlur,
-  close,
-} = useAutocomplete({
-  id: props.id,
-  items: toRef(props, 'items'),
-  disabled: toRef(props, 'disabled'),
-  loading: toRef(props, 'loading'),
-  emitUpdate: (value) => emit('update:modelValue', value),
-  emitSelect: (item) => emit('select', item),
+const query = defineModel<string>({ default: '' });
+const isOpen = ref(false);
+const selectedItem = ref<AutocompleteItem>();
+const slots = useSlots();
+
+const isQueryEmpty = computed(() => !query.value.trim());
+
+const canShowPopup = computed(() => {
+  if (isQueryEmpty.value) {
+    return Boolean(slots.empty);
+  }
+
+  return true;
 });
+
+function isAutocompleteItem(value: AcceptableValue): value is AutocompleteItem {
+  return (
+    typeof value === 'object'
+    && value !== null
+    && 'value' in value
+    && 'label' in value
+  );
+}
+
+function onModelUpdate(value: AcceptableValue): void {
+  if (!isAutocompleteItem(value)) {
+    return;
+  }
+
+  selectedItem.value = value;
+  query.value = value.label;
+  emit('select', value);
+  isOpen.value = false;
+}
+
+function close(): void {
+  isOpen.value = false;
+}
 
 defineExpose({ close });
 </script>
 
 <template>
-  <div class="flex flex-col gap-2">
-    <label
-      v-if="label"
-      class="text-sm text-muted"
-      :for="id"
-    >
-      {{ label }}
-    </label>
-
-    <div class="relative">
-      <input
+  <Combobox
+    :model-value="selectedItem"
+    :open="isOpen"
+    :search-term="query"
+    by="value"
+    :ignore-filter="true"
+    :open-on-focus="true"
+    :disabled="disabled || loading"
+    @update:model-value="onModelUpdate"
+    @update:open="isOpen = $event"
+    @update:search-term="query = $event"
+  >
+    <ComboboxAnchor class="relative w-full">
+      <ComboboxInput
         :id="id"
-        ref="inputRef"
-        type="text"
-        role="combobox"
-        :aria-expanded="isOpen"
-        aria-autocomplete="list"
-        :aria-controls="listboxId"
-        :aria-busy="loading || undefined"
-        autocomplete="off"
-        class="w-full rounded-xl border border-border bg-surface px-4 py-2 text-sm text-foreground placeholder:text-muted disabled:cursor-not-allowed disabled:opacity-40"
-        :class="{ 'pr-10': loading }"
-        :value="modelValue"
         :placeholder="placeholder"
-        :disabled="isDisabled"
-        @input="onInput"
-        @keydown="onKeydown"
-        @focus="onFocus"
-        @blur="onBlur"
-      >
+        autocomplete="off"
+        :class="{ 'pr-10': loading }"
+      />
 
       <LoaderIcon
         v-if="loading"
@@ -96,37 +106,39 @@ defineExpose({ close });
         v-if="loading"
         class="sr-only"
       >Cargando…</span>
+    </ComboboxAnchor>
 
-      <Teleport
-        v-if="isClient"
-        defer
-        :to="teleportTo"
-      >
-        <div
-          v-if="showFloating"
-          class="z-50"
-          :style="floatingStyle"
-        >
-          <AutocompleteListbox
-            v-if="showResults"
-            :id="listboxId"
+    <ComboboxList v-if="canShowPopup">
+      <ComboboxViewport>
+        <slot
+          v-if="isQueryEmpty"
+          name="empty"
+        />
+
+        <template v-else>
+          <ComboboxItem
+            v-for="item in items"
+            :key="item.value"
+            :value="item"
           >
-            <AutocompleteOption
-              v-for="(item, index) in items"
-              :key="item.value"
-              :label="item.label"
-              :description="item.description"
-              :selected="index === activeIndex"
-              @select="selectItem(item)"
-            />
-          </AutocompleteListbox>
+            <span class="flex min-w-0 flex-1 flex-col gap-2">
+              <span class="truncate text-foreground">
+                {{ item.label }}
+              </span>
+              <span
+                v-if="item.description"
+                class="truncate text-xs text-muted"
+              >
+                {{ item.description }}
+              </span>
+            </span>
+          </ComboboxItem>
 
-          <slot
-            v-else
-            name="empty"
-          />
-        </div>
-      </Teleport>
-    </div>
-  </div>
+          <ComboboxEmpty v-if="!pending && items.length === 0">
+            {{ emptyMessage }}
+          </ComboboxEmpty>
+        </template>
+      </ComboboxViewport>
+    </ComboboxList>
+  </Combobox>
 </template>
