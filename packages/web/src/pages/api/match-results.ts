@@ -1,3 +1,4 @@
+import type { MatchGame } from '@padel-cantabria/database';
 import type { APIRoute } from 'astro';
 import { summarizeMatchResult } from '@padel-cantabria/shared';
 import { getDb } from '@/server/db';
@@ -17,6 +18,24 @@ function parseMatchIds(raw: string | null): number[] | null {
     .filter((id) => Number.isFinite(id));
 
   return ids.length > 0 ? ids : null;
+}
+
+function groupGamesByMatchId(
+  games: MatchGame[],
+): Map<number, MatchGame[]> {
+  const byMatchId = new Map<number, MatchGame[]>();
+
+  for (const game of games) {
+    const existing = byMatchId.get(game.match_id);
+
+    if (existing) {
+      existing.push(game);
+    } else {
+      byMatchId.set(game.match_id, [game]);
+    }
+  }
+
+  return byMatchId;
 }
 
 export const GET: APIRoute = async ({ url }) => {
@@ -39,11 +58,18 @@ export const GET: APIRoute = async ({ url }) => {
 
   try {
     const db = getDb();
-    const results = await db.getMatchResults(category, matchIds);
+    const [results, games] = await Promise.all([
+      db.getMatchResults(category, matchIds),
+      db.getMatchGamesByMatchIds(category, matchIds),
+    ]);
+    const gamesByMatchId = groupGamesByMatchId(games);
     const byMatchId = Object.fromEntries(
       results.map((result) => [
         String(result.match_id),
-        summarizeMatchResult(result),
+        summarizeMatchResult(
+          result,
+          gamesByMatchId.get(result.match_id) ?? [],
+        ),
       ]),
     );
 

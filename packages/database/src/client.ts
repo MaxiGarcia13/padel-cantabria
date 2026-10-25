@@ -25,6 +25,7 @@ import { getLeagues } from './repositories/get-leagues.js';
 import { getMatchById } from './repositories/get-match-by-id.js';
 import {
   getMatchGames,
+  getMatchGamesByMatchIds,
   getMatchGamesByTeamId,
 } from './repositories/get-match-games.js';
 import { getMatchResults } from './repositories/get-match-results.js';
@@ -121,9 +122,10 @@ export function createClient(params: TursoConfig) {
       getMatchResults(connection, category, matchIds),
     getMatchGames: (category: CategoryKey, matchId: number) =>
       getMatchGames(connection, category, matchId),
+    getMatchGamesByMatchIds: (category: CategoryKey, matchIds: number[]) =>
+      getMatchGamesByMatchIds(connection, category, matchIds),
     getMatchGamesByTeamId: (teamId: number) =>
       getMatchGamesByTeamId(connection, teamId),
-
     upsertLeagues: (leagues: League[]) => upsertLeagues(leagues, connection),
     upsertTeams: (teams: Team[]) => upsertTeams(teams, connection),
     upsertTeamStandings: (standings: TeamStanding[]) =>

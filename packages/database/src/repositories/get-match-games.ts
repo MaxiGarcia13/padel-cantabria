@@ -29,6 +29,18 @@ export async function getMatchGames(
   category: CategoryKey,
   matchId: number,
 ): Promise<MatchGame[]> {
+  return getMatchGamesByMatchIds(connection, category, [matchId]);
+}
+
+export async function getMatchGamesByMatchIds(
+  connection: Connection,
+  category: CategoryKey,
+  matchIds: number[],
+): Promise<MatchGame[]> {
+  if (matchIds.length === 0) {
+    return [];
+  }
+
   const [result] = await connection.batch(
     [
       {
@@ -39,15 +51,15 @@ export async function getMatchGames(
             AND gender = ?
             AND phase = ?
             AND category = ?
-            AND match_id = ?
-          ORDER BY game_number
+            AND match_id IN (${matchIds.map(() => '?').join(', ')})
+          ORDER BY match_id, game_number
         `,
         args: [
           category.league_id,
           category.gender,
           category.phase,
           category.category,
-          matchId,
+          ...matchIds,
         ],
       },
     ],
