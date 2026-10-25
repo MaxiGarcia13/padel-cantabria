@@ -1,3 +1,13 @@
+## 0.3.1 (2026-10-25)
+
+### 🐞 Fixes
+
+- Update link text for upcoming matches in team next match card ([87294bc](https://github.com/MaxiGarcia13/padel-cantabria/commit/87294bc))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.3.0 (2026-10-25)
 
 ### 🚀 Features
