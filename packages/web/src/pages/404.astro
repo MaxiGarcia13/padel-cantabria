@@ -1,0 +1,21 @@
+---
+import HeroBrand from '@/components/hero-brand.astro';
+import { buttonVariants } from '@/components/ui/button';
+import AppLayout from '@/layouts/app-layout.astro';
+
+Astro.response.status = 404;
+---
+
+<AppLayout title="Página no encontrada · Pádel Cantabria">
+  <main class="flex flex-1 flex-col items-center justify-center gap-8 px-4 py-8" transition:animate="fade">
+    <div class="flex max-w-3xl flex-col items-center gap-4 text-center">
+      <HeroBrand title="404" />
+      <p class="max-w-md text-base text-muted sm:text-md">
+        No encontramos esta página. Puede que el enlace haya cambiado o ya no exista.
+      </p>
+      <a href="/" class={buttonVariants()}>
+        Volver al inicio
+      </a>
+    </div>
+  </main>
+</AppLayout>
