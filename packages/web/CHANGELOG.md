@@ -1,3 +1,17 @@
+## 0.6.1 (2026-10-25)
+
+### 🐞 Fixes
+
+- Update theme storage key and add theme application utility ([2ebc8d5](https://github.com/MaxiGarcia13/padel-cantabria/commit/2ebc8d5))
+
+### 🔄 Refactors
+
+- Enhance theme storage management and validation ([b18b11a](https://github.com/MaxiGarcia13/padel-cantabria/commit/b18b11a))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.6.0 (2026-10-25)
 
 ### 🚀 Features
