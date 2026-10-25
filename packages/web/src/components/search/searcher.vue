@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { useTemplateRef } from 'vue';
-import Dialog from '@/components/dialog.vue';
+import { ref } from 'vue';
 import ZoomIcon from '@/components/icons/zoom-icon.vue';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import SearcherForm from './searcher-form.vue';
 
 const props = withDefaults(
@@ -19,19 +23,16 @@ const props = withDefaults(
   },
 );
 
-const dialogRef = useTemplateRef<{
-  showModal: () => void;
-  close: () => void;
-}>('dialog');
+const isOpen = ref(false);
 
 const isHeader = props.variant === 'header';
 
 function openDialog(): void {
-  dialogRef.value?.showModal();
+  isOpen.value = true;
 }
 
 function closeDialog(): void {
-  dialogRef.value?.close();
+  isOpen.value = false;
 }
 </script>
 
@@ -58,18 +59,23 @@ function closeDialog(): void {
       <ZoomIcon class="size-5 shrink-0 text-muted" />
     </Button>
 
-    <Dialog
-      ref="dialog"
-      variant="plain"
-    >
-      <SearcherForm
-        closable
-        :initial-league-id="initialLeagueId"
-        :initial-gender-value="initialGenderValue"
-        :initial-phase-value="initialPhaseValue"
-        :initial-category-value="initialCategoryValue"
-        @close="closeDialog"
-      />
+    <Dialog v-model:open="isOpen">
+      <DialogContent
+        :show-close-button="false"
+        class="max-w-3xl border-0 bg-transparent p-0 shadow-none ring-0 sm:max-w-3xl"
+      >
+        <DialogTitle class="sr-only">
+          Buscar
+        </DialogTitle>
+        <SearcherForm
+          closable
+          :initial-league-id="initialLeagueId"
+          :initial-gender-value="initialGenderValue"
+          :initial-phase-value="initialPhaseValue"
+          :initial-category-value="initialCategoryValue"
+          @close="closeDialog"
+        />
+      </DialogContent>
     </Dialog>
   </template>
 </template>
