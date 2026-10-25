@@ -1,3 +1,13 @@
+## 0.0.22 (2026-10-25)
+
+### 🚀 Features
+
+- Add defaultOpen prop to autocomplete and team components ([cbe7ae0](https://github.com/MaxiGarcia13/padel-cantabria/commit/cbe7ae0))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.21 (2026-10-25)
 
 ### 🎨 Styles
