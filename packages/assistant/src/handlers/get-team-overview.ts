@@ -1,6 +1,6 @@
 import type {
-  DatabaseClient,
   Match,
+  McpDatabaseClient,
   Team,
   TeamWithStandings,
 } from '@padel-cantabria/database';
@@ -17,7 +17,7 @@ export interface TeamOverview {
 }
 
 export async function getTeamOverview(
-  db: DatabaseClient,
+  db: McpDatabaseClient,
   teamId: number,
   phaseQuery?: string,
 ) {

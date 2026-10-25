@@ -1,4 +1,4 @@
-import type { DatabaseClient } from '@padel-cantabria/database';
+import type { McpDatabaseClient } from '@padel-cantabria/database';
 import cors from '@fastify/cors';
 import Fastify from 'fastify';
 import { createAiRouter } from './create-ai-router.js';
@@ -11,7 +11,7 @@ import { createPlayersRoutes } from './routes/players.js';
 import { createTeamsRoutes } from './routes/teams.js';
 import { registerChatStatic } from './static-chat.js';
 
-export async function createApp(db: DatabaseClient) {
+export async function createApp(db: McpDatabaseClient) {
   const app = Fastify({ logger: true });
   const aiRouter = createAiRouter();
 

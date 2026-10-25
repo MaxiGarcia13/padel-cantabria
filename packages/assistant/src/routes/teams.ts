@@ -1,4 +1,4 @@
-import type { DatabaseClient } from '@padel-cantabria/database';
+import type { McpDatabaseClient } from '@padel-cantabria/database';
 import type { FastifyPluginAsync } from 'fastify';
 import { getTeamOverview } from '../handlers/get-team-overview.js';
 import { listTeamPlayersHandler } from '../handlers/list-team-players.js';
@@ -9,7 +9,7 @@ import {
   parseRequiredPositiveInt,
 } from '../parse-query.js';
 
-export function createTeamsRoutes(db: DatabaseClient): FastifyPluginAsync {
+export function createTeamsRoutes(db: McpDatabaseClient): FastifyPluginAsync {
   return async (app) => {
     app.get<{
       Querystring: {

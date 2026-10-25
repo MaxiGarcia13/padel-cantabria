@@ -1,4 +1,4 @@
-import type { DatabaseClient } from '@padel-cantabria/database';
+import type { McpDatabaseClient } from '@padel-cantabria/database';
 import { requireConfiguredCategory } from '../config/require-configured-category.js';
 import { presentCategoryTeams } from '../presenters/present-team.js';
 
@@ -9,7 +9,7 @@ export interface ListTeamsQuery {
 }
 
 export async function listTeamsHandler(
-  db: DatabaseClient,
+  db: McpDatabaseClient,
   { gender, category, phase }: ListTeamsQuery,
 ) {
   const {

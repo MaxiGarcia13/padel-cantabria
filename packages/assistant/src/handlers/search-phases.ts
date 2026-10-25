@@ -1,4 +1,4 @@
-import type { DatabaseClient } from '@padel-cantabria/database';
+import type { McpDatabaseClient } from '@padel-cantabria/database';
 import {
 
   getConfiguredLeagueId,
@@ -15,7 +15,7 @@ export interface SearchPhasesQuery {
 }
 
 export async function searchPhasesHandler(
-  db: DatabaseClient,
+  db: McpDatabaseClient,
   { q = '', gender, limit = DEFAULT_LIMIT }: SearchPhasesQuery,
 ) {
   const phases = await db.searchPhases({

@@ -1,6 +1,19 @@
-export { createClient, createConnection } from './client.js';
-export type { DatabaseClient, TursoConfig } from './client.js';
-export { createClientFromEnv } from './create-client-from-env.js';
+export {
+  createConnection,
+  createMcpClient,
+  createMcpClientFromEnv,
+  createScraperClient,
+  createScraperClientFromEnv,
+  createWebClient,
+  createWebClientFromEnv,
+} from './client/index.js';
+export type {
+  McpDatabaseClient,
+  ScraperDatabaseClient,
+  SharedReadsClient,
+  TursoConfig,
+  WebDatabaseClient,
+} from './client/index.js';
 export {
   getConfiguredLeagueId,
   parseLeagueIds,

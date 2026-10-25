@@ -1,10 +1,10 @@
-import type { DatabaseClient } from '@padel-cantabria/database';
+import type { McpDatabaseClient } from '@padel-cantabria/database';
 import type { FastifyPluginAsync } from 'fastify';
 import { listCategories } from '../handlers/list-categories.js';
 import { searchCategoriesHandler } from '../handlers/search-categories.js';
 import { parseOptionalPositiveInt } from '../parse-query.js';
 
-export function createCategoriesRoutes(db: DatabaseClient): FastifyPluginAsync {
+export function createCategoriesRoutes(db: McpDatabaseClient): FastifyPluginAsync {
   return async (app) => {
     app.get('/categories', async () => listCategories(db));
 

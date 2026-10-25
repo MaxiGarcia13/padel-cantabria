@@ -1,7 +1,7 @@
 import type {
-  DatabaseClient,
   League,
   Match,
+  SharedReadsClient,
   Team,
   TeamWithStandings,
 } from '@padel-cantabria/database';
@@ -13,7 +13,7 @@ export interface TeamStandingAndNextMatch {
 }
 
 export async function loadTeamStandingAndNextMatch(
-  db: DatabaseClient,
+  db: SharedReadsClient,
   team: Team,
   phase: string,
   leagues: League[],

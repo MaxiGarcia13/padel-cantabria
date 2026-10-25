@@ -1,6 +1,6 @@
 import type {
   CategoryMatch,
-  DatabaseClient,
+  McpDatabaseClient,
 } from '@padel-cantabria/database';
 import {
   categoryAliasKey,
@@ -88,7 +88,7 @@ function pickCategoryMatch(
 }
 
 async function searchCategoryMatches(
-  db: DatabaseClient,
+  db: McpDatabaseClient,
   options: {
     category: string;
     leagueId: number;
@@ -113,7 +113,7 @@ async function searchCategoryMatches(
 }
 
 export async function resolveCategoryMatchResult(
-  db: DatabaseClient,
+  db: McpDatabaseClient,
   options: {
     category: string;
     leagueId: number;
@@ -145,7 +145,7 @@ export async function resolveCategoryMatchResult(
 }
 
 export async function resolveCategoryMatch(
-  db: DatabaseClient,
+  db: McpDatabaseClient,
   options: {
     category: string;
     leagueId: number;
@@ -157,7 +157,7 @@ export async function resolveCategoryMatch(
 }
 
 export async function resolveCategoryValue(
-  db: DatabaseClient,
+  db: McpDatabaseClient,
   options: {
     category: string;
     leagueId: number;

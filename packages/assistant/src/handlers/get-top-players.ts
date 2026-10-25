@@ -1,4 +1,4 @@
-import type { DatabaseClient } from '@padel-cantabria/database';
+import type { McpDatabaseClient } from '@padel-cantabria/database';
 import { requireConfiguredCategory } from '../config/require-configured-category.js';
 import { presentPlayers } from '../presenters/present-player.js';
 
@@ -11,7 +11,7 @@ export interface GetTopPlayersQuery {
 }
 
 export async function getTopPlayersHandler(
-  db: DatabaseClient,
+  db: McpDatabaseClient,
   { gender, category, limit = DEFAULT_LIMIT }: GetTopPlayersQuery,
 ) {
   const {

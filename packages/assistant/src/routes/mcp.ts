@@ -1,4 +1,4 @@
-import type { DatabaseClient } from '@padel-cantabria/database';
+import type { McpDatabaseClient } from '@padel-cantabria/database';
 import type { FastifyPluginAsync } from 'fastify';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { randomUUID } from 'node:crypto';
@@ -22,7 +22,7 @@ function isInitializeRequest(body: unknown): boolean {
 }
 
 async function handleMcpPost(
-  db: DatabaseClient,
+  db: McpDatabaseClient,
   request: {
     headers: Record<string, string | string[] | undefined>;
     raw: IncomingMessage;
@@ -87,7 +87,7 @@ async function handleMcpPost(
   await transport.handleRequest(request.raw, reply.raw, request.body);
 }
 
-export function createMcpRoutes(db: DatabaseClient): FastifyPluginAsync {
+export function createMcpRoutes(db: McpDatabaseClient): FastifyPluginAsync {
   return async (app) => {
     app.post('/mcp', async (request, reply) => {
       await handleMcpPost(db, request, reply);

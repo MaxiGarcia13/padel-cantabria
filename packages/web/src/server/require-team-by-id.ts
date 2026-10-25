@@ -1,9 +1,9 @@
-import type { DatabaseClient, Team } from '@padel-cantabria/database';
+import type { Team, WebDatabaseClient } from '@padel-cantabria/database';
 import { getDb } from '@/server/db';
 import { jsonApiError } from '@/server/json-api-error';
 
 export type RequireTeamByIdResult
-  = | { ok: true; db: DatabaseClient; team: Team }
+  = | { ok: true; db: WebDatabaseClient; team: Team }
     | { ok: false; response: Response };
 
 export async function requireTeamById(

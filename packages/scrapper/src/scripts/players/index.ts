@@ -1,6 +1,6 @@
 import process from 'node:process';
 import {
-  createClientFromEnv,
+  createScraperClientFromEnv,
   parseLeagueIds,
 } from '@padel-cantabria/database';
 import { runScrapeScript } from '@/run-scrape-script.js';
@@ -8,7 +8,7 @@ import { parseGenders } from '../league/parse-genders.js';
 import { scrapePlayers } from './scrape-players.js';
 
 async function main(): Promise<void> {
-  const db = createClientFromEnv();
+  const db = createScraperClientFromEnv();
   const allowedLeagueIds = parseLeagueIds(process.env.LEAGUE_IDS);
   const allowedGenders = parseGenders(process.env.SCRAPE_GENDERS);
   const leagueIds = allowedLeagueIds ? [...allowedLeagueIds] : null;

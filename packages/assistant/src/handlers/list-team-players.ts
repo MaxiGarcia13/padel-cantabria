@@ -1,4 +1,4 @@
-import type { DatabaseClient } from '@padel-cantabria/database';
+import type { McpDatabaseClient } from '@padel-cantabria/database';
 import { badRequest, notFound } from '../errors.js';
 import {
   presentRosterTotals,
@@ -7,7 +7,7 @@ import {
 import { presentTeam } from '../presenters/present-team.js';
 
 export async function listTeamPlayersHandler(
-  db: DatabaseClient,
+  db: McpDatabaseClient,
   teamId: number,
 ) {
   if (!Number.isFinite(teamId) || teamId <= 0) {

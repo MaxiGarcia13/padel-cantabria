@@ -1,9 +1,9 @@
-import type { DatabaseClient } from '@padel-cantabria/database';
+import type { McpDatabaseClient } from '@padel-cantabria/database';
 import type { FastifyPluginAsync } from 'fastify';
 import { searchPhasesHandler } from '../handlers/search-phases.js';
 import { parseOptionalPositiveInt } from '../parse-query.js';
 
-export function createPhasesRoutes(db: DatabaseClient): FastifyPluginAsync {
+export function createPhasesRoutes(db: McpDatabaseClient): FastifyPluginAsync {
   return async (app) => {
     app.get<{
       Querystring: {

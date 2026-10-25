@@ -1,4 +1,4 @@
-import type { DatabaseClient } from '@padel-cantabria/database';
+import type { McpDatabaseClient } from '@padel-cantabria/database';
 import {
 
   getConfiguredLeagueId,
@@ -13,7 +13,7 @@ export interface SearchTeamsQuery {
 }
 
 export async function searchTeamsHandler(
-  db: DatabaseClient,
+  db: McpDatabaseClient,
   { q = '', limit = DEFAULT_LIMIT }: SearchTeamsQuery,
 ) {
   const [teams, leagues] = await Promise.all([

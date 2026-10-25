@@ -1,4 +1,4 @@
-import type { DatabaseClient } from '@padel-cantabria/database';
+import type { McpDatabaseClient } from '@padel-cantabria/database';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import packageJson from '@package-json';
 import { registerMcpTools } from '@padel-cantabria/mcp-tools';
@@ -13,7 +13,7 @@ import { searchPlayersHandler } from '../handlers/search-players.js';
 import { searchTeamsHandler } from '../handlers/search-teams.js';
 import { serializeToolError } from './serialize-tool-error.js';
 
-export function createMcpServer(db: DatabaseClient): McpServer {
+export function createMcpServer(db: McpDatabaseClient): McpServer {
   const server = new McpServer({
     name: 'padel-cantabria',
     version: packageJson.version,

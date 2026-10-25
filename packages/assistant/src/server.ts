@@ -1,7 +1,7 @@
 import { resolve } from 'node:path';
 import process, { loadEnvFile } from 'node:process';
 import {
-  createClientFromEnv,
+  createMcpClientFromEnv,
   getConfiguredLeagueId,
 } from '@padel-cantabria/database';
 import { createApp } from './create-app.js';
@@ -23,7 +23,7 @@ async function main() {
       ?? (process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost');
   const leagueId = getConfiguredLeagueId();
 
-  const db = createClientFromEnv();
+  const db = createMcpClientFromEnv();
   const app = await createApp(db);
 
   await app.listen({ port, host });

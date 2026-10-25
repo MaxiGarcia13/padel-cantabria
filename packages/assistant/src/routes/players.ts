@@ -1,10 +1,10 @@
-import type { DatabaseClient } from '@padel-cantabria/database';
+import type { McpDatabaseClient } from '@padel-cantabria/database';
 import type { FastifyPluginAsync } from 'fastify';
 import { getTopPlayersHandler } from '../handlers/get-top-players.js';
 import { searchPlayersHandler } from '../handlers/search-players.js';
 import { parseOptionalPositiveInt } from '../parse-query.js';
 
-export function createPlayersRoutes(db: DatabaseClient): FastifyPluginAsync {
+export function createPlayersRoutes(db: McpDatabaseClient): FastifyPluginAsync {
   return async (app) => {
     app.get<{
       Querystring: {

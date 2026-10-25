@@ -1,5 +1,5 @@
 import process from 'node:process';
-import { createConnection } from './client.js';
+import { createConnection } from './client/index.js';
 import { loadSchemaStatements } from './load-schema-statements.js';
 
 const DROP_TABLES = [

@@ -1,4 +1,4 @@
-import type { CategoryMatch, DatabaseClient } from '@padel-cantabria/database';
+import type { CategoryMatch, McpDatabaseClient } from '@padel-cantabria/database';
 import { getConfiguredLeagueId } from '@padel-cantabria/database';
 import { normalizeGender } from '@padel-cantabria/shared';
 import { badRequest } from '../errors.js';
@@ -17,7 +17,7 @@ export interface ConfiguredCategory {
 }
 
 export async function requireConfiguredCategory(
-  db: DatabaseClient,
+  db: McpDatabaseClient,
   { gender, category }: RequireConfiguredCategoryInput,
 ): Promise<ConfiguredCategory> {
   const normalizedGender = normalizeGender(gender);
