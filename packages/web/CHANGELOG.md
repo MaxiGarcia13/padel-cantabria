@@ -1,3 +1,13 @@
+## 0.2.0 (2026-10-25)
+
+### 🚀 Features
+
+- Implement match game display components ([8d24ef5](https://github.com/MaxiGarcia13/padel-cantabria/commit/8d24ef5))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.1.0 (2026-10-25)
 
 ### 🚀 Features
