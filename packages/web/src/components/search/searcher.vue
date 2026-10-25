@@ -68,6 +68,7 @@ function closeDialog(): void {
           Buscar
         </DialogTitle>
         <SearcherForm
+          v-if="isOpen"
           closable
           :initial-league-id="initialLeagueId"
           :initial-gender-value="initialGenderValue"

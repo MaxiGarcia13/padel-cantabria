@@ -44,6 +44,7 @@ const {
   genderValue: props.initialGenderValue,
   phaseValue: props.initialPhaseValue,
   categoryValue: props.initialCategoryValue,
+  filtersExpanded: props.closable ? false : undefined,
 });
 </script>
 
@@ -54,6 +55,7 @@ const {
         <TeamAutocomplete
           v-model="teamQuery"
           :loading="isNavigating"
+          :default-open="closable"
           @select="onTeamSelect"
         />
       </div>

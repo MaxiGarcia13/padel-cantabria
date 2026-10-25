@@ -13,7 +13,7 @@ import {
   ComboboxViewport,
 } from '@/components/ui/combobox';
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     id: string;
     placeholder?: string;
@@ -22,12 +22,14 @@ withDefaults(
     loading?: boolean;
     pending?: boolean;
     emptyMessage?: string;
+    defaultOpen?: boolean;
   }>(),
   {
     disabled: false,
     loading: false,
     pending: false,
     emptyMessage: 'No se encontraron resultados.',
+    defaultOpen: false,
   },
 );
 
@@ -36,7 +38,7 @@ const emit = defineEmits<{
 }>();
 
 const query = defineModel<string>({ default: '' });
-const isOpen = ref(false);
+const isOpen = ref(props.defaultOpen);
 const selectedItem = ref<AutocompleteItem>();
 const slots = useSlots();
 
@@ -95,6 +97,7 @@ defineExpose({ close });
         :id="id"
         :placeholder="placeholder"
         autocomplete="off"
+        :autofocus="defaultOpen"
         :class="{ 'pr-10': loading }"
       />
 

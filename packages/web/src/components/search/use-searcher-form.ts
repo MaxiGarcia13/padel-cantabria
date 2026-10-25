@@ -10,6 +10,7 @@ export interface SearcherFormInitial {
   genderValue?: string;
   phaseValue?: string;
   categoryValue?: string;
+  filtersExpanded?: boolean;
 }
 
 export function useSearcherForm(initial: SearcherFormInitial) {
@@ -26,7 +27,7 @@ export function useSearcherForm(initial: SearcherFormInitial) {
     && initial.phaseValue
     && initial.categoryValue,
   );
-  const filtersExpanded = ref(hasInitialFilters);
+  const filtersExpanded = ref(initial.filtersExpanded ?? hasInitialFilters);
 
   const showFiltersSkeleton = computed(
     () => !isHydrated.value || isPending.value,

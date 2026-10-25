@@ -14,6 +14,7 @@ import TeamSearchHistory from './team-search-history.vue';
 const props = defineProps<{
   selectedTeamId?: number | null;
   loading?: boolean;
+  defaultOpen?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -140,6 +141,7 @@ defineExpose({
     :disabled="isError"
     :loading="loading"
     :pending="isPending"
+    :default-open="defaultOpen"
     @select="onSelect"
   >
     <template
