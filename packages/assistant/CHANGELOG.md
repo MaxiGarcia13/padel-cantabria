@@ -1,3 +1,11 @@
+## 0.0.8 (2026-10-25)
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/shared to 0.0.8
+- Updated @padel-cantabria/database to 0.0.12
+- Updated @padel-cantabria/mcp-tools to 0.0.5
+
 ## 0.0.7 (2026-10-25)
 
 ### 🧱 Updated Dependencies
