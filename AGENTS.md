@@ -2,16 +2,13 @@
 
 Guidance for coding agents working on this repo.
 
-## Project purpose
+Humans: [README.md](README.md) (product) · [CONTRIBUTING.md](CONTRIBUTING.md) (setup & workflow).
 
-Padel Cantabria improves how people view **teams, matches, and stats** from the Liga de Pádel de Cantabria.
+## Purpose (constraints)
 
-- Official source of truth: [Federación Cántabra de Pádel](https://federacioncantabradepadel.com)
-- This project is **not** affiliated with the federation and does **not** replace their site
-- Goal is UX only: clearer layout and a smoother way to browse public federation data
-- Do not invent results; scrapers re-present public data from the federation site
-
-Human-oriented overview: [README.md](README.md)
+- UX over public Liga de Pádel de Cantabria data from the [Federación Cántabra de Pádel](https://federacioncantabradepadel.com)
+- Not affiliated with the federation; does not replace their site
+- Do not invent results; scrapers re-present public federation data
 
 ## Monorepo layout
 
@@ -25,7 +22,13 @@ Human-oriented overview: [README.md](README.md)
 | `packages/scrapper`  | Puppeteer scrapers → Turso              |
 | `packages/web`       | Astro + Vue frontend                    |
 
-Package manager: **pnpm**. Env vars live in the **repo root** `.env` (`TURSO_URL`, `TURSO_AUTH_TOKEN`; optional `LEAGUE_IDS` for scrapers and the **web** app — when set, web team search is scoped to those leagues; when unset, web searches all leagues. **Required for the assistant/MCP**, which scopes all reads to the first configured league). Chat completions also need at least one of `GEMINI_API_KEY`, `OPEN_ROUTER_API_KEY`, `GROQ_API_KEY` (fallback order: Gemini → Open Router → Groq).
+Package manager: **pnpm**. Env vars live in the **repo root** `.env`.
+
+| Variable                                                  | Notes                                                                                                                           |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `TURSO_URL`, `TURSO_AUTH_TOKEN`                           | Required for DB access                                                                                                          |
+| `LEAGUE_IDS`                                              | Optional for scrapers and web (scopes team search when set). **Required** for assistant/MCP (scopes all reads to the first id). |
+| `GEMINI_API_KEY` / `OPEN_ROUTER_API_KEY` / `GROQ_API_KEY` | Chat: at least one; fallback Gemini → Open Router → Groq                                                                        |
 
 ## Common commands (from repo root)
 
@@ -49,9 +52,13 @@ Scrape order matters. Details and when to re-run each script:
 
 → [packages/scrapper/README.md](packages/scrapper/README.md)
 
-## Working notes for agents
+## Working rules
 
 - Prefer matching existing patterns in the package you touch (`web` composables/API routes, `database` upserts, scrapper parse/save split).
-- Schema changes: prefer in-place `ALTER TABLE` (and update files under `packages/database/src/schema/`) over `db:reset`. Full reset is last resort; after reset, scrapers must be re-run in order. See `.cursor/rules/schema-changes.mdc`.
+- Schema changes: prefer in-place `ALTER TABLE` (and update files under `packages/database/src/schema/`) over `db:reset`. Full reset is last resort; after reset, scrapers must be re-run in order. See [`.cursor/rules/schema-changes.mdc`](.cursor/rules/schema-changes.mdc).
+- Filter in SQL (or via repo params that become SQL), not `getAll*` then `.filter()` in JS. Use `ListScopeParams` / `buildListScopeFilter` and pass `{ leagueIds, genders }` into repos. See [`.cursor/rules/sql-filtering.mdc`](.cursor/rules/sql-filtering.mdc).
+- English in code, comments, logs, and API error payloads; Spanish only for user-visible UI copy. See [`.cursor/rules/language-conventions.mdc`](.cursor/rules/language-conventions.mdc).
+- Keep modules small and focused; naming: kebab-case files/folders, camelCase functions/locals, UPPER_SNAKE_CASE global constants. See [`.cursor/rules/small-modules.mdc`](.cursor/rules/small-modules.mdc) and [`.cursor/rules/naming-conventions.mdc`](.cursor/rules/naming-conventions.mdc).
+- Minimal comments: no JSDoc; comment only non-obvious constraints. See [`.cursor/rules/minimal-comments.mdc`](.cursor/rules/minimal-comments.mdc).
 - Do not commit secrets (`.env`). Do not commit unless the user asks.
-- Keep README / scrapper README accurate when changing scripts or env requirements.
+- Keep [README.md](README.md), [CONTRIBUTING.md](CONTRIBUTING.md), and package READMEs accurate when changing scripts or env requirements.

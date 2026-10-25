@@ -8,9 +8,10 @@ This project does **not** replace it and is **not** affiliated with the federati
 It only aims to improve how that public information is viewed — clearer layout,
 stats, and calendars.
 
-## Official website
+Data is scraped from public federation pages and re-presented. This project does
+**not** invent results. How scraping works and when to refresh data:
 
-→ [federacioncantabradepadel.com](https://federacioncantabradepadel.com)
+→ [packages/scrapper/README.md](packages/scrapper/README.md)
 
 ## What you can do here
 
@@ -19,8 +20,6 @@ stats, and calendars.
 - Ask an AI assistant about categories, teams, players, and rankings (browser chat or MCP in Cursor / Claude / OpenCode)
 
 ## AI assistant & MCP
-
-You can use the league assistant in two ways:
 
 | Option                                            | Link                                                                  |
 | ------------------------------------------------- | --------------------------------------------------------------------- |
@@ -38,53 +37,12 @@ No database account is required. Step-by-step setup (hosted and local), includin
 | OpenCode    | [Watch](https://github.com/MaxiGarcia13/padel-cantabria/blob/main/docs/open-code-example.mov)   |
 | Claude Code | [Watch](https://github.com/MaxiGarcia13/padel-cantabria/blob/main/docs/claude-code-example.mov) |
 
-## Where the data comes from
+## Contributing
 
-Data is copied automatically from the Federación Cántabra de Pádel website (a “scraper”: a script that reads public pages and stores the useful bits in a database so the web app can show them nicely).
+Local setup, packages, scrape order, and workflow:
 
-This project does **not** invent results. It re-presents public federation data.
+→ **[CONTRIBUTING.md](CONTRIBUTING.md)**
 
-For how scraping works, which scripts to run, and when to refresh data, see:
+Coding agents working in this repo:
 
-→ [packages/scrapper/README.md](packages/scrapper/README.md)
-
-## For developers
-
-Monorepo: scrape federation data into Turso and serve it on the web.
-
-### Packages
-
-- [`packages/database`](packages/database) — schema, types, Turso client
-- [`packages/shared`](packages/shared) — reusable domain helpers (matches, standings, team labels)
-- [`packages/mcp-tools`](packages/mcp-tools) — shared MCP tool names, descriptions, and Zod schemas
-- [`packages/assistant`](packages/assistant) — Fastify read API + HTTP MCP + chat UI ([docs](packages/assistant/README.md))
-- [`packages/mcp`](packages/mcp) — stdio MCP shim → assistant HTTP API ([setup guide](packages/mcp/README.md))
-- [`packages/scrapper`](packages/scrapper) — Puppeteer scrapers ([scripts & when to run them](packages/scrapper/README.md))
-- [`packages/web`](packages/web) — Astro + Vue frontend
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) (LTS)
-- [pnpm](https://pnpm.io/) **12.14.0** (pinned in `package.json` via `packageManager`)
-
-Install pnpm once:
-
-```bash
-npm install -g pnpm
-```
-
-### Quick start
-
-From the **repo root**:
-
-```bash
-pnpm install
-pnpm db:reset   # or `pnpm db:migrate` on an empty DB
-pnpm scrape:leagues
-pnpm scrape:teams
-pnpm scrape:players
-pnpm scrape:calendar
-pnpm dev
-```
-
-See [packages/scrapper/README.md](packages/scrapper/README.md) for env vars, script details, and when to re-run each scraper.
+→ [AGENTS.md](AGENTS.md)
