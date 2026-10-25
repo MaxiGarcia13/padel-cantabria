@@ -1,3 +1,17 @@
+## 0.0.6 (2026-10-25)
+
+### 🚀 Features
+
+- Add getNextMatch function to retrieve the upcoming match ([1218ab8](https://github.com/MaxiGarcia13/padel-cantabria/commit/1218ab8))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/database to 0.0.11
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.5 (2026-10-25)
 
 ### 🚀 Features

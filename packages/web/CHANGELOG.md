@@ -1,3 +1,44 @@
+## 0.0.19 (2026-10-25)
+
+### 🚀 Features
+
+- Refactor autocomplete components and introduce new combobox structure ([8eb47f2](https://github.com/MaxiGarcia13/padel-cantabria/commit/8eb47f2))
+- Refactor table components and introduce new UI structure ([286a16c](https://github.com/MaxiGarcia13/padel-cantabria/commit/286a16c))
+- Refactor dialog component structure and introduce new dialog UI components ([33a0e1f](https://github.com/MaxiGarcia13/padel-cantabria/commit/33a0e1f))
+- Refactor UI components and add new field and button components ([debbe7b](https://github.com/MaxiGarcia13/padel-cantabria/commit/debbe7b))
+- Update dependencies and add new configuration files for improved styling and component management ([5fc0115](https://github.com/MaxiGarcia13/padel-cantabria/commit/5fc0115))
+- Introduce routing utilities for category and match paths ([066942a](https://github.com/MaxiGarcia13/padel-cantabria/commit/066942a))
+- Add Vue reactivity guidelines and update standings table row component ([1990a8c](https://github.com/MaxiGarcia13/padel-cantabria/commit/1990a8c))
+
+### 🐞 Fixes
+
+- Correct player name display order in team players table ([3a9e13c](https://github.com/MaxiGarcia13/padel-cantabria/commit/3a9e13c))
+- Update table header styles for improved spacing and readability ([3ab288c](https://github.com/MaxiGarcia13/padel-cantabria/commit/3ab288c))
+
+### 🔄 Refactors
+
+- Update team players table components for improved layout and naming consistency ([80b8e2c](https://github.com/MaxiGarcia13/padel-cantabria/commit/80b8e2c))
+- Optimize Vue component reactivity by removing unnecessary computed properties ([4cd5694](https://github.com/MaxiGarcia13/padel-cantabria/commit/4cd5694))
+
+### 🧹 Chores
+
+- Remove @lucide/vue dependency and update component styles for consistency ([7f9a66c](https://github.com/MaxiGarcia13/padel-cantabria/commit/7f9a66c))
+- Update dev script to force Astro development mode ([efb70a1](https://github.com/MaxiGarcia13/padel-cantabria/commit/efb70a1))
+
+### 🎨 Styles
+
+- Update table header and row components for improved layout and consistency ([32d7982](https://github.com/MaxiGarcia13/padel-cantabria/commit/32d7982))
+- Enhance table component styles for improved layout and consistency ([f2fbd2d](https://github.com/MaxiGarcia13/padel-cantabria/commit/f2fbd2d))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/shared to 0.0.6
+- Updated @padel-cantabria/database to 0.0.11
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.18 (2026-10-25)
 
 ### 🚀 Features
