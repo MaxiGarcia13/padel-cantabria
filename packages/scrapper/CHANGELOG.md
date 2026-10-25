@@ -1,3 +1,18 @@
+## 0.2.0 (2026-10-25)
+
+### 🚀 Features
+
+- Refactor team and player components to utilize category-based routing ([1258d12](https://github.com/MaxiGarcia13/padel-cantabria/commit/1258d12))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/shared to 0.2.0
+- Updated @padel-cantabria/database to 0.2.0
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.1.0 (2026-10-25)
 
 ### 🧱 Updated Dependencies
