@@ -17,6 +17,7 @@
     "preview": "pnpm --filter @padel-cantabria/web preview",
     "dev": "pnpm --filter=@padel-cantabria/web dev",
 
+    "prepare": "simple-git-hooks",
     "lint": "eslint . --ignore-pattern 'packages/web/**' --ignore-pattern 'packages/assistant/**' && pnpm -r --if-present run lint",
     "lint:fix": "eslint --fix . --ignore-pattern 'packages/web/**' --ignore-pattern 'packages/assistant/**' && pnpm -r --if-present run lint:fix",
     "clean": "rm -rf node_modules dist && pnpm -r run clean",
@@ -49,6 +50,14 @@
     "@maxigarcia/eslint-config": "^1.14.1",
     "@nx/js": "^23.3.0",
     "eslint": "^10.12.0",
-    "nx": "^23.3.0"
+    "lint-staged": "^17.6.0",
+    "nx": "^23.3.0",
+    "simple-git-hooks": "^2.14.0"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm dlx lint-staged"
+  },
+  "lint-staged": {
+    "*": "pnpm lint:fix"
   }
 }

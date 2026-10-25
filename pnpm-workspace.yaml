@@ -19,4 +19,5 @@ allowBuilds:
   esbuild: true
   nx: true
   puppeteer: true
+  simple-git-hooks: true
   vue-demi: true
