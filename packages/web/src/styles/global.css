@@ -1,5 +1,10 @@
 @import 'tailwindcss';
 @import '@padel-cantabria/shared/styles/theme.css';
+@import 'tw-animate-css';
+@import 'shadcn-vue/tailwind.css';
+@import './shadcn-theme.css';
+
+@custom-variant dark (&:is(.dark *));
 
 html {
   color-scheme: dark;
@@ -25,4 +30,14 @@ summary {
 
 button:disabled {
   cursor: not-allowed;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
 }

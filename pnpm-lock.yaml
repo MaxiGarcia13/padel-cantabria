@@ -358,6 +358,9 @@ importers:
       '@astrojs/vue':
         specifier: ^7.0.3
         version: 7.0.3(@types/node@24.19.2)(astro@7.3.8(@types/node@24.19.2)(@vercel/functions@3.10.1(ws@8.22.0))(esbuild@0.28.2)(jiti@2.7.0)(stylus@0.57.0(supports-color@7.2.0))(tsx@4.23.15)(yaml@2.9.1))(esbuild@0.28.2)(jiti@2.7.0)(stylus@0.57.0(supports-color@7.2.0))(supports-color@7.2.0)(tsx@4.23.15)(vue@3.5.44(typescript@6.0.3))(yaml@2.9.1)
+      '@lucide/vue':
+        specifier: ^1.61.0
+        version: 1.61.0(vue@3.5.44(typescript@6.0.3))
       '@maxigarcia/js-utils':
         specifier: ^1.22.1
         version: 1.22.1
@@ -373,9 +376,24 @@ importers:
       astro:
         specifier: ^7.3.8
         version: 7.3.8(@types/node@24.19.2)(@vercel/functions@3.10.1(ws@8.22.0))(esbuild@0.28.2)(jiti@2.7.0)(stylus@0.57.0(supports-color@7.2.0))(tsx@4.23.15)(yaml@2.9.1)
+      class-variance-authority:
+        specifier: ^0.7.1
+        version: 0.7.1
+      cn:
+        specifier: ^0.5.0
+        version: 0.5.0
       gsap:
         specifier: ^3.15.0
         version: 3.15.0
+      reka-ui:
+        specifier: ^2.11.0
+        version: 2.11.0(vue@3.5.44(typescript@6.0.3))
+      shadcn-vue:
+        specifier: ^2.8.2
+        version: 2.8.2(babel-plugin-macros@3.1.0)(eslint@10.12.0(jiti@2.7.0)(supports-color@7.2.0))(magicast@0.5.5)(supports-color@7.2.0)(vue@3.5.44(typescript@6.0.3))
+      tw-animate-css:
+        specifier: ^1.4.0
+        version: 1.4.0
       vue:
         specifier: ^3.5.44
         version: 3.5.44(typescript@6.0.3)
@@ -1853,6 +1871,11 @@ packages:
 
   '@lucide/vue@1.59.0':
     resolution: {integrity: sha512-X7O3FCwECqmVV9h6l2dPxksuiJx9/gszRTj15aOKsxsfU4jr+p7vUVFILn7K38fG8wfSmsy8jPVS9muDdTt0MA==}
+    peerDependencies:
+      vue: '>=3.0.1'
+
+  '@lucide/vue@1.61.0':
+    resolution: {integrity: sha512-XYclbwUQ6Mvf0UskBG9gJH91BdF3VK4Tt6Pv8PSntwPwNnf357PCQnma4TrzOEdwD49UYCtsTafpfytRIxm1cQ==}
     peerDependencies:
       vue: '>=3.0.1'
 
@@ -7771,6 +7794,10 @@ snapshots:
   '@keyv/serialize@1.1.1': {}
 
   '@lucide/vue@1.59.0(vue@3.5.44(typescript@6.0.3))':
+    dependencies:
+      vue: 3.5.44(typescript@6.0.3)
+
+  '@lucide/vue@1.61.0(vue@3.5.44(typescript@6.0.3))':
     dependencies:
       vue: 3.5.44(typescript@6.0.3)
 
