@@ -2,7 +2,7 @@
 import type { TeamWithStandings } from '@padel-cantabria/database';
 import { formatStandingValue, getPositionTrend } from '@padel-cantabria/shared';
 import TableRow from '@/components/table/table-row.vue';
-import { buildTeamPath } from '@/server/load-category-matches';
+import { buildTeamPath } from '@/routes';
 import PositionTrend from './position-trend.vue';
 
 const props = defineProps<{

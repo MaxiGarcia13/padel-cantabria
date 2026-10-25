@@ -4,7 +4,7 @@ import Header from '@/components/header.astro';
 import MatchPage from '@/components/match/match-page.vue';
 import AppLayout from '@/layouts/app-layout.astro';
 import { getDb } from '@/server/db';
-import { parseCategoryParams } from '@/server/load-category-matches';
+import { parseCategoryParams } from '@/routes';
 
 export const prerender = false;
 

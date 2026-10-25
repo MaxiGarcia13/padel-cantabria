@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
+import { parseCategoryParams } from '@/routes';
 import { getDb } from '@/server/db';
 import { jsonApiError } from '@/server/json-api-error';
-import { parseCategoryParams } from '@/server/load-category-matches';
 
 export const prerender = false;
 

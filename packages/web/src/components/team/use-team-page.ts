@@ -9,7 +9,7 @@ import { useHydrated } from '@/composables/use-hydrated';
 import { useTeamPhases } from '@/composables/use-team-phases';
 import { useTeamPlayers } from '@/composables/use-team-players';
 import { useTeamSummary } from '@/composables/use-team-summary';
-import { buildCategoryPath } from '@/server/load-category-matches';
+import { buildCategoryPath } from '@/routes';
 
 export function useTeamPage(options: {
   team: Team;

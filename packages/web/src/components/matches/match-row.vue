@@ -3,7 +3,7 @@ import type { Match } from '@padel-cantabria/database';
 import type { MatchResultSummary } from '@padel-cantabria/shared';
 import { formatMatchMeta } from '@padel-cantabria/shared';
 import { computed } from 'vue';
-import { buildMatchPath } from '@/server/load-category-matches';
+import { buildMatchPath } from '@/routes';
 
 const props = defineProps<{
   match: Match;

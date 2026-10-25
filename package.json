@@ -57,8 +57,5 @@
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm dlx lint-staged"
-  },
-  "lint-staged": {
-    "*": "pnpm lint:fix"
   }
 }
