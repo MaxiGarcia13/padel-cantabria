@@ -1,3 +1,9 @@
+## 0.0.5 (2026-10-25)
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/mcp-tools to 0.0.3
+
 ## 0.0.4 (2026-10-20)
 
 ### 🚀 Features

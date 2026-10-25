@@ -1,3 +1,19 @@
+## 0.0.5 (2026-10-25)
+
+### 🔄 Refactors
+
+- Update database client references to McpDatabaseClient ([f3e6d91](https://github.com/MaxiGarcia13/padel-cantabria/commit/f3e6d91))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/shared to 0.0.5
+- Updated @padel-cantabria/database to 0.0.10
+- Updated @padel-cantabria/mcp-tools to 0.0.3
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.4 (2026-10-20)
 
 ### 🚀 Features

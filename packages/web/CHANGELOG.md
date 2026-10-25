@@ -1,3 +1,24 @@
+## 0.0.18 (2026-10-25)
+
+### 🚀 Features
+
+- Add getMatchGamesByMatchIds function and enhance match result summarization ([35b699d](https://github.com/MaxiGarcia13/padel-cantabria/commit/35b699d))
+- Enhance match game types and integrate player match statistics ([b9c2eef](https://github.com/MaxiGarcia13/padel-cantabria/commit/b9c2eef))
+- Implement match results summary and integrate into match components ([1980524](https://github.com/MaxiGarcia13/padel-cantabria/commit/1980524))
+
+### 🔄 Refactors
+
+- Update database client references to McpDatabaseClient ([f3e6d91](https://github.com/MaxiGarcia13/padel-cantabria/commit/f3e6d91))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/shared to 0.0.5
+- Updated @padel-cantabria/database to 0.0.10
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.17 (2026-10-20)
 
 ### 🚀 Features

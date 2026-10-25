@@ -1,3 +1,24 @@
+## 0.0.12 (2026-10-25)
+
+### 🚀 Features
+
+- Add scheduled workflow for scraping results ([75c0d44](https://github.com/MaxiGarcia13/padel-cantabria/commit/75c0d44))
+- Enhance database client and repositories with new parameters for fetching data ([9a5bcdb](https://github.com/MaxiGarcia13/padel-cantabria/commit/9a5bcdb))
+- Implement match results scraping functionality ([d2ac986](https://github.com/MaxiGarcia13/padel-cantabria/commit/d2ac986))
+
+### 🔄 Refactors
+
+- Update database client references to McpDatabaseClient ([f3e6d91](https://github.com/MaxiGarcia13/padel-cantabria/commit/f3e6d91))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/shared to 0.0.5
+- Updated @padel-cantabria/database to 0.0.10
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.11 (2026-10-20)
 
 ### 🚀 Features
