@@ -22,11 +22,8 @@ const trend = getPositionTrend(
     <TableCell class="w-8 text-center">
       <PositionTrend :trend="trend" />
     </TableCell>
-    <TableCell class="w-40 max-w-40 whitespace-normal">
-      <span
-        class="line-clamp-2 font-medium break-words text-foreground"
-        :title="`${player.name} ${player.surname}`"
-      >
+    <TableCell class="max-w-56 min-w-45 whitespace-normal">
+      <span class="font-medium wrap-break-word text-foreground">
         {{ player.name }} {{ player.surname }}
       </span>
     </TableCell>

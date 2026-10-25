@@ -13,18 +13,12 @@ defineProps<{
 
 <template>
   <TableRow>
-    <TableCell class="w-48 max-w-48 whitespace-normal">
+    <TableCell class="max-w-72 min-w-56 whitespace-normal">
       <div class="flex flex-col leading-tight">
-        <span
-          class="truncate font-medium text-foreground"
-          :title="`${couple.player_1.name} ${couple.player_1.surname}`"
-        >
+        <span class="font-medium break-words text-foreground">
           {{ couple.player_1.name }} {{ couple.player_1.surname }}
         </span>
-        <span
-          class="truncate font-medium text-foreground"
-          :title="`${couple.player_2.name} ${couple.player_2.surname}`"
-        >
+        <span class="font-medium break-words text-foreground">
           {{ couple.player_2.name }} {{ couple.player_2.surname }}
         </span>
       </div>

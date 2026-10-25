@@ -54,7 +54,10 @@ const errorMessage = computed(() =>
         No hay jugadores disponibles.
       </p>
 
-      <Table v-else>
+      <Table
+        v-else
+        class="min-w-max"
+      >
         <TeamPlayersTableHeader />
         <TableBody>
           <TeamPlayersTableRow

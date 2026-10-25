@@ -9,7 +9,7 @@ import { TableHead, TableHeader, TableRow } from '@/components/ui/table';
         Pos.
       </TableHead>
       <TableHead class="w-8" />
-      <TableHead class="w-40 max-w-40">
+      <TableHead class="max-w-72 min-w-56">
         Equipo
       </TableHead>
       <TableHead class="text-center">
