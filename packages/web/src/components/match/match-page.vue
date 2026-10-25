@@ -1,15 +1,19 @@
 <script setup lang="ts">
-import type { Match } from '@padel-cantabria/database';
+import type { Match, MatchGame } from '@padel-cantabria/database';
+import type { MatchResultSummary } from '@padel-cantabria/shared';
 import { formatStandingValue } from '@padel-cantabria/shared';
 import { computed, ref } from 'vue';
 import TeamPlayersTableLazy from '@/components/team/team-players-table-lazy.vue';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTeamTotalPoints } from '@/composables/use-team-total-points';
+import MatchGames from './match-games.vue';
 import MatchHeader from './match-header.vue';
 import MatchMeta from './match-meta.vue';
 
 const props = defineProps<{
   match: Match;
+  result?: MatchResultSummary | null;
+  games?: MatchGame[];
 }>();
 
 const selectedTeamId = ref(props.match.home_team_id);
@@ -29,6 +33,9 @@ const teamOptions = computed(() => [
     secondary: `${formatStandingValue(awayPoints.value)} pts`,
   },
 ]);
+
+const isPlayed = Boolean(props.result?.is_played);
+const games = props.games ?? [];
 </script>
 
 <template>
@@ -37,9 +44,15 @@ const teamOptions = computed(() => [
       <MatchHeader
         :home-team="match.home_team"
         :away-team="match.away_team"
+        :result="result"
       />
       <MatchMeta :match="match" />
     </header>
+
+    <MatchGames
+      v-if="isPlayed"
+      :games="games"
+    />
 
     <Tabs v-model="selectedTeamId">
       <TabsList>

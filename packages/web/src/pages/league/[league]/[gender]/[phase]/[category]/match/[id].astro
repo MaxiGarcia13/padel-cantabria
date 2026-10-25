@@ -1,4 +1,5 @@
 ---
+import { summarizeMatchResult } from '@padel-cantabria/shared';
 import BackButton from '@/components/back-button.vue';
 import Header from '@/components/header.astro';
 import MatchPage from '@/components/match/match-page.vue';
@@ -23,6 +24,14 @@ if (!match) {
   return Astro.redirect('/');
 }
 
+const [results, games] = await Promise.all([
+  db.getMatchResults(categoryKey, [matchId]),
+  db.getMatchGames(categoryKey, matchId),
+]);
+
+const matchResult = results[0] ?? null;
+const result = matchResult ? summarizeMatchResult(matchResult, games) : null;
+
 const title = `${match.home_team} vs ${match.away_team} · Pádel Cantabria`;
 ---
 
@@ -32,7 +41,7 @@ const title = `${match.home_team} vs ${match.away_team} · Pádel Cantabria`;
   <div class="mx-auto flex w-full max-w-6xl flex-col gap-4 p-4" transition:animate="fade">
     <BackButton client:idle />
     <main>
-      <MatchPage client:load match={match} />
+      <MatchPage client:load match={match} result={result} games={games} />
     </main>
   </div>
 </AppLayout>
