@@ -1,3 +1,13 @@
+## 0.3.0 (2026-10-25)
+
+### 🚀 Features
+
+- Replace BackButton with Breadcrumb component across multiple pages ([6857b65](https://github.com/MaxiGarcia13/padel-cantabria/commit/6857b65))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.2.0 (2026-10-25)
 
 ### 🚀 Features
