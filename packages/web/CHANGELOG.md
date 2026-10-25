@@ -1,3 +1,13 @@
+## 0.0.24 (2026-10-25)
+
+### 🚀 Features
+
+- Add donut chart component for team win rate visualization ([f97162a](https://github.com/MaxiGarcia13/padel-cantabria/commit/f97162a))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.0.23 (2026-10-25)
 
 ### 🐞 Fixes
