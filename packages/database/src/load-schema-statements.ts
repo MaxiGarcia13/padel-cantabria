@@ -2,6 +2,13 @@ import { readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+const SCHEMA_FILES = [
+  'leagues.sql',
+  'teams.sql',
+  'matches.sql',
+  'match-results.sql',
+] as const;
+
 export function splitSqlStatements(schema: string): string[] {
   return schema
     .split(';')
@@ -22,8 +29,15 @@ export function splitSqlStatements(schema: string): string[] {
 }
 
 export async function loadSchemaStatements(): Promise<string[]> {
-  const schemaPath = join(dirname(fileURLToPath(import.meta.url)), 'schema.sql');
-  const schema = await readFile(schemaPath, 'utf8');
+  const schemaDir = join(dirname(fileURLToPath(import.meta.url)), 'schema');
+  const files = await Promise.all(
+    SCHEMA_FILES.map((fileName) =>
+      readFile(join(schemaDir, fileName), 'utf8'),
+    ),
+  );
 
-  return splitSqlStatements(schema);
+  return [
+    'PRAGMA foreign_keys = ON',
+    ...files.flatMap((schema) => splitSqlStatements(schema)),
+  ];
 }

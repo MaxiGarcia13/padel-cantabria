@@ -5,6 +5,8 @@ import type { SearchPhasesParams } from './repositories/search-phases.js';
 import type { SearchPlayersParams } from './repositories/search-players.js';
 import type { SearchTeamsParams } from './repositories/search-teams.js';
 import type { League } from './types/league.js';
+import type { MatchGame } from './types/match-game.js';
+import type { MatchResult } from './types/match-result.js';
 import type { CategoryKey, MatchWrite } from './types/match.js';
 import type { TeamPlayer } from './types/team-player.js';
 import type {
@@ -16,6 +18,11 @@ import { connect } from '@tursodatabase/serverless';
 import { getCategories } from './repositories/get-categories.js';
 import { getLeagues } from './repositories/get-leagues.js';
 import { getMatchById } from './repositories/get-match-by-id.js';
+import {
+  getMatchGames,
+  getMatchGamesByTeamId,
+} from './repositories/get-match-games.js';
+import { getMatchResults } from './repositories/get-match-results.js';
 import { getMatches } from './repositories/get-matches.js';
 import { getTeamById } from './repositories/get-team-by-id.js';
 import { getTeamMatches } from './repositories/get-team-matches.js';
@@ -29,6 +36,8 @@ import { searchPhases } from './repositories/search-phases.js';
 import { searchPlayers } from './repositories/search-players.js';
 import { searchTeams } from './repositories/search-teams.js';
 import { upsertLeagues } from './repositories/upsert-leagues.js';
+import { upsertMatchGames } from './repositories/upsert-match-games.js';
+import { upsertMatchResults } from './repositories/upsert-match-results.js';
 import { upsertMatches } from './repositories/upsert-matches.js';
 import { upsertTeamPlayers } from './repositories/upsert-team-players.js';
 import { upsertTeamStandings } from './repositories/upsert-team-standings.js';
@@ -93,6 +102,12 @@ export function createClient(params: TursoConfig) {
     getMatches: (category: CategoryKey) => getMatches(connection, category),
     getMatchById: (category: CategoryKey, id: number) =>
       getMatchById(connection, category, id),
+    getMatchResults: (category: CategoryKey, matchIds?: number[]) =>
+      getMatchResults(connection, category, matchIds),
+    getMatchGames: (category: CategoryKey, matchId: number) =>
+      getMatchGames(connection, category, matchId),
+    getMatchGamesByTeamId: (teamId: number) =>
+      getMatchGamesByTeamId(connection, teamId),
 
     upsertLeagues: (leagues: League[]) => upsertLeagues(leagues, connection),
     upsertTeams: (teams: Team[]) => upsertTeams(teams, connection),
@@ -101,5 +116,9 @@ export function createClient(params: TursoConfig) {
     upsertTeamPlayers: (players: TeamPlayer[]) =>
       upsertTeamPlayers(players, connection),
     upsertMatches: (matches: MatchWrite[]) => upsertMatches(matches, connection),
+    upsertMatchResults: (results: MatchResult[]) =>
+      upsertMatchResults(results, connection),
+    upsertMatchGames: (games: MatchGame[]) =>
+      upsertMatchGames(games, connection),
   };
 }
