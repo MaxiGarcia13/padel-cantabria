@@ -5,7 +5,7 @@ import type {
   Team,
   TeamWithStandings,
 } from '@padel-cantabria/database';
-import { getClosestMatches } from '../matches/get-closest-matches.js';
+import { getNextMatch } from '../matches/get-next-match.js';
 
 export interface TeamStandingAndNextMatch {
   standing: TeamWithStandings | null;
@@ -35,7 +35,7 @@ export async function loadTeamStandingAndNextMatch(
   )?.schedule;
 
   const nextMatch = season
-    ? (getClosestMatches(matches, season, 1)[0] ?? null)
+    ? getNextMatch(matches, season)
     : (matches[0] ?? null);
 
   return {

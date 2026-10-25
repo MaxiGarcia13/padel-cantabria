@@ -16,6 +16,7 @@ export {
   getClosestMatches,
   sortMatchesByDate,
 } from './get-closest-matches.js';
+export { getNextMatch } from './get-next-match.js';
 export {
   groupMatchesByDate,
   type MatchDateGroup,

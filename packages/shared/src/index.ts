@@ -12,6 +12,7 @@ export {
   getActiveWeekendRange,
   getClosestMatches,
   getMatchSortTime,
+  getNextMatch,
   getWeekendRangeContaining,
   groupMatchesByDate,
   type MatchDateGroup,
