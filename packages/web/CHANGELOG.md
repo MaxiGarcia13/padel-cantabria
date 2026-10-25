@@ -1,3 +1,13 @@
+## 0.7.1 (2026-10-25)
+
+### 🐞 Fixes
+
+- Improve query handling in autocomplete components ([b42c10f](https://github.com/MaxiGarcia13/padel-cantabria/commit/b42c10f))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.7.0 (2026-10-25)
 
 ### 🚀 Features
