@@ -1,3 +1,13 @@
+## 0.6.2 (2026-10-25)
+
+### 🐞 Fixes
+
+- Update moon icon SVG for improved accessibility and design ([b608e53](https://github.com/MaxiGarcia13/padel-cantabria/commit/b608e53))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.6.1 (2026-10-25)
 
 ### 🐞 Fixes
