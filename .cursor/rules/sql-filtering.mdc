@@ -1,0 +1,30 @@
+---
+description: Prefer SQL WHERE filters over loading rows then filtering in JS
+alwaysApply: true
+---
+
+# SQL filtering
+
+When rows already live in Turso, **filter in SQL** (or via repo params that become SQL). Do not `getAll*()` then `.filter()` in application code.
+
+Use shared scope helpers when the filter is league/gender: `ListScopeParams` / `buildListScopeFilter` (`packages/database/src/utils/list-scope.ts`), and pass `{ leagueIds, genders }` into repos (`getTeams`, `getCategories`, `getAllMatches`, `getLeagues`, etc.).
+
+```typescript
+// ❌ BAD — fetch everything, discard in JS
+const teams = (await db.getTeams()).filter(
+  (team) => allowedLeagueIds === null || allowedLeagueIds.has(team.league_id),
+);
+
+// ✅ GOOD — scope in the query
+const teams = await db.getTeams({
+  leagueIds: allowedLeagueIds ? [...allowedLeagueIds] : null,
+  genders: allowedGenders ? [...allowedGenders] : null,
+});
+```
+
+## When JS filter is OK
+
+- Data is not in the DB yet (e.g. federation HTML before upsert)
+- The predicate cannot be expressed cleanly in SQL (rare; prefer extending the repo)
+
+Prefer adding optional params on the repository over a one-off in-memory filter.
