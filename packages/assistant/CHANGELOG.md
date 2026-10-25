@@ -1,3 +1,13 @@
+## 0.3.1 (2026-10-25)
+
+### 🐞 Fixes
+
+- Update HTML meta charset for dark mode compatibility ([3c0ca29](https://github.com/MaxiGarcia13/padel-cantabria/commit/3c0ca29))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.3.0 (2026-10-25)
 
 ### 🧱 Updated Dependencies
