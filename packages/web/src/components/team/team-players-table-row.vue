@@ -23,7 +23,7 @@ const trend = getPositionTrend(
       <PositionTrend :trend="trend" />
     </TableCell>
     <TableCell class="font-medium text-foreground">
-      {{ player.surname }} {{ player.name }}
+      {{ player.name }} {{ player.surname }}
     </TableCell>
     <TableCell class="text-center text-muted">
       {{ formatStandingValue(player.points) }}
