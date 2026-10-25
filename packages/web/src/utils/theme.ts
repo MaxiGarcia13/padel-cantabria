@@ -1,10 +1,16 @@
+import { createStorage } from '@maxigarcia/js-utils';
+
 export type Theme = 'light' | 'dark';
 
-const THEME_STORAGE_KEY = 'theme';
+const themeStorage = createStorage<Theme>('theme');
+
+function isTheme(value: string | null): value is Theme {
+  return value === 'light' || value === 'dark';
+}
 
 export function getStoredTheme(): Theme {
-  const stored = localStorage.getItem(THEME_STORAGE_KEY);
-  return stored === 'light' || stored === 'dark' ? stored : 'dark';
+  const stored = themeStorage.getItem();
+  return isTheme(stored) ? stored : 'dark';
 }
 
 export function getTheme(): Theme {
@@ -13,7 +19,7 @@ export function getTheme(): Theme {
 
 export function setTheme(theme: Theme): void {
   document.documentElement.classList.toggle('dark', theme === 'dark');
-  localStorage.setItem(THEME_STORAGE_KEY, theme);
+  themeStorage.setItem(theme);
 }
 
 export function toggleTheme(): Theme {
