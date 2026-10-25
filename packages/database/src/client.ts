@@ -1,4 +1,8 @@
 import type { Connection } from '@tursodatabase/serverless';
+import type { GetAllMatchesParams } from './repositories/get-all-matches.js';
+import type { GetCategoriesParams } from './repositories/get-categories.js';
+import type { GetLeaguesParams } from './repositories/get-leagues.js';
+import type { GetTeamsParams } from './repositories/get-teams.js';
 import type { GetTopPlayersParams } from './repositories/get-top-players.js';
 import type { SearchCategoriesParams } from './repositories/search-categories.js';
 import type { SearchPhasesParams } from './repositories/search-phases.js';
@@ -64,12 +68,19 @@ export function createClient(params: TursoConfig) {
 
   function clientGetTeams(): Promise<Team[]>;
   function clientGetTeams(category: CategoryKey): Promise<TeamWithStandings[]>;
+  function clientGetTeams(params: GetTeamsParams): Promise<Team[]>;
   function clientGetTeams(
-    category?: CategoryKey,
+    categoryOrParams?: CategoryKey | GetTeamsParams,
   ): Promise<Team[] | TeamWithStandings[]> {
-    return category === undefined
-      ? getTeams(connection)
-      : getTeams(connection, category);
+    if (categoryOrParams === undefined) {
+      return getTeams(connection);
+    }
+
+    if ('league_id' in categoryOrParams) {
+      return getTeams(connection, categoryOrParams);
+    }
+
+    return getTeams(connection, categoryOrParams);
   }
 
   function clientGetTeamPlayers(): Promise<TeamPlayer[]>;
@@ -81,8 +92,9 @@ export function createClient(params: TursoConfig) {
   }
 
   return {
-    getLeagues: () => getLeagues(connection),
-    getCategories: () => getCategories(connection),
+    getLeagues: (params?: GetLeaguesParams) => getLeagues(connection, params),
+    getCategories: (params?: GetCategoriesParams) =>
+      getCategories(connection, params),
     searchCategories: (params?: SearchCategoriesParams) =>
       searchCategories(connection, params),
     searchPhases: (params?: SearchPhasesParams) =>
@@ -101,7 +113,8 @@ export function createClient(params: TursoConfig) {
     getTopPlayers: (params: GetTopPlayersParams) =>
       getTopPlayers(connection, params),
     getMatches: (category: CategoryKey) => getMatches(connection, category),
-    getAllMatches: () => getAllMatches(connection),
+    getAllMatches: (params?: GetAllMatchesParams) =>
+      getAllMatches(connection, params),
     getMatchById: (category: CategoryKey, id: number) =>
       getMatchById(connection, category, id),
     getMatchResults: (category: CategoryKey, matchIds?: number[]) =>

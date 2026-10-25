@@ -5,6 +5,10 @@ export {
   getConfiguredLeagueId,
   parseLeagueIds,
 } from './parse-league-ids.js';
+export type { GetAllMatchesParams } from './repositories/get-all-matches.js';
+export type { GetCategoriesParams } from './repositories/get-categories.js';
+export type { GetLeaguesParams } from './repositories/get-leagues.js';
+export type { GetTeamsParams } from './repositories/get-teams.js';
 export type { GetTopPlayersParams } from './repositories/get-top-players.js';
 export type { SearchCategoriesParams } from './repositories/search-categories.js';
 export type { SearchPhasesParams } from './repositories/search-phases.js';
@@ -32,3 +36,4 @@ export type {
 } from './types/team-standings.js';
 export { EMPTY_TEAM_STANDINGS } from './types/team-standings.js';
 export type { Team } from './types/team.js';
+export type { ListScopeParams } from './utils/list-scope.js';

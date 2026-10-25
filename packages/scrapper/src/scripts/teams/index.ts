@@ -9,10 +9,8 @@ import { scrapeTeams } from './scrape-teams.js';
 async function main(): Promise<void> {
   const db = createClientFromEnv();
   const allowedLeagueIds = parseLeagueIds(process.env.LEAGUE_IDS);
-  const categories = (await db.getCategories()).filter(
-    (category) =>
-      allowedLeagueIds === null || allowedLeagueIds.has(category.league_id),
-  );
+  const leagueIds = allowedLeagueIds ? [...allowedLeagueIds] : null;
+  const categories = await db.getCategories({ leagueIds });
 
   if (categories.length === 0) {
     throw new Error('No categories found');

@@ -11,14 +11,16 @@ async function main(): Promise<void> {
   const db = createClientFromEnv();
   const allowedLeagueIds = parseLeagueIds(process.env.LEAGUE_IDS);
   const allowedGenders = parseGenders(process.env.SCRAPE_GENDERS);
-  const teams = (await db.getTeams()).filter(
-    (team) =>
-      (allowedLeagueIds === null || allowedLeagueIds.has(team.league_id))
-      && (allowedGenders === null || allowedGenders.has(team.gender)),
-  );
+  const leagueIds = allowedLeagueIds ? [...allowedLeagueIds] : null;
+  const genders = allowedGenders ? [...allowedGenders] : null;
+  const teams = await db.getTeams({ leagueIds, genders });
 
   if (teams.length === 0) {
-    throw new Error('No teams found. Run scrape:teams first.');
+    throw new Error(
+      genders === null
+        ? 'No teams found. Run scrape:teams first.'
+        : 'No teams found for SCRAPE_GENDERS. Check the value or run scrape:teams first.',
+    );
   }
 
   const previousPlayers = await db.getTeamPlayers();

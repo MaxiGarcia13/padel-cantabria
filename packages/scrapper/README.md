@@ -18,14 +18,14 @@ Optional filters and politeness settings:
 LEAGUE_IDS=28942
 
 
-# Players only: limit to federation gender values (same strings as teams.gender)
+# Players + results: limit to federation gender values (same strings as teams.gender)
 SCRAPE_GENDERS=M
 
 # Delay in ms between federation page requests (default 1500)
 SCRAPE_DELAY_MS=1500
 ```
 
-`SCRAPE_DELAY_MS` applies to teams, players, calendar, and results scrapers. `SCRAPE_GENDERS` applies only to `scrape:players` (empty = all genders).
+`SCRAPE_DELAY_MS` applies to teams, players, calendar, and results scrapers. `SCRAPE_GENDERS` applies to `scrape:players` and `scrape:results` (empty = all genders).
 
 Apply the schema first (from repo root):
 
@@ -70,14 +70,15 @@ pnpm scrape:results
 2. **`scrape:teams`** — team list changed (inscriptions, names, confirmed status). Required before calendar/players if new teams appeared.
 3. **`scrape:players`** — roster ranking/points updates. Re-runs keep `previous_position` / `previous_points` from the last scrape.
 4. **`scrape:calendar`** — match dates/results/schedule updates. Resolves home/away team names to IDs in memory; fails if a team was not scraped yet.
-5. **`scrape:results`** — lineups and scores for matches already played in the current or previous weekend. Skips pages that are not ready yet.
+5. **`scrape:results`** — lineups and scores for matches already played in the current or previous weekend. Skips pages that are not ready yet. Respects `SCRAPE_GENDERS` so you can split M/F runs (same as players).
 
 Typical refresh when only fixtures changed:
 
 ```bash
 pnpm scrape:teams
 pnpm scrape:calendar
-pnpm scrape:results
+SCRAPE_GENDERS=M pnpm scrape:results
+SCRAPE_GENDERS=F pnpm scrape:results
 ```
 
 ## GitHub Actions schedule

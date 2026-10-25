@@ -2,6 +2,10 @@ import type { Connection } from '@tursodatabase/serverless';
 import type { CategoryKey } from '../types/match.js';
 import type { TeamWithStandings } from '../types/team-standings.js';
 import type { Team } from '../types/team.js';
+import type { ListScopeParams } from '../utils/list-scope.js';
+import { buildListScopeFilter } from '../utils/list-scope.js';
+
+export type GetTeamsParams = ListScopeParams;
 
 const TEAM_COLUMNS = `
   id,
@@ -31,6 +35,12 @@ const TEAM_WITH_STANDINGS_COLUMNS = `
   team_standings.games_average
 `;
 
+function isCategoryKey(
+  value: CategoryKey | GetTeamsParams,
+): value is CategoryKey {
+  return 'league_id' in value && typeof value.league_id === 'number';
+}
+
 export async function getTeams(
   connection: Connection,
 ): Promise<Team[]>;
@@ -40,9 +50,14 @@ export async function getTeams(
 ): Promise<TeamWithStandings[]>;
 export async function getTeams(
   connection: Connection,
-  category?: CategoryKey,
+  params: GetTeamsParams,
+): Promise<Team[]>;
+export async function getTeams(
+  connection: Connection,
+  categoryOrParams?: CategoryKey | GetTeamsParams,
 ): Promise<Team[] | TeamWithStandings[]> {
-  if (category) {
+  if (categoryOrParams && isCategoryKey(categoryOrParams)) {
+    const category = categoryOrParams;
     const [result] = await connection.batch(
       [
         {
@@ -81,14 +96,19 @@ export async function getTeams(
     return result.rows as TeamWithStandings[];
   }
 
+  const scope = buildListScopeFilter(categoryOrParams ?? {});
   const [result] = await connection.batch(
     [
-      `
-        SELECT
-          ${TEAM_COLUMNS}
-        FROM teams
-        ORDER BY league_id, gender, category, name
-      `,
+      {
+        sql: `
+          SELECT
+            ${TEAM_COLUMNS}
+          FROM teams
+          WHERE ${scope.sql}
+          ORDER BY league_id, gender, category, name
+        `,
+        args: scope.args,
+      },
     ],
     'read',
   );
