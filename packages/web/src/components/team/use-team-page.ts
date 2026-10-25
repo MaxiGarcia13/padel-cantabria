@@ -50,14 +50,16 @@ export function useTeamPage(options: {
   );
 
   const isHydrated = useHydrated();
-  const { data: players } = useTeamPlayers(options.team.id);
+  const { data: teamPlayers } = useTeamPlayers(options.team.id);
 
   const totalPoints = computed(() => {
-    if (!isHydrated.value || !players.value) {
+    const players = teamPlayers.value?.players;
+
+    if (!isHydrated.value || !players) {
       return null;
     }
 
-    return players.value.reduce((sum, player) => sum + player.points, 0);
+    return players.reduce((sum, player) => sum + player.points, 0);
   });
 
   const displayLabels = getTeamDisplayLabels(options.leagues, options.team);

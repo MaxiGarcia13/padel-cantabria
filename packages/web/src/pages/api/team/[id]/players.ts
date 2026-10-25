@@ -1,5 +1,8 @@
 import type { APIRoute } from 'astro';
-import { attachPlayerMatchStats } from '@padel-cantabria/shared';
+import {
+  attachPlayerMatchStats,
+  computeTeamCoupleStats,
+} from '@padel-cantabria/shared';
 import { jsonApiError } from '@/server/json-api-error';
 import { requireTeamById } from '@/server/require-team-by-id';
 
@@ -20,6 +23,7 @@ export const GET: APIRoute = async ({ params }) => {
 
     return Response.json({
       players: attachPlayerMatchStats(players, games, loaded.team.id),
+      couples: computeTeamCoupleStats(players, games, loaded.team.id),
     });
   } catch (error) {
     return jsonApiError(500, error);

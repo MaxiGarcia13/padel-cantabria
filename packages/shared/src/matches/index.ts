@@ -4,9 +4,15 @@ export {
   type TeamPlayerWithMatchStats,
 } from './attach-player-match-stats.js';
 export {
+  computeTeamCoupleStats,
+  type TeamCouplePlayer,
+  type TeamCoupleStats,
+} from './compute-team-couple-stats.js';
+export {
   formatMatchMeta,
   formatMatchMetaParts,
 } from './format-match-meta.js';
+export { formatWinAverage } from './format-win-average.js';
 export {
   getActiveWeekendRange,
   getWeekendRangeContaining,

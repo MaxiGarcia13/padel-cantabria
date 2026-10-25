@@ -1,17 +1,21 @@
-import type { TeamPlayerWithMatchStats } from '@padel-cantabria/shared';
+import type {
+  TeamCoupleStats,
+  TeamPlayerWithMatchStats,
+} from '@padel-cantabria/shared';
 import type { MaybeRefOrGetter } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { computed, toValue } from 'vue';
 import { request } from '@/utils/request';
 
-async function fetchTeamPlayers(
-  teamId: number,
-): Promise<TeamPlayerWithMatchStats[]> {
-  const body = await request(`/api/team/${teamId}/players`).json<{
-    players: TeamPlayerWithMatchStats[];
-  }>('Failed to load players');
+export interface TeamPlayersPayload {
+  players: TeamPlayerWithMatchStats[];
+  couples: TeamCoupleStats[];
+}
 
-  return body.players;
+async function fetchTeamPlayers(teamId: number): Promise<TeamPlayersPayload> {
+  return request(`/api/team/${teamId}/players`).json<TeamPlayersPayload>(
+    'Failed to load players',
+  );
 }
 
 export function useTeamPlayers(teamId: MaybeRefOrGetter<number>) {

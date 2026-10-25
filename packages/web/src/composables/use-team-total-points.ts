@@ -6,14 +6,16 @@ import { useTeamPlayers } from '@/composables/use-team-players';
 
 export function useTeamTotalPoints(teamId: MaybeRefOrGetter<number>) {
   const isHydrated = useHydrated();
-  const { data: players, isPending, isError } = useTeamPlayers(teamId);
+  const { data: teamPlayers, isPending, isError } = useTeamPlayers(teamId);
 
   const points = computed(() => {
-    if (!isHydrated.value || !players.value) {
+    const players = teamPlayers.value?.players;
+
+    if (!isHydrated.value || !players) {
       return null;
     }
 
-    return getTeamTotalPoints(players.value);
+    return getTeamTotalPoints(players);
   });
 
   return {

@@ -7,8 +7,10 @@ export { formatNumber } from './format/index.js';
 export { inferGenderFromText, normalizeGender } from './gender/index.js';
 export {
   attachPlayerMatchStats,
+  computeTeamCoupleStats,
   formatMatchMeta,
   formatMatchMetaParts,
+  formatWinAverage,
   getActiveWeekendRange,
   getClosestMatches,
   getMatchSortTime,
@@ -24,6 +26,8 @@ export {
   type SeasonRange,
   sortMatchesByDate,
   summarizeMatchResult,
+  type TeamCouplePlayer,
+  type TeamCoupleStats,
   type TeamPlayerWithMatchStats,
   type WeekendRange,
 } from './matches/index.js';
