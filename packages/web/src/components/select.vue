@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { SelectOption } from '@padel-cantabria/database';
 import ChevronDownIcon from '@/components/icons/chevron-down-icon.vue';
-import Field from './field.vue';
+import { Field, FieldLabel } from '@/components/ui/field';
 
 defineProps<{
   id: string;
@@ -17,10 +17,14 @@ defineEmits<{
 </script>
 
 <template>
-  <Field
-    :id="id"
-    :label="label"
-  >
+  <Field>
+    <FieldLabel
+      :for="id"
+      class="text-muted"
+    >
+      {{ label }}
+    </FieldLabel>
+
     <div class="relative">
       <select
         :id="id"

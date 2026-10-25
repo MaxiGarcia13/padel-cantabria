@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { League, SelectOption } from '@padel-cantabria/database';
-import Button from '@/components/button.vue';
 import LoaderIcon from '@/components/icons/loader-icon.vue';
 import Select from '@/components/select.vue';
+import { Button } from '@/components/ui/button';
 import LeagueSelect from './league-select.vue';
 import SearcherSkeleton from './searcher-skeleton.vue';
 

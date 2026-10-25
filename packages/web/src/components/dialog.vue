@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTemplateRef } from 'vue';
-import Button from '@/components/button.vue';
 import XIcon from '@/components/icons/x-icon.vue';
+import { Button } from '@/components/ui/button';
 import { useClickOutside } from '@/composables/use-click-outside';
 
 const props = withDefaults(

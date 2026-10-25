@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useTemplateRef } from 'vue';
-import Button from '@/components/button.vue';
 import Dialog from '@/components/dialog.vue';
 import ZoomIcon from '@/components/icons/zoom-icon.vue';
+import { Button } from '@/components/ui/button';
 import SearcherForm from './searcher-form.vue';
 
 const props = withDefaults(

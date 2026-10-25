@@ -19,6 +19,7 @@
     "@padel-cantabria/database": "workspace:*",
     "@padel-cantabria/shared": "workspace:*",
     "@tanstack/vue-query": "^5.104.2",
+    "@vueuse/core": "^15.0.0",
     "astro": "^7.3.8",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.5.0",

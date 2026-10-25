@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Skeleton from '@/components/skeleton.vue';
+import { Skeleton } from '@/components/ui/skeleton';
 </script>
 
 <template>

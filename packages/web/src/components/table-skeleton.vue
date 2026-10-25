@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Skeleton from './skeleton.vue';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const props = withDefaults(
   defineProps<{

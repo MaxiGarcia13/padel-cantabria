@@ -373,6 +373,9 @@ importers:
       '@tanstack/vue-query':
         specifier: ^5.104.2
         version: 5.104.2(vue@3.5.44(typescript@6.0.3))
+      '@vueuse/core':
+        specifier: ^15.0.0
+        version: 15.0.0(vue@3.5.44(typescript@6.0.3))
       astro:
         specifier: ^7.3.8
         version: 7.3.8(@types/node@24.19.2)(@vercel/functions@3.10.1(ws@8.22.0))(esbuild@0.28.2)(jiti@2.7.0)(stylus@0.57.0(supports-color@7.2.0))(tsx@4.23.15)(yaml@2.9.1)

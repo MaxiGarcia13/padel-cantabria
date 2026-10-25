@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Button from '@/components/button.vue';
 import ChevronDownIcon from '@/components/icons/chevron-down-icon.vue';
 import XIcon from '@/components/icons/x-icon.vue';
+import { Button } from '@/components/ui/button';
 import SearcherFiltersForm from './searcher-filters-form.vue';
 import TeamAutocomplete from './team-autocomplete.vue';
 import { useSearcherForm } from './use-searcher-form';
