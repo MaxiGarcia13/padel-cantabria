@@ -361,6 +361,9 @@ importers:
       '@maxigarcia/js-utils':
         specifier: ^1.22.1
         version: 1.22.1
+      '@maxigarcia/view-transitions':
+        specifier: ^0.9.0
+        version: 0.9.0
       '@padel-cantabria/database':
         specifier: workspace:*
         version: link:../database
@@ -1897,6 +1900,9 @@ packages:
 
   '@maxigarcia/js-utils@1.22.1':
     resolution: {integrity: sha512-EqCL0qLAEuhj7FVtwYOB//X1NFiBi3N0cBDtPbkpWkyUPjeh/hOAk92iOE2VDxGtW1mDM6C2Orqevmp7Pk1y8Q==}
+
+  '@maxigarcia/view-transitions@0.9.0':
+    resolution: {integrity: sha512-7xMXPT5oydRsjdT53+PgDjADm41NBF2NX785CWu+M0fMBCsfomS407mQyUQHSzT5txmWcNdzvUSg+UASUOsk7A==}
 
   '@modelcontextprotocol/sdk@1.32.1':
     resolution: {integrity: sha512-2DdE+SJDtzLEEWzY1ZjY7Q+VcPhcV1KisD3zI4u0XZyktsjHum1mwbMI+JaulUBi2OZk+KJAi2uPXzxichPkdw==}
@@ -7874,6 +7880,8 @@ snapshots:
       - vitest
 
   '@maxigarcia/js-utils@1.22.1': {}
+
+  '@maxigarcia/view-transitions@0.9.0': {}
 
   '@modelcontextprotocol/sdk@1.32.1(supports-color@7.2.0)(zod@3.25.76)':
     dependencies:

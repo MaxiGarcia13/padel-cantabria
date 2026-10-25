@@ -1,6 +1,7 @@
 ---
 import packageJson from '../../../../package.json';
 import { BrandGithubIcon, BugIcon } from './icons';
+import ThemeToggle from './theme-toggle.vue';
 
 const repository = packageJson.repository;
 const repositoryUrl = typeof repository === 'string' ? repository : repository?.url;
@@ -13,8 +14,8 @@ const REPO_URL = repositoryUrl.replace(/\.git$/, '');
 const ISSUES_URL = `${REPO_URL}/issues/new`;
 ---
 
-<footer class="mx-auto flex w-full max-w-6xl gap-2 px-4 py-6 text-sm text-muted flex-row items-center justify-center sm:justify-end">
-  <nav class="flex gap-4" aria-label="Enlaces del proyecto">
+<footer class="mx-auto flex w-full max-w-6xl gap-4 px-4 py-6 text-sm text-muted flex-row items-center justify-center sm:justify-end">
+  <nav class="flex items-center gap-4" aria-label="Enlaces del proyecto">
     <a
       href={REPO_URL}
       target="_blank"
@@ -33,5 +34,6 @@ const ISSUES_URL = `${REPO_URL}/issues/new`;
       <BugIcon class="size-4 shrink-0" />
       Reportar un problema
     </a>
+    <ThemeToggle client:load transition:persist="theme-toggle" />
   </nav>
 </footer>

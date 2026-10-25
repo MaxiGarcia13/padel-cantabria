@@ -1,4 +1,15 @@
 :root {
+  --pc-background: #fafafa;
+  --pc-surface: #ffffff;
+  --pc-border: #e5e5e5;
+  --pc-foreground: #171717;
+  --pc-muted: #737373;
+  --pc-danger: #b85c5c;
+  --pc-primary: #262626;
+  --pc-primary-foreground: #fafafa;
+}
+
+.dark {
   --pc-background: #121212;
   --pc-surface: #1a1a1a;
   --pc-border: #2e2e2e;

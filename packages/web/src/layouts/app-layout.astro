@@ -10,7 +10,7 @@ interface Props {
 const { title = 'Pádel Cantabria' } = Astro.props;
 ---
 
-<html lang="es" class="dark">
+<html lang="es">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,6 +22,17 @@ const { title = 'Pádel Cantabria' } = Astro.props;
     <meta property="og:title" content={title} />
     <meta property="og:image" content="/og-image.png" />
     <title>{title}</title>
+    <script is:inline>
+      (() => {
+        function applyTheme() {
+          const stored = localStorage.getItem('theme');
+          const theme = stored === 'light' || stored === 'dark' ? stored : 'dark';
+          document.documentElement.classList.toggle('dark', theme === 'dark');
+        }
+        applyTheme();
+        document.addEventListener('astro:after-swap', applyTheme);
+      })();
+    </script>
     <ClientRouter />
   </head>
   <body class="flex min-h-dvh flex-col bg-background text-foreground">

@@ -15,6 +15,7 @@
     "@astrojs/vercel": "^11.0.15",
     "@astrojs/vue": "^7.0.3",
     "@maxigarcia/js-utils": "^1.22.1",
+    "@maxigarcia/view-transitions": "^0.9.0",
     "@padel-cantabria/database": "workspace:*",
     "@padel-cantabria/shared": "workspace:*",
     "@tanstack/vue-query": "^5.104.2",
