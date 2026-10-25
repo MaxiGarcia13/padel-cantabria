@@ -49,7 +49,7 @@ const meta = computed(() =>
       :href="calendarHref"
       class="text-sm font-medium text-primary hover:underline"
     >
-      Ver partidos
+      Ver próximos partidos
     </a>
   </section>
 </template>
