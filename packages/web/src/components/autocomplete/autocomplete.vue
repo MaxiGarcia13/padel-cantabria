@@ -6,7 +6,6 @@ import LoaderIcon from '@/components/icons/loader-icon.vue';
 import {
   Combobox,
   ComboboxAnchor,
-  ComboboxEmpty,
   ComboboxInput,
   ComboboxItem,
   ComboboxList,
@@ -20,15 +19,11 @@ const props = withDefaults(
     items: AutocompleteItem[];
     disabled?: boolean;
     loading?: boolean;
-    pending?: boolean;
-    emptyMessage?: string;
     defaultOpen?: boolean;
   }>(),
   {
     disabled: false,
     loading: false,
-    pending: false,
-    emptyMessage: 'No se encontraron resultados.',
     defaultOpen: false,
   },
 );
@@ -49,7 +44,7 @@ const canShowPopup = computed(() => {
     return Boolean(slots.empty);
   }
 
-  return true;
+  return props.items.length > 0;
 });
 
 function isAutocompleteItem(value: AcceptableValue): value is AutocompleteItem {
@@ -135,10 +130,6 @@ defineExpose({ close });
               </span>
             </span>
           </ComboboxItem>
-
-          <ComboboxEmpty v-if="!pending && items.length === 0">
-            {{ emptyMessage }}
-          </ComboboxEmpty>
         </template>
       </ComboboxViewport>
     </ComboboxList>

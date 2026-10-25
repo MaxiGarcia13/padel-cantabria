@@ -136,11 +136,9 @@ defineExpose({
     ref="autocompleteRef"
     v-model="query"
     placeholder="Buscar equipo"
-    empty-message="No se encontraron equipos."
     :items="items"
     :disabled="isError"
     :loading="loading"
-    :pending="isPending"
     :default-open="defaultOpen"
     @select="onSelect"
   >
