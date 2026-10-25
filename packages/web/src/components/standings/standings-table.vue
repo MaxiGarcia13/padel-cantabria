@@ -2,7 +2,7 @@
 import type { CategoryKey } from '@padel-cantabria/database';
 import { computed, toRef } from 'vue';
 import TableSkeleton from '@/components/table-skeleton.vue';
-import Table from '@/components/table/table.vue';
+import { Table, TableBody } from '@/components/ui/table';
 import { useHydrated } from '@/composables/use-hydrated';
 import { useTeams } from '@/composables/use-teams';
 import StandingsTableHeader from './standings-table-header.vue';
@@ -47,14 +47,14 @@ const errorMessage = computed(() =>
     </p>
 
     <Table v-else>
-      <template #header>
-        <StandingsTableHeader />
-      </template>
-      <StandingsTableRow
-        v-for="team in teams"
-        :key="team.id"
-        :team="team"
-      />
+      <StandingsTableHeader />
+      <TableBody>
+        <StandingsTableRow
+          v-for="team in teams"
+          :key="team.id"
+          :team="team"
+        />
+      </TableBody>
     </Table>
   </div>
 </template>

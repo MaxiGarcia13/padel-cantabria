@@ -2,8 +2,8 @@
 import type { Match } from '@padel-cantabria/database';
 import { formatStandingValue } from '@padel-cantabria/shared';
 import { computed, ref } from 'vue';
-import { Tabs } from '@/components/tabs';
 import TeamPlayersTableLazy from '@/components/team/team-players-table-lazy.vue';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTeamTotalPoints } from '@/composables/use-team-total-points';
 import MatchHeader from './match-header.vue';
 import MatchMeta from './match-meta.vue';
@@ -41,10 +41,24 @@ const teamOptions = computed(() => [
       <MatchMeta :match="match" />
     </header>
 
-    <Tabs
-      v-model="selectedTeamId"
-      :options="teamOptions"
-    />
+    <Tabs v-model="selectedTeamId">
+      <TabsList>
+        <TabsTrigger
+          v-for="option in teamOptions"
+          :key="option.value"
+          :value="option.value"
+        >
+          <span class="flex flex-col items-center text-center leading-tight">
+            <span class="line-clamp-2">
+              {{ option.label }}
+            </span>
+            <span class="text-xs text-muted">
+              {{ option.secondary }}
+            </span>
+          </span>
+        </TabsTrigger>
+      </TabsList>
+    </Tabs>
 
     <TeamPlayersTableLazy :team-id="selectedTeamId" />
   </div>

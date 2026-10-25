@@ -1,30 +1,32 @@
 <script setup lang="ts">
-import TableHeader from '@/components/table/table-header.vue';
+import { TableHead, TableHeader, TableRow } from '@/components/ui/table';
 </script>
 
 <template>
   <TableHeader>
-    <th class="px-4 py-4 font-medium">
-      Pos.
-    </th>
-    <th class="px-4 py-4 font-medium" />
-    <th class="px-4 py-4 font-medium">
-      Apellidos
-    </th>
-    <th class="px-4 py-4 font-medium">
-      Nombre
-    </th>
-    <th class="px-4 py-4 text-center font-medium">
-      Puntos
-    </th>
-    <th class="px-4 py-4 text-center font-medium">
-      Jugados
-    </th>
-    <th class="px-4 py-4 text-center font-medium">
-      Ganados
-    </th>
-    <th class="px-4 py-4 text-center font-medium">
-      Perdidos
-    </th>
+    <TableRow>
+      <TableHead>
+        Pos.
+      </TableHead>
+      <TableHead />
+      <TableHead>
+        Apellidos
+      </TableHead>
+      <TableHead>
+        Nombre
+      </TableHead>
+      <TableHead class="text-center">
+        Puntos
+      </TableHead>
+      <TableHead class="text-center">
+        Jugados
+      </TableHead>
+      <TableHead class="text-center">
+        Ganados
+      </TableHead>
+      <TableHead class="text-center">
+        Perdidos
+      </TableHead>
+    </TableRow>
   </TableHeader>
 </template>

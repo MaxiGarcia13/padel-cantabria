@@ -1,45 +1,47 @@
 <script setup lang="ts">
-import TableHeader from '@/components/table/table-header.vue';
+import { TableHead, TableHeader, TableRow } from '@/components/ui/table';
 </script>
 
 <template>
   <TableHeader>
-    <th class="px-4 py-4 font-medium">
-      Pos.
-    </th>
-    <th class="px-4 py-4 font-medium" />
-    <th class="px-4 py-4 font-medium">
-      Equipo
-    </th>
-    <th class="px-4 py-4 text-center font-medium">
-      Enfrentamientos<br>disputados
-    </th>
-    <th class="px-4 py-4 text-center font-medium">
-      Puntos<br>ganados
-    </th>
-    <th class="px-4 py-4 text-center font-medium">
-      Partidos<br>disputados
-    </th>
-    <th class="px-4 py-4 text-center font-medium">
-      Partidos<br>ganados
-    </th>
-    <th class="px-4 py-4 text-center font-medium">
-      Sets<br>a favor
-    </th>
-    <th class="px-4 py-4 text-center font-medium">
-      Sets<br>en contra
-    </th>
-    <th class="px-4 py-4 text-center font-medium">
-      Average<br>sets
-    </th>
-    <th class="px-4 py-4 text-center font-medium">
-      Juegos<br>a favor
-    </th>
-    <th class="px-4 py-4 text-center font-medium">
-      Juegos<br>en contra
-    </th>
-    <th class="px-4 py-4 text-center font-medium">
-      Average<br>juegos
-    </th>
+    <TableRow>
+      <TableHead>
+        Pos.
+      </TableHead>
+      <TableHead />
+      <TableHead>
+        Equipo
+      </TableHead>
+      <TableHead class="text-center">
+        Enfrentamientos<br>disputados
+      </TableHead>
+      <TableHead class="text-center">
+        Puntos<br>ganados
+      </TableHead>
+      <TableHead class="text-center">
+        Partidos<br>disputados
+      </TableHead>
+      <TableHead class="text-center">
+        Partidos<br>ganados
+      </TableHead>
+      <TableHead class="text-center">
+        Sets<br>a favor
+      </TableHead>
+      <TableHead class="text-center">
+        Sets<br>en contra
+      </TableHead>
+      <TableHead class="text-center">
+        Average<br>sets
+      </TableHead>
+      <TableHead class="text-center">
+        Juegos<br>a favor
+      </TableHead>
+      <TableHead class="text-center">
+        Juegos<br>en contra
+      </TableHead>
+      <TableHead class="text-center">
+        Average<br>juegos
+      </TableHead>
+    </TableRow>
   </TableHeader>
 </template>

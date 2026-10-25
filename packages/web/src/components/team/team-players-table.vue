@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, toRef } from 'vue';
 import TableSkeleton from '@/components/table-skeleton.vue';
-import Table from '@/components/table/table.vue';
+import { Table, TableBody } from '@/components/ui/table';
 import { useHydrated } from '@/composables/use-hydrated';
 import { useTeamPlayers } from '@/composables/use-team-players';
 import TeamPlayersTableHeader from './team-players-table-header.vue';
@@ -50,14 +50,14 @@ const errorMessage = computed(() =>
     </p>
 
     <Table v-else>
-      <template #header>
-        <TeamPlayersTableHeader />
-      </template>
-      <TeamPlayersTableRow
-        v-for="player in players"
-        :key="`${player.surname}-${player.name}`"
-        :player="player"
-      />
+      <TeamPlayersTableHeader />
+      <TableBody>
+        <TeamPlayersTableRow
+          v-for="player in players"
+          :key="`${player.surname}-${player.name}`"
+          :player="player"
+        />
+      </TableBody>
     </Table>
   </section>
 </template>
