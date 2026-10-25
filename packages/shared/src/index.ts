@@ -15,9 +15,12 @@ export {
   groupMatchesByDate,
   type MatchDateGroup,
   type MatchDateRange,
+  type MatchResultSummary,
+  type MatchWinnerSide,
   parseMatchDateRange,
   type SeasonRange,
   sortMatchesByDate,
+  summarizeMatchResult,
   type WeekendRange,
 } from './matches/index.js';
 export {

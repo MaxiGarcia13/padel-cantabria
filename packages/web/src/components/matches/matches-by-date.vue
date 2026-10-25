@@ -5,6 +5,7 @@ import { computed, toRef } from 'vue';
 import TableSkeleton from '@/components/table-skeleton.vue';
 import { useHydrated } from '@/composables/use-hydrated';
 import { useLeagues } from '@/composables/use-leagues';
+import { useMatchResults } from '@/composables/use-match-results';
 import { useMatches } from '@/composables/use-matches';
 import MatchRow from './match-row.vue';
 
@@ -18,6 +19,11 @@ const teamId = toRef(props, 'teamId');
 const isHydrated = useHydrated();
 const { data: leagues } = useLeagues();
 const { data: matches, isPending, isError } = useMatches(category, teamId);
+
+const matchIds = computed(
+  () => matches.value?.map((match) => match.id) ?? [],
+);
+const { data: resultsById } = useMatchResults(category, matchIds);
 
 const showSkeleton = computed(() => !isHydrated.value || isPending.value);
 
@@ -82,7 +88,10 @@ const errorMessage = computed(() =>
           v-for="match in group.matches"
           :key="match.id"
         >
-          <MatchRow :match="match" />
+          <MatchRow
+            :match="match"
+            :result="resultsById?.[String(match.id)] ?? null"
+          />
         </li>
       </ul>
     </section>

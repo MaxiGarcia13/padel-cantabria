@@ -21,3 +21,8 @@ export {
   parseMatchDateRange,
   type SeasonRange,
 } from './parse-match-date/index.js';
+export {
+  type MatchResultSummary,
+  type MatchWinnerSide,
+  summarizeMatchResult,
+} from './summarize-match-result.js';

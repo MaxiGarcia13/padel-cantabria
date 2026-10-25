@@ -5,6 +5,7 @@ import { computed, toRef } from 'vue';
 import TableSkeleton from '@/components/table-skeleton.vue';
 import { useHydrated } from '@/composables/use-hydrated';
 import { useLeagues } from '@/composables/use-leagues';
+import { useMatchResults } from '@/composables/use-match-results';
 import { useMatches } from '@/composables/use-matches';
 import MatchRow from './match-row.vue';
 
@@ -36,6 +37,11 @@ const closestMatches = computed(() => {
     ? getClosestMatches(matches.value, season.value)
     : matches.value.slice(0, 5);
 });
+
+const closestMatchIds = computed(() =>
+  closestMatches.value.map((match) => match.id),
+);
+const { data: resultsById } = useMatchResults(category, closestMatchIds);
 
 const errorMessage = computed(() =>
   isError.value ? 'No se pudieron cargar los partidos' : null,
@@ -73,7 +79,10 @@ const errorMessage = computed(() =>
         v-for="match in closestMatches"
         :key="match.id"
       >
-        <MatchRow :match="match" />
+        <MatchRow
+          :match="match"
+          :result="resultsById?.[String(match.id)] ?? null"
+        />
       </li>
     </ul>
 
