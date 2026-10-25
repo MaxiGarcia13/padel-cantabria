@@ -51,6 +51,6 @@ Scrape order matters. Details and when to re-run each script:
 ## Working notes for agents
 
 - Prefer matching existing patterns in the package you touch (`web` composables/API routes, `database` upserts, scrapper parse/save split).
-- Schema changes: prefer in-place `ALTER TABLE` (and update `schema.sql`) over `db:reset`. Full reset is last resort; after reset, scrapers must be re-run in order. See `.cursor/rules/schema-changes.mdc`.
+- Schema changes: prefer in-place `ALTER TABLE` (and update files under `packages/database/src/schema/`) over `db:reset`. Full reset is last resort; after reset, scrapers must be re-run in order. See `.cursor/rules/schema-changes.mdc`.
 - Do not commit secrets (`.env`). Do not commit unless the user asks.
 - Keep README / scrapper README accurate when changing scripts or env requirements.

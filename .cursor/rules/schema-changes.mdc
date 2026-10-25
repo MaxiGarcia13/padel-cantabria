@@ -12,7 +12,7 @@ When the live Turso schema must change, **suggest the lightest path first**. Ful
 ## Preference order
 
 1. **No schema change** — reuse an existing unused column only if the name still fits the domain (do not overload unrelated names).
-2. **In-place SQL** — `ALTER TABLE … RENAME COLUMN`, `ADD COLUMN`, etc. Update `schema.sql` + types/repos to match. Keep existing rows.
+2. **In-place SQL** — `ALTER TABLE … RENAME COLUMN`, `ADD COLUMN`, etc. Update the matching file under `packages/database/src/schema/` + types/repos to match. Keep existing rows.
 3. **`pnpm db:reset`** — only when in-place ALTER is impossible or unsafe (table rebuild required, data is wrong/corrupt, or user explicitly asks). After reset, scrapers must be re-run in order.
 
 ```sql
