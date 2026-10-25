@@ -19,7 +19,7 @@ const href = buildTeamPath(props.team.id);
 
 <template>
   <TableRow>
-    <TableCell class="w-12 text-center font-medium text-foreground">
+    <TableCell class="sticky left-0 z-10 w-12 bg-background text-center font-medium text-foreground">
       {{ formatStandingValue(team.position) }}
     </TableCell>
     <TableCell class="w-8 text-center">

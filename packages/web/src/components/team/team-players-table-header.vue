@@ -5,7 +5,7 @@ import { TableHead, TableHeader, TableRow } from '@/components/ui/table';
 <template>
   <TableHeader>
     <TableRow>
-      <TableHead class="w-12 text-center">
+      <TableHead class="sticky left-0 z-20 w-12 bg-surface text-center">
         Pos.
       </TableHead>
       <TableHead class="w-8" />
