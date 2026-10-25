@@ -1,11 +1,11 @@
 ---
 name: padel-federacion-cantabra
-description: Domain glossary for Liga de Pádel de Cantabria (FCP) as modeled in this repo, plus essential padel/league rules. Use when explaining matches, tandas/rounds, results, pair games, scoring, standings, or FCP competition norms; or when writing Spanish UI copy for those concepts.
+description: Domain glossary for Liga de Pádel de Cantabria (FCP) as modeled in this repo, plus essential padel/league rules. Use when explaining matches, tandas/rounds, results, pair games, scoring, standings, or FCP competition norms; or when writing Spanish UI labels for those concepts.
 ---
 
 # FCP padel domain (this project)
 
-Padel Cantabria re-presents **public** Federación Cántabra de Pádel data for UX. Not affiliated with the FCP. Do **not** invent results or season-specific rules — use the DB / scrapers, and point to official PDFs when precision matters:
+Season-specific competition text → official PDFs (do not guess pair counts, deadlines, or sanctions):
 
 [Documentos y Normativas](https://federacioncantabradepadel.com/Documentos-Normativas)
 
@@ -13,52 +13,35 @@ Padel Cantabria re-presents **public** Federación Cántabra de Pádel data for 
 
 ## How this repo models a league fixture
 
-Federation site → our tables:
-
 | Federation idea | Code / UI |
 | --- | --- |
-| Club vs club jornada | `matches` (team fixture: `home_team_id` / `away_team_id`) |
-| Scheduled pair slots / courts (*tandas*) | `matches.rounds` — UI: `Tandas: …` (`formatMatchMeta`) |
-| Result header (aggregate) | `match_results`: `home_matches` / `away_matches`, `home_sets` / `away_sets`, `home_games` / `away_games`, `rounds_order` (*Orden de las tandas*) |
-| One pair vs pair contest inside the fixture | `match_games` (`game_number`, four player names, sets, `partials`) |
-| Classification | `team_standings` (wins, sets for/against, etc.) |
+| Club vs club jornada | `matches` (`home_team_id` / `away_team_id`) |
+| Scheduled pair slots (*tandas*) | `matches.rounds` — UI: `Tandas: …` (`formatMatchMeta`) |
+| Result header (aggregate) | `match_results`: matches / sets / games + `rounds_order` (*Orden de las tandas*) |
+| One pair vs pair contest | `match_games` (`game_number`, players, sets, `partials`) |
+| Classification | `team_standings` |
 
-**Hierarchy:** category → **match** (teams) → **match_result** (team scoreline) → **match_games** (each pair court).
+**Hierarchy:** category → **match** (teams) → **match_result** → **match_games**.
 
-Winner summary prefers sets, then games: `summarizeMatchResult` in `@padel-cantabria/shared`.
+**Naming:** `rounds` ↔ *tandas*; `match` = team fixture; `match_game` = pair contest.
 
-English in code/logs; **Spanish only in user-visible UI** (`Tandas`, W.O., etc.).
+Fixture score for list cards: `summarizeMatchResult` — prefer `home_matches` / `away_matches`, else derive from `match_games` set outcomes. Do not use aggregate juegos (or raw aggregate sets) as that score.
 
 ---
 
-## Essential play rules (FIP / FEP) — keep light
+## Essential play rules (FIP / FEP)
 
-Only what helps explain scores and copy:
-
-- Point names like tennis: 15, 30, 40, game. Usually best of 3 sets; tie-break at 6–6. Many competitions use **golden point** (*punto de oro*) at deuce — confirm per competition.
-- Serve: underhand, cross-court, two attempts; let if it touches the net and still lands in the correct box.
-- After a bounce on the opponent’s side, glass/walls can stay in play; mesh rules differ for return of serve vs open play (defer to FIP/FEP text if disputed).
-
-Do not expand into full technical regulation unless the user asks.
+- Scoring like tennis (15, 30, 40, game). Usually best of 3; tie-break at 6–6. Many comps use **golden point** (*punto de oro*) at deuce — confirm per competition.
+- Serve: underhand, cross-court, two attempts; let if net then correct box.
+- After a bounce on the opponent’s side, glass/walls can stay in play; mesh differs for return of serve vs open play.
 
 ---
 
 ## Essential FCP team-league practice
 
-Typical patterns (exact text = current season PDF):
-
-- A fixture is several **pair games** (often 3 or 5 by category) — maps to `match_games`.
-- Lineup / *orden de las tandas* submitted on the FCP platform before the matchday → `rounds_order` when scraped.
-- Standings from fixture wins and set/game differentials — prefer DB standings over inventing tie-breakers.
-- **W.O. (walkover):** short courtesy window after scheduled time; absent side loses that pair/fixture per FCP rules.
-- Valid FCP **license** required; illegal lineups are a competition issue, not something we invent in data.
-- Postponements need club agreement + committee process; calendar scrapes show what the federation published.
-
----
-
-## Agent rules for this project
-
-1. **Scores and fixtures:** trust Turso / scrapers. Never invent match outcomes.
-2. **Rules disputes or season bases:** link Documentos-Normativas; do not guess deadlines, sanctions, or pair counts.
-3. **Naming:** `rounds` in code ↔ *tandas* in UI; `match` = team fixture; `match_game` = pair contest.
-4. **Assistant / UI:** explain in clear Spanish for users; keep code identifiers English.
+- Fixture = several pair games (often 3 or 5) → `match_games`.
+- *Orden de las tandas* → `rounds_order` when scraped.
+- Prefer DB standings over inventing tie-breakers.
+- **W.O.:** short courtesy window after scheduled time.
+- Valid FCP license; illegal lineups are a competition issue.
+- Calendar scrapes reflect what the federation published (postponements are their process).
