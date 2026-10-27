@@ -45,23 +45,27 @@ jobs:
             exit 0
           fi
 
-          hour="$(date -u +%H)"
-          if [ "$hour" = "14" ]; then
-            if [ -z "$GENDERS_TUESDAY" ]; then
-              echo "SCRAPE_GENDERS_TUESDAY repo variable is not set" >&2
+          # Match the cron that fired — wall-clock hour is unreliable (schedule delays).
+          case "${{ github.event.schedule }}" in
+            '0 14 * * 1')
+              if [ -z "$GENDERS_TUESDAY" ]; then
+                echo "SCRAPE_GENDERS_TUESDAY repo variable is not set" >&2
+                exit 1
+              fi
+              echo "genders=${GENDERS_TUESDAY}" >> "$GITHUB_OUTPUT"
+              ;;
+            '0 15 * * 1')
+              if [ -z "$GENDERS_WEDNESDAY" ]; then
+                echo "SCRAPE_GENDERS_WEDNESDAY repo variable is not set" >&2
+                exit 1
+              fi
+              echo "genders=${GENDERS_WEDNESDAY}" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "Unexpected schedule: ${{ github.event.schedule }}" >&2
               exit 1
-            fi
-            echo "genders=${GENDERS_TUESDAY}" >> "$GITHUB_OUTPUT"
-          elif [ "$hour" = "15" ]; then
-            if [ -z "$GENDERS_WEDNESDAY" ]; then
-              echo "SCRAPE_GENDERS_WEDNESDAY repo variable is not set" >&2
-              exit 1
-            fi
-            echo "genders=${GENDERS_WEDNESDAY}" >> "$GITHUB_OUTPUT"
-          else
-            echo "Unexpected schedule hour: ${hour}" >&2
-            exit 1
-          fi
+              ;;
+          esac
 
       - name: Prepare scrape
         uses: ./.github/actions/prepare-scrape
