@@ -1,3 +1,13 @@
+## 0.4.1 (2026-10-27)
+
+### 🔄 Refactors
+
+- Simplify gender input handling in scraping workflows ([ee8744c](https://github.com/MaxiGarcia13/padel-cantabria/commit/ee8744c))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.4.0 (2026-10-27)
 
 ### 🚀 Features
