@@ -1,3 +1,13 @@
+## 0.4.0 (2026-10-27)
+
+### 🚀 Features
+
+- Introduce separate workflows for scraping players and results by gender ([f5517df](https://github.com/MaxiGarcia13/padel-cantabria/commit/f5517df))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.3.0 (2026-10-25)
 
 ### 🧱 Updated Dependencies
