@@ -52,8 +52,18 @@ async function scrapeMatchResult(
 ): Promise<ScrapedMatchResultPayload | null> {
   const url = buildResultUrl(candidate);
 
-  await page.goto(url, { waitUntil: 'domcontentloaded' });
-  await waitForResultReady(page);
+  try {
+    await page.goto(url, { waitUntil: 'domcontentloaded' });
+    await waitForResultReady(page);
+  } catch (error) {
+    console.warn(
+      `Skipping match ${candidate.match_id} (league ${candidate.league_id}): ${
+        error instanceof Error ? error.message : String(error)
+      }`,
+      url,
+    );
+    return null;
+  }
 
   return parseResultPage(page, candidate);
 }
