@@ -6,11 +6,6 @@ on:
     # 14:00 UTC = 15:00 CET / 16:00 CEST.
     - cron: '0 14 * * 1'
   workflow_dispatch:
-    inputs:
-      genders:
-        description: Comma-separated federation gender values (empty = all)
-        required: false
-        default: ''
 
 concurrency:
   group: scrape-results
@@ -37,7 +32,7 @@ jobs:
           turso_url: ${{ secrets.TURSO_URL }}
           turso_auth_token: ${{ secrets.TURSO_AUTH_TOKEN }}
           league_ids: ${{ vars.LEAGUE_IDS }}
-          scrape_genders: ${{ github.event_name == 'schedule' && 'M' || inputs.genders }}
+          scrape_genders: M
 
       - name: Scrape results
         run: pnpm scrape:results

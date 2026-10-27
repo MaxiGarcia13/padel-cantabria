@@ -95,4 +95,4 @@ Scheduled workflows stagger load on the federation site:
 
 Set `LEAGUE_IDS` as a **repository variable** if you want the same league filter as local `.env`.
 
-Manual `workflow_dispatch` on players and results accepts an optional `genders` input (empty = all). Inter-request delay uses the scraper default unless `SCRAPE_DELAY_MS` is passed via prepare-scrape.
+Manual `workflow_dispatch` runs the same gender scope as the schedule. Inter-request delay uses the scraper default unless `SCRAPE_DELAY_MS` is passed via prepare-scrape.
