@@ -1,0 +1,43 @@
+name: Scrape Players (Feminine)
+
+on:
+  schedule:
+    # Wednesday 05:00 Europe/Madrid (CET = UTC+1).
+    # During CEST (UTC+2) this runs at 06:00 local.
+    - cron: '0 4 * * 3'
+  workflow_dispatch:
+    inputs:
+      genders:
+        description: Comma-separated federation gender values (empty = all)
+        required: false
+        default: ''
+
+concurrency:
+  group: scrape-players
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  scrape:
+    name: Scrape players (feminine)
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/install
+
+      - name: Prepare scrape
+        uses: ./.github/actions/prepare-scrape
+        with:
+          turso_url: ${{ secrets.TURSO_URL }}
+          turso_auth_token: ${{ secrets.TURSO_AUTH_TOKEN }}
+          league_ids: ${{ vars.LEAGUE_IDS }}
+          scrape_genders: ${{ github.event_name == 'schedule' && 'F' || inputs.genders }}
+
+      - name: Scrape players
+        run: pnpm scrape:players

@@ -85,18 +85,14 @@ SCRAPE_GENDERS=F pnpm scrape:results
 
 Scheduled workflows stagger load on the federation site:
 
-| Workflow              | When (UTC)      | Scope                                 |
-| --------------------- | --------------- | ------------------------------------- |
-| `scrape-results.yml`  | Monday 14:00    | Masculine (`SCRAPE_GENDERS_TUESDAY`)  |
-| `scrape-results.yml`  | Monday 15:00    | Feminine (`SCRAPE_GENDERS_WEDNESDAY`) |
-| `scrape-players.yml`  | Tuesday 04:00   | Masculine (`SCRAPE_GENDERS_TUESDAY`)  |
-| `scrape-calendar.yml` | Tuesday 05:00   | All categories                        |
-| `scrape-players.yml`  | Wednesday 04:00 | Feminine (`SCRAPE_GENDERS_WEDNESDAY`) |
+| Workflow                       | When (UTC)      | Scope          |
+| ------------------------------ | --------------- | -------------- |
+| `scrape-results-masculine.yml` | Monday 14:00    | Masculine `M`  |
+| `scrape-results-feminine.yml`  | Monday 15:00    | Feminine `F`   |
+| `scrape-players-masculine.yml` | Tuesday 04:00   | Masculine `M`  |
+| `scrape-calendar.yml`          | Tuesday 05:00   | All categories |
+| `scrape-players-feminine.yml`  | Wednesday 04:00 | Feminine `F`   |
 
-Set these **repository variables** in GitHub Actions (exact federation gender values from Turso / `#genero`):
-
-- `SCRAPE_GENDERS_TUESDAY` — masculine gender value(s), comma-separated if needed
-- `SCRAPE_GENDERS_WEDNESDAY` — feminine gender value(s)
-- `LEAGUE_IDS` — optional, same as local `.env`
+Set `LEAGUE_IDS` as a **repository variable** if you want the same league filter as local `.env`.
 
 Manual `workflow_dispatch` on players and results accepts an optional `genders` input (empty = all). Inter-request delay uses the scraper default unless `SCRAPE_DELAY_MS` is passed via prepare-scrape.
