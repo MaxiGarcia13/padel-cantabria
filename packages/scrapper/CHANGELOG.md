@@ -1,3 +1,13 @@
+## 0.4.2 (2026-10-27)
+
+### 🐞 Fixes
+
+- Enhance error handling in scrape-results function ([ecc4a8f](https://github.com/MaxiGarcia13/padel-cantabria/commit/ecc4a8f))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.4.1 (2026-10-27)
 
 ### 🔄 Refactors
