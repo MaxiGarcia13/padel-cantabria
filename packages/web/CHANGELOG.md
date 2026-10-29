@@ -1,3 +1,13 @@
+## 0.9.0 (2026-10-29)
+
+### 🧹 Chores
+
+- Update path resolution for package.json in configuration files ([0303d6d](https://github.com/MaxiGarcia13/padel-cantabria/commit/0303d6d))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.8.0 (2026-10-29)
 
 ### 🧹 Chores
