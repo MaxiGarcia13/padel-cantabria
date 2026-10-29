@@ -1,3 +1,13 @@
+## 0.2.0 (2026-10-29)
+
+### 🧹 Chores
+
+- Update dependencies and configurations ([b9c55a4](https://github.com/MaxiGarcia13/padel-cantabria/commit/b9c55a4))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.1.0 (2026-10-25)
 
 This was a version bump only for @padel-cantabria/mcp-tools to align it with other projects, there were no code changes.

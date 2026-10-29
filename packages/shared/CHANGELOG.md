@@ -1,3 +1,17 @@
+## 0.4.0 (2026-10-29)
+
+### 🧹 Chores
+
+- Update dependencies and configurations ([b9c55a4](https://github.com/MaxiGarcia13/padel-cantabria/commit/b9c55a4))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/database to 0.4.0
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.3.0 (2026-10-25)
 
 ### 🚀 Features
