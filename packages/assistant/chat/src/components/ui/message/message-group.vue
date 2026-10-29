@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
     :as="as"
     :as-child="asChild"
     :class="cn(
-      'gap-2 flex min-w-0 flex-col',
+      'flex min-w-0 flex-col gap-2',
       props.class,
     )"
   >

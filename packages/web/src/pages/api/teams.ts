@@ -37,11 +37,15 @@ export const GET: APIRoute = async ({ url }) => {
     const limit = Number.isFinite(limitParam) && limitParam > 0
       ? Math.floor(limitParam)
       : DEFAULT_SEARCH_LIMIT;
-    const leagueId = league != null ? Number(league) : undefined;
+    const leagueId = league != null
+      ? Number(league)
+      : undefined;
     const teams = await db.searchTeams({
       query,
       limit,
-      league_id: Number.isFinite(leagueId) ? leagueId : undefined,
+      league_id: Number.isFinite(leagueId)
+        ? leagueId
+        : undefined,
     });
 
     return Response.json(teams);

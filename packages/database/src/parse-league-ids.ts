@@ -10,7 +10,9 @@ export function parseLeagueIds(raw: string | undefined): Set<number> | null {
     .map((value) => Number(value.trim()))
     .filter((id) => Number.isFinite(id));
 
-  return ids.length > 0 ? new Set(ids) : null;
+  return ids.length > 0
+    ? new Set(ids)
+    : null;
 }
 
 // Assistant/MCP: first id in LEAGUE_IDS (required). Scrapers treat it as optional.

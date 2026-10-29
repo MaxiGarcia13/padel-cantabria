@@ -27,7 +27,9 @@ export function toolError(
     };
   }
 
-  const message = error instanceof Error ? error.message : 'Unknown error';
+  const message = error instanceof Error
+    ? error.message
+    : 'Unknown error';
 
   return {
     content: [

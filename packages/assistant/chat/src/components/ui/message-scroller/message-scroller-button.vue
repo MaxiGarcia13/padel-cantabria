@@ -25,7 +25,9 @@ const { scrollToEnd, scrollToStart } = useMessageScroller();
 const scrollable = useMessageScrollerScrollable();
 
 const active = computed(() =>
-  props.direction === 'start' ? scrollable.value.start : scrollable.value.end);
+  props.direction === 'start'
+    ? scrollable.value.start
+    : scrollable.value.end);
 
 function onClick(event: MouseEvent) {
   if (!active.value)

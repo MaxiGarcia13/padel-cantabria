@@ -41,7 +41,9 @@ const groups = computed(() => {
 
   return season.value
     ? groupMatchesByDate(matches.value, season.value)
-    : [{ date: 'Partidos', matches: matches.value }];
+    : [
+        { date: 'Partidos', matches: matches.value },
+      ];
 });
 
 const errorMessage = computed(() =>

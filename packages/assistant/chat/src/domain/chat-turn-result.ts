@@ -9,5 +9,7 @@ export function chatTurnResult(
   text: string,
   pending?: PendingClarification,
 ): ChatTurnResult {
-  return pending ? { text, pending } : { text };
+  return pending
+    ? { text, pending }
+    : { text };
 }

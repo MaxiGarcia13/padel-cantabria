@@ -30,7 +30,9 @@ export async function scrapeBaseLeagues(): Promise<BaseLeague[]> {
           const idMatch = href.match(/id=(\d+)/);
 
           return {
-            league_id: idMatch ? Number(idMatch[1]) : null,
+            league_id: idMatch
+              ? Number(idMatch[1])
+              : null,
             name: link?.textContent?.trim() ?? null,
             schedule: time?.textContent?.trim() ?? null,
           };

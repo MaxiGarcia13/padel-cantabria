@@ -1,10 +1,10 @@
 ---
 import Breadcrumb from '@/components/breadcrumb.vue';
-import MatchesByDate from '@/components/matches/matches-by-date.vue';
 import Header from '@/components/header.astro';
+import MatchesByDate from '@/components/matches/matches-by-date.vue';
 import AppLayout from '@/layouts/app-layout.astro';
-import { getDb } from '@/server/db';
 import { parseCategoryParams } from '@/routes';
+import { getDb } from '@/server/db';
 import { calendarBreadcrumbItems } from '@/utils/breadcrumb-items';
 
 export const prerender = false;

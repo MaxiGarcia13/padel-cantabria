@@ -34,7 +34,9 @@ function asCandidate(value: unknown): CategoryCandidate | null {
   }
 
   const category
-    = typeof value.category === 'string' ? value.category.trim() : '';
+    = typeof value.category === 'string'
+      ? value.category.trim()
+      : '';
   const categoryValue
     = typeof value.category_value === 'string'
       ? value.category_value.trim()
@@ -47,11 +49,15 @@ function asCandidate(value: unknown): CategoryCandidate | null {
   return {
     category: category || categoryValue,
     category_value: categoryValue || category,
-    ...(typeof value.gender === 'string' ? { gender: value.gender } : {}),
+    ...(typeof value.gender === 'string'
+      ? { gender: value.gender }
+      : {}),
     ...(typeof value.gender_code === 'string'
       ? { gender_code: value.gender_code }
       : {}),
-    ...(typeof value.phase === 'string' ? { phase: value.phase } : {}),
+    ...(typeof value.phase === 'string'
+      ? { phase: value.phase }
+      : {}),
     ...(typeof value.phase_value === 'string'
       ? { phase_value: value.phase_value }
       : {}),

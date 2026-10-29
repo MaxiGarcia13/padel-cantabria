@@ -11,7 +11,11 @@ export function formatStandingTeam(
 
   return joinDisplayParts([
     name,
-    typeof record.position === 'number' ? `posición ${record.position}` : null,
-    typeof record.points === 'number' ? `${record.points} puntos` : null,
+    typeof record.position === 'number'
+      ? `posición ${record.position}`
+      : null,
+    typeof record.points === 'number'
+      ? `${record.points} puntos`
+      : null,
   ]);
 }

@@ -30,7 +30,10 @@ function playerNameTokenFilter(tokens: string[]): {
     args.push(token, token);
   }
 
-  return { sql: joinAndFilters(clauses), args };
+  return {
+    sql: joinAndFilters(clauses),
+    args,
+  };
 }
 
 export async function searchPlayers(

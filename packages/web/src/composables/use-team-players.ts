@@ -19,7 +19,10 @@ async function fetchTeamPlayers(teamId: number): Promise<TeamPlayersPayload> {
 }
 
 export function useTeamPlayers(teamId: MaybeRefOrGetter<number>) {
-  const queryKey = computed(() => ['team-players', toValue(teamId)] as const);
+  const queryKey = computed(() => [
+    'team-players',
+    toValue(teamId),
+  ] as const);
 
   return useQuery({
     queryKey,

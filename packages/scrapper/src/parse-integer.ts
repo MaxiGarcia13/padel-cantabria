@@ -7,5 +7,7 @@ export function parseInteger(value: string | null | undefined): number | null {
 
   const parsed = Number(trimmed);
 
-  return Number.isFinite(parsed) ? parsed : null;
+  return Number.isFinite(parsed)
+    ? parsed
+    : null;
 }

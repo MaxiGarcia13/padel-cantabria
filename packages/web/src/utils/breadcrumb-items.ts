@@ -52,14 +52,20 @@ function categoryItem(
     return { label };
   }
 
-  return { label, href: buildCategoryPath(category) };
+  return {
+    label,
+    href: buildCategoryPath(category),
+  };
 }
 
 export function categoryBreadcrumbItems(
   leagues: League[] | undefined,
   category: CategoryKey,
 ): BreadcrumbItem[] {
-  return [HOME_ITEM, categoryItem(leagues, category, { current: true })];
+  return [
+    HOME_ITEM,
+    categoryItem(leagues, category, { current: true }),
+  ];
 }
 
 export function calendarBreadcrumbItems(
@@ -97,7 +103,9 @@ export function teamBreadcrumbItems(
     HOME_ITEM,
     {
       label: categoryCrumbLabel(categoryLabel, genderLabel),
-      href: phase ? buildCategoryPath(category) : undefined,
+      href: phase
+        ? buildCategoryPath(category)
+        : undefined,
     },
     { label: team.name },
   ];
@@ -116,9 +124,14 @@ export function playerBreadcrumbItems(
     HOME_ITEM,
     {
       label: categoryCrumbLabel(categoryLabel, genderLabel),
-      href: phase ? buildCategoryPath(category) : undefined,
+      href: phase
+        ? buildCategoryPath(category)
+        : undefined,
     },
-    { label: team.name, href: buildTeamPath(category, team.id) },
+    {
+      label: team.name,
+      href: buildTeamPath(category, team.id),
+    },
     { label: `${player.name} ${player.surname}` },
   ];
 }

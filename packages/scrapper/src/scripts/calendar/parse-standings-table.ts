@@ -34,7 +34,9 @@ export async function parseStandingsTable(
       const idMatch = href.match(/IdEquipo=(\d+)/);
 
       rows.push({
-        id: idMatch ? Number(idMatch[1]) : null,
+        id: idMatch
+          ? Number(idMatch[1])
+          : null,
         name: detailLink.textContent?.trim() || null,
         position: cells[0]?.textContent ?? null,
         confrontations_played: cells[2]?.textContent ?? null,

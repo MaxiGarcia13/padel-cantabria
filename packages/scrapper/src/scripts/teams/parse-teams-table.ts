@@ -32,7 +32,9 @@ export async function parseTeamsTable(
       const name = detailLink.textContent?.trim() ?? null;
 
       teams.push({
-        id: idMatch ? Number(idMatch[1]) : null,
+        id: idMatch
+          ? Number(idMatch[1])
+          : null,
         name,
       });
     }

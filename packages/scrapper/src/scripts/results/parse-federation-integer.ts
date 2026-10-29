@@ -10,5 +10,7 @@ export function parseFederationInteger(
   const normalized = trimmed.replace(/\./g, '');
   const parsed = Number(normalized);
 
-  return Number.isFinite(parsed) ? parsed : null;
+  return Number.isFinite(parsed)
+    ? parsed
+    : null;
 }

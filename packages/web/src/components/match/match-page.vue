@@ -63,7 +63,7 @@ const games = props.games ?? [];
           class="overflow-hidden px-2 whitespace-normal"
         >
           <span class="flex w-full min-w-0 flex-col items-center text-center leading-tight">
-            <span class="line-clamp-2 break-words">
+            <span class="line-clamp-2 wrap-break-word">
               {{ option.label }}
             </span>
             <span class="text-xs text-muted">

@@ -60,7 +60,9 @@ export function findMatchingPlayer(
     scrapedMatchesPlayer(scrapedName, player),
   );
 
-  return matches.length === 1 ? matches[0]! : null;
+  return matches.length === 1
+    ? matches[0]!
+    : null;
 }
 
 export function courtOutcome(

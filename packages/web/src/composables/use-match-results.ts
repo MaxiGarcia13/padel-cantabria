@@ -30,7 +30,9 @@ export function useMatchResults(
 ) {
   const queryKey = computed(() => {
     const value = toValue(category);
-    const ids = [...toValue(matchIds)].sort((left, right) => left - right);
+    const ids = [
+      ...toValue(matchIds),
+    ].sort((left, right) => left - right);
 
     return [
       'match-results',

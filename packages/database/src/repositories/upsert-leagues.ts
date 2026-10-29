@@ -38,7 +38,12 @@ function buildUpsertStatements(league: League): BatchStatement[] {
           INSERT INTO phases (league_id, gender, value, label)
           VALUES (?, ?, ?, ?)
         `,
-        args: [league.league_id, gender.value, phase.value, phase.label],
+        args: [
+          league.league_id,
+          gender.value,
+          phase.value,
+          phase.label,
+        ],
       });
 
       for (const category of phase.categories) {

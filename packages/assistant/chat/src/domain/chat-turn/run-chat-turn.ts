@@ -115,7 +115,9 @@ export async function runChatTurn(options: {
       return chatTurnResult('No he podido generar una respuesta.');
     }
 
-    const toolCalls = forceTextAnswer ? [] : (message.tool_calls ?? []);
+    const toolCalls = forceTextAnswer
+      ? []
+      : (message.tool_calls ?? []);
 
     if (toolCalls.length === 0) {
       return chatTurnResult(

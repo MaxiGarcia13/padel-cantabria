@@ -35,7 +35,9 @@ export function notFound(
 export function httpErrorPayload(error: HttpError) {
   return {
     error: error.message,
-    ...(error.code ? { code: error.code } : {}),
+    ...(error.code
+      ? { code: error.code }
+      : {}),
     ...(error.details ?? {}),
   };
 }

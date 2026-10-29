@@ -62,6 +62,8 @@ export function presentTeamOverview(
           confrontations_played: standing.confrontations_played,
         }
       : null,
-    next_match: nextMatch ? presentMatch(nextMatch, labels) : null,
+    next_match: nextMatch
+      ? presentMatch(nextMatch, labels)
+      : null,
   };
 }

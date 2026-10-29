@@ -58,8 +58,12 @@ export function createChatRoutes(
             messages as Parameters<AiRouterInterface['create']>[0],
             {
               stream: false,
-              ...(tools !== undefined ? { tools } : {}),
-              ...(toolChoice !== undefined ? { tool_choice: toolChoice } : {}),
+              ...(tools !== undefined
+                ? { tools }
+                : {}),
+              ...(toolChoice !== undefined
+                ? { tool_choice: toolChoice }
+                : {}),
             } as unknown as Parameters<AiRouterInterface['create']>[1],
           );
 

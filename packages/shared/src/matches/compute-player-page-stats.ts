@@ -178,7 +178,9 @@ export function computePlayerPageStats(
         date: game.date,
         is_home: isHome,
         opponent_team_id: isHome ? game.away_team_id : game.home_team_id,
-        partner: partnerPlayer ? toCouplePlayer(partnerPlayer) : null,
+        partner: partnerPlayer
+          ? toCouplePlayer(partnerPlayer)
+          : null,
         outcome,
         sets_for: ownSets,
         sets_against: oppSets,

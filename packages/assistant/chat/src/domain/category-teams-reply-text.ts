@@ -15,7 +15,9 @@ export function categoryTeamsTurnResult(
   if (reply.status === 'ask-gender') {
     return chatTurnResult(
       ASK_GENDER_MESSAGE,
-      originalQuestion ? genderPending(originalQuestion) : undefined,
+      originalQuestion
+        ? genderPending(originalQuestion)
+        : undefined,
     );
   }
 

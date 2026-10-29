@@ -20,10 +20,14 @@ export default defineConfig({
   output: 'server',
   adapter: vercel(),
   prefetch: true,
-  integrations: [vue({ appEntrypoint: '/src/vue-app' })],
+  integrations: [
+    vue({ appEntrypoint: '/src/vue-app' }),
+  ],
   vite: {
     envDir: rootDir,
-    plugins: [tailwindcss()],
+    plugins: [
+      tailwindcss(),
+    ],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, 'src'),

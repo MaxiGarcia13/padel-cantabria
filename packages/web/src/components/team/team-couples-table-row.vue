@@ -34,14 +34,14 @@ const player2Name = `${props.couple.player_2.name} ${props.couple.player_2.surna
       <div class="flex flex-col leading-tight">
         <a
           :href="player1Href"
-          class="font-medium break-words text-inherit no-underline hover:underline focus-visible:rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+          class="font-medium wrap-break-word text-inherit no-underline hover:underline focus-visible:rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
           :title="player1Name"
         >
           {{ player1Name }}
         </a>
         <a
           :href="player2Href"
-          class="font-medium break-words text-inherit no-underline hover:underline focus-visible:rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+          class="font-medium wrap-break-word text-inherit no-underline hover:underline focus-visible:rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
           :title="player2Name"
         >
           {{ player2Name }}

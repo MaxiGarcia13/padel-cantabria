@@ -13,7 +13,9 @@ export function parseNumber(value: string | null | undefined): number {
   if (!value)
     return 0;
   const parsed = Number.parseFloat(value);
-  return Number.isFinite(parsed) ? parsed : 0;
+  return Number.isFinite(parsed)
+    ? parsed
+    : 0;
 }
 
 export function getPadding(element: HTMLElement): { start: number; end: number } {
@@ -29,14 +31,18 @@ export function getContentPadding(spacer: HTMLElement | null): {
   end: number;
 } {
   const parent = spacer?.parentElement;
-  return parent ? getPadding(parent) : { end: 0, start: 0 };
+  return parent
+    ? getPadding(parent)
+    : { end: 0, start: 0 };
 }
 
 export function getRowGap(element: HTMLElement | null): number {
   if (!element)
     return 0;
   const style = window.getComputedStyle(element);
-  const gap = style.rowGap === 'normal' ? style.gap : style.rowGap;
+  const gap = style.rowGap === 'normal'
+    ? style.gap
+    : style.rowGap;
   return parseNumber(gap);
 }
 

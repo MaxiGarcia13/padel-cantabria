@@ -2,7 +2,7 @@
   "name": "@padel-cantabria",
   "type": "module",
   "version": "0.0.0",
-  "packageManager": "pnpm@12.14.0",
+  "packageManager": "pnpm@12.16.0",
   "description": "",
   "author": "",
   "license": "ISC",
@@ -16,43 +16,38 @@
     "build": "pnpm --filter @padel-cantabria/web build",
     "preview": "pnpm --filter @padel-cantabria/web preview",
     "dev": "pnpm --filter=@padel-cantabria/web dev",
-
     "prepare": "simple-git-hooks",
     "lint": "eslint . --ignore-pattern 'packages/web/**' --ignore-pattern 'packages/assistant/**' && pnpm -r --if-present run lint",
     "lint:fix": "eslint --fix . --ignore-pattern 'packages/web/**' --ignore-pattern 'packages/assistant/**' && pnpm -r --if-present run lint:fix",
     "clean": "rm -rf node_modules dist && pnpm -r run clean",
     "phoenix": "pnpm clean && pnpm install",
-
     "assistant": "pnpm --filter @padel-cantabria/assistant start",
     "assistant:dev": "pnpm --filter @padel-cantabria/assistant dev",
     "assistant:build": "pnpm --filter @padel-cantabria/assistant build",
     "mcp": "pnpm --filter @padel-cantabria/mcp start",
-
     "db:migrate": "pnpm --filter @padel-cantabria/database migrate",
     "db:reset": "pnpm --filter @padel-cantabria/database reset",
-
     "scrape:leagues": "pnpm --filter @padel-cantabria/scrapper scrape:leagues",
     "scrape:teams": "pnpm --filter @padel-cantabria/scrapper scrape:teams",
     "scrape:players": "pnpm --filter @padel-cantabria/scrapper scrape:players",
     "scrape:calendar": "pnpm --filter @padel-cantabria/scrapper scrape:calendar",
     "scrape:results": "pnpm --filter @padel-cantabria/scrapper scrape:results",
-
     "release": "nx release --skip-publish",
     "release:dry": "nx release --dry-run"
   },
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "12.14.0",
+      "version": "12.16.0",
       "onFail": "download"
     }
   },
   "devDependencies": {
-    "@maxigarcia/eslint-config": "^1.14.1",
-    "@nx/js": "^23.3.0",
-    "eslint": "^10.12.0",
+    "@maxigarcia/eslint-config": "^1.17.0",
+    "@nx/js": "^24.0.2",
+    "eslint": "^10.13.0",
     "lint-staged": "^17.6.0",
-    "nx": "^23.3.0",
+    "nx": "^24.0.2",
     "simple-git-hooks": "^2.14.0"
   },
   "simple-git-hooks": {

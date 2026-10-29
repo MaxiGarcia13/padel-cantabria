@@ -1,9 +1,8 @@
 ---
-import packageJson from '../../../../package.json';
+import { repository } from '@root/package.json';
 import { BrandGithubIcon, BugIcon } from './icons';
 import ThemeToggle from './theme-toggle.vue';
 
-const repository = packageJson.repository;
 const repositoryUrl = typeof repository === 'string' ? repository : repository?.url;
 
 if (!repositoryUrl) {

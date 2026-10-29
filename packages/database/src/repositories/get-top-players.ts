@@ -32,7 +32,12 @@ export async function getTopPlayers(
           ORDER BY team_players.points DESC, team_players.position ASC
           LIMIT ?
         `,
-        args: [leagueId, gender, category, safeLimit(limit, DEFAULT_LIMIT)],
+        args: [
+          leagueId,
+          gender,
+          category,
+          safeLimit(limit, DEFAULT_LIMIT),
+        ],
       },
     ],
     'read',

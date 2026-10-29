@@ -41,7 +41,9 @@ export async function resolvePendingCategoryPick(options: {
   const toolText = await options.mcp.callTool('list_teams', {
     gender: options.pending.gender,
     category: pick.category_value,
-    ...(pick.phase_value ? { phase: pick.phase_value } : {}),
+    ...(pick.phase_value
+      ? { phase: pick.phase_value }
+      : {}),
   });
 
   const categoryError = parseCategoryToolError(toolText);

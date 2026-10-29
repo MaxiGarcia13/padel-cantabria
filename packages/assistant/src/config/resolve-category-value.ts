@@ -42,7 +42,9 @@ function scoreCategoryMatch(match: CategoryMatch, query: string): number {
   }
 
   return tokens.reduce(
-    (score, token) => (tokenHitsLabel(haystack, token) ? score + 1 : score),
+    (score, token) => (tokenHitsLabel(haystack, token)
+      ? score + 1
+      : score),
     0,
   );
 }
@@ -74,7 +76,10 @@ function pickCategoryMatch(
   }
 
   const scored = matches
-    .map((match) => ({ match, score: scoreCategoryMatch(match, trimmed) }))
+    .map((match) => ({
+      match,
+      score: scoreCategoryMatch(match, trimmed),
+    }))
     .filter((entry) => entry.score > 0)
     .sort((left, right) => right.score - left.score);
 
@@ -84,7 +89,9 @@ function pickCategoryMatch(
 
   const best = scored[0]!;
   const tied = scored.filter((entry) => entry.score === best.score);
-  return tied.length === 1 ? best.match : undefined;
+  return tied.length === 1
+    ? best.match
+    : undefined;
 }
 
 async function searchCategoryMatches(
@@ -153,7 +160,9 @@ export async function resolveCategoryMatch(
   },
 ): Promise<CategoryMatch | undefined> {
   const result = await resolveCategoryMatchResult(db, options);
-  return result.status === 'matched' ? result.match : undefined;
+  return result.status === 'matched'
+    ? result.match
+    : undefined;
 }
 
 export async function resolveCategoryValue(

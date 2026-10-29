@@ -13,14 +13,24 @@ export function formatPlayerLike(
     return null;
   }
 
-  const team = 'team' in record ? stringField(record, 'team') : '';
-  const category = 'category' in record ? stringField(record, 'category') : '';
+  const team = 'team' in record
+    ? stringField(record, 'team')
+    : '';
+  const category = 'category' in record
+    ? stringField(record, 'category')
+    : '';
 
   return joinDisplayParts([
     name,
-    team ? `equipo ${team}` : null,
+    team
+      ? `equipo ${team}`
+      : null,
     category || null,
-    typeof record.position === 'number' ? `posición ${record.position}` : null,
-    typeof record.points === 'number' ? `${record.points} puntos` : null,
+    typeof record.position === 'number'
+      ? `posición ${record.position}`
+      : null,
+    typeof record.points === 'number'
+      ? `${record.points} puntos`
+      : null,
   ]);
 }

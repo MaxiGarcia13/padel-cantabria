@@ -13,7 +13,9 @@ export function previousUserMessages(
     .filter((message) => message.role === 'user')
     .map((message) => {
       const content = message.content;
-      return typeof content === 'string' ? content : '';
+      return typeof content === 'string'
+        ? content
+        : '';
     })
     .filter(Boolean);
 }

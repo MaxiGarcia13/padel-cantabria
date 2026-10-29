@@ -10,11 +10,15 @@ function isTheme(value: string | null): value is Theme {
 
 export function getStoredTheme(): Theme {
   const stored = themeStorage.getItem();
-  return isTheme(stored) ? stored : 'dark';
+  return isTheme(stored)
+    ? stored
+    : 'dark';
 }
 
 export function getTheme(): Theme {
-  return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+  return document.documentElement.classList.contains('dark')
+    ? 'dark'
+    : 'light';
 }
 
 export function applyStoredTheme(): void {
@@ -27,7 +31,9 @@ export function setTheme(theme: Theme): void {
 }
 
 export function toggleTheme(): Theme {
-  const next: Theme = getStoredTheme() === 'dark' ? 'light' : 'dark';
+  const next: Theme = getStoredTheme() === 'dark'
+    ? 'light'
+    : 'dark';
   setTheme(next);
   return next;
 }

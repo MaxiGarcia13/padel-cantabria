@@ -12,10 +12,19 @@ export default eslintConfig(
     tailwindcss: true,
   },
   {
+    files: ['**/*.{ts,tsx,js,jsx,vue}'],
     settings: {
       tailwindcss: {
-        config: cssConfig,
+        cssConfigPath: cssConfig,
       },
+    },
+    rules: {
+      'tailwindcss/no-custom-classname': [
+        'warn',
+        {
+          whitelist: ['typeset', 'typeset-chat'],
+        },
+      ],
     },
   },
 );

@@ -69,7 +69,9 @@ export function useTeamPage(options: {
   );
 
   const standingsHref = computed(() =>
-    phase.value ? buildCategoryPath(categoryKey.value) : '#',
+    phase.value
+      ? buildCategoryPath(categoryKey.value)
+      : '#',
   );
 
   const calendarHref = computed(() => {
@@ -77,7 +79,9 @@ export function useTeamPage(options: {
       return '#';
     }
 
-    const params = new URLSearchParams({ team: String(options.team.id) });
+    const params = new URLSearchParams({
+      team: String(options.team.id),
+    });
 
     return `${buildCategoryPath(categoryKey.value)}/calendar?${params}`;
   });

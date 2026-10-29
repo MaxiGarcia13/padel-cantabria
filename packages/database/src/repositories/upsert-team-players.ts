@@ -85,7 +85,10 @@ export async function upsertTeamPlayers(
   for (const [teamId, teamPlayers] of playersByTeam) {
     const uniquePlayers = [
       ...new Map(
-        teamPlayers.map((player) => [playerKey(player), player]),
+        teamPlayers.map((player) => [
+          playerKey(player),
+          player,
+        ]),
       ).values(),
     ];
 

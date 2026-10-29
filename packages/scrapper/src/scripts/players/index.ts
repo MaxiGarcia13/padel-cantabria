@@ -11,8 +11,12 @@ async function main(): Promise<void> {
   const db = createScraperClientFromEnv();
   const allowedLeagueIds = parseLeagueIds(process.env.LEAGUE_IDS);
   const allowedGenders = parseGenders(process.env.SCRAPE_GENDERS);
-  const leagueIds = allowedLeagueIds ? [...allowedLeagueIds] : null;
-  const genders = allowedGenders ? [...allowedGenders] : null;
+  const leagueIds = allowedLeagueIds
+    ? [...allowedLeagueIds]
+    : null;
+  const genders = allowedGenders
+    ? [...allowedGenders]
+    : null;
   const teams = await db.getTeams({ leagueIds, genders });
 
   if (teams.length === 0) {

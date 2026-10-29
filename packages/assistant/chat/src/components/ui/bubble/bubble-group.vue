@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
     data-slot="bubble-group"
     :as="as"
     :as-child="asChild"
-    :class="cn('gap-2 flex min-w-0 flex-col', props.class)"
+    :class="cn('flex min-w-0 flex-col gap-2', props.class)"
   >
     <slot />
   </Primitive>

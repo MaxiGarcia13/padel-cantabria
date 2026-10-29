@@ -26,5 +26,8 @@ export function formatCategoryTeams(
     return joinMarkdownBlocks([header, 'Sin equipos.']);
   }
 
-  return joinMarkdownBlocks([header, asMarkdownList(teams)]);
+  return joinMarkdownBlocks([
+    header,
+    asMarkdownList(teams),
+  ]);
 }

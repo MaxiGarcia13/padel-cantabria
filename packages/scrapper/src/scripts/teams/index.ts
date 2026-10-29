@@ -9,7 +9,9 @@ import { scrapeTeams } from './scrape-teams.js';
 async function main(): Promise<void> {
   const db = createScraperClientFromEnv();
   const allowedLeagueIds = parseLeagueIds(process.env.LEAGUE_IDS);
-  const leagueIds = allowedLeagueIds ? [...allowedLeagueIds] : null;
+  const leagueIds = allowedLeagueIds
+    ? [...allowedLeagueIds]
+    : null;
   const categories = await db.getCategories({ leagueIds });
 
   if (categories.length === 0) {

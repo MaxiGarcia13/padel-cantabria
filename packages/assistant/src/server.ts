@@ -20,7 +20,9 @@ async function main() {
     = Number(process.env.ASSISTANT_PORT ?? process.env.PORT) || DEFAULT_PORT;
   const host
     = process.env.ASSISTANT_HOST
-      ?? (process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost');
+      ?? (process.env.NODE_ENV === 'production'
+        ? '0.0.0.0'
+        : 'localhost');
   const leagueId = getConfiguredLeagueId();
 
   const db = createMcpClientFromEnv();

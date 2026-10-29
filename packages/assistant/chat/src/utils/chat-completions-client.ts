@@ -35,7 +35,9 @@ function readErrorMessage(payload: unknown): string | null {
   }
 
   const error = (payload as { error?: unknown }).error;
-  return typeof error === 'string' ? error : null;
+  return typeof error === 'string'
+    ? error
+    : null;
 }
 
 function isChatCompletion(value: unknown): value is ChatCompletion {

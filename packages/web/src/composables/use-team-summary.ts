@@ -64,6 +64,8 @@ export function useTeamSummary(
     staleTime: 1000 * 60 * 5,
     initialData: () => matchingInitialData.value,
     initialDataUpdatedAt: () =>
-      matchingInitialData.value != null ? Date.now() : undefined,
+      matchingInitialData.value != null
+        ? Date.now()
+        : undefined,
   });
 }

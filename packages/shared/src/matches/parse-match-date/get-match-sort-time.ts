@@ -7,5 +7,7 @@ export function getMatchSortTime(
 ): number | null {
   const range = parseMatchDateRange(rawDate, season);
 
-  return range ? range.start.getTime() : null;
+  return range
+    ? range.start.getTime()
+    : null;
 }

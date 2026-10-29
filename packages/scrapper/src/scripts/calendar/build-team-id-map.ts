@@ -7,7 +7,12 @@ function teamLookupKey(
   category: string,
   name: string,
 ): string {
-  return [leagueId, gender, category, normalizeTeamName(name)].join(':');
+  return [
+    leagueId,
+    gender,
+    category,
+    normalizeTeamName(name),
+  ].join(':');
 }
 
 export function buildTeamIdMap(teams: Team[]): Map<string, number> {

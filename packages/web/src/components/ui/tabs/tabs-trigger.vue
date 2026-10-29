@@ -19,7 +19,7 @@ const forwardedProps = useForwardProps(delegatedProps);
     data-slot="tabs-trigger"
     :class="
       cn(
-        'relative inline-flex min-w-0 flex-1 items-center justify-center rounded-xl px-4 py-2 text-sm whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40 group-data-vertical/tabs:w-full',
+        'relative inline-flex min-w-0 flex-1 items-center justify-center rounded-xl px-4 py-2 text-sm whitespace-nowrap transition-colors outline-none group-data-vertical/tabs:w-full focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40',
         'text-foreground/70 data-active:bg-background data-active:font-medium data-active:text-foreground',
         props.class,
       )

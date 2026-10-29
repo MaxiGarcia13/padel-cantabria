@@ -27,7 +27,9 @@ export function resolveYear(
 
   const startYear = seasonStart.getUTCFullYear();
   const endYear = seasonEnd.getUTCFullYear();
-  const years = startYear === endYear ? [startYear] : [startYear, endYear];
+  const years = startYear === endYear
+    ? [startYear]
+    : [startYear, endYear];
 
   for (const year of years) {
     const candidate = Date.UTC(year, month - 1, 1);

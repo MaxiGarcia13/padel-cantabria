@@ -110,7 +110,10 @@ const historyItems = computed<TeamSearchHistoryItem[]>(() =>
 );
 
 watch(
-  [() => props.selectedTeamId, teams],
+  [
+    () => props.selectedTeamId,
+    teams,
+  ],
   ([teamId, teamList]) => {
     if (teamId == null || !teamList) {
       return;

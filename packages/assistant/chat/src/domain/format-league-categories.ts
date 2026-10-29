@@ -1,7 +1,9 @@
 import { isRecord, parseToolJson } from '../utils/parse-tool-json';
 
 function asString(value: unknown): string {
-  return typeof value === 'string' ? value.trim() : '';
+  return typeof value === 'string'
+    ? value.trim()
+    : '';
 }
 
 export function formatLeagueCategories(toolText: string): string {
@@ -18,7 +20,9 @@ export function formatLeagueCategories(toolText: string): string {
     }
 
     const leagueName = asString(leagueEntry.league) || 'Liga';
-    const genders = Array.isArray(leagueEntry.genders) ? leagueEntry.genders : [];
+    const genders = Array.isArray(leagueEntry.genders)
+      ? leagueEntry.genders
+      : [];
     const leagueLines = [leagueName];
 
     for (const genderEntry of genders) {
@@ -32,7 +36,9 @@ export function formatLeagueCategories(toolText: string): string {
         leagueLines.push(genderLabel);
       }
 
-      const phases = Array.isArray(genderEntry.phases) ? genderEntry.phases : [];
+      const phases = Array.isArray(genderEntry.phases)
+        ? genderEntry.phases
+        : [];
       for (const phaseEntry of phases) {
         if (!isRecord(phaseEntry)) {
           continue;
@@ -65,5 +71,7 @@ export function formatLeagueCategories(toolText: string): string {
     }
   }
 
-  return blocks.length > 0 ? blocks.join('\n\n') : 'No hay categorías disponibles.';
+  return blocks.length > 0
+    ? blocks.join('\n\n')
+    : 'No hay categorías disponibles.';
 }

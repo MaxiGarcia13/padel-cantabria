@@ -16,7 +16,7 @@ export default eslintConfig(
   {
     settings: {
       tailwindcss: {
-        config: cssConfig,
+        cssConfigPath: cssConfig,
       },
     },
   },

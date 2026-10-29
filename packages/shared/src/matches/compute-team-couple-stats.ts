@@ -34,14 +34,18 @@ function coupleKey(a: TeamPlayer, b: TeamPlayer): string {
   const keyA = playerKey(a);
   const keyB = playerKey(b);
 
-  return keyA < keyB ? `${keyA}\n${keyB}` : `${keyB}\n${keyA}`;
+  return keyA < keyB
+    ? `${keyA}\n${keyB}`
+    : `${keyB}\n${keyA}`;
 }
 
 function orderedPlayers(
   a: TeamPlayer,
   b: TeamPlayer,
 ): [TeamPlayer, TeamPlayer] {
-  return playerKey(a) <= playerKey(b) ? [a, b] : [b, a];
+  return playerKey(a) <= playerKey(b)
+    ? [a, b]
+    : [b, a];
 }
 
 function toCouplePlayer(player: TeamPlayer): TeamCouplePlayer {
@@ -134,7 +138,9 @@ export function computeTeamCoupleStats(
     }
   }
 
-  return [...statsByKey.values()]
+  return [
+    ...statsByKey.values(),
+  ]
     .map((stats) => ({
       ...stats,
       average: coupleAverage(stats.games_won, stats.games_lost),

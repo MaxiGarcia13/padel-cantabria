@@ -8,5 +8,7 @@ export function parseGenders(raw: string | undefined): Set<string> | null {
     .map((value) => value.trim())
     .filter((value) => value.length > 0);
 
-  return genders.length > 0 ? new Set(genders) : null;
+  return genders.length > 0
+    ? new Set(genders)
+    : null;
 }

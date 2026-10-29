@@ -81,7 +81,9 @@ export function createEngineState(props: MessageScrollerProviderProps): EngineSt
     spacer: null,
     spacerGap: 0,
     spacerHeight: 0,
-    mode: autoScroll() ? 'following-bottom' : 'free-scrolling',
+    mode: autoScroll()
+      ? 'following-bottom'
+      : 'free-scrolling',
     streamingTurn: null,
     firstItem: null,
     itemCount: 0,

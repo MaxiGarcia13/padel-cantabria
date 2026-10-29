@@ -33,7 +33,12 @@ export function getNextMatch(
         return [];
       }
 
-      return [{ match, start: range.start.getTime() }];
+      return [
+        {
+          match,
+          start: range.start.getTime(),
+        },
+      ];
     })
     .sort((left, right) => {
       if (left.start !== right.start) {

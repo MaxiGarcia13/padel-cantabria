@@ -16,7 +16,9 @@ function formatRosterTotals(totals: PresentedRosterTotals): string | null {
 
   const previous = totals.previous_points;
   const previousPart
-    = typeof previous === 'number' ? `, ${previous} pts anteriores` : '';
+    = typeof previous === 'number'
+      ? `, ${previous} pts anteriores`
+      : '';
 
   return `Total: ${playerCount} jugadores, ${points} pts${previousPart}`;
 }
@@ -45,5 +47,9 @@ export function formatTeamRoster(
     return joinMarkdownBlocks([header, 'Sin jugadores.', totals]);
   }
 
-  return joinMarkdownBlocks([header, totals, asMarkdownList(players)]);
+  return joinMarkdownBlocks([
+    header,
+    totals,
+    asMarkdownList(players),
+  ]);
 }

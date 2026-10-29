@@ -1,11 +1,11 @@
 ---
+import { loadTeamStandingAndNextMatch } from '@padel-cantabria/shared';
 import Breadcrumb from '@/components/breadcrumb.vue';
 import Header from '@/components/header.astro';
 import TeamPage from '@/components/team/team-page.vue';
 import AppLayout from '@/layouts/app-layout.astro';
-import { loadTeamStandingAndNextMatch } from '@padel-cantabria/shared';
-import { getDb } from '@/server/db';
 import { buildTeamPath, parseCategoryParams, teamCategoryKey, teamMatchesCategory } from '@/routes';
+import { getDb } from '@/server/db';
 import { teamBreadcrumbItems } from '@/utils/breadcrumb-items';
 
 export const prerender = false;

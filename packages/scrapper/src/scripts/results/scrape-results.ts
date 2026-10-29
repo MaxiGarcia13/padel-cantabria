@@ -20,7 +20,12 @@ export async function scrapeResults(
   candidates: ResultCandidate[],
 ): Promise<ScrapeResultsResult> {
   if (candidates.length === 0) {
-    return { results: [], games: [], scraped: 0, skipped: 0 };
+    return {
+      results: [],
+      games: [],
+      scraped: 0,
+      skipped: 0,
+    };
   }
 
   return withBrowserPage(async (page) => {
@@ -58,7 +63,9 @@ async function scrapeMatchResult(
   } catch (error) {
     console.warn(
       `Skipping match ${candidate.match_id} (league ${candidate.league_id}): ${
-        error instanceof Error ? error.message : String(error)
+        error instanceof Error
+          ? error.message
+          : String(error)
       }`,
       url,
     );

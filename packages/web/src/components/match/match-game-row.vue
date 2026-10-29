@@ -27,9 +27,13 @@ function compareSets(
 const outcome = compareSets(props.game.home_sets, props.game.away_sets);
 
 const homeClass
-  = outcome === 'away' ? 'text-muted' : 'font-medium text-foreground';
+  = outcome === 'away'
+    ? 'text-muted'
+    : 'font-medium text-foreground';
 const awayClass
-  = outcome === 'home' ? 'text-muted' : 'font-medium text-foreground';
+  = outcome === 'home'
+    ? 'text-muted'
+    : 'font-medium text-foreground';
 
 const setsLabel
   = props.game.home_sets !== null && props.game.away_sets !== null

@@ -12,8 +12,12 @@ async function main(): Promise<void> {
   const db = createScraperClientFromEnv();
   const allowedLeagueIds = parseLeagueIds(process.env.LEAGUE_IDS);
   const allowedGenders = parseGenders(process.env.SCRAPE_GENDERS);
-  const leagueIds = allowedLeagueIds ? [...allowedLeagueIds] : null;
-  const genders = allowedGenders ? [...allowedGenders] : null;
+  const leagueIds = allowedLeagueIds
+    ? [...allowedLeagueIds]
+    : null;
+  const genders = allowedGenders
+    ? [...allowedGenders]
+    : null;
 
   const leagues = await db.getLeagues({ leagueIds });
 
@@ -35,7 +39,9 @@ async function main(): Promise<void> {
 
   console.warn(
     `Found ${candidates.length} recent played match candidate(s) from ${matches.length} match(es)${
-      genders === null ? '' : ` (genders: ${genders.join(', ')})`
+      genders === null
+        ? ''
+        : ` (genders: ${genders.join(', ')})`
     }.`,
   );
 

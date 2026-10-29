@@ -17,7 +17,9 @@ function parseMatchIds(raw: string | null): number[] | null {
     .map((value) => Number(value.trim()))
     .filter((id) => Number.isFinite(id));
 
-  return ids.length > 0 ? ids : null;
+  return ids.length > 0
+    ? ids
+    : null;
 }
 
 function groupGamesByMatchId(

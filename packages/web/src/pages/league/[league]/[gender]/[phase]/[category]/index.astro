@@ -1,11 +1,11 @@
 ---
 import Breadcrumb from '@/components/breadcrumb.vue';
+import Header from '@/components/header.astro';
 import ClosestMatches from '@/components/matches/closest-matches.vue';
 import StandingsTable from '@/components/standings/standings-table.vue';
-import Header from '@/components/header.astro';
 import AppLayout from '@/layouts/app-layout.astro';
-import { getDb } from '@/server/db';
 import { buildCategoryPath, parseCategoryParams } from '@/routes';
+import { getDb } from '@/server/db';
 import { categoryBreadcrumbItems } from '@/utils/breadcrumb-items';
 
 export const prerender = false;

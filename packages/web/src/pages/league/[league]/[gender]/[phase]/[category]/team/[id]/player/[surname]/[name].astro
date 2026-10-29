@@ -3,9 +3,9 @@ import Breadcrumb from '@/components/breadcrumb.vue';
 import Header from '@/components/header.astro';
 import PlayerPage from '@/components/player/player-page.vue';
 import AppLayout from '@/layouts/app-layout.astro';
+import { buildPlayerPath, buildTeamPath, parseCategoryParams, teamCategoryKey, teamMatchesCategory } from '@/routes';
 import { getDb } from '@/server/db';
 import { loadTeamPlayerPageData } from '@/server/load-team-player-page-data';
-import { buildPlayerPath, buildTeamPath, parseCategoryParams, teamCategoryKey, teamMatchesCategory } from '@/routes';
 import { playerBreadcrumbItems } from '@/utils/breadcrumb-items';
 
 export const prerender = false;

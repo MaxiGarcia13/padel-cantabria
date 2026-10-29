@@ -15,6 +15,8 @@ export function formatCategoryLike(
     category,
     stringField(record, 'gender') || null,
     stringField(record, 'phase') || null,
-    categoryValue ? `id ${categoryValue}` : null,
+    categoryValue
+      ? `id ${categoryValue}`
+      : null,
   ]);
 }

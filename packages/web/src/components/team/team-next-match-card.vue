@@ -10,7 +10,9 @@ const props = defineProps<{
 }>();
 
 const meta = computed(() =>
-  props.match ? formatMatchMeta(props.match) : '',
+  props.match
+    ? formatMatchMeta(props.match)
+    : '',
 );
 </script>
 

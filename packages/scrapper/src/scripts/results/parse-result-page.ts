@@ -10,7 +10,9 @@ import { parseFederationInteger } from './parse-federation-integer.js';
 function trimText(value: string | null | undefined): string | null {
   const trimmed = value?.trim() ?? '';
 
-  return trimmed.length > 0 ? trimmed : null;
+  return trimmed.length > 0
+    ? trimmed
+    : null;
 }
 
 function isCompleteGame(game: {

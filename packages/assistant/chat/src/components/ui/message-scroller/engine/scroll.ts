@@ -84,7 +84,9 @@ export function setSpacerHeight(state: EngineState, height: number) {
   state.spacerHeight = next;
   state.spacer.hidden = next === 0;
   state.spacer.style.height = `${next}px`;
-  state.spacer.style.marginTop = next > 0 ? `${-state.spacerGap}px` : '';
+  state.spacer.style.marginTop = next > 0
+    ? `${-state.spacerGap}px`
+    : '';
 }
 
 export function scrollTo(
@@ -133,7 +135,9 @@ export function scrollToEnd(
     return false;
   setSpacerHeight(state, 0);
   state.streamingTurn = null;
-  state.mode = state.autoScroll() ? 'following-bottom' : 'free-scrolling';
+  state.mode = state.autoScroll()
+    ? 'following-bottom'
+    : 'free-scrolling';
   scrollTo(state, maxScrollTop(state.viewport), { autoscrolling: true, behavior });
   return true;
 }
@@ -153,7 +157,9 @@ export function scrollToElement(
   const targetScrollTop = computeScrollTopForElement({
     align,
     element,
-    scrollMargin: keepPreviousPeek ? margin + state.scrollPreviousItemPeek() : margin,
+    scrollMargin: keepPreviousPeek
+      ? margin + state.scrollPreviousItemPeek()
+      : margin,
     spacer: state.spacer,
     viewport: state.viewport,
   });

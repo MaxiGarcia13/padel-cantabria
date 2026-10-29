@@ -1,4 +1,6 @@
 minimumReleaseAgeExcludePrune: true
+minimumReleaseAgeExclude:
+  - '@maxigarcia/eslint-config@1.17.0'
 
 trustPolicy: no-downgrade
 trustPolicyExclude:

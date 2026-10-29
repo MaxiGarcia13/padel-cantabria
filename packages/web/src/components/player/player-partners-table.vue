@@ -67,7 +67,7 @@ function partnerName(partner: PlayerPartnerStats['partner']): string {
           <TableCell class="max-w-72 min-w-56 whitespace-normal">
             <a
               :href="partnerHref(row.partner)"
-              class="font-medium break-words text-inherit no-underline hover:underline focus-visible:rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+              class="font-medium wrap-break-word text-inherit no-underline hover:underline focus-visible:rounded-xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
               :title="partnerName(row.partner)"
             >
               {{ partnerName(row.partner) }}

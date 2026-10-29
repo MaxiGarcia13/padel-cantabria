@@ -42,7 +42,14 @@ export function runHeroBrandAnimation(root: ParentNode = document): void {
 
   const letters = gsap.utils.toArray<HTMLElement>(brand.querySelectorAll('[data-hero-letter]'));
   gsap.killTweensOf([ball, ...letters]);
-  gsap.set(ball, { x: 0, y: 0, rotation: 0, scaleX: 1, scaleY: 1, transformOrigin: '50% 100%' });
+  gsap.set(ball, {
+    x: 0,
+    y: 0,
+    rotation: 0,
+    scaleX: 1,
+    scaleY: 1,
+    transformOrigin: '50% 100%',
+  });
   gsap.set(letters, { y: 0 });
 
   if (prefersReducedMotion() || letters.length === 0)
@@ -50,7 +57,9 @@ export function runHeroBrandAnimation(root: ParentNode = document): void {
 
   gsap.set(ball, { x: -110, y: -48, rotation: -14 });
 
-  const timeline = gsap.timeline({ defaults: { force3D: true } });
+  const timeline = gsap.timeline({
+    defaults: { force3D: true },
+  });
 
   timeline.to(ball, { x: 0, duration: 1.55, ease: 'power1.out' }, 0);
 
@@ -69,8 +78,19 @@ export function runHeroBrandAnimation(root: ParentNode = document): void {
     },
     0,
   );
-  timeline.to(ball, { scaleX: 1.18, scaleY: 0.8, duration: 0.06, ease: 'power1.out' }, 0.34);
-  timeline.to(ball, { scaleX: 1, scaleY: 1, y: -28, duration: 0.3, ease: 'power3.out' }, 0.4);
+  timeline.to(ball, {
+    scaleX: 1.18,
+    scaleY: 0.8,
+    duration: 0.06,
+    ease: 'power1.out',
+  }, 0.34);
+  timeline.to(ball, {
+    scaleX: 1,
+    scaleY: 1,
+    y: -28,
+    duration: 0.3,
+    ease: 'power3.out',
+  }, 0.4);
 
   // Second bounce — mid-left
   timeline.to(
@@ -83,8 +103,19 @@ export function runHeroBrandAnimation(root: ParentNode = document): void {
     },
     0.7,
   );
-  timeline.to(ball, { scaleX: 1.12, scaleY: 0.86, duration: 0.05, ease: 'power1.out' }, 0.98);
-  timeline.to(ball, { scaleX: 1, scaleY: 1, y: -16, duration: 0.26, ease: 'power3.out' }, 1.03);
+  timeline.to(ball, {
+    scaleX: 1.12,
+    scaleY: 0.86,
+    duration: 0.05,
+    ease: 'power1.out',
+  }, 0.98);
+  timeline.to(ball, {
+    scaleX: 1,
+    scaleY: 1,
+    y: -16,
+    duration: 0.26,
+    ease: 'power3.out',
+  }, 1.03);
 
   // Third bounce — center
   timeline.to(
@@ -97,9 +128,30 @@ export function runHeroBrandAnimation(root: ParentNode = document): void {
     },
     1.29,
   );
-  timeline.to(ball, { scaleX: 1.08, scaleY: 0.9, duration: 0.05, ease: 'power1.out' }, 1.53);
-  timeline.to(ball, { scaleX: 1, scaleY: 1, y: -6, duration: 0.2, ease: 'power3.out' }, 1.58);
+  timeline.to(ball, {
+    scaleX: 1.08,
+    scaleY: 0.9,
+    duration: 0.05,
+    ease: 'power1.out',
+  }, 1.53);
+  timeline.to(ball, {
+    scaleX: 1,
+    scaleY: 1,
+    y: -6,
+    duration: 0.2,
+    ease: 'power3.out',
+  }, 1.58);
   timeline.to(ball, { y: 0, duration: 0.18, ease: 'power2.in' }, 1.78);
-  timeline.to(ball, { scaleX: 1.03, scaleY: 0.96, duration: 0.04, ease: 'power1.out' }, 1.96);
-  timeline.to(ball, { scaleX: 1, scaleY: 1, duration: 0.16, ease: 'power2.out' }, 2);
+  timeline.to(ball, {
+    scaleX: 1.03,
+    scaleY: 0.96,
+    duration: 0.04,
+    ease: 'power1.out',
+  }, 1.96);
+  timeline.to(ball, {
+    scaleX: 1,
+    scaleY: 1,
+    duration: 0.16,
+    ease: 'power2.out',
+  }, 2);
 }

@@ -20,5 +20,7 @@ export function stringField<T extends object>(
   key: keyof T & string,
 ): string {
   const value = record[key];
-  return typeof value === 'string' ? value.trim() : '';
+  return typeof value === 'string'
+    ? value.trim()
+    : '';
 }

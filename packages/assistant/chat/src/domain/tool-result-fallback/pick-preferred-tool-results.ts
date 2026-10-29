@@ -10,5 +10,7 @@ function isRosterOrTeamsPayload(text: string): boolean {
 
 export function pickPreferredToolResults(toolResults: string[]): string[] {
   const preferred = toolResults.filter(isRosterOrTeamsPayload);
-  return preferred.length > 0 ? preferred : toolResults;
+  return preferred.length > 0
+    ? preferred
+    : toolResults;
 }

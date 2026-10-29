@@ -12,7 +12,10 @@ export async function requireTeamById(
   const teamId = Number(rawId);
 
   if (!Number.isFinite(teamId)) {
-    return { ok: false, response: jsonApiError(400) };
+    return {
+      ok: false,
+      response: jsonApiError(400),
+    };
   }
 
   try {
@@ -20,11 +23,17 @@ export async function requireTeamById(
     const team = await db.getTeamById(teamId);
 
     if (!team) {
-      return { ok: false, response: jsonApiError(404) };
+      return {
+        ok: false,
+        response: jsonApiError(404),
+      };
     }
 
     return { ok: true, db, team };
   } catch (error) {
-    return { ok: false, response: jsonApiError(500, error) };
+    return {
+      ok: false,
+      response: jsonApiError(500, error),
+    };
   }
 }

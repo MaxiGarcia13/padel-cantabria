@@ -34,7 +34,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
       v-bind="{ ...$attrs, ...forwarded }"
       :class="
         cn(
-          'group/combobox-content z-50 max-h-72 w-(--reka-combobox-trigger-width) overflow-hidden rounded-xl border border-border bg-surface text-foreground shadow-md outline-none data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95',
+          'group/combobox-content z-50 max-h-72 w-(--reka-combobox-trigger-width) overflow-hidden rounded-xl border border-border bg-surface text-foreground shadow-md outline-none data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
           props.class,
         )
       "

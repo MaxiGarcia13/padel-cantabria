@@ -15,7 +15,10 @@ export function useTeamPhases(
   teamId: MaybeRefOrGetter<number>,
   initialData?: string[],
 ) {
-  const queryKey = computed(() => ['team-phases', toValue(teamId)] as const);
+  const queryKey = computed(() => [
+    'team-phases',
+    toValue(teamId),
+  ] as const);
 
   return useQuery({
     queryKey,
@@ -24,6 +27,8 @@ export function useTeamPhases(
     enabled: computed(() => !import.meta.env.SSR),
     staleTime: 24 * 60 * 60 * 1000,
     initialData,
-    initialDataUpdatedAt: initialData != null ? Date.now() : undefined,
+    initialDataUpdatedAt: initialData != null
+      ? Date.now()
+      : undefined,
   });
 }

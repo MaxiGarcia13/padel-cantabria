@@ -19,7 +19,10 @@ export function groupMatchesByDate(
 
     if (existingIndex === undefined) {
       indexByDate.set(match.date, groups.length);
-      groups.push({ date: match.date, matches: [match] });
+      groups.push({
+        date: match.date,
+        matches: [match],
+      });
       continue;
     }
 

@@ -17,7 +17,9 @@ async function resolveOpponentNames(
   db: WebDatabaseClient,
   appearances: PlayerCourtAppearance[],
 ): Promise<PlayerCourtAppearanceWithOpponent[]> {
-  const opponentIds = [...new Set(appearances.map((row) => row.opponent_team_id))];
+  const opponentIds = [
+    ...new Set(appearances.map((row) => row.opponent_team_id)),
+  ];
   const teams = await Promise.all(
     opponentIds.map((id) => db.getTeamById(id)),
   );

@@ -17,7 +17,9 @@ const meta = formatMatchMeta(props.match);
 const isPlayed = computed(() => Boolean(props.result?.is_played));
 
 const scoreLabel = computed(() =>
-  isPlayed.value ? (props.result?.score_label ?? null) : null,
+  isPlayed.value
+    ? (props.result?.score_label ?? null)
+    : null,
 );
 
 const homeClass = computed(() => {
@@ -40,7 +42,7 @@ const awayClass = computed(() => {
 <template>
   <a
     :href="href"
-    class="block rounded-xl border border-border bg-surface px-4 py-4 text-inherit no-underline transition-colors hover:border-muted focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+    class="block rounded-xl border border-border bg-surface p-4 text-inherit no-underline transition-colors hover:border-muted focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
   >
     <div class="flex items-center gap-3">
       <p

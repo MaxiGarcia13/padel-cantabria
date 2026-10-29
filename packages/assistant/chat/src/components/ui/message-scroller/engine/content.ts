@@ -43,7 +43,10 @@ export function capturePrependAnchor(state: EngineState) {
     viewport: state.viewport,
   });
   state.prependRestore = element
-    ? { element, viewportTop: getRelativeTop(element, state.viewport) }
+    ? {
+        element,
+        viewportTop: getRelativeTop(element, state.viewport),
+      }
     : null;
 }
 
@@ -122,7 +125,9 @@ function applyContentChange(
     return;
   }
 
-  const previousIndex = previousFirst ? children.indexOf(previousFirst) : -1;
+  const previousIndex = previousFirst
+    ? children.indexOf(previousFirst)
+    : -1;
   if (state.preserveScrollOnPrepend && previousIndex > 0) {
     applyPrependRestore(state);
     return;

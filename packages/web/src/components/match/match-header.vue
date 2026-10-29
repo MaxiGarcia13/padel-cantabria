@@ -8,7 +8,9 @@ const props = defineProps<{
 }>();
 
 const isPlayed = Boolean(props.result?.is_played);
-const scoreLabel = isPlayed ? (props.result?.score_label ?? null) : null;
+const scoreLabel = isPlayed
+  ? (props.result?.score_label ?? null)
+  : null;
 
 const homeClass
   = isPlayed && props.result?.winner === 'away'
