@@ -4,7 +4,7 @@
     "jsx": "preserve",
     "paths": {
       "@/*": ["./src/*"],
-      "@root/package.json": ["../../../../package.json"]
+      "@root/package.json": ["../../package.json"]
     }
   }
 }
