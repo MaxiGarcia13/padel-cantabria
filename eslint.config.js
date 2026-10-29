@@ -4,5 +4,6 @@ export default eslintConfig({
   typescript: true,
   ignores: [
     'packages/web',
+    'packages/assistant',
   ],
 });
