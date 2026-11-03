@@ -199,6 +199,9 @@ importers:
       '@lucide/vue':
         specifier: ^1.59.0
         version: 1.59.0(vue@3.5.44(typescript@6.0.3))
+      '@maxigarcia/ai-client':
+        specifier: ^0.3.0
+        version: 0.3.0(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)
       '@maxigarcia/ai-router':
         specifier: ^0.1.4
         version: 0.1.4(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)
@@ -1898,6 +1901,9 @@ packages:
     resolution: {integrity: sha512-uwPAhccfFJlsfCxMYTwOdVfOz3xqyj8xYL3zJj8f0pb30tLohnnFPhLuqp4/qoEz8sNxe4SESZedcBojRefIzg==}
     engines: {node: '>=18'}
     hasBin: true
+
+  '@maxigarcia/ai-client@0.3.0':
+    resolution: {integrity: sha512-3eOp9wEi92uIfMyhCSojXmsa1H0p2k459P6roLPxud7QVhW8UtkxRIyAwd6lUS0Smz0LncQdu6ArGISi8ZU4Ig==}
 
   '@maxigarcia/ai-router@0.1.4':
     resolution: {integrity: sha512-oPgCo1RjvS6p3fLmx8JPUDIzF4K4BTNK9oWcVpmaVQAlUZpcKMpcGQ++tXnYI7Kw85wQfcTdIW1tqFN7wDtZ7w==}
@@ -7869,6 +7875,17 @@ snapshots:
     transitivePeerDependencies:
       - encoding
       - supports-color
+
+  '@maxigarcia/ai-client@0.3.0(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)':
+    dependencies:
+      openai: 7.38.0(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)
+    transitivePeerDependencies:
+      - '@aws-sdk/credential-provider-node'
+      - '@smithy/hash-node'
+      - '@smithy/signature-v4'
+      - undici
+      - ws
+      - zod
 
   '@maxigarcia/ai-router@0.1.4(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)':
     dependencies:
