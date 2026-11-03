@@ -13,7 +13,6 @@ import { registerChatStatic } from './static-chat.js';
 
 export async function createApp(db: McpDatabaseClient) {
   const app = Fastify({ logger: true });
-  const aiRouter = createAiRouter();
 
   await app.register(cors, { origin: true });
 
@@ -32,7 +31,7 @@ export async function createApp(db: McpDatabaseClient) {
   await app.register(createPhasesRoutes(db));
   await app.register(createTeamsRoutes(db));
   await app.register(createPlayersRoutes(db));
-  await app.register(createChatRoutes(aiRouter));
+  await app.register(createChatRoutes(createAiRouter));
   await app.register(createMcpRoutes(db));
   await registerChatStatic(app);
 
