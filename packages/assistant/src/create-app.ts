@@ -1,6 +1,7 @@
 import type { McpDatabaseClient } from '@padel-cantabria/database';
 import cors from '@fastify/cors';
 import Fastify from 'fastify';
+import { CHAT_SESSION_HEADER } from './chat/chat-session.js';
 import { HttpError, httpErrorPayload } from './errors.js';
 import { createCategoriesRoutes } from './routes/categories.js';
 import { createChatRoutes } from './routes/chat.js';
@@ -15,7 +16,12 @@ export async function createApp(db: McpDatabaseClient) {
 
   await app.register(cors, {
     origin: true,
-    exposedHeaders: ['X-Chat-Pending'],
+    allowedHeaders: [
+      'Content-Type',
+      'Accept',
+      CHAT_SESSION_HEADER,
+      'mcp-session-id',
+    ],
   });
 
   app.setErrorHandler((error, _request, reply) => {

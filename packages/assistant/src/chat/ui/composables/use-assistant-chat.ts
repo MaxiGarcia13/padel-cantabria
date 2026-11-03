@@ -1,158 +1,95 @@
-import type { PendingClarification } from '@chat/domain/clarification';
-import { computed, onMounted, ref } from 'vue';
-import {
-  readOpenAiNdjsonStream,
-  readPendingHeader,
-} from '@/utils/read-openai-ndjson-stream';
-
-interface ChatUiMessage {
-  id: string;
-  role: 'user' | 'assistant' | 'system';
-  content: string;
-}
-
-interface HistoryMessage {
-  role: 'user' | 'assistant';
-  content: string;
-}
+import { CHAT_SESSION_HEADER } from '@chat/chat-session';
+import { createChat } from '@maxigarcia/ai-client';
+import { computed, onScopeDispose, shallowRef } from 'vue';
 
 const WELCOME_MESSAGE
   = 'Puedes preguntar por categorías, equipos, posiciones, jugadores y próximos partidos.';
 
-const MAX_HISTORY_MESSAGES = 4;
+const SESSION_STORAGE_KEY = 'padel-assistant-chat-session';
 
-function createMessageId(): string {
-  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-}
-
-function trimHistory(history: HistoryMessage[]): HistoryMessage[] {
-  if (history.length <= MAX_HISTORY_MESSAGES) {
-    return history;
+function getOrCreateSessionId(): string {
+  const existing = sessionStorage.getItem(SESSION_STORAGE_KEY);
+  if (existing) {
+    return existing;
   }
-  return history.slice(-MAX_HISTORY_MESSAGES);
-}
 
-function asPendingClarification(value: unknown): PendingClarification | null {
-  if (!value || typeof value !== 'object') {
-    return null;
-  }
-  return value as PendingClarification;
+  const sessionId = crypto.randomUUID();
+  sessionStorage.setItem(SESSION_STORAGE_KEY, sessionId);
+  return sessionId;
 }
 
 export function useAssistantChat() {
-  const status = ref('Preparando…');
-  const statusTone = ref<'info' | 'error'>('info');
-  const ready = ref(false);
-  const busy = ref(false);
-  const messages = ref<ChatUiMessage[]>([]);
-  const history = ref<HistoryMessage[]>([]);
-  const pendingClarification = ref<PendingClarification | null>(null);
+  const chat = createChat({
+    url: '/chat',
 
-  const canSend = computed(() => ready.value && !busy.value);
+    initialMessages: [
+      { role: 'system', content: WELCOME_MESSAGE },
+    ],
 
-  function pushMessage(role: ChatUiMessage['role'], content: string) {
-    messages.value.push({
-      id: createMessageId(),
-      role,
-      content,
-    });
-  }
+    headers: {
+      [CHAT_SESSION_HEADER]: getOrCreateSessionId(),
+      Accept: 'application/x-ndjson',
+    },
+  });
 
-  function commitHistory(userText: string, assistantText: string) {
-    history.value = trimHistory([
-      ...history.value,
-      { role: 'user', content: userText },
-      { role: 'assistant', content: assistantText },
-    ]);
-  }
+  const rawMessages = shallowRef(chat.getState().messages);
+  const loading = shallowRef(chat.getState().loading);
+  const error = shallowRef(chat.getState().error);
 
-  function start() {
-    ready.value = true;
-    statusTone.value = 'info';
-    status.value = 'Listo';
-    pushMessage('system', WELCOME_MESSAGE);
-  }
+  const unsubscribe = chat.subscribe(() => {
+    const state = chat.getState();
+    rawMessages.value = state.messages;
+    loading.value = state.loading;
+    error.value = state.error;
+  });
+
+  onScopeDispose(unsubscribe);
+
+  const messages = computed(() =>
+    rawMessages.value.map((message, index) => ({
+      id: `msg-${index}`,
+      role: message.role,
+      content: message.content,
+    })),
+  );
+
+  const busy = computed(() => loading.value);
+  const canSend = computed(() => !loading.value);
+
+  const statusTone = computed<'info' | 'error'>(() =>
+    error.value ? 'error' : 'info',
+  );
+
+  const status = computed(() => {
+    if (loading.value) {
+      return 'Pensando…';
+    }
+    if (error.value) {
+      return 'Error';
+    }
+    return 'Listo';
+  });
 
   async function send(prompt: string) {
-    if (!canSend.value) {
-      return;
-    }
-
     const trimmed = prompt.trim();
-    if (!trimmed) {
+    if (!trimmed || loading.value) {
       return;
     }
 
-    busy.value = true;
-    statusTone.value = 'info';
-    status.value = 'Pensando…';
-    pushMessage('user', trimmed);
-    pushMessage('assistant', '');
-    const assistantIndex = messages.value.length - 1;
+    await chat.send(trimmed);
 
-    try {
-      const response = await fetch('/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/x-ndjson',
-        },
-        body: JSON.stringify({
-          userMessage: trimmed,
-          history: history.value,
-          pending: pendingClarification.value,
-        }),
-      });
+    const state = chat.getState();
+    if (!state.error) {
+      return;
+    }
 
-      if (!response.ok) {
-        const payload: unknown = await response.json().catch(() => null);
-        const message
-          = payload
-            && typeof payload === 'object'
-            && 'error' in payload
-            && typeof (payload as { error: unknown }).error === 'string'
-            ? (payload as { error: string }).error
-            : response.statusText;
-        throw new Error(message);
-      }
-
-      const finalText = await readOpenAiNdjsonStream(response, (delta) => {
-        const current = messages.value[assistantIndex];
-        if (current) {
-          current.content += delta;
-        }
-      });
-
-      if (!finalText) {
-        throw new Error('Empty chat response');
-      }
-
-      pendingClarification.value = asPendingClarification(
-        readPendingHeader(response),
-      );
-      commitHistory(trimmed, finalText);
-      status.value = 'Listo';
-    } catch (error) {
-      pendingClarification.value = null;
-      const message = error instanceof Error
-        ? `Error: ${error.message}`
-        : 'Ha ocurrido un error al responder.';
-      const current = messages.value[assistantIndex];
-      if (current) {
-        current.content = message;
-      } else {
-        pushMessage('assistant', message);
-      }
-      statusTone.value = 'error';
-      status.value = 'Error';
-    } finally {
-      busy.value = false;
+    const nextMessages = [...state.messages];
+    const last = nextMessages.at(-1);
+    if (last?.role === 'assistant' && !last.content) {
+      last.content = `Error: ${state.error.message}`;
+      chat.setMessages(nextMessages);
     }
   }
-
-  onMounted(() => {
-    start();
-  });
 
   return {
     status,

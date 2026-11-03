@@ -1,29 +1,17 @@
 import type { McpDatabaseClient } from '@padel-cantabria/database';
 import type { FastifyPluginAsync } from 'fastify';
-import type { PendingClarification } from '../chat/domain/clarification.js';
-import type { ChatCompletionMessageParam } from '../chat/utils/chat-completion-types.js';
 import { writeNdjsonStream } from '@maxigarcia/ai-router';
+import { CHAT_SESSION_HEADER } from '../chat/chat-session.js';
+import { parseChatMessages } from '../chat/parse-chat-messages.js';
+import {
+  getPendingForSession,
+  setPendingForSession,
+} from '../chat/pending-session-store.js';
 import { runChatRequest } from '../chat/run-chat-request.js';
 import { badRequest } from '../errors.js';
 
 interface ChatBody {
-  userMessage?: unknown;
-  history?: unknown;
-  pending?: unknown;
-}
-
-function isHistoryMessage(
-  value: unknown,
-): value is Extract<ChatCompletionMessageParam, { role: 'user' | 'assistant' }> {
-  if (!value || typeof value !== 'object') {
-    return false;
-  }
-
-  const message = value as { role?: unknown; content?: unknown };
-  return (
-    (message.role === 'user' || message.role === 'assistant')
-    && typeof message.content === 'string'
-  );
+  messages?: unknown;
 }
 
 export function createChatRoutes(db: McpDatabaseClient): FastifyPluginAsync {
@@ -31,33 +19,34 @@ export function createChatRoutes(db: McpDatabaseClient): FastifyPluginAsync {
     app.post<{ Body: ChatBody }>(
       '/chat',
       async (request, reply) => {
-        const { userMessage, history, pending } = request.body ?? {};
+        const sessionHeader = request.headers[CHAT_SESSION_HEADER];
+        const sessionId = typeof sessionHeader === 'string'
+          ? sessionHeader.trim()
+          : '';
 
-        if (typeof userMessage !== 'string' || !userMessage.trim()) {
-          throw badRequest('userMessage must be a non-empty string', {
-            code: 'invalid_user_message',
+        if (!sessionId) {
+          throw badRequest(`${CHAT_SESSION_HEADER} header is required`, {
+            code: 'missing_chat_session',
           });
         }
 
-        if (history !== undefined && !Array.isArray(history)) {
-          throw badRequest('history must be an array', {
-            code: 'invalid_history',
-          });
+        let parsed;
+        try {
+          parsed = parseChatMessages(request.body?.messages);
+        } catch (error) {
+          const message = error instanceof Error
+            ? error.message
+            : 'Invalid messages';
+          throw badRequest(message, { code: 'invalid_messages' });
         }
 
-        const parsedHistory = (history ?? []).filter(isHistoryMessage);
         const outcome = await runChatRequest(db, {
-          userMessage: userMessage.trim(),
-          history: parsedHistory,
-          pending: (pending ?? null) as PendingClarification | null,
+          userMessage: parsed.userMessage,
+          history: parsed.history,
+          pending: getPendingForSession(sessionId),
         });
 
-        if (outcome.pending) {
-          reply.header(
-            'X-Chat-Pending',
-            encodeURIComponent(JSON.stringify(outcome.pending)),
-          );
-        }
+        setPendingForSession(sessionId, outcome.pending);
 
         return reply
           .header('Cache-Control', 'no-cache')

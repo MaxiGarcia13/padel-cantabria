@@ -28,21 +28,21 @@ In production (`NODE_ENV=production`), the server listens on `0.0.0.0` and uses 
 
 League is taken from root `.env` `LEAGUE_IDS` (first id), not from query params.
 
-| Method | Path                                    | Notes                                        |
-| ------ | --------------------------------------- | -------------------------------------------- |
-| `GET`  | `/`                                     | Vue chat UI (after `build:chat`)             |
-| `GET`  | `/health`                               | `{ ok: true }`                               |
-| `GET`  | `/categories`                           | League tree with labels                      |
-| `GET`  | `/categories/search?q=&gender=&limit=`  | Search categories (token match)              |
-| `GET`  | `/phases/search?q=&gender=&limit=`      | Search phases (token match)                  |
-| `GET`  | `/teams?gender=&category=&phase=`       | Teams + standings in a category              |
-| `GET`  | `/teams/search?q=&limit=`               | Search teams (token match)                   |
-| `GET`  | `/teams/:id/overview?phase=`            | Team context, standing, next match           |
-| `GET`  | `/teams/:id/players`                    | Team roster (players)                        |
-| `GET`  | `/players/search?q=&gender=&limit=`     | Search players by name                       |
-| `GET`  | `/players/top?gender=&category=&limit=` | Top points in a category                     |
-| `POST` | `/chat`                                 | Chat turn (NDJSON stream: status/delta/done) |
-| `POST` | `/mcp`                                  | Streamable HTTP MCP (same tools)             |
+| Method | Path                                    | Notes                                             |
+| ------ | --------------------------------------- | ------------------------------------------------- |
+| `GET`  | `/`                                     | Vue chat UI (after `build:chat`)                  |
+| `GET`  | `/health`                               | `{ ok: true }`                                    |
+| `GET`  | `/categories`                           | League tree with labels                           |
+| `GET`  | `/categories/search?q=&gender=&limit=`  | Search categories (token match)                   |
+| `GET`  | `/phases/search?q=&gender=&limit=`      | Search phases (token match)                       |
+| `GET`  | `/teams?gender=&category=&phase=`       | Teams + standings in a category                   |
+| `GET`  | `/teams/search?q=&limit=`               | Search teams (token match)                        |
+| `GET`  | `/teams/:id/overview?phase=`            | Team context, standing, next match                |
+| `GET`  | `/teams/:id/players`                    | Team roster (players)                             |
+| `GET`  | `/players/search?q=&gender=&limit=`     | Search players by name                            |
+| `GET`  | `/players/top?gender=&category=&limit=` | Top points in a category                          |
+| `POST` | `/chat`                                 | Chat turn (`messages` + `x-chat-session`; NDJSON) |
+| `POST` | `/mcp`                                  | Streamable HTTP MCP (same tools)                  |
 
 ## Connect an LLM
 
