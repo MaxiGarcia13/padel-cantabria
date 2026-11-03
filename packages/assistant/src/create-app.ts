@@ -31,7 +31,7 @@ export async function createApp(db: McpDatabaseClient) {
   await app.register(createPhasesRoutes(db));
   await app.register(createTeamsRoutes(db));
   await app.register(createPlayersRoutes(db));
-  await app.register(createChatRoutes(createAiRouter));
+  await app.register(createChatRoutes(db, createAiRouter));
   await app.register(createMcpRoutes(db));
   await registerChatStatic(app);
 

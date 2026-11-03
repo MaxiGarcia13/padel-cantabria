@@ -1,12 +1,12 @@
 # `@padel-cantabria/assistant`
 
-Deployable Fastify read API over Turso, Streamable HTTP MCP at `/mcp`, and a Vue chat UI that calls cloud LLMs via `@maxigarcia/ai-router`.
+Deployable Fastify read API over Turso, Streamable HTTP MCP at `/mcp`, and a Vue chat UI. Chat turns run on the server (tools + Gemini via `@maxigarcia/ai-router`).
 
 ## Run
 
 From the repo root `.env`: `TURSO_URL`, `TURSO_AUTH_TOKEN`, and `LEAGUE_IDS` (required here to scope MCP/API reads; scrapers still use `LEAGUE_IDS` only as an optional filter).
 
-For chat completions, set at least one of: `GEMINI_API_KEY`, `OPEN_ROUTER_API_KEY`, `GROQ_API_KEY`. Fallback order is Gemini → Open Router → Groq (providers without a key are skipped).
+For chat, set `GEMINI_API_KEY`.
 
 ```bash
 pnpm --filter @padel-cantabria/assistant build:chat   # once (or after UI changes)
@@ -17,7 +17,7 @@ Dev (API and Vite UI separately):
 
 ```bash
 pnpm assistant:dev    # API on :3001
-pnpm --filter @padel-cantabria/assistant dev:chat   # UI on :5174 (proxies /mcp and /chat)
+pnpm --filter @padel-cantabria/assistant dev:chat   # UI on :5174 (proxies /chat)
 ```
 
 Default URL: `http://localhost:3001`. Override with `ASSISTANT_PORT` / `ASSISTANT_HOST`.
@@ -28,26 +28,27 @@ In production (`NODE_ENV=production`), the server listens on `0.0.0.0` and uses 
 
 League is taken from root `.env` `LEAGUE_IDS` (first id), not from query params.
 
-| Method | Path                                    | Notes                                  |
-| ------ | --------------------------------------- | -------------------------------------- |
-| `GET`  | `/`                                     | Vue chat UI (after `build:chat`)       |
-| `GET`  | `/health`                               | `{ ok: true }`                         |
-| `GET`  | `/categories`                           | League tree with labels                |
-| `GET`  | `/categories/search?q=&gender=&limit=`  | Search categories (token match)        |
-| `GET`  | `/phases/search?q=&gender=&limit=`      | Search phases (token match)            |
-| `GET`  | `/teams?gender=&category=&phase=`       | Teams + standings in a category        |
-| `GET`  | `/teams/search?q=&limit=`               | Search teams (token match)             |
-| `GET`  | `/teams/:id/overview?phase=`            | Team context, standing, next match     |
-| `GET`  | `/teams/:id/players`                    | Team roster (players)                  |
-| `GET`  | `/players/search?q=&gender=&limit=`     | Search players by name                 |
-| `GET`  | `/players/top?gender=&category=&limit=` | Top points in a category               |
-| `POST` | `/chat/completions`                     | AiRouter (Gemini → Open Router → Groq) |
-| `POST` | `/mcp`                                  | Streamable HTTP MCP (same tools)       |
+| Method | Path                                    | Notes                                 |
+| ------ | --------------------------------------- | ------------------------------------- |
+| `GET`  | `/`                                     | Vue chat UI (after `build:chat`)      |
+| `GET`  | `/health`                               | `{ ok: true }`                        |
+| `GET`  | `/categories`                           | League tree with labels               |
+| `GET`  | `/categories/search?q=&gender=&limit=`  | Search categories (token match)       |
+| `GET`  | `/phases/search?q=&gender=&limit=`      | Search phases (token match)           |
+| `GET`  | `/teams?gender=&category=&phase=`       | Teams + standings in a category       |
+| `GET`  | `/teams/search?q=&limit=`               | Search teams (token match)            |
+| `GET`  | `/teams/:id/overview?phase=`            | Team context, standing, next match    |
+| `GET`  | `/teams/:id/players`                    | Team roster (players)                 |
+| `GET`  | `/players/search?q=&gender=&limit=`     | Search players by name                |
+| `GET`  | `/players/top?gender=&category=&limit=` | Top points in a category              |
+| `POST` | `/chat/turn`                            | Chat turn (history + pending → reply) |
+| `POST` | `/chat/completions`                     | Low-level AiRouter proxy (Gemini)     |
+| `POST` | `/mcp`                                  | Streamable HTTP MCP (same tools)      |
 
 ## Connect an LLM
 
 - **Chat UI (hosted):** https://padel-cantabria.onrender.com/
-- **Chat UI (local):** `http://localhost:3001/` (Vue → `/chat/completions` → MCP)
+- **Chat UI (local):** `http://localhost:3001/` (Vue → `POST /chat/turn`)
 - **Cursor / remote MCP (hosted):** `https://padel-cantabria.onrender.com/mcp`
 - **Cursor / remote MCP (local):** `http://localhost:3001/mcp`
 - **OpenCode / Claude Desktop:** step-by-step in [`packages/mcp`](../mcp/README.md)
