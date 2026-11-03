@@ -1,5 +1,9 @@
 import type { PendingClarification } from '@chat/domain/clarification';
 import { computed, onMounted, ref } from 'vue';
+import {
+  readOpenAiNdjsonStream,
+  readPendingHeader,
+} from '@/utils/read-openai-ndjson-stream';
 
 interface ChatUiMessage {
   id: string;
@@ -10,11 +14,6 @@ interface ChatUiMessage {
 interface HistoryMessage {
   role: 'user' | 'assistant';
   content: string;
-}
-
-interface ChatTurnResponse {
-  text: string;
-  pending?: PendingClarification;
 }
 
 const WELCOME_MESSAGE
@@ -31,6 +30,13 @@ function trimHistory(history: HistoryMessage[]): HistoryMessage[] {
     return history;
   }
   return history.slice(-MAX_HISTORY_MESSAGES);
+}
+
+function asPendingClarification(value: unknown): PendingClarification | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+  return value as PendingClarification;
 }
 
 export function useAssistantChat() {
@@ -52,8 +58,7 @@ export function useAssistantChat() {
     });
   }
 
-  function commitTurn(userText: string, assistantText: string) {
-    pushMessage('assistant', assistantText);
+  function commitHistory(userText: string, assistantText: string) {
     history.value = trimHistory([
       ...history.value,
       { role: 'user', content: userText },
@@ -79,12 +84,19 @@ export function useAssistantChat() {
     }
 
     busy.value = true;
+    statusTone.value = 'info';
+    status.value = 'Pensando…';
     pushMessage('user', trimmed);
+    pushMessage('assistant', '');
+    const assistantIndex = messages.value.length - 1;
 
     try {
       const response = await fetch('/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/x-ndjson',
+        },
         body: JSON.stringify({
           userMessage: trimmed,
           history: history.value,
@@ -92,9 +104,8 @@ export function useAssistantChat() {
         }),
       });
 
-      const payload: unknown = await response.json().catch(() => null);
-
       if (!response.ok) {
+        const payload: unknown = await response.json().catch(() => null);
         const message
           = payload
             && typeof payload === 'object'
@@ -105,25 +116,35 @@ export function useAssistantChat() {
         throw new Error(message);
       }
 
-      if (
-        !payload
-        || typeof payload !== 'object'
-        || typeof (payload as ChatTurnResponse).text !== 'string'
-      ) {
-        throw new Error('Invalid chat turn response');
+      const finalText = await readOpenAiNdjsonStream(response, (delta) => {
+        const current = messages.value[assistantIndex];
+        if (current) {
+          current.content += delta;
+        }
+      });
+
+      if (!finalText) {
+        throw new Error('Empty chat response');
       }
 
-      const result = payload as ChatTurnResponse;
-      pendingClarification.value = result.pending ?? null;
-      commitTurn(trimmed, result.text);
+      pendingClarification.value = asPendingClarification(
+        readPendingHeader(response),
+      );
+      commitHistory(trimmed, finalText);
+      status.value = 'Listo';
     } catch (error) {
       pendingClarification.value = null;
-      pushMessage(
-        'assistant',
-        error instanceof Error
-          ? `Error: ${error.message}`
-          : 'Ha ocurrido un error al responder.',
-      );
+      const message = error instanceof Error
+        ? `Error: ${error.message}`
+        : 'Ha ocurrido un error al responder.';
+      const current = messages.value[assistantIndex];
+      if (current) {
+        current.content = message;
+      } else {
+        pushMessage('assistant', message);
+      }
+      statusTone.value = 'error';
+      status.value = 'Error';
     } finally {
       busy.value = false;
     }

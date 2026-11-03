@@ -13,7 +13,10 @@ import { registerChatStatic } from './static-chat.js';
 export async function createApp(db: McpDatabaseClient) {
   const app = Fastify({ logger: true });
 
-  await app.register(cors, { origin: true });
+  await app.register(cors, {
+    origin: true,
+    exposedHeaders: ['X-Chat-Pending'],
+  });
 
   app.setErrorHandler((error, _request, reply) => {
     if (error instanceof HttpError) {

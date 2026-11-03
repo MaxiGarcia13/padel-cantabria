@@ -1,17 +1,17 @@
-import type { ChatTurnResult } from '../chat-turn-result.js';
-import type { PendingCategoryClarification } from '../clarification.js';
+import type { ChatResult } from './chat-result.js';
+import type { PendingCategoryClarification } from './clarification.js';
 import { inferGenderFromText } from '@padel-cantabria/shared';
-import { chatTurnResult } from '../chat-turn-result.js';
+import { chatResult } from './chat-result.js';
 import {
   formatCategoryClarification,
   formatUnknownCategoryMessage,
   parseCategoryToolError,
-} from '../clarification.js';
+} from './clarification.js';
 
 export function clarificationFromToolResults(
   toolResults: string[],
   userMessage: string,
-): ChatTurnResult | null {
+): ChatResult | null {
   const gender = inferGenderFromText(userMessage);
 
   for (let index = toolResults.length - 1; index >= 0; index -= 1) {
@@ -21,12 +21,12 @@ export function clarificationFromToolResults(
     }
 
     if (error.code === 'unknown_category' && error.candidates.length === 0) {
-      return chatTurnResult(formatUnknownCategoryMessage());
+      return chatResult(formatUnknownCategoryMessage());
     }
 
     const text = formatCategoryClarification(error.candidates);
     if (!gender || error.candidates.length === 0) {
-      return chatTurnResult(text);
+      return chatResult(text);
     }
 
     const pending: PendingCategoryClarification = {
@@ -36,7 +36,7 @@ export function clarificationFromToolResults(
       gender,
     };
 
-    return chatTurnResult(text, pending);
+    return chatResult(text, pending);
   }
 
   return null;

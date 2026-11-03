@@ -2,10 +2,11 @@ import type { McpDatabaseClient } from '@padel-cantabria/database';
 import type { FastifyPluginAsync } from 'fastify';
 import type { PendingClarification } from '../chat/domain/clarification.js';
 import type { ChatCompletionMessageParam } from '../chat/utils/chat-completion-types.js';
-import { runChatTurnRequest } from '../chat/run-chat-turn-request.js';
+import { writeNdjsonStream } from '@maxigarcia/ai-router';
+import { runChatRequest } from '../chat/run-chat-request.js';
 import { badRequest } from '../errors.js';
 
-interface ChatTurnBody {
+interface ChatBody {
   userMessage?: unknown;
   history?: unknown;
   pending?: unknown;
@@ -27,9 +28,9 @@ function isHistoryMessage(
 
 export function createChatRoutes(db: McpDatabaseClient): FastifyPluginAsync {
   return async (app) => {
-    app.post<{ Body: ChatTurnBody }>(
+    app.post<{ Body: ChatBody }>(
       '/chat',
-      async (request) => {
+      async (request, reply) => {
         const { userMessage, history, pending } = request.body ?? {};
 
         if (typeof userMessage !== 'string' || !userMessage.trim()) {
@@ -45,12 +46,27 @@ export function createChatRoutes(db: McpDatabaseClient): FastifyPluginAsync {
         }
 
         const parsedHistory = (history ?? []).filter(isHistoryMessage);
-
-        return runChatTurnRequest(db, {
+        const outcome = await runChatRequest(db, {
           userMessage: userMessage.trim(),
           history: parsedHistory,
           pending: (pending ?? null) as PendingClarification | null,
         });
+
+        if (outcome.pending) {
+          reply.header(
+            'X-Chat-Pending',
+            encodeURIComponent(JSON.stringify(outcome.pending)),
+          );
+        }
+
+        return reply
+          .header('Cache-Control', 'no-cache')
+          .type('application/x-ndjson; charset=utf-8')
+          .send(
+            writeNdjsonStream(
+              outcome.chunks as Parameters<typeof writeNdjsonStream>[0],
+            ),
+          );
       },
     );
   };

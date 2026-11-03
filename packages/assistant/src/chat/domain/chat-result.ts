@@ -1,14 +1,14 @@
 import type { PendingClarification } from './clarification.js';
 
-export interface ChatTurnResult {
+export interface ChatResult {
   text: string;
   pending?: PendingClarification;
 }
 
-export function chatTurnResult(
+export function chatResult(
   text: string,
   pending?: PendingClarification,
-): ChatTurnResult {
+): ChatResult {
   return pending
     ? { text, pending }
     : { text };
