@@ -1,12 +1,9 @@
 import type { CallTool } from '@chat/call-tool.js';
 import type { PendingCategoryClarification } from './clarification.js';
-import { toolResultsIncludeTeams } from '@chat/utils/parse-tool-json.js';
-import { asksForCategoryTeams } from './category-teams-intent.js';
 import {
   formatCategoryClarification,
   formatUnknownCategoryMessage,
   parseCategoryToolError,
-
 } from './clarification.js';
 import { resolveListTeamsArgs } from './resolve-list-teams-args.js';
 
@@ -19,26 +16,16 @@ export type FetchCategoryTeamsResult
     }
     | { status: 'skip' };
 
-export async function fetchCategoryTeamsIfNeeded(options: {
-  callTool: CallTool;
-  userMessage: string;
-  toolResults: string[];
-}): Promise<FetchCategoryTeamsResult> {
-  if (!asksForCategoryTeams(options.userMessage)) {
-    return { status: 'skip' };
-  }
-
-  if (toolResultsIncludeTeams(options.toolResults)) {
-    return { status: 'skip' };
-  }
-
-  const args = resolveListTeamsArgs(options.userMessage);
-
+export async function fetchCategoryTeams(
+  callTool: CallTool,
+  userMessage: string,
+): Promise<FetchCategoryTeamsResult> {
+  const args = resolveListTeamsArgs(userMessage);
   if (!args) {
     return { status: 'skip' };
   }
 
-  const toolText = await options.callTool('list_teams', {
+  const toolText = await callTool('list_teams', {
     gender: args.gender,
     category: args.category,
   });
@@ -57,7 +44,7 @@ export async function fetchCategoryTeamsIfNeeded(options: {
       pending: {
         kind: 'category',
         options: categoryError.candidates,
-        originalQuestion: options.userMessage,
+        originalQuestion: userMessage,
         gender: args.gender,
       },
     };

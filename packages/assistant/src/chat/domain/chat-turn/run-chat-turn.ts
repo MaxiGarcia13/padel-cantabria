@@ -21,10 +21,7 @@ import {
   toolCallsIncludeListTeams,
 } from '../execute-tool-calls.js';
 import { fetchCategoryCatalogIfNeeded } from '../fetch-list-categories.js';
-import {
-  ensureCategoryTeamsReply,
-  injectCategoryTeamsFollowUp,
-} from '../resolve-category-teams-reply.js';
+import { resolveCategoryTeamsReply } from '../resolve-category-teams-reply.js';
 import { formatToolResultFallback } from '../tool-result-fallback/index.js';
 import { askGenderResult } from './ask-gender-result.js';
 import { clarificationFromToolResults } from './clarification-from-tool-results.js';
@@ -91,7 +88,7 @@ export async function runChatTurn(options: {
 
     if (!message) {
       const chained = categoryTeamsTurnResult(
-        await ensureCategoryTeamsReply({
+        await resolveCategoryTeamsReply({
           callTool: options.callTool,
           userMessage,
           toolResults,
@@ -158,23 +155,17 @@ export async function runChatTurn(options: {
       return clarifiedAfterTools;
     }
 
-    const followUp = await injectCategoryTeamsFollowUp({
-      callTool: options.callTool,
+    const followUp = categoryTeamsTurnResult(
+      await resolveCategoryTeamsReply({
+        callTool: options.callTool,
+        userMessage,
+        toolResults,
+      }),
       userMessage,
-      toolResults,
-    });
-
-    if (followUp === 'ask-gender') {
-      return askGenderResult(userMessage);
-    }
-
-    if (typeof followUp === 'object' && 'clarify' in followUp) {
-      return chatTurnResult(followUp.clarify, followUp.pending);
-    }
-
-    if (followUp === 'injected') {
-      // Deterministic list beats another model round that may ignore tools.
-      return chatTurnResult(formatToolResultFallback(toolResults));
+    );
+    if (followUp) {
+      // Deterministic list/clarification beats another model round.
+      return followUp;
     }
 
     messages.push({
@@ -184,7 +175,7 @@ export async function runChatTurn(options: {
   }
 
   const chained = categoryTeamsTurnResult(
-    await ensureCategoryTeamsReply({
+    await resolveCategoryTeamsReply({
       callTool: options.callTool,
       userMessage,
       toolResults,

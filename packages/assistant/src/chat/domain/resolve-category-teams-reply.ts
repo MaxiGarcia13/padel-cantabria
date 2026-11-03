@@ -5,7 +5,7 @@ import {
   asksForCategoryTeams,
   needsGenderClarification,
 } from './category-teams-intent.js';
-import { fetchCategoryTeamsIfNeeded } from './fetch-category-teams.js';
+import { fetchCategoryTeams } from './fetch-category-teams.js';
 import { formatToolResultFallback } from './tool-result-fallback/index.js';
 
 export type CategoryTeamsReply
@@ -17,33 +17,7 @@ export type CategoryTeamsReply
   | { status: 'ask-gender' }
   | { status: 'none' };
 
-async function fetchCategoryTeamsOutcome(options: {
-  callTool: CallTool;
-  userMessage: string;
-  toolResults: string[];
-}): Promise<CategoryTeamsReply> {
-  const fetched = await fetchCategoryTeamsIfNeeded(options);
-
-  if (fetched.status === 'skip') {
-    return { status: 'none' };
-  }
-
-  if (fetched.status === 'clarify') {
-    return {
-      status: 'text',
-      text: fetched.message,
-      pending: fetched.pending,
-    };
-  }
-
-  options.toolResults.push(fetched.toolText);
-  return {
-    status: 'text',
-    text: formatToolResultFallback([fetched.toolText]),
-  };
-}
-
-export async function ensureCategoryTeamsReply(options: {
+export async function resolveCategoryTeamsReply(options: {
   callTool: CallTool;
   userMessage: string;
   toolResults: string[];
@@ -60,41 +34,26 @@ export async function ensureCategoryTeamsReply(options: {
     return { status: 'ask-gender' };
   }
 
-  return fetchCategoryTeamsOutcome(options);
-}
-
-export async function injectCategoryTeamsFollowUp(options: {
-  callTool: CallTool;
-  userMessage: string;
-  toolResults: string[];
-}): Promise<
-  | 'ask-gender'
-  | 'injected'
-  | 'none'
-  | { clarify: string; pending: PendingCategoryClarification }
-> {
-  if (!asksForCategoryTeams(options.userMessage)) {
-    return 'none';
-  }
-
-  if (toolResultsIncludeTeams(options.toolResults)) {
-    return 'none';
-  }
-
-  if (needsGenderClarification(options.userMessage)) {
-    return 'ask-gender';
-  }
-
-  const fetched = await fetchCategoryTeamsIfNeeded(options);
+  const fetched = await fetchCategoryTeams(
+    options.callTool,
+    options.userMessage,
+  );
 
   if (fetched.status === 'skip') {
-    return 'none';
+    return { status: 'none' };
   }
 
   if (fetched.status === 'clarify') {
-    return { clarify: fetched.message, pending: fetched.pending };
+    return {
+      status: 'text',
+      text: fetched.message,
+      pending: fetched.pending,
+    };
   }
 
   options.toolResults.push(fetched.toolText);
-  return 'injected';
+  return {
+    status: 'text',
+    text: formatToolResultFallback(options.toolResults),
+  };
 }

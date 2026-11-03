@@ -7,7 +7,7 @@ import { looksLikeToolCallLeak } from '@chat/utils/looks-like-tool-call-leak.js'
 import { toolResultsIncludeTeams } from '@chat/utils/parse-tool-json.js';
 import { asksForCategoryTeams } from '../category-teams-intent.js';
 import { categoryTeamsTurnResult } from '../category-teams-reply-text.js';
-import { ensureCategoryTeamsReply } from '../resolve-category-teams-reply.js';
+import { resolveCategoryTeamsReply } from '../resolve-category-teams-reply.js';
 import { resolveEmptyModelReply } from '../resolve-empty-model-reply.js';
 import { formatToolResultFallback } from '../tool-result-fallback/index.js';
 import { clarificationFromToolResults } from './clarification-from-tool-results.js';
@@ -21,7 +21,7 @@ export async function finalizeModelTextAnswer(options: {
   content: string | null;
 }): Promise<string> {
   const ensured = categoryTeamsTurnResult(
-    await ensureCategoryTeamsReply({
+    await resolveCategoryTeamsReply({
       callTool: options.callTool,
       userMessage: options.userMessage,
       toolResults: options.toolResults,
@@ -54,8 +54,6 @@ export async function finalizeModelTextAnswer(options: {
 
   return resolveEmptyModelReply({
     client: options.client,
-    callTool: options.callTool,
-    userMessage: options.userMessage,
     messages: options.messages,
     toolResults: options.toolResults,
   });
