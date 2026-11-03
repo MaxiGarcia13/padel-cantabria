@@ -41,14 +41,13 @@ League is taken from root `.env` `LEAGUE_IDS` (first id), not from query params.
 | `GET`  | `/teams/:id/players`                    | Team roster (players)                 |
 | `GET`  | `/players/search?q=&gender=&limit=`     | Search players by name                |
 | `GET`  | `/players/top?gender=&category=&limit=` | Top points in a category              |
-| `POST` | `/chat/turn`                            | Chat turn (history + pending → reply) |
-| `POST` | `/chat/completions`                     | Low-level AiRouter proxy (Gemini)     |
+| `POST` | `/chat`                                 | Chat turn (history + pending → reply) |
 | `POST` | `/mcp`                                  | Streamable HTTP MCP (same tools)      |
 
 ## Connect an LLM
 
 - **Chat UI (hosted):** https://padel-cantabria.onrender.com/
-- **Chat UI (local):** `http://localhost:3001/` (Vue → `POST /chat/turn`)
+- **Chat UI (local):** `http://localhost:3001/` (Vue → `POST /chat`)
 - **Cursor / remote MCP (hosted):** `https://padel-cantabria.onrender.com/mcp`
 - **Cursor / remote MCP (local):** `http://localhost:3001/mcp`
 - **OpenCode / Claude Desktop:** step-by-step in [`packages/mcp`](../mcp/README.md)

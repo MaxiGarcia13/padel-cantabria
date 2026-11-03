@@ -28,7 +28,7 @@ Package manager: **pnpm**. Env vars live in the **repo root** `.env`.
 | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `TURSO_URL`, `TURSO_AUTH_TOKEN` | Required for DB access                                                                                                                                |
 | `LEAGUE_IDS`                    | Optional for scrapers (limits what is ingested). **Required** for assistant/MCP (scopes all reads to the first id). Web scopes from URL/query params. |
-| `GEMINI_API_KEY`                | Chat (assistant `/chat/turn`)                                                                                                                         |
+| `GEMINI_API_KEY`                | Chat (assistant `/chat`)                                                                                                                              |
 
 ## Common commands (from repo root)
 

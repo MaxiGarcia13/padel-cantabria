@@ -1,4 +1,4 @@
-import { isRecord, parseToolJson } from '@chat/utils/parse-tool-json.js';
+import { isRecord } from '@chat/utils/parse-tool-json.js';
 
 function asString(value: unknown): string {
   return typeof value === 'string'
@@ -6,15 +6,14 @@ function asString(value: unknown): string {
     : '';
 }
 
-export function formatLeagueCategories(toolText: string): string {
-  const parsed = parseToolJson(toolText);
-  if (!Array.isArray(parsed) || parsed.length === 0) {
+export function formatLeagueCategories(leagues: unknown[]): string {
+  if (leagues.length === 0) {
     return 'No hay categorías disponibles.';
   }
 
   const blocks: string[] = [];
 
-  for (const leagueEntry of parsed) {
+  for (const leagueEntry of leagues) {
     if (!isRecord(leagueEntry)) {
       continue;
     }

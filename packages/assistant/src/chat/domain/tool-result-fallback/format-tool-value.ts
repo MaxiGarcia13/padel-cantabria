@@ -1,9 +1,11 @@
 import { isRecord } from '@chat/utils/parse-tool-json.js';
 import { formatCategoryLike } from './format-category-like.js';
 import { formatCategoryTeams } from './format-category-teams.js';
+import { formatLeagueCategories } from './format-league-categories.js';
 import { formatPlayerLike } from './format-player-like.js';
 import { formatStandingTeam } from './format-standing-team.js';
 import { formatTeamRoster } from './format-team-roster.js';
+import { isLeagueTree } from './is-league-tree.js';
 import {
   isPresentedCategory,
   isPresentedCategoryTeams,
@@ -33,6 +35,10 @@ function formatRecord(record: Record<string, unknown>): string {
 }
 
 export function formatToolValue(value: unknown): string {
+  if (isLeagueTree(value)) {
+    return formatLeagueCategories(value);
+  }
+
   if (Array.isArray(value)) {
     if (value.length === 0) {
       return 'Sin resultados.';

@@ -30,7 +30,7 @@ From the **repo root**:
    | Variable                             | Used by                 | Notes                                                                                                                          |
    | ------------------------------------ | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
    | `LEAGUE_IDS`                         | Scrapers, assistant/MCP | Optional filter for scrapers. **Required** for assistant/MCP (scopes reads to the first id). Web scopes from URL/query params. |
-   | `GEMINI_API_KEY`                     | Assistant chat          | Required for `/chat/turn` (Gemini via ai-router).                                                                              |
+   | `GEMINI_API_KEY`                     | Assistant chat          | Required for `/chat` (Gemini via ai-router).                                                                                   |
    | `SCRAPE_GENDERS` / `SCRAPE_DELAY_MS` | Scrapers                | See [packages/scrapper/README.md](packages/scrapper/README.md).                                                                |
 
 3. Apply the schema: `pnpm db:migrate` (or `pnpm db:reset` on a fresh or broken DB).

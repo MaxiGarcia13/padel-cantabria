@@ -1,7 +1,6 @@
 import type { McpDatabaseClient } from '@padel-cantabria/database';
 import cors from '@fastify/cors';
 import Fastify from 'fastify';
-import { createAiRouter } from './create-ai-router.js';
 import { HttpError, httpErrorPayload } from './errors.js';
 import { createCategoriesRoutes } from './routes/categories.js';
 import { createChatRoutes } from './routes/chat.js';
@@ -31,7 +30,7 @@ export async function createApp(db: McpDatabaseClient) {
   await app.register(createPhasesRoutes(db));
   await app.register(createTeamsRoutes(db));
   await app.register(createPlayersRoutes(db));
-  await app.register(createChatRoutes(db, createAiRouter));
+  await app.register(createChatRoutes(db));
   await app.register(createMcpRoutes(db));
   await registerChatStatic(app);
 
