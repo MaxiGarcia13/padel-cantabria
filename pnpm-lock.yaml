@@ -202,6 +202,9 @@ importers:
       '@maxigarcia/ai-router':
         specifier: ^0.1.2
         version: 0.1.2(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)
+      '@maxigarcia/ai-utils':
+        specifier: ^0.1.1
+        version: 0.1.1(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)
       '@modelcontextprotocol/sdk':
         specifier: ^1.32.1
         version: 1.32.1(supports-color@7.2.0)(zod@4.6.7)

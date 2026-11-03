@@ -11,9 +11,19 @@ const PROVIDER_ENV: ReadonlyArray<{
   { name: 'gemini', env: 'GEMINI_API_KEY' },
 ];
 
-export function createAiRouter(): AiRouterInterface | null {
+/** OpenAI chat extras merged into each provider (`tools`, `tool_choice`, …). */
+export interface AiRouterRequestOptions {
+  tools?: unknown;
+  tool_choice?: unknown;
+}
+
+export function createAiRouter(
+  requestOptions: AiRouterRequestOptions = {},
+): AiRouterInterface | null {
   const fallback: ProviderName[] = [];
-  const providers: Partial<Record<ProviderName, { apiKey: string }>> = {};
+  const providers: Partial<
+    Record<ProviderName, { apiKey: string } & AiRouterRequestOptions>
+  > = {};
 
   for (const { name, env } of PROVIDER_ENV) {
     const apiKey = process.env[env]?.trim();
@@ -22,7 +32,10 @@ export function createAiRouter(): AiRouterInterface | null {
     }
 
     fallback.push(name);
-    providers[name] = { apiKey };
+    providers[name] = {
+      apiKey,
+      ...requestOptions,
+    };
   }
 
   if (fallback.length === 0) {
