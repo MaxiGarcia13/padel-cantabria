@@ -5,7 +5,7 @@
   "typescript": true,
   "tailwind": {
     "config": "",
-    "css": "chat/src/styles.css",
+    "css": "src/chat/ui/styles.css",
     "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""

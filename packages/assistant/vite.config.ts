@@ -4,7 +4,7 @@ import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  root: resolve(import.meta.dirname, 'chat'),
+  root: resolve(import.meta.dirname, 'src/chat/ui'),
   publicDir: resolve(import.meta.dirname, '../web/public'),
   plugins: [
     vue(),
@@ -12,11 +12,10 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': resolve(import.meta.dirname, 'chat/src'),
+      '@': resolve(import.meta.dirname, 'src/chat/ui'),
       '@chat': resolve(import.meta.dirname, 'src/chat'),
       '@presenters': resolve(import.meta.dirname, 'src/presenters'),
     },
-
   },
   server: {
     port: 5174,

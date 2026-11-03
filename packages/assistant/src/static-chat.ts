@@ -22,6 +22,7 @@ export async function registerChatStatic(app: FastifyInstance): Promise<boolean>
     const path = request.url.split('?')[0] ?? '';
     const isApiPath
       = path === '/health'
+        || path === '/chat'
         || path.startsWith('/mcp')
         || path.startsWith('/categories')
         || path.startsWith('/phases')

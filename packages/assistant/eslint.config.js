@@ -2,7 +2,7 @@ import { fileURLToPath } from 'node:url';
 import { eslintConfig } from '@maxigarcia/eslint-config';
 
 const cssConfig = fileURLToPath(
-  new URL('./chat/src/styles.css', import.meta.url),
+  new URL('./src/chat/ui/styles.css', import.meta.url),
 );
 
 export default eslintConfig(
