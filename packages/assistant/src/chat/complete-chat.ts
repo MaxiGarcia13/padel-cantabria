@@ -1,98 +1,72 @@
 import type { AiRouterInterface } from '@maxigarcia/ai-router';
 import type {
   ChatCompletion,
+  ChatCompletionChunk,
   ChatCompletionCreateParams,
   ChatCompletionsClient,
 } from './utils/chat-completion-types.js';
 import { isAiErrorArray } from '@maxigarcia/ai-utils';
 import { createAiRouter } from '../create-ai-router.js';
 
-export interface ChatCompletionChunk {
-  choices?: Array<{
-    delta?: {
-      content?: string | null;
-      role?: string;
-    };
-    finish_reason?: string | null;
-  }>;
-}
+export type { ChatCompletionChunk };
 
-function isChatCompletion(value: unknown): value is ChatCompletion {
-  if (!value || typeof value !== 'object') {
-    return false;
-  }
+type RouterMessages = Parameters<AiRouterInterface['create']>[0];
 
-  if (Symbol.asyncIterator in value) {
-    return false;
-  }
-
-  return Array.isArray((value as { choices?: unknown }).choices);
-}
-
-function isAsyncIterable(
-  value: unknown,
-): value is AsyncIterable<ChatCompletionChunk> {
-  return Boolean(
-    value
-    && typeof value === 'object'
-    && Symbol.asyncIterator in value,
-  );
-}
-
-async function createWithRouter(
-  params: ChatCompletionCreateParams & { stream?: boolean },
-): Promise<unknown> {
-  const router = createAiRouter({
-    tools: params.tools,
-    tool_choice: params.tool_choice,
-  });
-
+function getRouter(): AiRouterInterface {
+  const router = createAiRouter();
   if (!router) {
     throw new Error(
       'No AI provider configured. Set GEMINI_API_KEY.',
     );
   }
+  return router;
+}
 
-  try {
-    return await router.create(
-      params.messages as Parameters<AiRouterInterface['create']>[0],
-    );
-  } catch (error) {
-    if (isAiErrorArray(error)) {
-      const detail = error
-        .map((item) => item.providerName ?? item.message)
-        .join(', ');
-      throw new Error(`All AI providers failed: ${detail}`);
-    }
-    throw error;
+function rethrowProviderErrors(error: unknown): never {
+  if (isAiErrorArray(error)) {
+    const detail = error
+      .map((item) => {
+        const name = item.providerName ?? 'unknown';
+        return item.message
+          ? `${name}: ${item.message}`
+          : name;
+      })
+      .join('; ');
+    throw new Error(`All AI providers failed: ${detail}`);
   }
+  throw error;
 }
 
 export async function completeChat(
   params: ChatCompletionCreateParams,
 ): Promise<ChatCompletion> {
-  const result = await createWithRouter(params);
+  const router = getRouter();
 
-  if (!isChatCompletion(result)) {
-    throw new Error('Invalid chat completion response');
+  try {
+    return await router.create(params.messages as RouterMessages, {
+      stream: false,
+      tools: params.tools,
+      tool_choice: params.tool_choice,
+    }) as ChatCompletion;
+  } catch (error) {
+    rethrowProviderErrors(error);
   }
-
-  return result;
 }
 
 export async function streamChat(
   params: ChatCompletionCreateParams,
 ): Promise<AsyncIterable<ChatCompletionChunk>> {
-  const result = await createWithRouter({
-    ...params,
-    stream: true,
-  });
+  const router = getRouter();
 
-  if (!isAsyncIterable(result)) {
-    throw new Error('Invalid chat completion stream');
+  try {
+    return await router.create(params.messages as RouterMessages, {
+      stream: true,
+      tools: params.tools,
+      tool_choice: params.tool_choice,
+    }) as AsyncIterable<ChatCompletionChunk>;
+  } catch (error) {
+    rethrowProviderErrors(error);
   }
-
-  return result;
 }
 
 export const chatCompletionsClient: ChatCompletionsClient = {

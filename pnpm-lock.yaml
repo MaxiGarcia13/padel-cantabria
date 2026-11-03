@@ -203,8 +203,8 @@ importers:
         specifier: ^0.3.0
         version: 0.3.0(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)
       '@maxigarcia/ai-router':
-        specifier: ^0.1.4
-        version: 0.1.4(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)
+        specifier: ^0.2.1
+        version: 0.2.1(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)
       '@maxigarcia/ai-utils':
         specifier: ^0.1.3
         version: 0.1.3(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)
@@ -1905,8 +1905,8 @@ packages:
   '@maxigarcia/ai-client@0.3.0':
     resolution: {integrity: sha512-3eOp9wEi92uIfMyhCSojXmsa1H0p2k459P6roLPxud7QVhW8UtkxRIyAwd6lUS0Smz0LncQdu6ArGISi8ZU4Ig==}
 
-  '@maxigarcia/ai-router@0.1.4':
-    resolution: {integrity: sha512-oPgCo1RjvS6p3fLmx8JPUDIzF4K4BTNK9oWcVpmaVQAlUZpcKMpcGQ++tXnYI7Kw85wQfcTdIW1tqFN7wDtZ7w==}
+  '@maxigarcia/ai-router@0.2.1':
+    resolution: {integrity: sha512-/mB2naUd2CuitnH16wxYX4vMbyf3TZdMWTcTs8COsp85XwfhkvuYvaIoaiCZ7jh3XZ6lWXrUnNIx9kQZZ10cUA==}
 
   '@maxigarcia/ai-types@0.0.7':
     resolution: {integrity: sha512-yNY0bacpIk5W9WMe/3jHIGJ9HWSjrMPMh4qHg0n84aMvEZ5nzCq7cjHevWKX7Cbj9wUJYg1pqCjOXv0GG2x62A==}
@@ -7887,7 +7887,7 @@ snapshots:
       - ws
       - zod
 
-  '@maxigarcia/ai-router@0.1.4(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)':
+  '@maxigarcia/ai-router@0.2.1(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)':
     dependencies:
       '@maxigarcia/ai-types': 0.0.7
       '@maxigarcia/ai-utils': 0.1.3(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)
