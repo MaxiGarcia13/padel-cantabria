@@ -200,8 +200,8 @@ importers:
         specifier: ^1.59.0
         version: 1.59.0(vue@3.5.44(typescript@6.0.3))
       '@maxigarcia/ai-router':
-        specifier: ^0.1.1
-        version: 0.1.1(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)
+        specifier: ^0.1.2
+        version: 0.1.2(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)
       '@modelcontextprotocol/sdk':
         specifier: ^1.32.1
         version: 1.32.1(supports-color@7.2.0)(zod@4.6.7)
@@ -1896,8 +1896,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  '@maxigarcia/ai-router@0.1.1':
-    resolution: {integrity: sha512-rs0lhpi+5cx7hIuMYoh0TPcrUjKx6rDNuDr0V616pY0FtnrVKv+T8Tr1VK5IshGJn9AbGlzdJsH/WJ/OgCJTdw==}
+  '@maxigarcia/ai-router@0.1.2':
+    resolution: {integrity: sha512-qTofix8BcFvJPztarUYVTekwAObSOdSE8UPFMLfSnXolcskOUyTQNAwTgSKG1+9xYrFAkykK7AnCAgKyRP6ljQ==}
 
   '@maxigarcia/ai-types@0.0.7':
     resolution: {integrity: sha512-yNY0bacpIk5W9WMe/3jHIGJ9HWSjrMPMh4qHg0n84aMvEZ5nzCq7cjHevWKX7Cbj9wUJYg1pqCjOXv0GG2x62A==}
@@ -7867,7 +7867,7 @@ snapshots:
       - encoding
       - supports-color
 
-  '@maxigarcia/ai-router@0.1.1(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)':
+  '@maxigarcia/ai-router@0.1.2(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)':
     dependencies:
       '@maxigarcia/ai-types': 0.0.7
       '@maxigarcia/ai-utils': 0.1.1(undici@8.12.1)(ws@8.22.0)(zod@4.6.7)
