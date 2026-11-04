@@ -1,3 +1,14 @@
+## 0.3.1 (2026-11-04)
+
+### 🔄 Refactors
+
+- Introduce REST tool routes and streamline MCP handler implementations ([6c142b5](https://github.com/MaxiGarcia13/padel-cantabria/commit/6c142b5))
+- Simplify tool registration process in MCP server ([764322f](https://github.com/MaxiGarcia13/padel-cantabria/commit/764322f))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.3.0 (2026-11-04)
 
 This was a version bump only for @padel-cantabria/mcp-tools to align it with other projects, there were no code changes.

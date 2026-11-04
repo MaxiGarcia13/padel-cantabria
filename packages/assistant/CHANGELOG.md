@@ -1,3 +1,22 @@
+## 0.5.1 (2026-11-04)
+
+### 🔄 Refactors
+
+- Enhance chat outcome handling with follow-up suggestions ([0b55fd8](https://github.com/MaxiGarcia13/padel-cantabria/commit/0b55fd8))
+- Remove unused bubble components and streamline chat message layout ([90de6e8](https://github.com/MaxiGarcia13/padel-cantabria/commit/90de6e8))
+- Simplify gender clarification handling in category teams reply ([96df69e](https://github.com/MaxiGarcia13/padel-cantabria/commit/96df69e))
+- Introduce structured reply resolution and simplify text answer handling ([81665f0](https://github.com/MaxiGarcia13/padel-cantabria/commit/81665f0))
+- Clean up import statements in MCP handler file ([5c1b36c](https://github.com/MaxiGarcia13/padel-cantabria/commit/5c1b36c))
+- Introduce REST tool routes and streamline MCP handler implementations ([6c142b5](https://github.com/MaxiGarcia13/padel-cantabria/commit/6c142b5))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/mcp-tools to 0.3.1
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.5.0 (2026-11-04)
 
 ### 🚀 Features
