@@ -1,3 +1,17 @@
+## 0.6.0 (2026-11-04)
+
+### 🚀 Features
+
+- Enhance chat UI with new header components ([cde2f4b](https://github.com/MaxiGarcia13/padel-cantabria/commit/cde2f4b))
+
+### 📚 Documentation
+
+- Update README with workflow details for chat interactions ([4cef439](https://github.com/MaxiGarcia13/padel-cantabria/commit/4cef439))
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.5.1 (2026-11-04)
 
 ### 🔄 Refactors
