@@ -8,10 +8,28 @@ import {
   setPendingForSession,
 } from '../chat/pending-session-store.js';
 import { runChatRequest } from '../chat/run-chat-request.js';
+import {
+  getSuggestionsForSession,
+  setSuggestionsForSession,
+} from '../chat/suggestions-session-store.js';
 import { badRequest } from '../errors.js';
 
 interface ChatBody {
   messages?: unknown;
+}
+
+function requireChatSession(sessionHeader: string | string[] | undefined): string {
+  const sessionId = typeof sessionHeader === 'string'
+    ? sessionHeader.trim()
+    : '';
+
+  if (!sessionId) {
+    throw badRequest(`${CHAT_SESSION_HEADER} header is required`, {
+      code: 'missing_chat_session',
+    });
+  }
+
+  return sessionId;
 }
 
 export function createChatRoutes(db: McpDatabaseClient): FastifyPluginAsync {
@@ -19,16 +37,9 @@ export function createChatRoutes(db: McpDatabaseClient): FastifyPluginAsync {
     app.post<{ Body: ChatBody }>(
       '/chat',
       async (request, reply) => {
-        const sessionHeader = request.headers[CHAT_SESSION_HEADER];
-        const sessionId = typeof sessionHeader === 'string'
-          ? sessionHeader.trim()
-          : '';
-
-        if (!sessionId) {
-          throw badRequest(`${CHAT_SESSION_HEADER} header is required`, {
-            code: 'missing_chat_session',
-          });
-        }
+        const sessionId = requireChatSession(
+          request.headers[CHAT_SESSION_HEADER],
+        );
 
         let parsed;
         try {
@@ -47,6 +58,7 @@ export function createChatRoutes(db: McpDatabaseClient): FastifyPluginAsync {
         });
 
         setPendingForSession(sessionId, outcome.pending);
+        setSuggestionsForSession(sessionId, outcome.suggestions);
 
         return reply
           .header('Cache-Control', 'no-cache')
@@ -54,5 +66,15 @@ export function createChatRoutes(db: McpDatabaseClient): FastifyPluginAsync {
           .send(writeNdjsonStream(outcome.chunks));
       },
     );
+
+    app.get('/chat/suggestions', async (request) => {
+      const sessionId = requireChatSession(
+        request.headers[CHAT_SESSION_HEADER],
+      );
+
+      return {
+        suggestions: getSuggestionsForSession(sessionId),
+      };
+    });
   };
 }

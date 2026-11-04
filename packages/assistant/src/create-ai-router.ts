@@ -5,8 +5,8 @@ import { AiRouter } from '@maxigarcia/ai-router';
 export function getAiRouter(): AiRouterInterface {
   return AiRouter({
     fallback: [
-      'gemini',
       'open-router',
+      'gemini',
     ],
     providers: {
       'gemini': {

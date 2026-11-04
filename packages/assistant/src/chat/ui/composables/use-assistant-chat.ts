@@ -1,4 +1,8 @@
 import { CHAT_SESSION_HEADER } from '@chat/chat-session';
+import {
+  buildStarterSuggestions,
+  rememberQuestion,
+} from '@chat/ui/domain/recent-questions';
 import { createChat } from '@maxigarcia/ai-client';
 import { computed, onScopeDispose, shallowRef } from 'vue';
 
@@ -18,7 +22,38 @@ function getOrCreateSessionId(): string {
   return sessionId;
 }
 
+async function fetchRelatedSuggestions(sessionId: string): Promise<string[]> {
+  try {
+    const response = await fetch('/chat/suggestions', {
+      headers: {
+        [CHAT_SESSION_HEADER]: sessionId,
+        Accept: 'application/json',
+      },
+    });
+    if (!response.ok) {
+      return [];
+    }
+
+    const body: unknown = await response.json();
+    if (
+      !body
+      || typeof body !== 'object'
+      || !Array.isArray((body as { suggestions?: unknown }).suggestions)
+    ) {
+      return [];
+    }
+
+    return (body as { suggestions: unknown[] }).suggestions.filter(
+      (entry): entry is string => typeof entry === 'string',
+    ).map((entry) => entry.trim()).filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
 export function useAssistantChat() {
+  const sessionId = getOrCreateSessionId();
+
   const chat = createChat({
     url: '/chat',
 
@@ -27,7 +62,7 @@ export function useAssistantChat() {
     ],
 
     headers: {
-      [CHAT_SESSION_HEADER]: getOrCreateSessionId(),
+      [CHAT_SESSION_HEADER]: sessionId,
       Accept: 'application/x-ndjson',
     },
   });
@@ -35,6 +70,8 @@ export function useAssistantChat() {
   const rawMessages = shallowRef(chat.getState().messages);
   const loading = shallowRef(chat.getState().loading);
   const error = shallowRef(chat.getState().error);
+  const starterSuggestions = shallowRef(buildStarterSuggestions());
+  const relatedSuggestions = shallowRef<string[]>([]);
 
   const unsubscribe = chat.subscribe(() => {
     const state = chat.getState();
@@ -76,19 +113,25 @@ export function useAssistantChat() {
       return;
     }
 
+    relatedSuggestions.value = [];
+
     await chat.send(trimmed);
 
     const state = chat.getState();
-    if (!state.error) {
+    if (state.error) {
+      const nextMessages = [...state.messages];
+      const last = nextMessages.at(-1);
+      if (last?.role === 'assistant' && !last.content) {
+        last.content = `Error: ${state.error.message}`;
+        chat.setMessages(nextMessages);
+      }
       return;
     }
 
-    const nextMessages = [...state.messages];
-    const last = nextMessages.at(-1);
-    if (last?.role === 'assistant' && !last.content) {
-      last.content = `Error: ${state.error.message}`;
-      chat.setMessages(nextMessages);
-    }
+    starterSuggestions.value = buildStarterSuggestions(
+      rememberQuestion(trimmed),
+    );
+    relatedSuggestions.value = await fetchRelatedSuggestions(sessionId);
   }
 
   return {
@@ -97,6 +140,8 @@ export function useAssistantChat() {
     busy,
     messages,
     canSend,
+    starterSuggestions,
+    relatedSuggestions,
     send,
   };
 }

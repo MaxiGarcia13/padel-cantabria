@@ -29,15 +29,31 @@ const props = defineProps<{
   }>;
   busy?: boolean;
   suggestionsDisabled?: boolean;
+  starterSuggestions?: string[];
+  relatedSuggestions?: string[];
 }>();
 
 const emit = defineEmits<{
   suggest: [prompt: string];
 }>();
 
-const showSuggestions = computed(() =>
+const showStarterSuggestions = computed(() =>
   props.messages.every((message) => message.role === 'system'),
 );
+
+const showRelatedSuggestions = computed(() => {
+  if (props.busy || showStarterSuggestions.value) {
+    return false;
+  }
+
+  const last = props.messages.at(-1);
+  return Boolean(
+    last
+    && last.role === 'assistant'
+    && last.content
+    && (props.relatedSuggestions?.length ?? 0) > 0,
+  );
+});
 </script>
 
 <template>
@@ -110,10 +126,22 @@ const showSuggestions = computed(() =>
           </template>
 
           <div
-            v-if="showSuggestions"
+            v-if="showStarterSuggestions"
             class="mx-auto flex max-w-md justify-center"
           >
             <ChatSuggestions
+              :suggestions="starterSuggestions ?? []"
+              :disabled="suggestionsDisabled"
+              @select="emit('suggest', $event)"
+            />
+          </div>
+
+          <div
+            v-else-if="showRelatedSuggestions"
+            class="mx-auto flex max-w-md justify-center"
+          >
+            <ChatSuggestions
+              :suggestions="relatedSuggestions ?? []"
               :disabled="suggestionsDisabled"
               @select="emit('suggest', $event)"
             />

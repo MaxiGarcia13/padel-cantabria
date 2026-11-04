@@ -1,7 +1,9 @@
 import type { CallTool } from '@chat/call-tool.js';
-import type { ChatResult } from './chat-result.js';
+import type { ChatOutcome } from './chat-outcome.js';
 import type { PendingCategoryClarification } from './clarification.js';
 import { inferGenderFromText } from '@padel-cantabria/shared';
+import { contentChunks } from '../content-chunks.js';
+import { chatOutcome, chatOutcomeFromResult } from './chat-outcome.js';
 import { chatResult } from './chat-result.js';
 import {
   formatCategoryClarification,
@@ -10,6 +12,7 @@ import {
   parseCategoryToolError,
 } from './clarification.js';
 import { formatToolResultFallback } from './tool-result-fallback/index.js';
+import { withFollowUpSuggestions } from './with-follow-up-suggestions.js';
 
 const INVALID_PICK_HINT
   = 'No entendí la elección. Indica el número de la lista o el nombre de la categoría.';
@@ -18,7 +21,7 @@ export async function resolvePendingCategoryPick(options: {
   callTool: CallTool;
   pending: PendingCategoryClarification;
   userReply: string;
-}): Promise<ChatResult | null> {
+}): Promise<ChatOutcome | null> {
   const pick = parseCategoryPick(options.userReply, options.pending.options);
 
   if (!pick) {
@@ -28,12 +31,16 @@ export async function resolvePendingCategoryPick(options: {
     }
 
     if (options.pending.options.length === 0) {
-      return chatResult(formatUnknownCategoryMessage());
+      return chatOutcomeFromResult(
+        chatResult(formatUnknownCategoryMessage()),
+      );
     }
 
-    return chatResult(
-      `${INVALID_PICK_HINT}\n\n${formatCategoryClarification(options.pending.options)}`,
-      options.pending,
+    return chatOutcomeFromResult(
+      chatResult(
+        `${INVALID_PICK_HINT}\n\n${formatCategoryClarification(options.pending.options)}`,
+        options.pending,
+      ),
     );
   }
 
@@ -51,19 +58,29 @@ export async function resolvePendingCategoryPick(options: {
       categoryError.code === 'unknown_category'
       && categoryError.candidates.length === 0
     ) {
-      return chatResult(formatUnknownCategoryMessage());
+      return chatOutcomeFromResult(
+        chatResult(formatUnknownCategoryMessage()),
+      );
     }
 
-    return chatResult(
-      formatCategoryClarification(categoryError.candidates),
-      {
-        kind: 'category',
-        options: categoryError.candidates,
-        originalQuestion: options.pending.originalQuestion,
-        gender: options.pending.gender,
-      },
+    return chatOutcomeFromResult(
+      chatResult(
+        formatCategoryClarification(categoryError.candidates),
+        {
+          kind: 'category',
+          options: categoryError.candidates,
+          originalQuestion: options.pending.originalQuestion,
+          gender: options.pending.gender,
+        },
+      ),
     );
   }
 
-  return chatResult(formatToolResultFallback([toolText]));
+  return withFollowUpSuggestions(
+    chatOutcome(contentChunks(formatToolResultFallback([toolText]))),
+    {
+      toolResults: [toolText],
+      userMessage: options.pending.originalQuestion,
+    },
+  );
 }

@@ -48,10 +48,7 @@ export async function resolveUserMessage(options: {
       });
 
       if (resolved) {
-        return chatOutcome(
-          contentChunks(resolved.text),
-          resolved.pending,
-        );
+        return resolved;
       }
     }
   }

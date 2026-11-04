@@ -7,6 +7,7 @@ import { chatOutcome, chatOutcomeFromResult } from './chat-outcome.js';
 import { SUMMARIZE_TOOL_NUDGE } from './chat-prompts.js';
 import { resolveDeterministicTextAnswer } from './resolve-deterministic-text-answer.js';
 import { streamChatText } from './router-chat.js';
+import { withFollowUpSuggestions } from './with-follow-up-suggestions.js';
 
 export async function streamTextAnswer(
   messages: ChatCompletionMessageParam[],
@@ -21,25 +22,39 @@ export async function finishTextAnswer(options: {
   toolResults: string[];
   content: string | null;
 }): Promise<ChatOutcome> {
+  const scope = {
+    toolResults: options.toolResults,
+    userMessage: options.userMessage,
+  };
+
   const deterministic = await resolveDeterministicTextAnswer({
     callTool: options.callTool,
     userMessage: options.userMessage,
     toolResults: options.toolResults,
   });
   if (deterministic) {
-    return chatOutcomeFromResult(deterministic);
+    return withFollowUpSuggestions(
+      chatOutcomeFromResult(deterministic),
+      scope,
+    );
   }
 
   if (options.content && !looksLikeToolCallLeak(options.content)) {
-    return chatOutcome(contentChunks(options.content));
+    return withFollowUpSuggestions(
+      chatOutcome(contentChunks(options.content)),
+      scope,
+    );
   }
 
   if (options.toolResults.length === 0) {
     return chatOutcome(contentChunks('No he encontrado una respuesta.'));
   }
 
-  return streamTextAnswer([
-    ...options.messages,
-    { role: 'user', content: SUMMARIZE_TOOL_NUDGE },
-  ]);
+  return withFollowUpSuggestions(
+    await streamTextAnswer([
+      ...options.messages,
+      { role: 'user', content: SUMMARIZE_TOOL_NUDGE },
+    ]),
+    scope,
+  );
 }

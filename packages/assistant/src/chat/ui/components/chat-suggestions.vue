@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Button } from '@chat/ui/components/ui/button';
-import { CHAT_SUGGESTIONS } from '@chat/ui/domain/chat-suggestions';
 
 defineProps<{
+  suggestions: string[];
   disabled?: boolean;
 }>();
 
@@ -12,9 +12,12 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="flex w-full max-w-sm flex-col items-stretch gap-2">
+  <div
+    v-if="suggestions.length > 0"
+    class="flex w-full max-w-sm flex-col items-stretch gap-2"
+  >
     <Button
-      v-for="suggestion in CHAT_SUGGESTIONS"
+      v-for="suggestion in suggestions"
       :key="suggestion"
       type="button"
       variant="outline"

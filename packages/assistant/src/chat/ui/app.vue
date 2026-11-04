@@ -9,6 +9,8 @@ const {
   busy,
   messages,
   canSend,
+  starterSuggestions,
+  relatedSuggestions,
   send,
 } = useAssistantChat();
 </script>
@@ -36,6 +38,8 @@ const {
       :messages="messages"
       :busy="busy"
       :suggestions-disabled="!canSend"
+      :starter-suggestions="starterSuggestions"
+      :related-suggestions="relatedSuggestions"
       @suggest="send"
     />
 

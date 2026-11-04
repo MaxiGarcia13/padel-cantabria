@@ -8,15 +8,23 @@ type NdjsonStream = Parameters<typeof writeNdjsonStream>[0];
 export interface ChatOutcome {
   chunks: NdjsonStream;
   pending?: PendingClarification;
+  suggestions?: string[];
 }
 
 export function chatOutcome(
   chunks: NdjsonStream,
   pending?: PendingClarification,
+  suggestions?: string[],
 ): ChatOutcome {
-  return pending
-    ? { chunks, pending }
-    : { chunks };
+  return {
+    chunks,
+    ...(pending
+      ? { pending }
+      : {}),
+    ...(suggestions && suggestions.length > 0
+      ? { suggestions }
+      : {}),
+  };
 }
 
 export function chatOutcomeFromResult(result: ChatResult): ChatOutcome {

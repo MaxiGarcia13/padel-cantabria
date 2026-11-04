@@ -45,7 +45,7 @@ export async function runChat(options: {
     userMessage,
   });
   if (catalog) {
-    return chatOutcomeFromResult(catalog);
+    return catalog;
   }
 
   if (needsGenderClarification(userMessage)) {
