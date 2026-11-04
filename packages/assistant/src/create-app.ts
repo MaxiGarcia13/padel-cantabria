@@ -1,5 +1,6 @@
 import type { McpDatabaseClient } from '@padel-cantabria/database';
 import cors from '@fastify/cors';
+import { isAiErrorArray } from '@maxigarcia/ai-utils';
 import Fastify from 'fastify';
 import { CHAT_SESSION_HEADER } from './chat/chat-session.js';
 import { HttpError, httpErrorPayload } from './errors.js';
@@ -27,6 +28,18 @@ export async function createApp(db: McpDatabaseClient) {
   app.setErrorHandler((error, _request, reply) => {
     if (error instanceof HttpError) {
       return reply.status(error.statusCode).send(httpErrorPayload(error));
+    }
+
+    if (isAiErrorArray(error)) {
+      app.log.error(error);
+      return reply.status(502).send({
+        error: 'All providers failed',
+        providers: error.map((item) => ({
+          providerName: item.providerName,
+          status: item.status,
+          message: item.message,
+        })),
+      });
     }
 
     app.log.error(error);

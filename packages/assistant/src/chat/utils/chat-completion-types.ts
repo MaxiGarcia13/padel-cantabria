@@ -25,28 +25,3 @@ export type ChatCompletionMessageParam
       tool_calls?: ChatCompletionMessageToolCall[];
     }
     | { role: 'tool'; tool_call_id: string; content: string };
-
-export interface ChatCompletionChoiceMessage {
-  role?: string;
-  content?: string | null;
-  tool_calls?: ChatCompletionMessageToolCall[];
-}
-
-export interface ChatCompletion {
-  choices: Array<{
-    message?: ChatCompletionChoiceMessage;
-    finish_reason?: string | null;
-  }>;
-}
-
-export type ChatCompletionToolChoice = 'none' | 'auto' | 'required';
-
-export interface ChatCompletionCreateParams {
-  messages: ChatCompletionMessageParam[];
-  tools?: ChatCompletionTool[];
-  tool_choice?: ChatCompletionToolChoice;
-}
-
-export interface ChatCompletionsClient {
-  create: (params: ChatCompletionCreateParams) => Promise<ChatCompletion>;
-}

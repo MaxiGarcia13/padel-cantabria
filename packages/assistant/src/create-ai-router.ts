@@ -1,14 +1,9 @@
-import type { AiRouterCompletionParams, AiRouterInterface } from '@maxigarcia/ai-router';
+import type { AiRouterInterface } from '@maxigarcia/ai-router';
 import process from 'node:process';
 import { AiRouter } from '@maxigarcia/ai-router';
 
-export function createAiRouter(
-  options: AiRouterCompletionParams,
-): AiRouterInterface | null {
-  const apiKey = process.env.GEMINI_API_KEY?.trim();
-  if (!apiKey) {
-    return null;
-  }
+export function getAiRouter(): AiRouterInterface {
+  const geminiApiKey = process.env.GEMINI_API_KEY!;
 
   return AiRouter({
     fallback: [
@@ -16,8 +11,7 @@ export function createAiRouter(
     ],
     providers: {
       gemini: {
-        ...options,
-        apiKey,
+        apiKey: geminiApiKey,
       },
     },
   });

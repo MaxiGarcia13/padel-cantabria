@@ -51,11 +51,7 @@ export function createChatRoutes(db: McpDatabaseClient): FastifyPluginAsync {
         return reply
           .header('Cache-Control', 'no-cache')
           .type('application/x-ndjson; charset=utf-8')
-          .send(
-            writeNdjsonStream(
-              outcome.chunks as Parameters<typeof writeNdjsonStream>[0],
-            ),
-          );
+          .send(writeNdjsonStream(outcome.chunks));
       },
     );
   };

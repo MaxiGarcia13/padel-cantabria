@@ -30,9 +30,3 @@ export async function executeToolCalls(options: {
     });
   }
 }
-
-export function toolCallsIncludeListTeams(
-  toolCalls: ChatCompletionMessageToolCall[],
-): boolean {
-  return toolCalls.some((toolCall) => toolCall.function.name === 'list_teams');
-}

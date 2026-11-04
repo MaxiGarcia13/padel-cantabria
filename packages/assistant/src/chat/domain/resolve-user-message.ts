@@ -1,7 +1,6 @@
 import type { CallTool } from '@chat/call-tool.js';
 import type {
   ChatCompletionMessageParam,
-  ChatCompletionsClient,
   ChatCompletionTool,
 } from '@chat/utils/chat-completion-types.js';
 import type { ChatOutcome } from './chat-outcome.js';
@@ -22,7 +21,6 @@ function replacesPendingClarification(text: string): boolean {
 }
 
 export async function resolveUserMessage(options: {
-  client: ChatCompletionsClient;
   callTool: CallTool;
   tools: ChatCompletionTool[];
   history: ChatCompletionMessageParam[];
@@ -59,7 +57,6 @@ export async function resolveUserMessage(options: {
   }
 
   return runChat({
-    client: options.client,
     callTool: options.callTool,
     tools: options.tools,
     history: options.history,
