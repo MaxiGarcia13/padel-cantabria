@@ -62,3 +62,15 @@ Scrape order matters. Details and when to re-run each script:
 - Minimal comments: no JSDoc; comment only non-obvious constraints. See [`.cursor/rules/minimal-comments.mdc`](.cursor/rules/minimal-comments.mdc).
 - Do not commit secrets (`.env`). Do not commit unless the user asks.
 - Keep [README.md](README.md), [CONTRIBUTING.md](CONTRIBUTING.md), and package READMEs accurate when changing scripts or env requirements.
+
+<!-- CODEGRAPH_START -->
+
+## CodeGraph
+
+In repositories indexed by CodeGraph (a `.codegraph/` directory exists at the repo root), reach for it BEFORE grep/find or reading files when you need to understand or locate code:
+
+- **MCP tool** (when available): `codegraph_explore` answers most code questions in one call — the relevant symbols' verbatim source plus the call paths between them, including dynamic-dispatch hops grep can't follow. Name a file or symbol in the query to read its current line-numbered source. If it's listed but deferred, load it by name via tool search.
+- **Shell** (always works): `codegraph explore "<symbol names or question>"` prints the same output.
+
+If there is no `.codegraph/` directory, skip CodeGraph entirely — indexing is the user's decision.
+<!-- CODEGRAPH_END -->
