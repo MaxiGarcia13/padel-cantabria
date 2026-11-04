@@ -4,8 +4,14 @@ export {
 export type {
   McpToolArgs,
   McpToolHandlers,
+  McpToolName,
 } from './register-mcp-tools/index.js';
 
+export {
+  buildRestRequest,
+  REST_TOOL_ROUTES,
+  toRestQueryArgs,
+} from './rest-tool-routes.js';
 export {
   CATEGORY_ARG,
   GENDER_OPTIONAL,

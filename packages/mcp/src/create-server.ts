@@ -1,7 +1,28 @@
+import type { McpToolHandlers, McpToolName } from '@padel-cantabria/mcp-tools';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { registerMcpTools } from '@padel-cantabria/mcp-tools';
+import {
+  buildRestRequest,
+
+  registerMcpTools,
+  REST_TOOL_ROUTES,
+} from '@padel-cantabria/mcp-tools';
 import packageJson from '../package.json';
 import { assistantGet } from './assistant-client.js';
+
+function createRestToolHandlers(): McpToolHandlers {
+  const entries = (Object.keys(REST_TOOL_ROUTES) as McpToolName[]).map(
+    (name) =>
+      [
+        name,
+        async (args: never) => {
+          const { path, query } = buildRestRequest(name, args);
+          return assistantGet(path, query);
+        },
+      ] as const,
+  );
+
+  return Object.fromEntries(entries) as McpToolHandlers;
+}
 
 export function createStdioMcpServer(): McpServer {
   const server = new McpServer({
@@ -9,45 +30,7 @@ export function createStdioMcpServer(): McpServer {
     version: packageJson.version,
   });
 
-  registerMcpTools(server, {
-    list_categories: () => assistantGet('/categories'),
-    search_categories: (args) =>
-      assistantGet('/categories/search', {
-        q: args.query,
-        gender: args.gender,
-        limit: args.limit,
-      }),
-    search_phases: (args) =>
-      assistantGet('/phases/search', {
-        q: args.query,
-        gender: args.gender,
-        limit: args.limit,
-      }),
-    list_teams: (args) =>
-      assistantGet('/teams', {
-        gender: args.gender,
-        category: args.category,
-        phase: args.phase,
-      }),
-    search_teams: (args) =>
-      assistantGet('/teams/search', { q: args.query, limit: args.limit }),
-    get_team_overview: (args) =>
-      assistantGet(`/teams/${args.team_id}/overview`, { phase: args.phase }),
-    list_team_players: (args) =>
-      assistantGet(`/teams/${args.team_id}/players`),
-    search_players: (args) =>
-      assistantGet('/players/search', {
-        q: args.query,
-        gender: args.gender,
-        limit: args.limit,
-      }),
-    get_top_players: (args) =>
-      assistantGet('/players/top', {
-        gender: args.gender,
-        category: args.category,
-        limit: args.limit,
-      }),
-  });
+  registerMcpTools(server, createRestToolHandlers());
 
   return server;
 }
