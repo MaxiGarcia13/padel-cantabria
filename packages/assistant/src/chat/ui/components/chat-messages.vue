@@ -3,7 +3,6 @@ import ChatSuggestions from '@chat/ui/components/chat-suggestions.vue';
 import { Bubble, BubbleContent } from '@chat/ui/components/ui/bubble';
 import {
   Empty,
-  EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
@@ -64,15 +63,6 @@ const showSuggestions = computed(() =>
                 Cuando el modelo esté listo, elige una sugerencia o escribe tu pregunta abajo.
               </EmptyDescription>
             </EmptyHeader>
-            <EmptyContent
-              v-if="showSuggestions"
-              class="mt-4 max-w-md gap-2"
-            >
-              <ChatSuggestions
-                :disabled="suggestionsDisabled"
-                @select="emit('suggest', $event)"
-              />
-            </EmptyContent>
           </Empty>
 
           <template v-else>
@@ -117,17 +107,17 @@ const showSuggestions = computed(() =>
                 </MessageContent>
               </Message>
             </MessageScrollerItem>
-
-            <div
-              v-if="showSuggestions"
-              class="flex justify-center"
-            >
-              <ChatSuggestions
-                :disabled="suggestionsDisabled"
-                @select="emit('suggest', $event)"
-              />
-            </div>
           </template>
+
+          <div
+            v-if="showSuggestions"
+            class="mx-auto flex max-w-md justify-center"
+          >
+            <ChatSuggestions
+              :disabled="suggestionsDisabled"
+              @select="emit('suggest', $event)"
+            />
+          </div>
         </MessageScrollerContent>
       </MessageScrollerViewport>
       <MessageScrollerButton />
