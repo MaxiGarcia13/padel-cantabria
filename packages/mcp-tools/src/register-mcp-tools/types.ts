@@ -1,47 +1,22 @@
+import type { z } from 'zod';
 import type { MCP_TOOLS } from '../tools.js';
 
-export interface McpToolArgs {
-  list_categories: undefined;
-  search_categories: {
-    query?: string;
-    gender?: string;
-    limit?: number;
-  };
-  search_phases: {
-    query?: string;
-    gender?: string;
-    limit?: number;
-  };
-  list_teams: {
-    gender: 'M' | 'F';
-    category: string;
-    phase?: string;
-  };
-  search_teams: {
-    query?: string;
-    limit?: number;
-  };
-  get_team_overview: {
-    team_id: number;
-    phase?: string;
-  };
-  list_team_players: {
-    team_id: number;
-  };
-  search_players: {
-    query: string;
-    gender?: string;
-    limit?: number;
-  };
-  get_top_players: {
-    gender: 'M' | 'F';
-    category: string;
-    limit?: number;
-  };
-}
+type InputSchemaOf<T> = T extends { inputSchema: infer S } ? S : never;
+
+type ArgsFromDef<T> = [InputSchemaOf<T>] extends [never]
+  ? undefined
+  : InputSchemaOf<T> extends Record<string, z.ZodTypeAny>
+    ? z.infer<z.ZodObject<InputSchemaOf<T>>>
+    : undefined;
+
+export type McpToolArgs = {
+  [K in keyof typeof MCP_TOOLS]: ArgsFromDef<(typeof MCP_TOOLS)[K]>;
+};
 
 export type McpToolHandlers = {
   [K in keyof typeof MCP_TOOLS]: (
     args: McpToolArgs[K],
   ) => Promise<unknown>;
 };
+
+export type McpToolName = keyof typeof MCP_TOOLS;
