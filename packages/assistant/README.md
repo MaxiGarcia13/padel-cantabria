@@ -44,6 +44,16 @@ League is taken from root `.env` `LEAGUE_IDS` (first id), not from query params.
 | `POST` | `/chat`                                 | Chat turn (`messages` + `x-chat-session`; NDJSON) |
 | `POST` | `/mcp`                                  | Streamable HTTP MCP (same tools)                  |
 
+## Workflow
+
+A chat turn stays on this server. Tool schemas come from `@padel-cantabria/mcp-tools`. League scope comes from `LEAGUE_IDS`.
+
+```text
+| Vue chat UI | -> | POST /chat | -> | Gemini tool loop | -> | handlers | -> | Turso |
+```
+
+`POST /chat` turns those schemas into Gemini function tools. The model may call tools for up to three rounds. Each call runs in process, then the reply streams back as NDJSON. Client setup for `/mcp` is in [`packages/mcp`](../mcp/README.md).
+
 ## Connect an LLM
 
 - **Chat UI (hosted):** https://padel-cantabria.onrender.com/
