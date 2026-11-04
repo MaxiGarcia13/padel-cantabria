@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button';
-import { CHAT_SUGGESTIONS } from '@/domain/chat-suggestions';
+import { Button } from '@chat/ui/components/ui/button';
+import { CHAT_SUGGESTIONS } from '@chat/ui/domain/chat-suggestions';
 
 defineProps<{
   disabled?: boolean;

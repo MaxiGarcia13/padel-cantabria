@@ -4,7 +4,7 @@ import type {
   ChatCompletionTool,
 } from '@chat/utils/chat-completion-types.js';
 import type { AiRouterInterface, writeNdjsonStream } from '@maxigarcia/ai-router';
-import { getAiRouter } from '@assistant/create-ai-router';
+import { getAiRouter } from '@/create-ai-router.js';
 
 type RouterMessages = Parameters<AiRouterInterface['create']>[0];
 type RouterTools = NonNullable<

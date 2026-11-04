@@ -4,7 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "paths": {
-      "@/*": ["./src/chat/ui/*"],
+      "@/*": ["./src/*"],
       "@chat/*": ["./src/chat/*"],
       "@presenters/*": ["./src/presenters/*"],
       "@package-json": ["./package.json"]

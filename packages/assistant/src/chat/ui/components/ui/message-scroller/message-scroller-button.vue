@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import type { ButtonVariants } from '@chat/ui/components/ui/button';
 import type { HTMLAttributes } from 'vue';
 import type { MessageScrollerButtonDirection } from './types';
-import type { ButtonVariants } from '@/components/ui/button';
+import { Button } from '@chat/ui/components/ui/button';
+import { useMessageScroller, useMessageScrollerScrollable } from '@chat/ui/composables/use-message-scroller';
 import { ArrowDownIcon } from '@lucide/vue';
 import { cn } from 'cn';
 import { computed } from 'vue';
-import { Button } from '@/components/ui/button';
-import { useMessageScroller, useMessageScrollerScrollable } from '@/composables/use-message-scroller';
 
 const props = withDefaults(defineProps<{
   class?: HTMLAttributes['class'];

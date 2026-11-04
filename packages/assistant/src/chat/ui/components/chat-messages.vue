@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { Markdown } from '@comark/vue';
-import { MessageCircleDashedIcon } from '@lucide/vue';
-import { computed } from 'vue';
-import ChatSuggestions from '@/components/chat-suggestions.vue';
-import { Bubble, BubbleContent } from '@/components/ui/bubble';
+import ChatSuggestions from '@chat/ui/components/chat-suggestions.vue';
+import { Bubble, BubbleContent } from '@chat/ui/components/ui/bubble';
 import {
   Empty,
   EmptyContent,
@@ -11,8 +8,8 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from '@/components/ui/empty';
-import { Message, MessageContent } from '@/components/ui/message';
+} from '@chat/ui/components/ui/empty';
+import { Message, MessageContent } from '@chat/ui/components/ui/message';
 import {
   MessageScroller,
   MessageScrollerButton,
@@ -20,7 +17,10 @@ import {
   MessageScrollerItem,
   MessageScrollerProvider,
   MessageScrollerViewport,
-} from '@/components/ui/message-scroller';
+} from '@chat/ui/components/ui/message-scroller';
+import { Markdown } from '@comark/vue';
+import { MessageCircleDashedIcon } from '@lucide/vue';
+import { computed } from 'vue';
 
 const props = defineProps<{
   messages: Array<{

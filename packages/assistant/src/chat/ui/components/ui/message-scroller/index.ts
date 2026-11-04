@@ -17,4 +17,4 @@ export type {
 export {
   useMessageScroller,
   useMessageScrollerScrollable,
-} from '@/composables/use-message-scroller';
+} from '@chat/ui/composables/use-message-scroller';

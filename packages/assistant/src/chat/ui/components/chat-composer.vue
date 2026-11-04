@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ArrowUpIcon } from '@lucide/vue';
-import { ref } from 'vue';
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupTextarea,
-} from '@/components/ui/input-group';
-import { Spinner } from '@/components/ui/spinner';
+} from '@chat/ui/components/ui/input-group';
+import { Spinner } from '@chat/ui/components/ui/spinner';
+import { ArrowUpIcon } from '@lucide/vue';
+import { ref } from 'vue';
 
 const props = defineProps<{
   disabled: boolean;

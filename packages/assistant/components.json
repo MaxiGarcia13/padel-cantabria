@@ -14,12 +14,12 @@
   "rtl": false,
   "pointer": true,
   "aliases": {
-    "components": "@/components",
-    "utils": "@/utils/utils",
-    "ui": "@/components/ui",
-    "lib": "@/utils",
-    "domain": "@/domain",
-    "composables": "@/composables"
+    "components": "@chat/ui/components",
+    "utils": "@chat/ui/utils/utils",
+    "ui": "@chat/ui/components/ui",
+    "lib": "@chat/ui/utils",
+    "domain": "@chat/ui/domain",
+    "composables": "@chat/ui/composables"
   },
   "menuColor": "default",
   "menuAccent": "subtle",

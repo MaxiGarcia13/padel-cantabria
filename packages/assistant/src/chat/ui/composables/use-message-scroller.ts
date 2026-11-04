@@ -1,7 +1,7 @@
+import type { MessageScrollerScrollable } from '@chat/ui/components/ui/message-scroller/types';
 import type { Ref } from 'vue';
-import type { MessageScrollerScrollable } from '@/components/ui/message-scroller/types';
+import { useMessageScrollerContext } from '@chat/ui/components/ui/message-scroller/message-scroller-context';
 import { computed } from 'vue';
-import { useMessageScrollerContext } from '@/components/ui/message-scroller/message-scroller-context';
 
 export function useMessageScroller() {
   const { scrollToEnd, scrollToMessage, scrollToStart } = useMessageScrollerContext();

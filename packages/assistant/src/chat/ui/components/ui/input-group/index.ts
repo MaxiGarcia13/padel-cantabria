@@ -1,6 +1,6 @@
+import type { ButtonVariants } from '@chat/ui/components/ui/button';
 import type { VariantProps } from 'class-variance-authority';
 import type { HTMLAttributes } from 'vue';
-import type { ButtonVariants } from '@/components/ui/button';
 import { cva } from 'class-variance-authority';
 
 export { default as InputGroupAddon } from './input-group-addon.vue';

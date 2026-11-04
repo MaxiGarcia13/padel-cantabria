@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { InputGroupButtonProps } from '.';
+import { Button } from '@chat/ui/components/ui/button';
 import { cn } from 'cn';
-import { Button } from '@/components/ui/button';
 import { inputGroupButtonVariants } from '.';
 
 const props = withDefaults(defineProps<InputGroupButtonProps>(), {

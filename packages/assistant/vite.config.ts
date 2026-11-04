@@ -12,7 +12,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': resolve(import.meta.dirname, 'src/chat/ui'),
+      '@': resolve(import.meta.dirname, 'src'),
       '@chat': resolve(import.meta.dirname, 'src/chat'),
       '@presenters': resolve(import.meta.dirname, 'src/presenters'),
     },
