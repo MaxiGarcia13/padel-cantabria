@@ -6,10 +6,7 @@ import type { SearchCategoriesQuery } from '../handlers/search-categories.js';
 import type { SearchPhasesQuery } from '../handlers/search-phases.js';
 import type { SearchPlayersQuery } from '../handlers/search-players.js';
 import type { SearchTeamsQuery } from '../handlers/search-teams.js';
-import {
-
-  toRestQueryArgs,
-} from '@padel-cantabria/mcp-tools';
+import { toRestQueryArgs } from '@padel-cantabria/mcp-tools';
 import { getTeamOverview } from '../handlers/get-team-overview.js';
 import { getTopPlayersHandler } from '../handlers/get-top-players.js';
 import { listCategories } from '../handlers/list-categories.js';
