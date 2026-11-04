@@ -1,3 +1,9 @@
+## 0.5.0 (2026-11-04)
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/database to 0.5.0
+
 ## 0.4.0 (2026-10-29)
 
 ### 🧹 Chores

@@ -1,3 +1,40 @@
+## 0.5.0 (2026-11-04)
+
+### 🚀 Features
+
+- Implement MCP handlers for improved tool functionality ([f372434](https://github.com/MaxiGarcia13/padel-cantabria/commit/f372434))
+
+### 🔄 Refactors
+
+- Enhance AI router configuration by adding open-router support ([2c1a8ca](https://github.com/MaxiGarcia13/padel-cantabria/commit/2c1a8ca))
+- Update component paths and streamline imports for chat UI ([6db5ba5](https://github.com/MaxiGarcia13/padel-cantabria/commit/6db5ba5))
+- Streamline chat functionality and enhance error handling ([9208409](https://github.com/MaxiGarcia13/padel-cantabria/commit/9208409))
+- Enhance chat session management and update API interactions ([1187e97](https://github.com/MaxiGarcia13/padel-cantabria/commit/1187e97))
+- Enhance chat functionality and streamline API interactions ([927a81b](https://github.com/MaxiGarcia13/padel-cantabria/commit/927a81b))
+- Restructure chat UI components and update file paths ([02d0d3e](https://github.com/MaxiGarcia13/padel-cantabria/commit/02d0d3e))
+- Update chat API endpoints and streamline category fetching ([ff1ce70](https://github.com/MaxiGarcia13/padel-cantabria/commit/ff1ce70))
+- Simplify category teams fetching logic and update related functions ([cdbebd9](https://github.com/MaxiGarcia13/padel-cantabria/commit/cdbebd9))
+- Simplify chat functionality and update API integration ([82f171e](https://github.com/MaxiGarcia13/padel-cantabria/commit/82f171e))
+- Update createApp function to instantiate aiRouter directly ([52f4703](https://github.com/MaxiGarcia13/padel-cantabria/commit/52f4703))
+
+### 🧹 Chores
+
+- Upgrade @maxigarcia/ai-router dependency to version 0.2.1 ([7cef0c6](https://github.com/MaxiGarcia13/padel-cantabria/commit/7cef0c6))
+- Add @maxigarcia/ai-client dependency and update workspace configuration ([ad2c9cb](https://github.com/MaxiGarcia13/padel-cantabria/commit/ad2c9cb))
+- Upgrade @maxigarcia/ai-router and @maxigarcia/ai-utils dependencies ([518d2b9](https://github.com/MaxiGarcia13/padel-cantabria/commit/518d2b9))
+- Add @maxigarcia/ai-utils dependency to package.json and pnpm-lock.yaml ([848d19e](https://github.com/MaxiGarcia13/padel-cantabria/commit/848d19e))
+- Update @maxigarcia/ai-router to version 0.1.2 in package.json and pnpm-lock.yaml ([88f343a](https://github.com/MaxiGarcia13/padel-cantabria/commit/88f343a))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/shared to 0.5.0
+- Updated @padel-cantabria/database to 0.5.0
+- Updated @padel-cantabria/mcp-tools to 0.3.0
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.4.0 (2026-10-29)
 
 ### 🧹 Chores
