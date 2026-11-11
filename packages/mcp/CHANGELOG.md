@@ -1,3 +1,9 @@
+## 0.4.0 (2026-11-11)
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/mcp-tools to 0.4.0
+
 ## 0.3.1 (2026-11-04)
 
 ### 🔄 Refactors

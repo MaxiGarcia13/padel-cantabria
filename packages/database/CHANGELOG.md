@@ -1,3 +1,7 @@
+## 0.6.0 (2026-11-11)
+
+This was a version bump only for @padel-cantabria/database to align it with other projects, there were no code changes.
+
 ## 0.5.0 (2026-11-04)
 
 This was a version bump only for @padel-cantabria/database to align it with other projects, there were no code changes.

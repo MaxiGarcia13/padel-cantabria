@@ -1,3 +1,18 @@
+## 0.11.0 (2026-11-11)
+
+### 🧹 Chores
+
+- Update package dependencies and scripts ([558083c](https://github.com/MaxiGarcia13/padel-cantabria/commit/558083c))
+
+### 🧱 Updated Dependencies
+
+- Updated @padel-cantabria/shared to 0.6.0
+- Updated @padel-cantabria/database to 0.6.0
+
+### ❤️ Thank You
+
+- Maximiliano Garcia Mortigliengo
+
 ## 0.10.0 (2026-11-04)
 
 ### 🧱 Updated Dependencies
