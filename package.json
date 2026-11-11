@@ -19,7 +19,7 @@
     "prepare": "simple-git-hooks",
     "lint": "eslint . && pnpm -r --if-present run lint",
     "lint:fix": "eslint --fix . && pnpm -r --if-present run lint:fix",
-    "clean": "rm -rf node_modules dist && pnpm -r run clean",
+    "clean": "rm -rf node_modules dist pnpm-lock.yaml && pnpm -r run clean",
     "phoenix": "pnpm clean && pnpm install",
     "assistant": "pnpm --filter @padel-cantabria/assistant start",
     "assistant:dev": "pnpm --filter @padel-cantabria/assistant dev",

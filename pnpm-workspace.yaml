@@ -4,15 +4,23 @@ minimumReleaseAgeExclude:
   - '@maxigarcia/ai-router@0.2.1'
   - '@maxigarcia/ai-utils@0.1.3'
   - '@maxigarcia/ai-client@0.3.0'
+  - '@astrojs/internal-helpers@0.13.2'
+  - '@astrojs/markdown-satteri@0.4.8'
+  - '@astrojs/runtime@0.1.0'
+  - '@astrojs/vite-plugin-astro@0.1.1'
+  - '@astrojs/vue-renderer@0.1.0'
+  - '@astrojs/vue@7.1.4'
+  - astro@7.4.10
+  - '@astrojs/vercel@11.0.21'
 
 trustPolicy: no-downgrade
 trustPolicyExclude:
   - chromium-bidi@157.0.8090-0
   - semver@6.3.1
-  - '@vercel/functions@3.10.1'
-  - '@vercel/routing-utils@6.6.0'
-  - '@vercel/oidc@4.0.1'
-  - '@vercel/cli-config@0.3.1'
+  - '@vercel/functions@3.11.0'
+  - '@vercel/routing-utils@6.6.1'
+  - '@vercel/oidc@4.0.7'
+  - '@vercel/cli-config@0.3.7'
   - '@vercel/cli-exec@1.0.1'
 
 shellEmulator: true
